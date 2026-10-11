@@ -10,12 +10,29 @@ export default function RegisterForm({ eventId, tiers, questions, userEmail }: {
   const [state, action, pending] = useActionState<RegisterState, FormData>(registerGuest, undefined);
 
   if (state?.status) {
-    const msg = state.status === "waitlisted"
-      ? "The event is full, so you've been added to the waiting list. We'll contact you if a place opens."
-      : state.status === "pending"
-        ? "Your ticket is reserved. Payment is the next step."
-        : "You're in. Check your email for your ticket.";
-    return <div className="done"><b>{state.status === "confirmed" ? "You're registered" : "Thanks"}</b><p className="muted">{msg}</p></div>;
+    if (state.status === "waitlisted") {
+      return (
+        <div className="done">
+          <b>You&apos;re on the waiting list</b>
+          <p className="muted">The event is full. We&apos;ll contact you if a place opens.</p>
+        </div>
+      );
+    }
+    if (state.status === "pending") {
+      return (
+        <div className="done">
+          <b>Your ticket is reserved</b>
+          <p className="muted">Payment is the next step.</p>
+        </div>
+      );
+    }
+    return (
+      <div className="done">
+        <b>You&apos;re registered</b>
+        <p className="muted">Keep this ticket code. You&apos;ll show it at the door.</p>
+        {state.ticketCode && <div className="ticket-code">{state.ticketCode}</div>}
+      </div>
+    );
   }
 
   const hasTiers = tiers.length > 0;

@@ -3,7 +3,7 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export type RegisterState =
-  | { error?: string; status?: "confirmed" | "waitlisted" | "pending" }
+  | { error?: string; status?: "confirmed" | "waitlisted" | "pending"; ticketCode?: string }
   | undefined;
 
 type Q = { id: string; label: string; kind: string; required: boolean };
@@ -31,6 +31,6 @@ export async function registerGuest(_prev: RegisterState, formData: FormData): P
   });
 
   if (error) return { error: error.message.replace(/^.*?: /, "") };
-  const row = data as { status: string };
-  return { status: row.status as "confirmed" | "waitlisted" | "pending" };
+  const row = data as { status: string; ticket_code: string };
+  return { status: row.status as "confirmed" | "waitlisted" | "pending", ticketCode: row.ticket_code };
 }

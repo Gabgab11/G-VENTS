@@ -6,6 +6,7 @@
 - Build: passes (`npm run build`)
 
 ## Done
+- Discover page (/discover): G-vents events plus a 'Happening elsewhere' section from Ticketmaster, PredictHQ, and iCal feeds. Each source is optional and needs its key or URL in Vercel (TICKETMASTER_API_KEY, PREDICTHQ_API_KEY, ICAL_FEED_URLS). Results cached 1 hour; loads separately so the page shows first.
 - Guests must create a free account (email code) before registering. Accounts can register once per event.
 - Christmas style with falling snow and a running Santa (cover picker and dashboard).
 - Dashboard changes to registration questions appear on the guest form on its next load.
@@ -46,3 +47,6 @@
 ## Notes for next session
 - Schema file: `supabase/gvents-schema.sql` (matches both databases).
 - Staging first, then production.
+
+## Next
+0. NOT YET BUILT: confirmation emails to guests (needs RESEND_API_KEY in Vercel and a verified domain). The registration page shows the ticket code for now.

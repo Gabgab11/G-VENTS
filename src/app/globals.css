@@ -237,3 +237,17 @@ textarea.input { resize: vertical; }
 
 .signup-card { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 22px; display: grid; gap: 10px; box-shadow: 0 6px 24px rgba(0,0,0,.06); }
 .signup-card .btn-grad { justify-self: start; }
+.ticket-code { font-family: ui-monospace, monospace; font-size: 22px; font-weight: 800; letter-spacing: .12em; padding: 14px 16px; border-radius: 14px; background: var(--surface-hi); text-align: center; word-break: break-all; }
+
+/* ---------- Discover ---------- */
+.section-head { display: grid; gap: 4px; margin-bottom: 8px; }
+.section-head h1 { margin: 0; }
+.section-head h2 { margin: 0; }
+.elsewhere { margin-top: 36px; display: grid; gap: 12px; }
+.ext-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; margin-top: 12px; }
+.ext-card, .event-card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 16px; display: grid; gap: 8px; text-decoration: none; color: var(--text); box-shadow: 0 6px 24px rgba(0,0,0,.06); transition: transform .15s ease; }
+.ext-card:hover, .event-card:hover { transform: translateY(-2px); }
+.event-card-cover { aspect-ratio: 16 / 9; border-radius: 14px; margin-bottom: 4px; }
+.ext-title { font-size: 16px; font-weight: 700; line-height: 1.3; }
+.source-tag { justify-self: start; font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; padding: 4px 9px; border-radius: 999px; background: var(--surface-hi); color: var(--gold); }
+.ext-cta { font-size: 13px; font-weight: 700; color: var(--gold); }
