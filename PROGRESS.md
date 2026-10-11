@@ -6,6 +6,11 @@
 - Build: passes (`npm run build`)
 
 ## Done
+- Sign-in card (Luma-style): email code, then 6-digit code. Redirects to /dashboard.
+- Create event (Luma-style two-column): cover themes, dates, location, tickets (free or paid), options: public/private, show attendee count, require approval, refund policy.
+- Organizer dashboard (/dashboard): public/private toggle, show-count toggle, draft publish, registration count (only the owner sees it when hidden).
+- Public event page shows the attendee count only when the organizer allows it.
+- Database: events.visibility, events.show_attendee_count, events.require_approval, events.cover_theme (applied to staging and production).
 - Home page: globe with city pins, categories, "Happening soon" list (sample data until real events exist)
 - Sign in with email code (`/sign-in`)
 - Create event, 3 steps: basics, tickets, review. Saves as draft or published (`/events/new`)
@@ -14,7 +19,8 @@
 ## Not done yet (in order)
 1. Supabase Auth email template must show the 6-digit code (`{{ .Token }}`). Set it in Supabase: Authentication → Email Templates.
 2. Custom SMTP for auth emails (Supabase's built-in sender is limited). Use Resend.
-3. Registration and payment (`reserve_ticket` function exists in the database; no UI yet).
+3. Require-approval workflow and attendee list for organizers.
+4. Registration and payment (`reserve_ticket` function exists in the database; no UI yet).
 4. Discover page (currently placeholder).
 5. Team and roles, blast email, check-in: designed in the prototype, not built.
 6. Missing pages linked from footer: /pricing, /help, /terms, /privacy, /refunds.

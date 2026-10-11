@@ -113,3 +113,70 @@ textarea.input { resize: vertical; }
 .btn-grad { display: inline-block; padding: 16px 24px; border-radius: 999px; background: var(--grad); color: #141414; font-weight: 800; font-size: 16px; text-align: center; border: 0; }
 .btn-ghost { display: inline-block; padding: 15px 24px; border-radius: 999px; border: 1.5px solid #fff; background: transparent; color: #fff; font-weight: 700; font-size: 16px; text-align: center; }
 .btn-white { border: 0; }
+
+/* ---------- Sign in (Luma-style card) ---------- */
+.auth-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+.auth-card { width: 100%; max-width: 420px; background: #1c1c1e; border: 1px solid var(--line); border-radius: 22px; padding: 34px 28px; display: grid; gap: 14px; box-shadow: 0 30px 80px rgba(0,0,0,.5); }
+.auth-icon { width: 56px; height: 56px; border-radius: 16px; background: #262628; display: flex; align-items: center; justify-content: center; }
+.auth-title { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; }
+.auth-form { display: grid; gap: 10px; }
+.auth-label { font-size: 14px; font-weight: 600; color: #cfcfd3; }
+.auth-input { width: 100%; padding: 15px 16px; border-radius: 12px; background: #141414; border: 1px solid var(--line); color: #fff; font: inherit; font-size: 16px; }
+.auth-input:focus { outline: none; border-color: var(--gold); }
+.auth-code { text-align: center; letter-spacing: 8px; font-size: 22px; font-weight: 700; }
+.auth-primary { width: 100%; padding: 15px; border-radius: 999px; background: #ffffff; color: #141414; font-weight: 700; font-size: 16px; border: 0; cursor: pointer; }
+.auth-primary:disabled { opacity: .6; cursor: default; }
+.auth-link { background: none; border: 0; color: var(--muted); font: inherit; font-weight: 600; cursor: pointer; padding: 6px; }
+.auth-email { color: #fff; font-weight: 700; }
+.auth-error { text-align: center; }
+
+/* ---------- Create event ---------- */
+.create-grid { display: grid; gap: 28px; padding: 28px 0 60px; }
+.create-cover { display: grid; gap: 14px; align-content: start; }
+.cover-preview { aspect-ratio: 1 / 1; border-radius: 22px; display: flex; align-items: flex-end; padding: 22px; box-shadow: 0 20px 50px rgba(0,0,0,.35); }
+.cover-preview .cover-title, .event-hero .cover-title { font-size: 28px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; text-shadow: 0 2px 14px rgba(0,0,0,.3); word-break: break-word; }
+.event-hero { aspect-ratio: 16 / 9; border-radius: 20px; display: flex; align-items: flex-end; padding: 24px; margin-top: 8px; }
+.create-main { display: grid; gap: 16px; min-width: 0; }
+.title-input { width: 100%; background: transparent; border: 0; color: #fff; font: inherit; font-size: 36px; font-weight: 800; letter-spacing: -0.02em; padding: 4px 0; }
+.title-input:focus { outline: none; }
+.title-input::placeholder { color: #55555c; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 18px; display: grid; gap: 14px; }
+.panel-label { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+.row2.tight { gap: 8px; }
+.small { font-size: 13px; }
+.theme-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.theme-swatch { aspect-ratio: 1; border-radius: 14px; border: 2px solid transparent; display: flex; align-items: flex-end; padding: 8px; color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; text-shadow: 0 1px 6px rgba(0,0,0,.4); }
+.theme-swatch.on { border-color: #fff; }
+.ticket-type { display: inline-flex; background: #141414; border-radius: 999px; padding: 4px; width: fit-content; }
+.ticket-type button, .seg button { padding: 9px 16px; border-radius: 999px; background: transparent; border: 0; color: var(--muted); font: inherit; font-weight: 700; font-size: 14px; cursor: pointer; }
+.ticket-type button.on, .seg button.on { background: #fff; color: #141414; }
+.seg { display: inline-flex; background: #141414; border-radius: 999px; padding: 4px; }
+.option { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.option:last-of-type { border-bottom: 0; }
+.option-title { font-weight: 700; margin-bottom: 2px; }
+.switch { position: relative; display: inline-block; width: 46px; height: 28px; flex: 0 0 auto; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.switch span { position: absolute; inset: 0; background: #3a3a3d; border-radius: 999px; transition: .2s; cursor: pointer; }
+.switch span::after { content: ""; position: absolute; width: 22px; height: 22px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: .2s; }
+.switch input:checked + span { background: var(--grad); }
+.switch input:checked + span::after { transform: translateX(18px); }
+.publish-bar { position: sticky; bottom: 0; display: flex; gap: 12px; justify-content: flex-end; padding: 16px 0; background: linear-gradient(to top, var(--bg) 70%, transparent); }
+.link-btn { background: none; border: 0; color: var(--muted); font: inherit; font-weight: 600; cursor: pointer; padding: 6px 0; text-align: left; }
+.gold { color: var(--gold); font-weight: 700; }
+
+/* ---------- Dashboard ---------- */
+.spread { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.dash-list { display: grid; gap: 12px; margin-top: 16px; }
+.dash-row { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; display: grid; gap: 12px; }
+.dash-title { font-size: 17px; font-weight: 700; }
+.dash-main { display: grid; gap: 4px; }
+.dash-controls { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+.check { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: #d6d6d8; cursor: pointer; }
+.check input { width: 18px; height: 18px; accent-color: #f2a33a; }
+.btn-small { padding: 9px 14px; border-radius: 999px; background: var(--surface-hi); border: 0; color: #fff; font: inherit; font-weight: 600; font-size: 14px; cursor: pointer; }
+
+@media (min-width: 900px) {
+  .create-grid { grid-template-columns: 420px 1fr; gap: 48px; align-items: start; }
+  .create-cover { position: sticky; top: 24px; }
+  .title-input { font-size: 44px; }
+}
