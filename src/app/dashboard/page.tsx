@@ -1,12 +1,17 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import ThemeStage from "@/components/ThemeStage";
 import EventRow, { type DashEvent } from "./EventRow";
+import ThemePanel from "./ThemePanel";
+import { getDashboardTheme } from "./getTheme";
 
 export default async function DashboardPage() {
   const supabase = await createSupabaseServerClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/sign-in?next=/dashboard");
+
+  const theme = await getDashboardTheme(supabase, user.id);
 
   const { data: events } = await supabase
     .from("events")
@@ -26,12 +31,18 @@ export default async function DashboardPage() {
   );
 
   return (
-    <main className="wrap page">
+    <main className="wrap page wide stage-content">
+      <ThemeStage theme={theme} />
       <div className="spread">
-        <h1>Your events</h1>
-        <Link href="/events/new" className="btn-white">Create event</Link>
+        <div>
+          <div className="eyebrow">Organizer</div>
+          <h1>Your events</h1>
+        </div>
+        <Link href="/events/new" className="btn-white">+ Create event</Link>
       </div>
-      <p className="muted">Only you see the registration numbers and the draft list here. Private events are hidden from Discover and open only by link.</p>
+      <p className="muted">Manage registrations, guests, and announcements. Private events open only by link.</p>
+
+      <ThemePanel current={theme} />
 
       {rows.length === 0 && <p className="muted">You haven&apos;t created any events yet.</p>}
       <div className="dash-list">

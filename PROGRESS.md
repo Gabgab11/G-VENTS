@@ -6,6 +6,11 @@
 - Build: passes (`npm run build`)
 
 ## Done
+- Guests must create a free account (email code) before registering. Accounts can register once per event.
+- Christmas style with falling snow and a running Santa (cover picker and dashboard).
+- Dashboard changes to registration questions appear on the guest form on its next load.
+- Fixed: guest registration links returned 404 for signed-out visitors (policy check needed anon permission on has_event_role). Fixed on both databases.
+- Organizers choose their dashboard style (Minimal, Sunset, Ocean, Forest, Night, Ember, Blush, Mint, Lavender). Saved to profiles.dashboard_theme.
 - Organizer event page /dashboard/[id] with tabs: Overview (share link, open/close registration, capacity with waiting list), Guests (check-in, waiting list promotion), Registration (custom questions: text, multiple choice, social, company, checkbox terms, phone, website), Announcements (saved as drafts).
 - Guest registration on /e/[slug] using the register_guest database function (checks open/closed, capacity, duplicates).
 - Attendee count via public_attendee_count function (respects the organizer's setting).

@@ -220,3 +220,20 @@ textarea.input { resize: vertical; }
 .done { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 20px; display: grid; gap: 6px; }
 .check { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text); cursor: pointer; }
 .check input { width: 18px; height: 18px; accent-color: var(--gold); }
+
+/* ---------- Organizer dashboard look ---------- */
+.page.wide { max-width: 960px; }
+.eyebrow { font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+.page h1 { font-size: 38px; }
+.dash-row, .panel, .stat, .guest-row { border-radius: 22px; box-shadow: 0 6px 24px rgba(0,0,0,.06); }
+.dash-row { padding: 20px; }
+.dash-controls .btn-small, .btn-white, .btn-ghost, .btn-grad { border-radius: 999px; }
+.tabs a { border-radius: 999px 999px 0 0; }
+.theme-picks { display: flex; flex-wrap: wrap; gap: 10px; }
+.pick { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 999px; border: 2px solid; font: inherit; font-weight: 700; font-size: 14px; cursor: pointer; }
+.pick.on { outline: 2px solid var(--gold); outline-offset: 2px; }
+.pick-dot { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
+.stat { box-shadow: 0 6px 24px rgba(0,0,0,.06); }
+
+.signup-card { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 22px; display: grid; gap: 10px; box-shadow: 0 6px 24px rgba(0,0,0,.06); }
+.signup-card .btn-grad { justify-self: start; }

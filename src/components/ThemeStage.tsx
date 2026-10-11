@@ -5,6 +5,47 @@ import { THEMES } from "@/lib/themes";
 
 type P = { x: number; y: number; vx: number; vy: number; r: number; ph: number; c: string };
 
+
+// A small Santa running across the bottom of the screen, with snow falling around him.
+function drawSantaRun(c: CanvasRenderingContext2D, w: number, h: number, k: number) {
+  const speed = w / 12;                       // pixels per second
+  const x = ((k * speed) % (w + 200)) - 100;  // runs left to right, then loops
+  const y = h * 0.86;
+  const step = Math.sin(k * 12);
+  c.save();
+  c.translate(x, y);
+  c.lineCap = "round";
+  // legs
+  c.strokeStyle = "#b71c1c"; c.lineWidth = 7;
+  c.beginPath(); c.moveTo(-6, -22); c.lineTo(-6 + step * 10, -2); c.stroke();
+  c.beginPath(); c.moveTo(6, -22); c.lineTo(6 - step * 10, -2); c.stroke();
+  // boots
+  c.fillStyle = "#2b1b17";
+  c.fillRect(-12 + step * 10, -4, 10, 5);
+  c.fillRect(2 - step * 10, -4, 10, 5);
+  // body
+  c.fillStyle = "#d62828";
+  c.beginPath(); c.ellipse(0, -38, 16, 18, 0, 0, Math.PI * 2); c.fill();
+  // belt and buckle
+  c.fillStyle = "#1b1b1b"; c.fillRect(-15, -38, 30, 5);
+  c.fillStyle = "#f2c230"; c.fillRect(-3, -39, 6, 7);
+  // waving arm
+  c.strokeStyle = "#d62828"; c.lineWidth = 6;
+  c.beginPath(); c.moveTo(12, -44); c.lineTo(24, -56 + step * 6); c.stroke();
+  // head and beard
+  c.fillStyle = "#f5c9a0";
+  c.beginPath(); c.arc(0, -62, 11, 0, Math.PI * 2); c.fill();
+  c.fillStyle = "#ffffff";
+  c.beginPath(); c.ellipse(0, -56, 11, 8, 0, 0, Math.PI); c.fill();
+  // hat with pom-pom
+  c.fillStyle = "#d62828";
+  c.beginPath(); c.moveTo(-11, -68); c.lineTo(10, -68); c.lineTo(-4, -92); c.closePath(); c.fill();
+  c.fillStyle = "#ffffff";
+  c.fillRect(-13, -71, 26, 6);
+  c.beginPath(); c.arc(-4, -92, 4, 0, Math.PI * 2); c.fill();
+  c.restore();
+}
+
 // Applies the chosen style to the whole page and draws its motion layer.
 export default function ThemeStage({ theme }: { theme: string }) {
   const t = THEMES[theme] ?? THEMES.minimal;
@@ -73,6 +114,7 @@ export default function ThemeStage({ theme }: { theme: string }) {
           if (t.effect === "petals") { p.x += Math.sin(p.ph) * 0.6 + p.vx; p.y += p.vy; }
           if (t.effect === "fireflies") { p.x += Math.cos(p.ph) * 0.4; p.y += Math.sin(p.ph * 0.7) * 0.4; }
           if (t.effect === "sparks") { p.x += Math.sin(p.ph) * 0.3; p.y -= p.vy * 1.4; }
+          if (t.effect === "santa") { p.x += Math.sin(p.ph) * 0.4; p.y += p.vy * 0.8; }
         }
         // wrap around the screen
         if (p.y > h + 12) { p.y = -12; p.x = rnd(0, w); }
@@ -104,6 +146,12 @@ export default function ThemeStage({ theme }: { theme: string }) {
           ctx!.beginPath();
           ctx!.arc(p.x, p.y, p.r * 0.35, 0, Math.PI * 2);
           ctx!.fill();
+        } else if (t.effect === "santa") {
+          ctx!.globalAlpha = 0.85;
+          ctx!.fillStyle = "#ffffff";
+          ctx!.beginPath();
+          ctx!.arc(p.x, p.y, p.r * 0.45, 0, Math.PI * 2);
+          ctx!.fill();
         } else if (t.effect === "stars") {
           ctx!.globalAlpha = 0.3 + (Math.sin(p.ph * 2) + 1) * 0.35;
           ctx!.fillStyle = p.c;
@@ -113,6 +161,7 @@ export default function ThemeStage({ theme }: { theme: string }) {
         }
       }
       ctx!.globalAlpha = 1;
+      if (t.effect === "santa") drawSantaRun(ctx!, w, h, k);
     }
 
     function loop(time: number) {

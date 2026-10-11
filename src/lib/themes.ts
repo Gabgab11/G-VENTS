@@ -1,4 +1,4 @@
-export type Effect = "none" | "petals" | "fireflies" | "sparks" | "stars" | "waves";
+export type Effect = "none" | "petals" | "fireflies" | "sparks" | "stars" | "waves" | "santa";
 
 export type Theme = {
   label: string;
@@ -62,6 +62,38 @@ export const THEMES: Record<string, Theme> = {
     text: "#fff4ec", muted: "#c9a894",
     grad: "linear-gradient(90deg,#f0604f,#f2a33a)",
     effect: "sparks", accents: ["#f2a33a", "#f0604f", "#ffd27a"],
+  },
+  blush: {
+    label: "Blush",
+    background: "linear-gradient(160deg,#ffd6e7,#ffb3cf 55%,#ff9bbd)",
+    bg: "#fff1f6", surface: "#ffffff", surfaceHi: "#ffe3ee", line: "#f5c6d8",
+    text: "#3a1a2a", muted: "#9a6480",
+    grad: "linear-gradient(90deg,#e0438f,#ff8fb8)",
+    effect: "petals", accents: ["#e0438f", "#ff8fb8", "#ffc2d9"],
+  },
+  mint: {
+    label: "Mint",
+    background: "linear-gradient(160deg,#c9f5e6,#8fe3c8 55%,#5fd3b0)",
+    bg: "#f0fbf6", surface: "#ffffff", surfaceHi: "#dff6ec", line: "#c5ead9",
+    text: "#14352a", muted: "#5d8a78",
+    grad: "linear-gradient(90deg,#3fb8a8,#8fe3c8)",
+    effect: "waves", accents: ["#3fb8a8", "#8fe3c8", "#b5f0dc"],
+  },
+  lavender: {
+    label: "Lavender",
+    background: "linear-gradient(160deg,#e6dcff,#c4b0ff 55%,#a98cff)",
+    bg: "#f6f2ff", surface: "#ffffff", surfaceHi: "#ece4ff", line: "#dccfff",
+    text: "#261a44", muted: "#7a6aa6",
+    grad: "linear-gradient(90deg,#9b6cf2,#e0438f)",
+    effect: "sparks", accents: ["#9b6cf2", "#c4b0ff", "#e0438f"],
+  },
+  christmas: {
+    label: "Christmas",
+    background: "linear-gradient(160deg,#0b3d2e,#1f6b47 55%,#d62828)",
+    bg: "#0c2a20", surface: "#143528", surfaceHi: "#1d4534", line: "#2b5c46",
+    text: "#fff6f0", muted: "#b8d4c4",
+    grad: "linear-gradient(90deg,#d62828,#f2c230)",
+    effect: "santa", accents: ["#ffffff", "#d62828", "#f2c230"],
   },
 };
 

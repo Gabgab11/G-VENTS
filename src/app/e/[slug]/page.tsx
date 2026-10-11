@@ -50,10 +50,17 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
       {event.description && <p className="desc">{event.description}</p>}
 
       <h2>Register</h2>
-      {event.registration_open ? (
-        <RegisterForm eventId={event.id} tiers={tiers ?? []} questions={questions ?? []} />
-      ) : (
-        <p className="notice">Registration for this event is closed.</p>
+      {!event.registration_open && <p className="notice">Registration for this event is closed.</p>}
+      {event.registration_open && !user && (
+        <div className="signup-card">
+          <b>Create a free account to register</b>
+          <p className="muted small">Takes a few seconds. We&apos;ll email you a 6-digit code, no password needed. Your ticket and updates from the host will be saved to your account.</p>
+          <Link href={`/sign-in?next=/e/${event.slug}`} className="btn-grad">Sign up to register</Link>
+          <p className="muted small">Already have an account? <Link href={`/sign-in?next=/e/${event.slug}`} className="gold">Sign in</Link></p>
+        </div>
+      )}
+      {event.registration_open && user && (
+        <RegisterForm eventId={event.id} tiers={tiers ?? []} questions={questions ?? []} userEmail={user.email ?? ""} />
       )}
 
       {event.refund_policy && <p className="muted small">Refunds: {event.refund_policy}</p>}

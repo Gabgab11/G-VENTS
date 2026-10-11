@@ -22,3 +22,14 @@ export async function updateEventSetting(eventId: string, field: string, value: 
   revalidatePath("/dashboard");
   return {};
 }
+
+export async function setDashboardTheme(formData: FormData) {
+  const theme = String(formData.get("theme") ?? "");
+  const { THEMES } = await import("@/lib/themes");
+  if (!(theme in THEMES)) return;
+  const supabase = await createSupabaseServerClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return;
+  await supabase.from("profiles").update({ dashboard_theme: theme }).eq("id", user.id);
+  revalidatePath("/dashboard", "layout");
+}

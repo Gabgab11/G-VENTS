@@ -2,6 +2,9 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import CopyLink from "./CopyLink";
+import ThemeStage from "@/components/ThemeStage";
+import ThemePanel from "../ThemePanel";
+import { getDashboardTheme } from "../getTheme";
 import {
   setRegistrationOpen, setCapacity, addQuestion, deleteQuestion,
   checkInGuest, promoteFromWaitlist, createAnnouncement,
@@ -42,10 +45,12 @@ export default async function ManageEventPage({
     .maybeSingle();
   if (!event) notFound();
 
+  const theme = await getDashboardTheme(supabase, user.id);
   const url = `${SITE}/e/${event.slug}`;
 
   return (
-    <main className="wrap page">
+    <main className="wrap page wide stage-content">
+      <ThemeStage theme={theme} />
       <Link href="/dashboard" className="muted">← All events</Link>
       <h1>{event.title}</h1>
       <p className="muted small">{event.status === "draft" ? "Draft" : "Published"} · {event.visibility === "private" ? "Private" : "Public"}</p>
@@ -55,6 +60,8 @@ export default async function ManageEventPage({
           <Link key={t.key} href={`/dashboard/${id}?tab=${t.key}`} className={tab === t.key ? "on" : ""}>{t.label}</Link>
         ))}
       </nav>
+
+      <ThemePanel current={theme} />
 
       {sp.ok && <p className="ok">{sp.ok}</p>}
       {sp.err && <p className="error">{sp.err}</p>}

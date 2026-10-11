@@ -6,7 +6,7 @@ import { registerGuest, type RegisterState } from "./actions";
 type Tier = { id: string; name: string; price_minor: number; quantity: number | null; sold: number };
 type Question = { id: string; label: string; kind: string; options: string[]; required: boolean };
 
-export default function RegisterForm({ eventId, tiers, questions }: { eventId: string; tiers: Tier[]; questions: Question[] }) {
+export default function RegisterForm({ eventId, tiers, questions, userEmail }: { eventId: string; tiers: Tier[]; questions: Question[]; userEmail: string }) {
   const [state, action, pending] = useActionState<RegisterState, FormData>(registerGuest, undefined);
 
   if (state?.status) {
@@ -44,7 +44,7 @@ export default function RegisterForm({ eventId, tiers, questions }: { eventId: s
       <label className="field"><span>Full name</span>
         <input className="input" name="name" required minLength={2} /></label>
       <label className="field"><span>Email</span>
-        <input className="input" name="email" type="email" required /></label>
+        <input className="input" name="email" type="email" required defaultValue={userEmail} /></label>
 
       {questions.map((q) => (
         <label className="field" key={q.id}>

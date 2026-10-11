@@ -51,11 +51,11 @@ export default function SignInPage() {
           </svg>
         </div>
 
-        <h1 className="auth-title">Welcome to G-vents</h1>
+        <h1 className="auth-title">Create your account or sign in</h1>
 
         {!sent ? (
           <form onSubmit={sendCode} className="auth-form">
-            <p className="muted">Please sign in or sign up below.</p>
+            <p className="muted">New here? Enter your email and we&apos;ll create your free account. No password needed.</p>
             <label className="auth-label">Email</label>
             <input className="auth-input" type="email" required autoFocus value={email}
               onChange={(e) => setEmail(e.target.value)} placeholder="you@email.com" />
