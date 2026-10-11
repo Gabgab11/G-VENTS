@@ -82,3 +82,34 @@ footer { border-top: 1px solid var(--line); padding: 28px 20px 40px; }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }
 }
+
+/* Forms and pages */
+.page { padding-top: 32px; padding-bottom: 60px; display: grid; gap: 14px; max-width: 640px; }
+.page h1 { font-size: 34px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; }
+.page h2 { font-size: 20px; font-weight: 800; margin: 14px 0 4px; }
+.form { display: grid; gap: 14px; }
+.field { display: grid; gap: 7px; }
+.field > span { font-size: 14px; font-weight: 600; color: #cfcfd3; }
+.input { width: 100%; padding: 14px 16px; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); color: #fff; font: inherit; font-size: 16px; }
+.input::placeholder { color: #6f6f75; }
+.input:focus { outline: none; border-color: var(--gold); }
+textarea.input { resize: vertical; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.steps { display: flex; gap: 6px; }
+.steps i { flex: 1; height: 4px; border-radius: 4px; background: var(--line); }
+.steps i.on { background: var(--grad); }
+.tier-card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px; display: grid; gap: 12px; }
+.spread { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.review { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px; display: grid; gap: 6px; }
+.summary-line { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 15px; }
+.desc { white-space: pre-line; line-height: 1.6; color: #d6d6d8; }
+.when { color: var(--gold); font-weight: 600; font-size: 14px; }
+.error { color: #f0604f; font-weight: 600; font-size: 14px; }
+.notice { color: var(--muted); font-size: 13px; }
+.nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; }
+.link-btn { background: none; border: 0; color: var(--muted); font: inherit; font-weight: 600; cursor: pointer; padding: 8px 0; text-align: left; }
+.btn-white, .btn-ghost, .btn-grad { cursor: pointer; font: inherit; }
+.btn-white:disabled, .btn-grad:disabled, .btn-ghost:disabled { opacity: .6; cursor: default; }
+.btn-grad { display: inline-block; padding: 16px 24px; border-radius: 999px; background: var(--grad); color: #141414; font-weight: 800; font-size: 16px; text-align: center; border: 0; }
+.btn-ghost { display: inline-block; padding: 15px 24px; border-radius: 999px; border: 1.5px solid #fff; background: transparent; color: #fff; font-weight: 700; font-size: 16px; text-align: center; }
+.btn-white { border: 0; }
