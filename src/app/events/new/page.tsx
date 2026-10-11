@@ -4,6 +4,7 @@ import { useActionState, useState } from "react";
 import { createEvent, type CreateEventState } from "@/app/events/actions";
 import { CATEGORIES } from "@/lib/categories";
 import { THEMES, themeBackground } from "@/lib/themes";
+import ThemeStage from "@/components/ThemeStage";
 
 type Tier = { id: number; name: string; price: string; qty: string };
 let nextId = 2;
@@ -21,7 +22,8 @@ export default function NewEventPage() {
   }
 
   return (
-    <main className="wrap">
+    <main className="wrap stage-content">
+      <ThemeStage theme={theme} />
       <form action={formAction} className="create-grid">
         {/* LEFT: cover and design */}
         <aside className="create-cover">
