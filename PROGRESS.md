@@ -6,6 +6,9 @@
 - Build: passes (`npm run build`)
 
 ## Done
+- Organizer event page /dashboard/[id] with tabs: Overview (share link, open/close registration, capacity with waiting list), Guests (check-in, waiting list promotion), Registration (custom questions: text, multiple choice, social, company, checkbox terms, phone, website), Announcements (saved as drafts).
+- Guest registration on /e/[slug] using the register_guest database function (checks open/closed, capacity, duplicates).
+- Attendee count via public_attendee_count function (respects the organizer's setting).
 - Sign-in card (Luma-style): email code, then 6-digit code. Redirects to /dashboard.
 - Create event (Luma-style two-column): cover themes, dates, location, tickets (free or paid), options: public/private, show attendee count, require approval, refund policy.
 - Organizer dashboard (/dashboard): public/private toggle, show-count toggle, draft publish, registration count (only the owner sees it when hidden).
@@ -19,8 +22,10 @@
 ## Not done yet (in order)
 1. Supabase Auth email template must show the 6-digit code (`{{ .Token }}`). Set it in Supabase: Authentication → Email Templates.
 2. Custom SMTP for auth emails (Supabase's built-in sender is limited). Use Resend.
-3. Require-approval workflow and attendee list for organizers.
-4. Registration and payment (`reserve_ticket` function exists in the database; no UI yet).
+3. Sending announcements by email (needs the Resend connection on the server).
+4. Require-approval workflow.
+5. Payment for paid tickets (registrations stay pending until then).
+6. Registration and payment (`reserve_ticket` function exists in the database; no UI yet).
 4. Discover page (currently placeholder).
 5. Team and roles, blast email, check-in: designed in the prototype, not built.
 6. Missing pages linked from footer: /pricing, /help, /terms, /privacy, /refunds.

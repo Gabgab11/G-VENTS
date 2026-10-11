@@ -56,7 +56,7 @@ export default function ThemeStage({ theme }: { theme: string }) {
           const base = h * (0.15 + i * 0.14);
           for (let x = 0; x <= w; x += 8) {
             const y = base + Math.sin(x / 90 + k * (0.6 + i * 0.1)) * 26 + Math.sin(x / 40 - k) * 8;
-            x === 0 ? ctx!.moveTo(x, y) : ctx!.lineTo(x, y);
+            if (x === 0) ctx!.moveTo(x, y); else ctx!.lineTo(x, y);
           }
           ctx!.strokeStyle = t.accents[i % t.accents.length];
           ctx!.globalAlpha = 0.16;

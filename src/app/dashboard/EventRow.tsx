@@ -38,7 +38,7 @@ export default function EventRow({ event }: { event: DashEvent }) {
   return (
     <div className="dash-row">
       <div className="dash-main">
-        <Link href={`/e/${event.slug}`} className="dash-title">{event.title}</Link>
+        <Link href={`/dashboard/${event.id}`} className="dash-title">{event.title}</Link>
         <div className="muted small">{when} (Lagos) · {status === "draft" ? "Draft" : "Published"} · {event.going} registered</div>
       </div>
 
@@ -60,6 +60,7 @@ export default function EventRow({ event }: { event: DashEvent }) {
           <button type="button" className="btn-small" disabled={pending}
             onClick={() => change("status", "published", () => setStatus("published"))}>Publish</button>
         )}
+        <Link href={`/dashboard/${event.id}`} className="btn-small">Manage</Link>
       </div>
 
       {error && <p className="error">{error}</p>}
