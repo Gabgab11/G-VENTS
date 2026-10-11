@@ -1,14 +1,17 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-// Refreshes the signed-in session cookie on each request so users stay logged in.
+// Refreshes the signed-in session cookie on each request.
+// If the Supabase settings are missing, skip the refresh instead of failing every page.
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({ request });
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) return response;
+
+  try {
+    const supabase = createServerClient(url, key, {
       cookies: {
         getAll() {
           return request.cookies.getAll();
@@ -21,10 +24,12 @@ export async function middleware(request: NextRequest) {
           );
         },
       },
-    }
-  );
+    });
+    await supabase.auth.getUser();
+  } catch {
+    // Keep the page working even if the session check fails.
+  }
 
-  await supabase.auth.getUser();
   return response;
 }
 
