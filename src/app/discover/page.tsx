@@ -14,7 +14,7 @@ function fmt(iso: string) {
 export default async function DiscoverPage({ searchParams }: { searchParams: Promise<{ debug?: string }> }) {
   const sp = await searchParams;
   const { events, live } = await getFeaturedEvents(12);
-  const report = sp.debug === "1" ? await getElsewhereReport() : null;
+  const report = await getElsewhereReport();
 
   return (
     <main className="wrap page wide">
@@ -47,7 +47,7 @@ export default async function DiscoverPage({ searchParams }: { searchParams: Pro
 
       {report && (
         <section className="debug-panel">
-          <b>Source status</b>
+          <b>Event sources</b>
           {report.sources.map((s) => (
             <div className="q-row" key={s.name}>
               <span>{s.name}</span>

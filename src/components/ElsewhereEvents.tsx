@@ -1,4 +1,4 @@
-import { getElsewhereEvents } from "@/lib/external";
+import { getElsewhereReport } from "@/lib/external";
 
 function fmt(iso: string) {
   return new Date(iso).toLocaleString("en-GB", {
@@ -8,13 +8,25 @@ function fmt(iso: string) {
 
 // Loads separately from the rest of the page, so G-vents content shows first.
 export default async function ElsewhereEvents() {
-  const events = await getElsewhereEvents();
+  const { events, sources } = await getElsewhereReport();
+
   if (events.length === 0) {
     return (
       <section className="elsewhere">
         <div className="section-head">
           <h2>Happening elsewhere</h2>
-          <p className="muted small">Events from other platforms will appear here once they&apos;re connected.</p>
+          <p className="muted small">No upcoming events from connected sources yet.</p>
+        </div>
+        <div className="debug-panel">
+          <b>Event sources</b>
+          {sources.map((s, i) => (
+            <div className="q-row" key={`${s.name}-${i}`}>
+              <span>{s.name}</span>
+              <span className="muted small">
+                {!s.configured ? "Not connected (no key or feed)" : `${s.count} events${s.error ? ` · ${s.error}` : ""}`}
+              </span>
+            </div>
+          ))}
         </div>
       </section>
     );
