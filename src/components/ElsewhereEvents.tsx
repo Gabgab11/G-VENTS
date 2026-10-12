@@ -9,7 +9,16 @@ function fmt(iso: string) {
 // Loads separately from the rest of the page, so G-vents content shows first.
 export default async function ElsewhereEvents() {
   const events = await getElsewhereEvents();
-  if (events.length === 0) return null;
+  if (events.length === 0) {
+    return (
+      <section className="elsewhere">
+        <div className="section-head">
+          <h2>Happening elsewhere</h2>
+          <p className="muted small">Events from other platforms will appear here once they&apos;re connected.</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="elsewhere">

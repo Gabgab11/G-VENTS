@@ -26,37 +26,33 @@ async function getJSON(url: string, headers?: Record<string, string>): Promise<u
   }
 }
 
-// Ticketmaster Discovery API (free key: developer.ticketmaster.com)
+// Ticketmaster Discovery API (free key: developer.ticketmaster.com). No country filter, so results are worldwide.
 async function ticketmaster(): Promise<ExternalEvent[]> {
   const key = process.env.TICKETMASTER_API_KEY;
   if (!key) return [];
   const now = new Date().toISOString().replace(/\.\d{3}Z$/, "Z");
-  const countries = ["NG", "ZA", "KE", "GH", "EG"];
 
-  const responses = await Promise.all(
-    countries.map((cc) =>
-      getJSON(
-        `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${key}&countryCode=${cc}&size=5&sort=date,asc&startDateTime=${encodeURIComponent(now)}`
-      )
-    )
+  const data = await getJSON(
+    `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${key}&size=30&sort=date,asc&startDateTime=${encodeURIComponent(now)}`
   );
 
   type TM = {
     id: string; name: string; url: string;
     dates?: { start?: { dateTime?: string; localDate?: string; localTime?: string } };
-    _embedded?: { venues?: { city?: { name?: string } }[] };
+    _embedded?: { venues?: { city?: { name?: string }; country?: { name?: string } }[] };
   };
 
-  return responses.flatMap((r) => {
-    const events = ((r as { _embedded?: { events?: TM[] } } | null)?._embedded?.events) ?? [];
-    return events.map((e) => ({
+  const events = ((data as { _embedded?: { events?: TM[] } } | null)?._embedded?.events) ?? [];
+  return events.map((e) => {
+    const venue = e._embedded?.venues?.[0];
+    return {
       id: `tm-${e.id}`,
       title: e.name,
       startsAt: e.dates?.start?.dateTime ?? `${e.dates?.start?.localDate ?? ""}T${e.dates?.start?.localTime ?? "00:00:00"}`,
-      place: e._embedded?.venues?.[0]?.city?.name ?? "",
+      place: [venue?.city?.name, venue?.country?.name].filter(Boolean).join(", "),
       source: "Ticketmaster",
       url: e.url,
-    }));
+    };
   });
 }
 
@@ -66,7 +62,7 @@ async function predicthq(): Promise<ExternalEvent[]> {
   if (!key) return [];
   const today = new Date().toISOString().slice(0, 10);
   const data = await getJSON(
-    `https://api.predicthq.com/v1/events/?country=NG,KE,ZA,GH,EG&category=conferences,festivals,expos,community,concerts&active.gte=${today}&sort=start&limit=10`,
+    `https://api.predicthq.com/v1/events/?category=conferences,festivals,expos,community,concerts&active.gte=${today}&sort=start&limit=30`,
     { Authorization: `Bearer ${key}`, Accept: "application/json" }
   );
 
@@ -142,7 +138,7 @@ async function calendars(): Promise<ExternalEvent[]> {
 }
 
 // Everything combined, upcoming only, soonest first.
-export async function getElsewhereEvents(limit = 9): Promise<ExternalEvent[]> {
+export async function getElsewhereEvents(limit = 12): Promise<ExternalEvent[]> {
   const all = (await Promise.all([ticketmaster(), predicthq(), calendars()])).flat();
   const now = Date.now();
   return all

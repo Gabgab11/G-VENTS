@@ -6,6 +6,7 @@
 - Build: passes (`npm run build`)
 
 ## Done
+- External events are worldwide (no country limit on Ticketmaster or PredictHQ). Shows up to 12.
 - Discover page (/discover): G-vents events plus a 'Happening elsewhere' section from Ticketmaster, PredictHQ, and iCal feeds. Each source is optional and needs its key or URL in Vercel (TICKETMASTER_API_KEY, PREDICTHQ_API_KEY, ICAL_FEED_URLS). Results cached 1 hour; loads separately so the page shows first.
 - Guests must create a free account (email code) before registering. Accounts can register once per event.
 - Christmas style with falling snow and a running Santa (cover picker and dashboard).
