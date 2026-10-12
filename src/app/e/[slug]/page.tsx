@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { themeBackground } from "@/lib/themes";
 import RegisterForm from "./RegisterForm";
+import BackLink from "@/components/BackLink";
 
 export default async function EventPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -11,7 +12,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
 
   const { data: event } = await supabase
     .from("events")
-    .select("id, owner_id, title, slug, category, description, starts_at, venue_name, city, country, status, visibility, refund_policy, cover_theme, registration_open")
+    .select("id, owner_id, title, slug, category, description, starts_at, venue_name, city, country, status, visibility, refund_policy, cover_theme, cover_url, registration_open")
     .eq("slug", slug)
     .maybeSingle();
   if (!event) notFound();
@@ -30,13 +31,13 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
 
   return (
     <main className="wrap page">
-      <Link href="/" className="muted">← G-vents</Link>
+      <BackLink fallback="/discover" label="← Back" />
 
       {event.status === "draft" && <p className="notice">Draft. Only you can see this page.</p>}
       {isOwner && <p className="notice"><Link href={`/dashboard/${event.id}`} className="gold">Manage this event</Link></p>}
 
       <div className="event-hero" style={{ background: themeBackground(event.cover_theme) }}>
-        <div className="cover-title">{event.title}</div>
+        {event.cover_url ? <img src={event.cover_url} alt={event.title} className="event-cover-img" /> : <div className="cover-title">{event.title}</div>}
       </div>
 
       <p className="when">{event.category} · {when} (Lagos){event.visibility === "private" ? " · Private event" : ""}</p>

@@ -6,6 +6,9 @@
 - Build: passes (`npm run build`)
 
 ## Done
+- Host Settings tab per event: flyer upload (JPG/PNG/WebP, 5 MB max, stored in the event-covers bucket), event details, email-on-registration preference (sending not connected yet), cancel event.
+- Flyers appear on event pages and in Discover.
+- Back buttons on dashboard, event pages, Discover, sign-in, create-event, and info pages.
 - External events are worldwide (no country limit on Ticketmaster or PredictHQ). Shows up to 12.
 - Discover page (/discover): G-vents events plus a 'Happening elsewhere' section from Ticketmaster, PredictHQ, and iCal feeds. Each source is optional and needs its key or URL in Vercel (TICKETMASTER_API_KEY, PREDICTHQ_API_KEY, ICAL_FEED_URLS). Results cached 1 hour; loads separately so the page shows first.
 - Guests must create a free account (email code) before registering. Accounts can register once per event.

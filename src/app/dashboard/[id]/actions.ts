@@ -106,3 +106,74 @@ export async function createAnnouncement(formData: FormData) {
   if (error) done(id, "announcements", error.message, false);
   done(id, "announcements", "Saved. Sending starts once email delivery is connected.");
 }
+
+export async function updateEventDetails(formData: FormData) {
+  const id = String(formData.get("event_id"));
+  const title = String(formData.get("title") ?? "").trim();
+  if (title.length < 3 || title.length > 140) done(id, "settings", "Event name must be 3 to 140 characters", false);
+  const description = String(formData.get("description") ?? "").trim();
+  const venue = String(formData.get("venue") ?? "").trim();
+  const city = String(formData.get("city") ?? "").trim();
+  const country = String(formData.get("country") ?? "").trim();
+  const refund = String(formData.get("refund_policy") ?? "").trim();
+  const visibility = formData.get("visibility") === "private" ? "private" : "public";
+  const notify = formData.get("notify_registration") === "on";
+
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase.from("events").update({
+    title,
+    description: description || null,
+    venue_name: venue || null,
+    city: city || null,
+    country: country || null,
+    refund_policy: refund || null,
+    visibility,
+    notify_registration: notify,
+  }).eq("id", id);
+  if (error) done(id, "settings", error.message, false);
+  done(id, "settings", "Event details saved");
+}
+
+const FLYER_TYPES = ["image/jpeg", "image/png", "image/webp"];
+const FLYER_MAX = 5 * 1024 * 1024;
+
+export async function uploadFlyer(formData: FormData) {
+  const id = String(formData.get("event_id"));
+  const file = formData.get("flyer");
+  if (!(file instanceof File) || file.size === 0) done(id, "settings", "Choose an image first", false);
+  const f = file as File;
+  if (!FLYER_TYPES.includes(f.type)) done(id, "settings", "Use a JPG, PNG, or WebP image", false);
+  if (f.size > FLYER_MAX) done(id, "settings", "The image is larger than 5 MB. Please resize it and try again", false);
+
+  const ext = f.type === "image/png" ? "png" : f.type === "image/webp" ? "webp" : "jpg";
+  const path = `${id}/${Date.now()}.${ext}`;
+
+  const supabase = await createSupabaseServerClient();
+  const { error: upErr } = await supabase.storage.from("event-covers").upload(path, f, {
+    contentType: f.type,
+    upsert: false,
+  });
+  if (upErr) done(id, "settings", upErr.message, false);
+
+  const { data } = supabase.storage.from("event-covers").getPublicUrl(path);
+  const { error } = await supabase.from("events").update({ cover_url: data.publicUrl }).eq("id", id);
+  if (error) done(id, "settings", error.message, false);
+  done(id, "settings", "Flyer uploaded");
+}
+
+export async function removeFlyer(formData: FormData) {
+  const id = String(formData.get("event_id"));
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase.from("events").update({ cover_url: null }).eq("id", id);
+  if (error) done(id, "settings", error.message, false);
+  done(id, "settings", "Flyer removed. The event shows its colour style again");
+}
+
+export async function cancelEvent(formData: FormData) {
+  const id = String(formData.get("event_id"));
+  if (formData.get("confirm") !== "yes") done(id, "settings", "Tick the box to confirm you want to cancel", false);
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase.from("events").update({ status: "cancelled", registration_open: false }).eq("id", id);
+  if (error) done(id, "settings", error.message, false);
+  done(id, "settings", "Event cancelled. Registration is closed");
+}

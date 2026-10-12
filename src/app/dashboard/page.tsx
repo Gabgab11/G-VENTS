@@ -4,6 +4,7 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 import ThemeStage from "@/components/ThemeStage";
 import EventRow, { type DashEvent } from "./EventRow";
 import ThemePanel from "./ThemePanel";
+import BackLink from "@/components/BackLink";
 import { getDashboardTheme } from "./getTheme";
 
 export default async function DashboardPage() {
@@ -33,6 +34,7 @@ export default async function DashboardPage() {
   return (
     <main className="wrap page wide stage-content">
       <ThemeStage theme={theme} />
+      <div className="back-row"><BackLink fallback="/" label="← Home" /></div>
       <div className="spread">
         <div>
           <div className="eyebrow">Organizer</div>

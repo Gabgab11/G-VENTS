@@ -10,13 +10,14 @@ export type EventCard = {
   city: string | null;
   country: string | null;
   cover_theme: string | null;
+  cover_url: string | null;
 };
 
 // Sample events for launch, until real public events are published.
 export const SAMPLE_EVENTS: EventCard[] = [
-  { id: "s1", title: "Night of Worship", slug: "night-of-worship", category: "Faith and worship", starts_at: "2026-11-07T18:00:00Z", venue_name: "Grace Community Church", city: "Lagos", country: "NG", cover_theme: "night" },
-  { id: "s2", title: "Kingdom Leaders Summit", slug: "kingdom-leaders-summit", category: "Conferences", starts_at: "2026-12-05T09:00:00Z", venue_name: "Landmark Centre", city: "Lagos", country: "NG", cover_theme: "ocean" },
-  { id: "s3", title: "Lagos Tech Meetup", slug: "lagos-tech-meetup", category: "Tech", starts_at: "2026-11-14T17:30:00Z", venue_name: "Yaba", city: "Lagos", country: "NG", cover_theme: "forest" },
+  { id: "s1", title: "Night of Worship", slug: "night-of-worship", category: "Faith and worship", starts_at: "2026-11-07T18:00:00Z", venue_name: "Grace Community Church", city: "Lagos", country: "NG", cover_theme: "night", cover_url: null },
+  { id: "s2", title: "Kingdom Leaders Summit", slug: "kingdom-leaders-summit", category: "Conferences", starts_at: "2026-12-05T09:00:00Z", venue_name: "Landmark Centre", city: "Lagos", country: "NG", cover_theme: "ocean", cover_url: null },
+  { id: "s3", title: "Lagos Tech Meetup", slug: "lagos-tech-meetup", category: "Tech", starts_at: "2026-11-14T17:30:00Z", venue_name: "Yaba", city: "Lagos", country: "NG", cover_theme: "forest", cover_url: null },
 ];
 
 // Public, published, upcoming events. Optionally limited to one category.
@@ -25,7 +26,7 @@ export async function getFeaturedEvents(limit = 6, category?: string): Promise<{
     const supabase = await createSupabaseServerClient();
     let query = supabase
       .from("events")
-      .select("id, title, slug, category, starts_at, venue_name, city, country, cover_theme")
+      .select("id, title, slug, category, starts_at, venue_name, city, country, cover_theme, cover_url")
       .eq("status", "published")
       .eq("visibility", "public")
       .gte("starts_at", new Date().toISOString());

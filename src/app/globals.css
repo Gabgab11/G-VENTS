@@ -266,3 +266,16 @@ textarea.input { resize: vertical; }
 .cat-move { display: flex; gap: 4px; }
 .cat-move button { width: 28px; height: 28px; border-radius: 999px; border: 0; background: var(--surface-hi); color: var(--text); cursor: pointer; font: inherit; font-size: 13px; }
 .cat-move button:disabled { opacity: .3; cursor: default; }
+
+/* ---------- Back buttons, flyers, host settings ---------- */
+.back-row { margin-bottom: 4px; }
+.back-link { background: none; border: 0; color: var(--muted); font: inherit; font-weight: 600; cursor: pointer; padding: 6px 0; }
+.back-link:hover { color: var(--text); }
+.event-hero { position: relative; overflow: hidden; }
+.event-cover-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.event-card-cover { position: relative; overflow: hidden; }
+.event-card-cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.flyer-preview { aspect-ratio: 4 / 5; max-width: 260px; border-radius: 16px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.flyer-preview img { width: 100%; height: 100%; object-fit: cover; }
+.panel.danger { border-color: rgba(240,96,79,.4); }
+.btn-danger { padding: 14px 22px; border-radius: 999px; border: 0; background: #f0604f; color: #fff; font: inherit; font-weight: 800; cursor: pointer; }

@@ -5,6 +5,7 @@ import { createEvent, type CreateEventState } from "@/app/events/actions";
 import { CATEGORIES } from "@/lib/categories";
 import { THEMES, themeBackground } from "@/lib/themes";
 import ThemeStage from "@/components/ThemeStage";
+import BackLink from "@/components/BackLink";
 
 type Tier = { id: number; name: string; price: string; qty: string };
 let nextId = 2;
@@ -24,6 +25,7 @@ export default function NewEventPage() {
   return (
     <main className="wrap stage-content">
       <ThemeStage theme={theme} />
+      <div className="back-row"><BackLink fallback="/dashboard" label="← Dashboard" /></div>
       <form action={formAction} className="create-grid">
         {/* LEFT: cover and design */}
         <aside className="create-cover">

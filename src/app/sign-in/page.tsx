@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
+import BackLink from "@/components/BackLink";
 
 export default function SignInPage() {
   const [email, setEmail] = useState("");
@@ -43,6 +44,7 @@ export default function SignInPage() {
   return (
     <main className="auth-wrap">
       <div className="auth-card">
+        <div className="back-row"><BackLink fallback="/" label="← Back" /></div>
         <div className="auth-icon" aria-hidden="true">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#f2a33a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
             <path d="M15 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4" />

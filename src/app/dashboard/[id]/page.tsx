@@ -4,6 +4,8 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 import CopyLink from "./CopyLink";
 import ThemeStage from "@/components/ThemeStage";
 import ThemePanel from "../ThemePanel";
+import SettingsTab from "./SettingsTab";
+import BackLink from "@/components/BackLink";
 import { getDashboardTheme } from "../getTheme";
 import {
   setRegistrationOpen, setCapacity, addQuestion, deleteQuestion,
@@ -15,6 +17,7 @@ const TABS = [
   { key: "guests", label: "Guests" },
   { key: "registration", label: "Registration" },
   { key: "announcements", label: "Announcements" },
+  { key: "settings", label: "Settings" },
 ] as const;
 
 const KIND_LABEL: Record<string, string> = {
@@ -51,7 +54,7 @@ export default async function ManageEventPage({
   return (
     <main className="wrap page wide stage-content">
       <ThemeStage theme={theme} />
-      <Link href="/dashboard" className="muted">← All events</Link>
+      <BackLink fallback="/dashboard" label="← All events" />
       <h1>{event.title}</h1>
       <p className="muted small">{event.status === "draft" ? "Draft" : "Published"} · {event.visibility === "private" ? "Private" : "Public"}</p>
 
@@ -70,6 +73,7 @@ export default async function ManageEventPage({
       {tab === "guests" && <Guests id={id} />}
       {tab === "registration" && <RegistrationTab id={id} url={url} />}
       {tab === "announcements" && <Announcements id={id} />}
+      {tab === "settings" && <SettingsTab id={id} />}
     </main>
   );
 }

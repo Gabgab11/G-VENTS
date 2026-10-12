@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Suspense } from "react";
+import BackLink from "@/components/BackLink";
 import { getFeaturedEvents } from "@/lib/events";
 import { themeBackground } from "@/lib/themes";
 import { CATEGORIES } from "@/lib/categories";
@@ -19,6 +20,7 @@ export default async function DiscoverPage({ searchParams }: { searchParams: Pro
 
   return (
     <main className="wrap page wide">
+      <div className="back-row"><BackLink fallback="/" label="← Home" /></div>
       <div className="section-head">
         <h1>Discover</h1>
         <p className="muted">Events on G-vents{category ? "" : ", and what's happening elsewhere"}.</p>
@@ -35,7 +37,9 @@ export default async function DiscoverPage({ searchParams }: { searchParams: Pro
           <div className="ext-grid">
             {events.map((e) => (
               <Link key={e.id} href={`/e/${e.slug}`} className="event-card">
-                <div className="event-card-cover" style={{ background: themeBackground(e.cover_theme) }} />
+                <div className="event-card-cover" style={{ background: themeBackground(e.cover_theme) }}>
+                  {e.cover_url && <img src={e.cover_url} alt="" />}
+                </div>
                 <span className="source-tag">{e.category}</span>
                 <b className="ext-title">{e.title}</b>
                 <span className="muted small">{fmt(e.starts_at)}{e.city ? ` · ${e.city}` : ""}</span>
