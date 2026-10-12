@@ -2,7 +2,9 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { getFeaturedEvents } from "@/lib/events";
 import { themeBackground } from "@/lib/themes";
+import { CATEGORIES } from "@/lib/categories";
 import ElsewhereEvents from "@/components/ElsewhereEvents";
+import CategoryBrowser from "@/components/CategoryBrowser";
 
 function fmt(iso: string) {
   return new Date(iso).toLocaleString("en-GB", {
@@ -10,18 +12,25 @@ function fmt(iso: string) {
   });
 }
 
-export default async function DiscoverPage() {
-  const { events, live } = await getFeaturedEvents(12);
+export default async function DiscoverPage({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
+  const sp = await searchParams;
+  const category = CATEGORIES.find((c) => c === sp.category);
+  const { events, live } = await getFeaturedEvents(12, category);
 
   return (
     <main className="wrap page wide">
       <div className="section-head">
         <h1>Discover</h1>
-        <p className="muted">Events on G-vents, and what&apos;s happening elsewhere.</p>
+        <p className="muted">Events on G-vents{category ? "" : ", and what's happening elsewhere"}.</p>
       </div>
 
+      <CategoryBrowser categories={CATEGORIES} active={category} />
+
       <section>
-        <h2>On G-vents</h2>
+        <div className="cat-head">
+          <h2>{category ? `${category} on G-vents` : "On G-vents"}</h2>
+          {category && <Link href="/discover" className="gold small">Show all</Link>}
+        </div>
         {live && events.length > 0 ? (
           <div className="ext-grid">
             {events.map((e) => (
@@ -34,15 +43,15 @@ export default async function DiscoverPage() {
             ))}
           </div>
         ) : (
-          <p className="muted">No public G-vents events yet. Hosts can publish one from their dashboard.</p>
+          <p className="muted">{category ? `No upcoming ${category.toLowerCase()} events yet.` : "No public G-vents events yet. Hosts can publish one from their dashboard."}</p>
         )}
       </section>
 
-      <Suspense fallback={<p className="muted small">Loading more events…</p>}>
-        <ElsewhereEvents />
-      </Suspense>
-
-
+      {!category && (
+        <Suspense fallback={<p className="muted small">Loading more events…</p>}>
+          <ElsewhereEvents />
+        </Suspense>
+      )}
     </main>
   );
 }
