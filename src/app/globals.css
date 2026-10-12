@@ -340,3 +340,8 @@ input, select, textarea, button { max-width: 100%; min-width: 0; }
   .stats, .cat-grid { grid-template-columns: 1fr; }
   .wrap { padding-left: 14px; padding-right: 14px; }
 }
+
+/* ---------- Site-wide music ---------- */
+.welcome-banner { position: fixed; top: calc(12px + env(safe-area-inset-top, 0px)); left: 12px; right: 12px; max-width: 520px; margin: 0 auto; z-index: 70; display: flex; justify-content: space-between; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 12px 14px; box-shadow: 0 12px 40px rgba(0,0,0,.25); }
+.welcome-close { background: var(--surface-hi); border: 0; color: var(--text); width: 36px; height: 36px; border-radius: 999px; cursor: pointer; font: inherit; flex: 0 0 auto; }
+.music-fab { position: fixed; left: 14px; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); z-index: 70; width: 52px; height: 52px; border-radius: 999px; border: 0; background: var(--grad); color: #141414; font: inherit; font-weight: 800; font-size: 18px; box-shadow: 0 10px 30px rgba(0,0,0,.3); cursor: pointer; display: flex; align-items: center; justify-content: center; }

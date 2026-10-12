@@ -6,6 +6,7 @@
 - Build: passes (`npm run build`)
 
 ## Done
+- Site-wide jazz on every page. Starts on the first tap or key press (browsers block sound before that). Welcome banner and a music button (pause/play) bottom-left.
 - Phone layout: single-column forms and cards under 600px, 44px tap targets, no sideways scrolling, wrapped tabs and buttons.
 - Slow jazz loop on event pages, generated live in the browser (Dm7-G7-Cmaj7-Am7, walking bass, brushed hi-hats). Starts only when a visitor presses Play. No audio file.
 - Create event requires an account (sign-up first). New events start with the host's dashboard style.

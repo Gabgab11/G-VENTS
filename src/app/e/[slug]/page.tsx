@@ -5,7 +5,6 @@ import { themeBackground } from "@/lib/themes";
 import RegisterForm from "./RegisterForm";
 import BackLink from "@/components/BackLink";
 import ThemeStage from "@/components/ThemeStage";
-import JazzPlayer from "@/components/JazzPlayer";
 
 export default async function EventPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -43,7 +42,6 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
         {event.cover_url ? <img src={event.cover_url} alt={event.title} className="event-cover-img" /> : <div className="cover-title">{event.title}</div>}
       </div>
 
-      <JazzPlayer />
       <p className="when">{event.category} · {when} (Lagos){event.visibility === "private" ? " · Private event" : ""}</p>
       <h1>{event.title}</h1>
       <p className="muted">{[event.venue_name, event.city, event.country].filter(Boolean).join(" · ")}</p>
