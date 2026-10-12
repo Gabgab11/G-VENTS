@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { THEMES } from "@/lib/themes";
 
 const KINDS = ["text", "options", "social", "company", "terms", "phone", "website"] as const;
 
@@ -176,4 +177,14 @@ export async function cancelEvent(formData: FormData) {
   const { error } = await supabase.from("events").update({ status: "cancelled", registration_open: false }).eq("id", id);
   if (error) done(id, "settings", error.message, false);
   done(id, "settings", "Event cancelled. Registration is closed");
+}
+
+export async function updateEventTheme(formData: FormData) {
+  const id = String(formData.get("event_id"));
+  const theme = String(formData.get("cover_theme") ?? "");
+  if (!(theme in THEMES)) done(id, "settings", "Choose a style", false);
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase.from("events").update({ cover_theme: theme }).eq("id", id);
+  if (error) done(id, "settings", error.message, false);
+  done(id, "settings", "Page style saved. Guests will see it on the event page");
 }

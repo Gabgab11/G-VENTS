@@ -1,6 +1,7 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { themeBackground } from "@/lib/themes";
-import { updateEventDetails, uploadFlyer, removeFlyer, cancelEvent } from "./actions";
+import { updateEventDetails, uploadFlyer, removeFlyer, cancelEvent, updateEventTheme } from "./actions";
+import { THEMES } from "@/lib/themes";
 
 export default async function SettingsTab({ id }: { id: string }) {
   const supabase = await createSupabaseServerClient();
@@ -13,6 +14,18 @@ export default async function SettingsTab({ id }: { id: string }) {
 
   return (
     <div className="stack">
+      <section className="panel">
+        <div className="panel-label">Page style</div>
+        <p className="muted small">The colours guests see on the event and registration page.</p>
+        <form action={updateEventTheme} className="row-form">
+          <input type="hidden" name="event_id" value={id} />
+          <select className="input" name="cover_theme" defaultValue={e.cover_theme ?? "minimal"}>
+            {Object.entries(THEMES).map(([k, t]) => <option key={k} value={k}>{t.label}</option>)}
+          </select>
+          <button className="btn-white" type="submit">Save style</button>
+        </form>
+      </section>
+
       <section className="panel">
         <div className="panel-label">Event flyer</div>
         <p className="muted small">Shown on the event page and in Discover. Use JPG, PNG, or WebP, up to 5 MB. Tall or square works best.</p>

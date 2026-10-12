@@ -6,6 +6,10 @@
 - Build: passes (`npm run build`)
 
 ## Done
+- Phone layout: single-column forms and cards under 600px, 44px tap targets, no sideways scrolling, wrapped tabs and buttons.
+- Slow jazz loop on event pages, generated live in the browser (Dm7-G7-Cmaj7-Am7, walking bass, brushed hi-hats). Starts only when a visitor presses Play. No audio file.
+- Create event requires an account (sign-up first). New events start with the host's dashboard style.
+- Event and registration pages use the event's chosen style. Hosts can change it in Settings.
 - Host Settings tab per event: flyer upload (JPG/PNG/WebP, 5 MB max, stored in the event-covers bucket), event details, email-on-registration preference (sending not connected yet), cancel event.
 - Flyers appear on event pages and in Discover.
 - Back buttons on dashboard, event pages, Discover, sign-in, create-event, and info pages.
