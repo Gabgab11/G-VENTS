@@ -3,7 +3,6 @@ import { Suspense } from "react";
 import { getFeaturedEvents } from "@/lib/events";
 import { themeBackground } from "@/lib/themes";
 import ElsewhereEvents from "@/components/ElsewhereEvents";
-import { getElsewhereReport } from "@/lib/external";
 
 function fmt(iso: string) {
   return new Date(iso).toLocaleString("en-GB", {
@@ -11,10 +10,8 @@ function fmt(iso: string) {
   });
 }
 
-export default async function DiscoverPage({ searchParams }: { searchParams: Promise<{ debug?: string }> }) {
-  const sp = await searchParams;
+export default async function DiscoverPage() {
   const { events, live } = await getFeaturedEvents(12);
-  const report = await getElsewhereReport();
 
   return (
     <main className="wrap page wide">
@@ -45,19 +42,7 @@ export default async function DiscoverPage({ searchParams }: { searchParams: Pro
         <ElsewhereEvents />
       </Suspense>
 
-      {report && (
-        <section className="debug-panel">
-          <b>Event sources</b>
-          {report.sources.map((s) => (
-            <div className="q-row" key={s.name}>
-              <span>{s.name}</span>
-              <span className="muted small">
-                {!s.configured ? "Not connected (no key or feed)" : `${s.count} events${s.error ? ` · ${s.error}` : ""}`}
-              </span>
-            </div>
-          ))}
-        </section>
-      )}
+
     </main>
   );
 }

@@ -76,7 +76,7 @@ async function predicthq(): Promise<{ events: ExternalEvent[]; report: SourceRep
 
   const today = new Date().toISOString().slice(0, 10);
   const { data, error } = await getJSON(
-    `https://api.predicthq.com/v1/events/?category=conferences,festivals,expos,community,concerts&active.gte=${today}&sort=start&limit=30`,
+    `https://api.predicthq.com/v1/events/?category=conferences,festivals,expos,community,concerts&start.gte=${today}&sort=start&limit=30`,
     { Authorization: `Bearer ${key}`, Accept: "application/json" }
   );
 
