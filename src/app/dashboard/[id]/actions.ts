@@ -2,189 +2,247 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { THEMES } from "@/lib/themes";
+import { requireEventRole, type EventRole } from "@/lib/auth";
+import { isThemeKey } from "@/lib/themes";
+import { checkbox, field, isUuid } from "@/lib/forms";
+import type { SupabaseServerClient } from "@/lib/supabase/server";
+import type { MessageCode } from "./messages";
 
 const KINDS = ["text", "options", "social", "company", "terms", "phone", "website"] as const;
+const SEGMENTS = ["all", "paid", "checked_in", "not_checked_in", "waitlist"] as const;
+const MAX_QUESTIONS = 30;
 
-function done(id: string, tab: string, message: string, ok = true): never {
+type Tab = "overview" | "guests" | "registration" | "announcements" | "settings";
+
+function done(id: string, tab: Tab, code: MessageCode, ok = true): never {
   revalidatePath(`/dashboard/${id}`);
   revalidatePath("/dashboard");
-  redirect(`/dashboard/${id}?tab=${tab}&${ok ? "ok" : "err"}=${encodeURIComponent(message)}`);
+  redirect(`/dashboard/${id}?tab=${tab}&${ok ? "ok" : "err"}=${code}`);
+}
+
+function fail(id: string, tab: Tab, code: MessageCode = "failed"): never {
+  done(id, tab, code, false);
+}
+
+function logError(action: string, error: { message: string } | null) {
+  if (error) console.error(`[dashboard] ${action}: ${error.message}`);
+}
+
+// Every action starts here: a valid event id and a signed-in user who manages that event.
+async function authorize(formData: FormData, roles?: EventRole[]) {
+  const id = field(formData, "event_id");
+  const { supabase, user } = await requireEventRole(id, roles);
+  return { id, supabase, user };
+}
+
+// Updates one event and confirms a row really changed. When RLS blocks an update,
+// Postgres reports success with zero rows, which used to show a false "Saved".
+async function updateEvent(supabase: SupabaseServerClient, id: string, tab: Tab, patch: Record<string, unknown>) {
+  const { data, error } = await supabase.from("events").update(patch).eq("id", id).select("id");
+  if (error) {
+    logError("update event", error);
+    fail(id, tab);
+  }
+  if (!data || data.length === 0) fail(id, tab, "not_saved");
 }
 
 export async function setRegistrationOpen(formData: FormData) {
-  const id = String(formData.get("event_id"));
-  const open = formData.get("open") === "true";
-  const supabase = await createSupabaseServerClient();
-  const { error } = await supabase.from("events").update({ registration_open: open }).eq("id", id);
-  if (error) done(id, "overview", error.message, false);
-  done(id, "overview", open ? "Registration is open" : "Registration is closed");
+  const { id, supabase } = await authorize(formData);
+  const open = field(formData, "open") === "true";
+  await updateEvent(supabase, id, "overview", { registration_open: open });
+  done(id, "overview", open ? "registration_opened" : "registration_closed");
 }
 
 export async function setCapacity(formData: FormData) {
-  const id = String(formData.get("event_id"));
-  const raw = String(formData.get("capacity") ?? "").trim();
+  const { id, supabase } = await authorize(formData);
+  const raw = field(formData, "capacity");
   let capacity: number | null = null;
   if (raw !== "") {
     capacity = Number(raw);
-    if (!Number.isInteger(capacity) || capacity <= 0) done(id, "overview", "Capacity must be a whole number above 0", false);
+    if (!Number.isInteger(capacity) || capacity <= 0 || capacity > 1_000_000) fail(id, "overview", "capacity_invalid");
   }
-  const supabase = await createSupabaseServerClient();
-  const { error } = await supabase.from("events").update({ capacity }).eq("id", id);
-  if (error) done(id, "overview", error.message, false);
-  done(id, "overview", capacity ? `Capacity set to ${capacity}. Extra guests go to the waiting list.` : "Capacity is unlimited");
+  await updateEvent(supabase, id, "overview", { capacity });
+  done(id, "overview", capacity ? "capacity_set" : "capacity_unlimited");
 }
 
 export async function addQuestion(formData: FormData) {
-  const id = String(formData.get("event_id"));
-  const label = String(formData.get("label") ?? "").trim();
-  const kind = String(formData.get("kind") ?? "");
-  const optionsRaw = String(formData.get("options") ?? "");
-  const required = formData.get("required") === "on";
+  const { id, supabase } = await authorize(formData);
+  const label = field(formData, "label", 200);
+  const kind = field(formData, "kind");
+  const required = checkbox(formData, "required");
 
-  if (!label) done(id, "registration", "Write the question first", false);
-  if (!KINDS.includes(kind as (typeof KINDS)[number])) done(id, "registration", "Choose a question type", false);
+  if (!label) fail(id, "registration", "question_missing");
+  if (!KINDS.includes(kind as (typeof KINDS)[number])) fail(id, "registration", "question_kind");
 
   const options = kind === "options"
-    ? optionsRaw.split(/\n|,/).map((o) => o.trim()).filter(Boolean)
+    ? [...new Set(field(formData, "options").split(/\n|,/).map((o) => o.trim().slice(0, 100)).filter(Boolean))].slice(0, 30)
     : [];
-  if (kind === "options" && options.length < 2) done(id, "registration", "Add at least two options", false);
+  if (kind === "options" && options.length < 2) fail(id, "registration", "question_options");
 
-  const supabase = await createSupabaseServerClient();
   const { count } = await supabase.from("event_questions").select("id", { count: "exact", head: true }).eq("event_id", id);
+  if ((count ?? 0) >= MAX_QUESTIONS) fail(id, "registration", "question_limit");
+
   const { error } = await supabase.from("event_questions").insert({
     event_id: id, label, kind, options, required: kind === "terms" ? true : required, position: (count ?? 0) + 1,
   });
-  if (error) done(id, "registration", error.message, false);
-  done(id, "registration", "Question added");
+  if (error) {
+    logError("add question", error);
+    fail(id, "registration");
+  }
+  done(id, "registration", "question_added");
 }
 
 export async function deleteQuestion(formData: FormData) {
-  const id = String(formData.get("event_id"));
-  const questionId = String(formData.get("question_id"));
-  const supabase = await createSupabaseServerClient();
-  const { error } = await supabase.from("event_questions").delete().eq("id", questionId).eq("event_id", id);
-  if (error) done(id, "registration", error.message, false);
-  done(id, "registration", "Question removed");
+  const { id, supabase } = await authorize(formData);
+  const questionId = field(formData, "question_id");
+  if (!isUuid(questionId)) fail(id, "registration");
+  const { data, error } = await supabase.from("event_questions").delete().eq("id", questionId).eq("event_id", id).select("id");
+  if (error || !data?.length) {
+    logError("delete question", error);
+    fail(id, "registration", error ? "failed" : "not_saved");
+  }
+  done(id, "registration", "question_removed");
 }
 
 export async function checkInGuest(formData: FormData) {
-  const id = String(formData.get("event_id"));
-  const registrationId = String(formData.get("registration_id"));
-  const supabase = await createSupabaseServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  const { error } = await supabase
-    .from("registrations")
-    .update({ checked_in_at: new Date().toISOString(), checked_in_by: user?.id ?? null })
-    .eq("id", registrationId)
-    .eq("event_id", id);
-  if (error) done(id, "guests", error.message, false);
-  done(id, "guests", "Checked in");
+  const { id, supabase } = await authorize(formData, ["owner", "admin", "editor", "checkin"]);
+  const registrationId = field(formData, "registration_id");
+  if (!isUuid(registrationId)) fail(id, "guests");
+  const { error } = await supabase.rpc("check_in_guest", { p_registration: registrationId });
+  if (error) {
+    logError("check in", error);
+    fail(id, "guests", "checkin_failed");
+  }
+  done(id, "guests", "checked_in");
 }
 
 export async function promoteFromWaitlist(formData: FormData) {
-  const id = String(formData.get("event_id"));
-  const supabase = await createSupabaseServerClient();
+  const { id, supabase } = await authorize(formData);
   const { error } = await supabase.rpc("promote_next_waitlisted", { p_event: id });
-  if (error) done(id, "guests", error.message, false);
-  done(id, "guests", "A guest from the waiting list is now confirmed");
+  if (error) {
+    logError("promote", error);
+    fail(id, "guests", "promote_failed");
+  }
+  done(id, "guests", "promoted");
 }
 
 export async function createAnnouncement(formData: FormData) {
-  const id = String(formData.get("event_id"));
-  const subject = String(formData.get("subject") ?? "").trim();
-  const body = String(formData.get("body") ?? "").trim();
-  const segment = String(formData.get("segment") ?? "all");
-  if (!subject || !body) done(id, "announcements", "Add a subject and a message", false);
+  const { id, supabase, user } = await authorize(formData);
+  const subject = field(formData, "subject", 200);
+  const body = field(formData, "body", 10000);
+  const segment = field(formData, "segment") || "all";
+  if (!subject || !body) fail(id, "announcements", "announcement_missing");
+  if (!SEGMENTS.includes(segment as (typeof SEGMENTS)[number])) fail(id, "announcements", "announcement_segment");
 
-  const supabase = await createSupabaseServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/sign-in");
   const { error } = await supabase.from("email_campaigns").insert({
     event_id: id, created_by: user.id, subject, body, segment, status: "draft",
   });
-  if (error) done(id, "announcements", error.message, false);
-  done(id, "announcements", "Saved. Sending starts once email delivery is connected.");
+  if (error) {
+    logError("create announcement", error);
+    fail(id, "announcements");
+  }
+  done(id, "announcements", "announcement_saved");
 }
 
 export async function updateEventDetails(formData: FormData) {
-  const id = String(formData.get("event_id"));
-  const title = String(formData.get("title") ?? "").trim();
-  if (title.length < 3 || title.length > 140) done(id, "settings", "Event name must be 3 to 140 characters", false);
-  const description = String(formData.get("description") ?? "").trim();
-  const venue = String(formData.get("venue") ?? "").trim();
-  const city = String(formData.get("city") ?? "").trim();
-  const country = String(formData.get("country") ?? "").trim();
-  const refund = String(formData.get("refund_policy") ?? "").trim();
-  const visibility = formData.get("visibility") === "private" ? "private" : "public";
-  const notify = formData.get("notify_registration") === "on";
+  const { id, supabase } = await authorize(formData);
+  const title = field(formData, "title", 200);
+  if (title.length < 3 || title.length > 140) fail(id, "settings", "title_length");
 
-  const supabase = await createSupabaseServerClient();
-  const { error } = await supabase.from("events").update({
+  await updateEvent(supabase, id, "settings", {
     title,
-    description: description || null,
-    venue_name: venue || null,
-    city: city || null,
-    country: country || null,
-    refund_policy: refund || null,
-    visibility,
-    notify_registration: notify,
-  }).eq("id", id);
-  if (error) done(id, "settings", error.message, false);
-  done(id, "settings", "Event details saved");
+    description: field(formData, "description") || null,
+    venue_name: field(formData, "venue", 300) || null,
+    city: field(formData, "city", 120) || null,
+    country: field(formData, "country", 120) || null,
+    refund_policy: field(formData, "refund_policy", 2000) || null,
+    visibility: field(formData, "visibility") === "private" ? "private" : "public",
+    notify_registration: checkbox(formData, "notify_registration"),
+  });
+  done(id, "settings", "details_saved");
 }
 
-const FLYER_TYPES = ["image/jpeg", "image/png", "image/webp"];
+const FLYER_BUCKET = "event-covers";
 const FLYER_MAX = 5 * 1024 * 1024;
 
+// Identify the image from its first bytes; the browser's declared type can't be trusted.
+function sniffImage(bytes: Uint8Array): { type: string; ext: string } | null {
+  const starts = (sig: number[], offset = 0) => sig.every((b, i) => bytes[offset + i] === b);
+  if (starts([0xff, 0xd8, 0xff])) return { type: "image/jpeg", ext: "jpg" };
+  if (starts([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])) return { type: "image/png", ext: "png" };
+  if (starts([0x52, 0x49, 0x46, 0x46]) && starts([0x57, 0x45, 0x42, 0x50], 8)) return { type: "image/webp", ext: "webp" };
+  return null;
+}
+
+// "https://…/storage/v1/object/public/event-covers/<id>/<file>" → "<id>/<file>"
+function flyerPath(publicUrl: string | null): string | null {
+  if (!publicUrl) return null;
+  const marker = `/object/public/${FLYER_BUCKET}/`;
+  const at = publicUrl.indexOf(marker);
+  return at === -1 ? null : decodeURIComponent(publicUrl.slice(at + marker.length));
+}
+
+async function currentFlyer(supabase: SupabaseServerClient, id: string) {
+  const { data } = await supabase.from("events").select("cover_url").eq("id", id).maybeSingle();
+  return flyerPath(data?.cover_url ?? null);
+}
+
+async function deleteFlyer(supabase: SupabaseServerClient, path: string | null) {
+  if (!path) return;
+  const { error } = await supabase.storage.from(FLYER_BUCKET).remove([path]);
+  // A leftover file only costs storage, so the action still succeeds.
+  logError("delete old flyer", error);
+}
+
 export async function uploadFlyer(formData: FormData) {
-  const id = String(formData.get("event_id"));
+  const { id, supabase } = await authorize(formData);
   const file = formData.get("flyer");
-  if (!(file instanceof File) || file.size === 0) done(id, "settings", "Choose an image first", false);
-  const f = file as File;
-  if (!FLYER_TYPES.includes(f.type)) done(id, "settings", "Use a JPG, PNG, or WebP image", false);
-  if (f.size > FLYER_MAX) done(id, "settings", "The image is larger than 5 MB. Please resize it and try again", false);
+  if (!(file instanceof File) || file.size === 0) fail(id, "settings", "flyer_missing");
+  if (file.size > FLYER_MAX) fail(id, "settings", "flyer_size");
 
-  const ext = f.type === "image/png" ? "png" : f.type === "image/webp" ? "webp" : "jpg";
-  const path = `${id}/${Date.now()}.${ext}`;
+  const bytes = new Uint8Array(await file.arrayBuffer());
+  const image = sniffImage(bytes);
+  if (!image) fail(id, "settings", "flyer_type");
 
-  const supabase = await createSupabaseServerClient();
-  const { error: upErr } = await supabase.storage.from("event-covers").upload(path, f, {
-    contentType: f.type,
+  const previous = await currentFlyer(supabase, id);
+  const path = `${id}/${Date.now()}.${image.ext}`;
+  const { error: upErr } = await supabase.storage.from(FLYER_BUCKET).upload(path, bytes, {
+    contentType: image.type,
     upsert: false,
   });
-  if (upErr) done(id, "settings", upErr.message, false);
+  if (upErr) {
+    logError("upload flyer", upErr);
+    fail(id, "settings");
+  }
 
-  const { data } = supabase.storage.from("event-covers").getPublicUrl(path);
-  const { error } = await supabase.from("events").update({ cover_url: data.publicUrl }).eq("id", id);
-  if (error) done(id, "settings", error.message, false);
-  done(id, "settings", "Flyer uploaded");
+  const { data } = supabase.storage.from(FLYER_BUCKET).getPublicUrl(path);
+  await updateEvent(supabase, id, "settings", { cover_url: data.publicUrl });
+  await deleteFlyer(supabase, previous);
+  done(id, "settings", "flyer_uploaded");
 }
 
 export async function removeFlyer(formData: FormData) {
-  const id = String(formData.get("event_id"));
-  const supabase = await createSupabaseServerClient();
-  const { error } = await supabase.from("events").update({ cover_url: null }).eq("id", id);
-  if (error) done(id, "settings", error.message, false);
-  done(id, "settings", "Flyer removed. The event shows its colour style again");
+  const { id, supabase } = await authorize(formData);
+  const previous = await currentFlyer(supabase, id);
+  await updateEvent(supabase, id, "settings", { cover_url: null });
+  await deleteFlyer(supabase, previous);
+  done(id, "settings", "flyer_removed");
 }
 
 export async function cancelEvent(formData: FormData) {
-  const id = String(formData.get("event_id"));
-  if (formData.get("confirm") !== "yes") done(id, "settings", "Tick the box to confirm you want to cancel", false);
-  const supabase = await createSupabaseServerClient();
-  const { error } = await supabase.from("events").update({ status: "cancelled", registration_open: false }).eq("id", id);
-  if (error) done(id, "settings", error.message, false);
-  done(id, "settings", "Event cancelled. Registration is closed");
+  const { id, supabase } = await authorize(formData);
+  // Editors manage the event but can't cancel it; the database trigger enforces the same rule.
+  const { data: canCancel } = await supabase.rpc("has_event_role", { p_event: id, p_roles: ["owner", "admin"] });
+  if (!canCancel) fail(id, "settings", "cancel_forbidden");
+  if (formData.get("confirm") !== "yes") fail(id, "settings", "cancel_confirm");
+  await updateEvent(supabase, id, "settings", { status: "cancelled", registration_open: false });
+  done(id, "settings", "event_cancelled");
 }
 
 export async function updateEventTheme(formData: FormData) {
-  const id = String(formData.get("event_id"));
-  const theme = String(formData.get("cover_theme") ?? "");
-  if (!(theme in THEMES)) done(id, "settings", "Choose a style", false);
-  const supabase = await createSupabaseServerClient();
-  const { error } = await supabase.from("events").update({ cover_theme: theme }).eq("id", id);
-  if (error) done(id, "settings", error.message, false);
-  done(id, "settings", "Page style saved. Guests will see it on the event page");
+  const { id, supabase } = await authorize(formData);
+  const theme = field(formData, "cover_theme");
+  if (!isThemeKey(theme)) fail(id, "settings", "theme_invalid");
+  await updateEvent(supabase, id, "settings", { cover_theme: theme });
+  done(id, "settings", "theme_saved");
 }

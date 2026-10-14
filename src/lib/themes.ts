@@ -97,6 +97,16 @@ export const THEMES: Record<string, Theme> = {
   },
 };
 
+// `key in THEMES` also accepts inherited names such as "constructor", so always check own keys.
+// Keep in sync with the cover_theme / dashboard_theme check constraints in the database.
+export function isThemeKey(key: unknown): key is string {
+  return typeof key === "string" && Object.hasOwn(THEMES, key);
+}
+
+export function getTheme(key: string | null | undefined): Theme {
+  return isThemeKey(key) ? THEMES[key] : THEMES.minimal;
+}
+
 export function themeBackground(key: string | null | undefined) {
-  return (THEMES[key ?? "minimal"] ?? THEMES.minimal).background;
+  return getTheme(key).background;
 }

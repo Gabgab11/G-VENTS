@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import { updateEventSetting } from "./actions";
+import { formatEventDate, timezoneLabel } from "@/lib/dates";
 
 export type DashEvent = {
   id: string;
@@ -12,8 +13,11 @@ export type DashEvent = {
   visibility: string;
   show_attendee_count: boolean;
   starts_at: string;
+  timezone: string;
   going: number;
 };
+
+const STATUS_LABEL: Record<string, string> = { draft: "Draft", published: "Published", cancelled: "Cancelled" };
 
 export default function EventRow({ event }: { event: DashEvent }) {
   const [pending, start] = useTransition();
@@ -31,22 +35,20 @@ export default function EventRow({ event }: { event: DashEvent }) {
     });
   }
 
-  const when = new Date(event.starts_at).toLocaleString("en-GB", {
-    day: "numeric", month: "short", hour: "numeric", minute: "2-digit", timeZone: "Africa/Lagos",
-  });
+  const when = formatEventDate(event.starts_at, event.timezone, "compact");
 
   return (
     <div className="dash-row">
       <div className="dash-main">
         <Link href={`/dashboard/${event.id}`} className="dash-title">{event.title}</Link>
-        <div className="muted small">{when} (Lagos) · {status === "draft" ? "Draft" : "Published"} · {event.going} registered</div>
+        <div className="muted small">{when} ({timezoneLabel(event.timezone)}) · {STATUS_LABEL[status] ?? status} · {event.going} registered</div>
       </div>
 
       <div className="dash-controls">
-        <div className="seg" role="group" aria-label="Visibility">
-          <button type="button" className={vis === "public" ? "on" : ""} disabled={pending}
+        <div className="seg" role="group" aria-label={`Visibility of ${event.title}`}>
+          <button type="button" className={vis === "public" ? "on" : ""} aria-pressed={vis === "public"} disabled={pending}
             onClick={() => change("visibility", "public", () => setVis("public"))}>Public</button>
-          <button type="button" className={vis === "private" ? "on" : ""} disabled={pending}
+          <button type="button" className={vis === "private" ? "on" : ""} aria-pressed={vis === "private"} disabled={pending}
             onClick={() => change("visibility", "private", () => setVis("private"))}>Private</button>
         </div>
 
@@ -63,7 +65,7 @@ export default function EventRow({ event }: { event: DashEvent }) {
         <Link href={`/dashboard/${event.id}`} className="btn-small">Manage</Link>
       </div>
 
-      {error && <p className="error">{error}</p>}
+      {error && <p className="error" role="alert">{error}</p>}
     </div>
   );
 }

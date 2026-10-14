@@ -147,19 +147,34 @@ export default function Globe({ onPinSelect }: { onPinSelect?: (pin: Pin) => voi
       if (best && moved < 6 && onPinSelect) onPinSelect(best.pin);
     }
 
+    // Only animate while the globe is on screen and the tab is visible.
+    let onScreen = true;
+    function sync() {
+      cancelAnimationFrame(raf);
+      if (onScreen && !document.hidden) raf = requestAnimationFrame(loop);
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      onScreen = entry.isIntersecting;
+      sync();
+    });
+
     canvas.addEventListener("pointerdown", onDown);
     canvas.addEventListener("pointermove", onMove);
     canvas.addEventListener("pointerup", onUp);
     window.addEventListener("resize", size);
+    document.addEventListener("visibilitychange", sync);
+    observer.observe(canvas);
     size();
     raf = requestAnimationFrame(loop);
 
     return () => {
       cancelAnimationFrame(raf);
+      observer.disconnect();
       canvas.removeEventListener("pointerdown", onDown);
       canvas.removeEventListener("pointermove", onMove);
       canvas.removeEventListener("pointerup", onUp);
       window.removeEventListener("resize", size);
+      document.removeEventListener("visibilitychange", sync);
     };
   }, [onPinSelect]);
 

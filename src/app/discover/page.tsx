@@ -3,20 +3,15 @@ import { Suspense } from "react";
 import BackLink from "@/components/BackLink";
 import { getFeaturedEvents } from "@/lib/events";
 import { themeBackground } from "@/lib/themes";
-import { CATEGORIES } from "@/lib/categories";
+import { CATEGORIES, isCategory } from "@/lib/categories";
+import { formatEventDate } from "@/lib/dates";
 import ElsewhereEvents from "@/components/ElsewhereEvents";
 import CategoryBrowser from "@/components/CategoryBrowser";
 
-function fmt(iso: string) {
-  return new Date(iso).toLocaleString("en-GB", {
-    weekday: "short", day: "numeric", month: "short", hour: "numeric", minute: "2-digit", timeZone: "Africa/Lagos",
-  });
-}
-
 export default async function DiscoverPage({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
   const sp = await searchParams;
-  const category = CATEGORIES.find((c) => c === sp.category);
-  const { events, live } = await getFeaturedEvents(12, category);
+  const category = isCategory(sp.category) ? sp.category : undefined;
+  const events = await getFeaturedEvents(12, category);
 
   return (
     <main className="wrap page wide">
@@ -33,16 +28,17 @@ export default async function DiscoverPage({ searchParams }: { searchParams: Pro
           <h2>{category ? `${category} on G-vents` : "On G-vents"}</h2>
           {category && <Link href="/discover" className="gold small">Show all</Link>}
         </div>
-        {live && events.length > 0 ? (
+        {events.length > 0 ? (
           <div className="ext-grid">
             {events.map((e) => (
               <Link key={e.id} href={`/e/${e.slug}`} className="event-card">
                 <div className="event-card-cover" style={{ background: themeBackground(e.cover_theme) }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element -- flyers come from Supabase Storage at arbitrary sizes */}
                   {e.cover_url && <img src={e.cover_url} alt="" />}
                 </div>
                 <span className="source-tag">{e.category}</span>
                 <b className="ext-title">{e.title}</b>
-                <span className="muted small">{fmt(e.starts_at)}{e.city ? ` · ${e.city}` : ""}</span>
+                <span className="muted small">{formatEventDate(e.starts_at, e.timezone)}{e.city ? ` · ${e.city}` : ""}</span>
               </Link>
             ))}
           </div>

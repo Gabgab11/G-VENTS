@@ -20,6 +20,25 @@ export type SourceReport = {
 const TIMEOUT_MS = 4000;
 const REVALIDATE_S = 3600;
 
+// Links from feeds are untrusted: only plain web links may become clickable cards.
+function safeLink(raw: string | undefined | null): string | null {
+  if (!raw) return null;
+  try {
+    const url = new URL(raw.trim());
+    return url.protocol === "https:" || url.protocol === "http:" ? url.toString() : null;
+  } catch {
+    return null;
+  }
+}
+
+function hostOf(raw: string): string {
+  try {
+    return new URL(raw).hostname.replace(/^www\./, "");
+  } catch {
+    return "Calendar feed";
+  }
+}
+
 type Fetched = { data: unknown; error?: string };
 
 async function getJSON(url: string, headers?: Record<string, string>): Promise<Fetched> {
@@ -54,16 +73,18 @@ async function ticketmaster(): Promise<{ events: ExternalEvent[]; report: Source
   };
 
   const list = ((data as { _embedded?: { events?: TM[] } } | null)?._embedded?.events) ?? [];
-  const events = list.map((e) => {
+  const events = list.flatMap((e): ExternalEvent[] => {
     const venue = e._embedded?.venues?.[0];
-    return {
+    const url = safeLink(e.url);
+    if (!url) return [];
+    return [{
       id: `tm-${e.id}`,
       title: e.name,
       startsAt: e.dates?.start?.dateTime ?? `${e.dates?.start?.localDate ?? ""}T${e.dates?.start?.localTime ?? "00:00:00"}`,
       place: [venue?.city?.name, venue?.country?.name].filter(Boolean).join(", "),
       source: "Ticketmaster",
-      url: e.url,
-    };
+      url,
+    }];
   });
   return { events, report: { name, configured: true, count: events.length, error: error ?? (events.length === 0 ? "No events returned" : undefined) } };
 }
@@ -112,7 +133,7 @@ function unescapeIcs(v: string) {
 }
 
 async function calendars(): Promise<{ events: ExternalEvent[]; report: SourceReport[] }> {
-  const urls = (process.env.ICAL_FEED_URLS ?? "").split(",").map((s) => s.trim()).filter(Boolean);
+  const urls = (process.env.ICAL_FEED_URLS ?? "").split(",").map((s) => s.trim()).filter((u) => safeLink(u));
   if (urls.length === 0) return { events: [], report: [{ name: "Calendar feeds", configured: false, count: 0 }] };
 
   const feeds = await Promise.all(
@@ -130,7 +151,8 @@ async function calendars(): Promise<{ events: ExternalEvent[]; report: SourceRep
   const out: ExternalEvent[] = [];
   const reports: SourceReport[] = [];
   for (const feed of feeds) {
-    const source = new URL(feed.url).hostname.replace(/^www\./, "");
+    const source = hostOf(feed.url);
+    const feedLink = safeLink(feed.url);
     if (!feed.text) {
       reports.push({ name: source, configured: true, count: 0, error: feed.error });
       continue;
@@ -146,14 +168,15 @@ async function calendars(): Promise<{ events: ExternalEvent[]; report: SourceRep
         props[name] = line.slice(idx + 1);
       }
       const startsAt = icsDate(props.DTSTART ?? "");
-      if (!startsAt || !props.SUMMARY) continue;
+      const url = safeLink(props.URL) ?? feedLink;
+      if (!startsAt || !props.SUMMARY || !url) continue;
       out.push({
         id: `ics-${props.UID ?? startsAt + props.SUMMARY}`,
         title: unescapeIcs(props.SUMMARY),
         startsAt,
         place: unescapeIcs(props.LOCATION ?? ""),
         source,
-        url: props.URL?.trim() || feed.url,
+        url,
       });
       count++;
     }

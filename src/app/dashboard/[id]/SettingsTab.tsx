@@ -30,6 +30,7 @@ export default async function SettingsTab({ id }: { id: string }) {
         <div className="panel-label">Event flyer</div>
         <p className="muted small">Shown on the event page and in Discover. Use JPG, PNG, or WebP, up to 5 MB. Tall or square works best.</p>
         <div className="flyer-preview" style={{ background: themeBackground(e.cover_theme) }}>
+          {/* eslint-disable-next-line @next/next/no-img-element -- flyers come from Supabase Storage at arbitrary sizes */}
           {e.cover_url ? <img src={e.cover_url} alt="Event flyer" /> : <span className="muted small">No flyer yet</span>}
         </div>
         <form action={uploadFlyer} className="row-form">
