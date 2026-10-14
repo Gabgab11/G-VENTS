@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
+import { safeNextPath } from "@/lib/redirect";
 import BackLink from "@/components/BackLink";
 
 export default function SignInPage() {
@@ -13,7 +14,7 @@ export default function SignInPage() {
 
   function nextPath() {
     if (typeof window === "undefined") return "/dashboard";
-    return new URLSearchParams(window.location.search).get("next") || "/dashboard";
+    return safeNextPath(new URLSearchParams(window.location.search).get("next"));
   }
 
   async function sendCode(e: React.FormEvent) {
@@ -58,8 +59,8 @@ export default function SignInPage() {
         {!sent ? (
           <form onSubmit={sendCode} className="auth-form">
             <p className="muted">New here? Enter your email and we&apos;ll create your free account. No password needed.</p>
-            <label className="auth-label">Email</label>
-            <input className="auth-input" type="email" required autoFocus value={email}
+            <label className="auth-label" htmlFor="sign-in-email">Email</label>
+            <input id="sign-in-email" className="auth-input" type="email" required autoFocus autoComplete="email" value={email}
               onChange={(e) => setEmail(e.target.value)} placeholder="you@email.com" />
             <button className="auth-primary" type="submit" disabled={busy}>
               {busy ? "Sending code..." : "Continue with Email"}
@@ -67,8 +68,10 @@ export default function SignInPage() {
           </form>
         ) : (
           <form onSubmit={verifyCode} className="auth-form">
-            <p className="muted">Enter the 6-digit code we sent to <span className="auth-email">{email}</span>.</p>
-            <input className="auth-input auth-code" inputMode="numeric" maxLength={6} required autoFocus value={code}
+            <p className="muted" id="sign-in-code-hint">Enter the 6-digit code we sent to <span className="auth-email">{email}</span>.</p>
+            <label className="sr-only" htmlFor="sign-in-code">6-digit code</label>
+            <input id="sign-in-code" aria-describedby="sign-in-code-hint" className="auth-input auth-code"
+              inputMode="numeric" autoComplete="one-time-code" maxLength={6} required autoFocus value={code}
               onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))} placeholder="000000" />
             <button className="auth-primary" type="submit" disabled={busy}>
               {busy ? "Checking..." : "Sign in"}
@@ -79,7 +82,7 @@ export default function SignInPage() {
           </form>
         )}
 
-        {error && <p className="error auth-error">{error}</p>}
+        {error && <p className="error auth-error" role="alert">{error}</p>}
       </div>
     </main>
   );

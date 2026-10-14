@@ -90,9 +90,10 @@ footer { border-top: 1px solid var(--line); padding: 28px 20px 40px; }
 .page h2 { font-size: 20px; font-weight: 800; margin: 14px 0 4px; }
 .form { display: grid; gap: 14px; }
 .field { display: grid; gap: 7px; }
-.field > span { font-size: 14px; font-weight: 600; color: #cfcfd3; }
+/* Labels and placeholders follow the theme, so they stay readable on the light styles too. */
+.field > span { font-size: 14px; font-weight: 600; color: var(--text); }
 .input { width: 100%; padding: 14px 16px; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); color: var(--text); font: inherit; font-size: 16px; }
-.input::placeholder { color: #6f6f75; }
+.input::placeholder { color: var(--muted); }
 .input:focus { outline: none; border-color: var(--gold); }
 textarea.input { resize: vertical; }
 .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -103,7 +104,7 @@ textarea.input { resize: vertical; }
 .spread { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
 .review { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px; display: grid; gap: 6px; }
 .summary-line { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 15px; }
-.desc { white-space: pre-line; line-height: 1.6; color: #d6d6d8; }
+.desc { white-space: pre-line; line-height: 1.6; color: var(--text); }
 .when { color: var(--gold); font-weight: 600; font-size: 14px; }
 .error { color: #f0604f; font-weight: 600; font-size: 14px; }
 .notice { color: var(--muted); font-size: 13px; }
@@ -112,8 +113,12 @@ textarea.input { resize: vertical; }
 .btn-white, .btn-ghost, .btn-grad { cursor: pointer; font: inherit; }
 .btn-white:disabled, .btn-grad:disabled, .btn-ghost:disabled { opacity: .6; cursor: default; }
 .btn-grad { display: inline-block; padding: 16px 24px; border-radius: 999px; background: var(--grad); color: #141414; font-weight: 800; font-size: 16px; text-align: center; border: 0; }
-.btn-ghost { display: inline-block; padding: 15px 24px; border-radius: 999px; border: 1.5px solid #fff; background: transparent; color: #fff; font-weight: 700; font-size: 16px; text-align: center; }
+.btn-ghost { display: inline-block; padding: 15px 24px; border-radius: 999px; border: 1.5px solid var(--text); background: transparent; color: var(--text); font-weight: 700; font-size: 16px; text-align: center; }
 .btn-white { border: 0; }
+.actions { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+
+/* Visible to screen readers only. */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 
 /* ---------- Sign in (Luma-style card) ---------- */
 .auth-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
@@ -174,7 +179,7 @@ textarea.input { resize: vertical; }
 .dash-controls { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
 .check { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: #d6d6d8; cursor: pointer; }
 .check input { width: 18px; height: 18px; accent-color: #f2a33a; }
-.btn-small { padding: 9px 14px; border-radius: 999px; background: var(--surface-hi); border: 0; color: #fff; font: inherit; font-weight: 600; font-size: 14px; cursor: pointer; }
+.btn-small { padding: 9px 14px; border-radius: 999px; background: var(--surface-hi); border: 0; color: var(--text); font: inherit; font-weight: 600; font-size: 14px; cursor: pointer; }
 
 @media (min-width: 900px) {
   .create-grid { grid-template-columns: 420px 1fr; gap: 48px; align-items: start; }
@@ -280,8 +285,6 @@ textarea.input { resize: vertical; }
 .panel.danger { border-color: rgba(240,96,79,.4); }
 .btn-danger { padding: 14px 22px; border-radius: 999px; border: 0; background: #f0604f; color: #fff; font: inherit; font-weight: 800; cursor: pointer; }
 
-.jazz-player { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 10px 0 4px; }
-
 /* ---------- Phone layout (applies to every page) ---------- */
 html, body { overflow-x: hidden; }
 img, video { max-width: 100%; height: auto; }
@@ -331,7 +334,6 @@ input, select, textarea, button { max-width: 100%; min-width: 0; }
   }
   .link-btn, .back-link { min-height: 40px; }
   .dash-list { gap: 10px; }
-  .jazz-player { flex-direction: column; align-items: flex-start; }
   .elsewhere, .cat-section { margin-top: 24px; }
   .theme-picks .pick { flex: 1 1 calc(50% - 10px); justify-content: center; }
 }

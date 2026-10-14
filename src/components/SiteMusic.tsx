@@ -3,25 +3,47 @@
 import { useEffect, useRef, useState } from "react";
 import { startJazz, type JazzHandle } from "@/lib/jazz";
 
-// Plays on every page. Browsers only allow sound after the visitor touches the page,
-// so the music starts on their first tap or key press.
+const DISMISS_KEY = "gvents-music-banner-dismissed";
+
+// Site-wide jazz, off until the visitor turns it on with the music button.
+// It never starts by itself: unexpected sound is an accessibility problem and
+// costs data on mobile.
 export default function SiteMusic() {
   const handle = useRef<JazzHandle | null>(null);
-  const [state, setState] = useState<"waiting" | "playing" | "paused">("waiting");
-  const [welcome, setWelcome] = useState(true);
+  const [state, setState] = useState<"off" | "playing" | "paused">("off");
+  const [welcome, setWelcome] = useState(false);
 
-  function startMusic() {
-    if (handle.current) return;
-    const h = startJazz();
-    if (!h) return;
-    handle.current = h;
-    setState("playing");
+  useEffect(() => {
+    try {
+      setWelcome(localStorage.getItem(DISMISS_KEY) !== "1");
+    } catch {
+      setWelcome(true);
+    }
+    return () => {
+      handle.current?.stop();
+      handle.current = null;
+    };
+  }, []);
+
+  function dismissWelcome() {
     setWelcome(false);
+    try {
+      localStorage.setItem(DISMISS_KEY, "1");
+    } catch {
+      // Storage unavailable: the banner just shows again next visit.
+    }
   }
 
   function toggle() {
     const h = handle.current;
-    if (!h) return startMusic();
+    if (!h) {
+      const started = startJazz();
+      if (!started) return;
+      handle.current = started;
+      setState("playing");
+      dismissWelcome();
+      return;
+    }
     if (state === "playing") {
       h.pause();
       setState("paused");
@@ -31,28 +53,15 @@ export default function SiteMusic() {
     }
   }
 
-  useEffect(() => {
-    window.addEventListener("pointerdown", startMusic, { once: true });
-    window.addEventListener("keydown", startMusic, { once: true });
-    return () => {
-      window.removeEventListener("pointerdown", startMusic);
-      window.removeEventListener("keydown", startMusic);
-      handle.current?.stop();
-      handle.current = null;
-    };
-    // startMusic only touches refs and state setters, which are stable.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
     <>
       {welcome && (
         <div className="welcome-banner" role="status">
           <div>
             <b>Welcome to G-vents</b>
-            <div className="muted small">Tap anywhere to start the music.</div>
+            <div className="muted small">Press ♪ to play some jazz while you browse.</div>
           </div>
-          <button type="button" className="welcome-close" aria-label="Close" onClick={() => setWelcome(false)}>✕</button>
+          <button type="button" className="welcome-close" aria-label="Close" onClick={dismissWelcome}>✕</button>
         </div>
       )}
       <button
@@ -60,6 +69,7 @@ export default function SiteMusic() {
         className="music-fab"
         onClick={toggle}
         aria-label={state === "playing" ? "Pause music" : "Play music"}
+        aria-pressed={state === "playing"}
       >
         {state === "playing" ? "❚❚" : "♪"}
       </button>

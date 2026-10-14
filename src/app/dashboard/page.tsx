@@ -1,40 +1,36 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { requireUser } from "@/lib/auth";
 import ThemeStage from "@/components/ThemeStage";
 import EventRow, { type DashEvent } from "./EventRow";
 import ThemePanel from "./ThemePanel";
 import BackLink from "@/components/BackLink";
+import SignOutButton from "@/components/SignOutButton";
 import { getDashboardTheme } from "./getTheme";
 
 export default async function DashboardPage() {
-  const supabase = await createSupabaseServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/sign-in?next=/dashboard");
+  const { supabase, user } = await requireUser("/dashboard");
 
-  const theme = await getDashboardTheme(supabase, user.id);
+  // One query: each event with its confirmed-registration count embedded.
+  const [theme, { data: events, error }] = await Promise.all([
+    getDashboardTheme(supabase, user.id),
+    supabase
+      .from("events")
+      .select("id, title, slug, status, visibility, show_attendee_count, starts_at, timezone, registrations(count)")
+      .eq("owner_id", user.id)
+      .eq("registrations.status", "confirmed")
+      .order("starts_at", { ascending: false }),
+  ]);
+  if (error) throw new Error(`Could not load your events: ${error.message}`);
 
-  const { data: events } = await supabase
-    .from("events")
-    .select("id, title, slug, status, visibility, show_attendee_count, starts_at")
-    .eq("owner_id", user.id)
-    .order("starts_at", { ascending: false });
-
-  const rows: DashEvent[] = await Promise.all(
-    (events ?? []).map(async (e) => {
-      const { count } = await supabase
-        .from("registrations")
-        .select("id", { count: "exact", head: true })
-        .eq("event_id", e.id)
-        .eq("status", "confirmed");
-      return { ...e, going: count ?? 0 };
-    })
-  );
+  const rows: DashEvent[] = (events ?? []).map(({ registrations, ...e }) => ({
+    ...e,
+    going: (registrations as unknown as { count: number }[] | null)?.[0]?.count ?? 0,
+  }));
 
   return (
     <main className="wrap page wide stage-content">
       <ThemeStage theme={theme} />
-      <div className="back-row"><BackLink fallback="/" label="← Home" /></div>
+      <div className="back-row spread"><BackLink fallback="/" label="← Home" /><SignOutButton /></div>
       <div className="spread">
         <div>
           <div className="eyebrow">Organizer</div>

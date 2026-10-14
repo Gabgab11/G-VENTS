@@ -1,0 +1,45 @@
+// Status messages shown after a dashboard action. The URL carries only the code
+// (?ok=registration_opened), so a crafted link can't display arbitrary text.
+export const MESSAGES = {
+  // success
+  registration_opened: "Registration is open",
+  registration_closed: "Registration is closed",
+  capacity_set: "Capacity saved. Extra guests go to the waiting list.",
+  capacity_unlimited: "Capacity is unlimited",
+  question_added: "Question added",
+  question_removed: "Question removed",
+  checked_in: "Checked in",
+  promoted: "A guest from the waiting list is now confirmed",
+  announcement_saved: "Saved. Sending starts once email delivery is connected.",
+  details_saved: "Event details saved",
+  flyer_uploaded: "Flyer uploaded",
+  flyer_removed: "Flyer removed. The event shows its colour style again",
+  event_cancelled: "Event cancelled. Registration is closed",
+  theme_saved: "Page style saved. Guests will see it on the event page",
+
+  // errors
+  capacity_invalid: "Capacity must be a whole number above 0",
+  question_missing: "Write the question first",
+  question_kind: "Choose a question type",
+  question_options: "Add at least two options",
+  question_limit: "An event can have at most 30 questions",
+  checkin_failed: "That guest couldn't be checked in. They may already be checked in, or not confirmed yet.",
+  promote_failed: "Couldn't confirm the next guest. Nobody may be waiting, or their ticket type is sold out.",
+  announcement_missing: "Add a subject and a message",
+  announcement_segment: "Choose who to send it to",
+  title_length: "Event name must be 3 to 140 characters",
+  flyer_missing: "Choose an image first",
+  flyer_type: "Use a JPG, PNG, or WebP image",
+  flyer_size: "The image is larger than 5 MB. Please resize it and try again",
+  cancel_confirm: "Tick the box to confirm you want to cancel",
+  cancel_forbidden: "Only the event owner or an admin can cancel this event",
+  theme_invalid: "Choose a style",
+  not_saved: "Nothing was saved. You may not have permission to change this event.",
+  failed: "Something went wrong. Please try again.",
+} as const;
+
+export type MessageCode = keyof typeof MESSAGES;
+
+export function messageFor(code: string | undefined): string | null {
+  return code && Object.hasOwn(MESSAGES, code) ? MESSAGES[code as MessageCode] : null;
+}

@@ -6,7 +6,7 @@
 - Build: passes (`npm run build`)
 
 ## Done
-- Site-wide jazz on every page. Starts on the first tap or key press (browsers block sound before that). Welcome banner and a music button (pause/play) bottom-left.
+- Site-wide jazz on every page. Off until the visitor presses the music button (bottom-left); a dismissible welcome banner points to it.
 - Phone layout: single-column forms and cards under 600px, 44px tap targets, no sideways scrolling, wrapped tabs and buttons.
 - Slow jazz loop on event pages, generated live in the browser (Dm7-G7-Cmaj7-Am7, walking bass, brushed hi-hats). Starts only when a visitor presses Play. No audio file.
 - Create event requires an account (sign-up first). New events start with the host's dashboard style.
@@ -34,28 +34,35 @@
 - Create event, 3 steps: basics, tickets, review. Saves as draft or published (`/events/new`)
 - Public event page (`/e/[slug]`): details and tickets, shows drafts only to the owner
 
+## Architecture review fixes (October 2026, branch `fix/architecture-review`)
+- CI (lint, typecheck, tests, build), `.gitignore`, and unit tests.
+- Schema now lives in `supabase/migrations/`. The hand-made objects are reconstructed there (see `supabase/README.md` before the first push).
+- Security: safe sign-in redirect; private events not listable; no anonymous ticket reservation; one registration per person; registration answers validated in the database; email can't be claimed; staff limited by role; flyer storage rules.
+- Dashboard: an ownership check on every page and action; no false "Saved" messages; message codes in the URL; guest list paged; one query for the event list.
+- Paid tickets are hidden until payments exist. The database refuses them too.
+- Error and not-found pages. Sample events removed. Sign out added. Music is opt-in.
+
 ## Not done yet (in order)
-1. Supabase Auth email template must show the 6-digit code (`{{ .Token }}`). Set it in Supabase: Authentication → Email Templates.
-2. Custom SMTP for auth emails (Supabase's built-in sender is limited). Use Resend.
-3. Sending announcements by email (needs the Resend connection on the server).
-4. Require-approval workflow.
-5. Payment for paid tickets (registrations stay pending until then).
-6. Registration and payment (`reserve_ticket` function exists in the database; no UI yet).
-4. Discover page (currently placeholder).
-5. Team and roles, blast email, check-in: designed in the prototype, not built.
-6. Missing pages linked from footer: /pricing, /help, /terms, /privacy, /refunds.
-7. Replace sample globe pins with real city counts from the database.
-8. Turn on Supabase daily backups before the December event.
+1. Apply the October 2026 migrations to staging, test, then production (`supabase/README.md`).
+2. Supabase Auth email template must show the 6-digit code (`{{ .Token }}`). Set it in Supabase: Authentication → Email Templates.
+3. Custom SMTP for auth emails (Supabase's built-in sender is limited). Use Resend.
+4. Confirmation emails to guests and sending announcements (needs RESEND_API_KEY in Vercel and a verified domain). The registration page shows the ticket code for now.
+5. Approve/decline screen for require-approval events (guests are saved as `pending`).
+6. Payments for paid tickets, with unpaid reservations expiring.
+7. Team invitations and roles UI (the database supports roles already).
+8. A captcha on sign-in and registration if abuse appears (Supabase rate-limits sign-in codes already).
+9. Error monitoring (e.g. Sentry) and end-to-end tests for create → register → check in.
+10. Time zone picker on create event (code supports any zone; the form still uses Lagos).
+11. Replace sample globe pins with real city counts from the database.
+12. Turn on Supabase daily backups before the December event.
 
 ## Decisions made
 - Currency: NGN (kobo stored in `price_minor`). Prices are typed in whole naira.
-- Time zone: events stored with Africa/Lagos (UTC+1, no daylight saving).
-- Categories: Music, Conferences, Tech, Faith, Arts, Food, Sports, Business, Nightlife, Education, Community, Charity, Family, Other.
+- Time zone: each event stores its own zone; new events default to Africa/Lagos.
+- Categories: Music, Conferences, Tech, Faith, Arts, Food, Sports, Business, Nightlife, Education, Community, Charity, Family, Other (`src/lib/categories.ts`).
 - Keys: only the anon key goes in the app. The service role key is never used in the browser.
+- Writes that need several steps or special permissions go through database functions (`register_guest`, `check_in_guest`, `create_event_with_tiers`, ...).
 
 ## Notes for next session
-- Schema file: `supabase/gvents-schema.sql` (matches both databases).
+- Schema: `supabase/migrations/` (applied in filename order).
 - Staging first, then production.
-
-## Next
-0. NOT YET BUILT: confirmation emails to guests (needs RESEND_API_KEY in Vercel and a verified domain). The registration page shows the ticket code for now.

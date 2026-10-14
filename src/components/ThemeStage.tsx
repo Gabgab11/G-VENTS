@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { THEMES } from "@/lib/themes";
+import { getTheme } from "@/lib/themes";
 
 type P = { x: number; y: number; vx: number; vy: number; r: number; ph: number; c: string };
 
@@ -48,7 +48,7 @@ function drawSantaRun(c: CanvasRenderingContext2D, w: number, h: number, k: numb
 
 // Applies the chosen style to the whole page and draws its motion layer.
 export default function ThemeStage({ theme }: { theme: string }) {
-  const t = THEMES[theme] ?? THEMES.minimal;
+  const t = getTheme(theme);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // 1) Recolour the whole page (CSS variables on <html>).
@@ -74,7 +74,10 @@ export default function ThemeStage({ theme }: { theme: string }) {
 
     const rnd = (a: number, b: number) => a + Math.random() * (b - a);
     const pick = () => t.accents[Math.floor(Math.random() * t.accents.length)];
-    const count = t.effect === "stars" ? 140 : t.effect === "waves" ? 0 : 60;
+    // Phones get fewer particles to save battery.
+    const small = window.matchMedia("(max-width: 600px)").matches;
+    const base = t.effect === "stars" ? 140 : t.effect === "waves" ? 0 : 60;
+    const count = small ? Math.round(base / 2) : base;
 
     function resize() {
       const r = canvas!.getBoundingClientRect();
@@ -169,14 +172,22 @@ export default function ThemeStage({ theme }: { theme: string }) {
       raf = requestAnimationFrame(loop);
     }
 
+    // Stop drawing while the tab is hidden.
+    function onVisibility() {
+      cancelAnimationFrame(raf);
+      if (!document.hidden && !reduce) raf = requestAnimationFrame(loop);
+    }
+
     resize();
     window.addEventListener("resize", resize);
+    document.addEventListener("visibilitychange", onVisibility);
     if (reduce) draw(0);
     else raf = requestAnimationFrame(loop);
 
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
+      document.removeEventListener("visibilitychange", onVisibility);
     };
   }, [t]);
 
