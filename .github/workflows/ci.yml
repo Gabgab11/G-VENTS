@@ -13,10 +13,9 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    # No Supabase variables on purpose: the build must not need secrets, so a
+    # Vercel environment without them still deploys. Real keys live in Vercel.
     env:
-      # Build-time placeholders only. Real keys live in Vercel, never in CI.
-      NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
-      NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder-anon-key
       NEXT_PUBLIC_SITE_URL: https://g-vents.vercel.app
     steps:
       - uses: actions/checkout@v4
