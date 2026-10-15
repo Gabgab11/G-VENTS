@@ -19,7 +19,7 @@ function formatDate(iso: string) {
 }
 
 export default async function HomePage() {
-    const events = await getFeaturedEvents(6);
+  const events = await getFeaturedEvents(6);
 
   return (
     <main>
@@ -69,7 +69,6 @@ export default async function HomePage() {
               </Link>
             ))}
           </div>
-          {!live && <p className="notice">Showing sample events until the first real event is published.</p>}
         </section>
 
         <section className="closing">
