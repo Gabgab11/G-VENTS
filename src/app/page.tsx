@@ -19,7 +19,7 @@ function formatDate(iso: string) {
 }
 
 export default async function HomePage() {
-  const { events, live } = await getFeaturedEvents(6);
+    const events = await getFeaturedEvents(6);
 
   return (
     <main>
