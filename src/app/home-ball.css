@@ -1,0 +1,62 @@
+/* ---------- Home hero: disco photo (darkened) ---------- */
+.hero { position: relative; isolation: isolate; overflow: hidden; }
+.hero .copy { position: relative; z-index: 1; }
+.hero-photo {
+  position: absolute; inset: -4%; z-index: -2;
+  background: url("/images/disco-hero.jpg") center / cover no-repeat;
+  filter: brightness(.72) saturate(1.02) contrast(1.08);
+  animation: heroDrift 28s ease-in-out infinite alternate;
+  will-change: transform;
+}
+.hero-wash {
+  position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(180deg, rgba(12,8,6,.55) 0%, rgba(12,8,6,.15) 35%, rgba(12,8,6,.82) 88%, #0c0806 100%);
+}
+@keyframes heroDrift {
+  0%   { transform: scale(1.02) translate3d(0, 0, 0); }
+  100% { transform: scale(1.08) translate3d(-1.5%, -1%, 0); }
+}
+
+/* ---------- Create event: mirror ball drop ---------- */
+.ball-stage { position: relative; height: 230px; overflow: hidden; pointer-events: none; margin-bottom: 8px; }
+.ball-drop {
+  position: absolute; top: 36px; left: 50%;
+  width: clamp(120px, 18vw, 180px);
+  transform: translate3d(-50%, -160%, 0);
+  animation: ballDrop 2s cubic-bezier(.22, .8, .25, 1.15) forwards;
+  will-change: transform;
+}
+.ball-string { position: absolute; left: 50%; top: -36px; width: 2px; height: 36px; transform: translateX(-50%); background: linear-gradient(to right, #30200d, #b98a43, #30200d); }
+.ball-wrap {
+  position: relative; width: 100%; aspect-ratio: 1; border-radius: 50%; overflow: hidden;
+  background: radial-gradient(circle at 34% 28%, #fff1c4 0%, #d9a24a 22%, #7a5222 55%, #2a1a0c 100%);
+  box-shadow: 0 0 40px rgba(255, 166, 48, .35), inset -18px -12px 30px rgba(0, 0, 0, .55);
+}
+.ball-wrap canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.ball-glow {
+  position: absolute; left: 50%; bottom: 6px; width: min(220px, 70vw); height: 26px;
+  transform: translateX(-50%); border-radius: 50%; background: #b97824; filter: blur(20px);
+  opacity: 0; animation: ballGlow 1s ease 1.7s forwards;
+}
+@keyframes ballDrop {
+  0%   { transform: translate3d(-50%, -160%, 0) rotate(-20deg); }
+  70%  { transform: translate3d(-50%, 0, 0) rotate(10deg); }
+  84%  { transform: translate3d(-50%, 10%, 0) rotate(-4deg); }
+  94%  { transform: translate3d(-50%, -2%, 0) rotate(2deg); }
+  100% { transform: translate3d(-50%, 0, 0) rotate(0deg); }
+}
+@keyframes ballGlow { to { opacity: .4; } }
+
+/* ---------- Phones: simpler, lighter ---------- */
+@media (max-width: 700px) {
+  .hero-photo { animation: none; inset: 0; background-position: 60% center; }
+  .ball-stage { height: 180px; }
+  .ball-glow { display: none; }
+}
+
+/* ---------- Reduced motion: no movement, content shows at once ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .hero-photo { animation: none; }
+  .ball-drop { animation: none; transform: translate3d(-50%, 0, 0); }
+  .ball-glow { animation: none; opacity: .4; }
+}
