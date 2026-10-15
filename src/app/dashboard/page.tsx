@@ -3,7 +3,6 @@ import { requireUser } from "@/lib/auth";
 import ThemeStage from "@/components/ThemeStage";
 import EventRow, { type DashEvent } from "./EventRow";
 import ThemePanel from "./ThemePanel";
-import BackLink from "@/components/BackLink";
 import SignOutButton from "@/components/SignOutButton";
 import { getDashboardTheme } from "./getTheme";
 
@@ -30,7 +29,10 @@ export default async function DashboardPage() {
   return (
     <main className="wrap page wide stage-content">
       <ThemeStage theme={theme} />
-      <div className="back-row spread"><BackLink fallback="/" label="← Home" /><SignOutButton /></div>
+      <div className="back-row spread">
+        <Link href="/" className="back-link">← Home</Link>
+        <SignOutButton />
+      </div>
       <div className="spread">
         <div>
           <div className="eyebrow">Organizer</div>
