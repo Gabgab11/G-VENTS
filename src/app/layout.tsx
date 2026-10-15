@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Manrope } from "next/font/google";
 import "./globals.css";
+import "./home-ball.css";
 import SiteMusic from "@/components/SiteMusic";
 
 const manrope = Manrope({
@@ -25,8 +26,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={manrope.className}>
-      <body>{children}
-        <SiteMusic /></body>
+      <body>
+        {children}
+        <SiteMusic />
+      </body>
     </html>
   );
 }
