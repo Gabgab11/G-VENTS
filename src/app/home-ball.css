@@ -115,3 +115,10 @@
   .pr-grid { grid-template-columns: repeat(3, 1fr); align-items: stretch; }
   .pr-card.featured { transform: translateY(-10px); }
 }
+
+/* ---------- Currency switcher (pricing) ---------- */
+.cur-switch { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 22px 0 0; }
+.cur-btn { min-height: 40px; padding: 0 14px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--surface); color: var(--text); font: inherit; font-weight: 700; font-size: 14px; cursor: pointer; }
+.cur-btn[aria-pressed="true"] { background: var(--text); color: var(--bg); border-color: var(--text); }
+.pr-flip { animation: prFlip .45s ease; }
+@keyframes prFlip { from { opacity: 0; transform: rotateX(-12deg) translateY(6px); } to { opacity: 1; transform: none; } }
