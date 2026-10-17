@@ -1,21 +1,23 @@
 "use client";
 
-import { useActionState, useRef, useState } from "react";
+import { useActionState, useState } from "react";
 import { createEvent, type CreateEventState } from "@/app/events/actions";
 import { CATEGORIES } from "@/lib/categories";
 import { THEMES, themeBackground } from "@/lib/themes";
 import ThemeStage from "@/components/ThemeStage";
 import BackLink from "@/components/BackLink";
+import MirrorBall from "@/components/MirrorBall";
 
-type Tier = { id: number; name: string; qty: string };
+type Tier = { id: number; name: string; price: string; qty: string };
+let nextId = 2;
 
 export default function NewEventForm({ defaultTheme }: { defaultTheme: string }) {
   const [state, formAction, pending] = useActionState<CreateEventState, FormData>(createEvent, undefined);
   const [title, setTitle] = useState("");
   const [theme, setTheme] = useState(defaultTheme);
-  const [tiers, setTiers] = useState<Tier[]>([{ id: 1, name: "General admission", qty: "" }]);
-  const nextTierId = useRef(2);
+  const [tiers, setTiers] = useState<Tier[]>([{ id: 1, name: "General admission", price: "0", qty: "" }]);
   const [visibility, setVisibility] = useState<"public" | "private">("public");
+  const [isFree, setIsFree] = useState(true);
 
   function updateTier(id: number, key: keyof Omit<Tier, "id">, value: string) {
     setTiers((t) => t.map((x) => (x.id === id ? { ...x, [key]: value } : x)));
@@ -24,6 +26,7 @@ export default function NewEventForm({ defaultTheme }: { defaultTheme: string })
   return (
     <main className="wrap stage-content">
       <ThemeStage theme={theme} />
+      <MirrorBall />
       <div className="back-row"><BackLink fallback="/dashboard" label="← Dashboard" /></div>
       <form action={formAction} className="create-grid">
         {/* LEFT: cover and design */}
@@ -37,7 +40,7 @@ export default function NewEventForm({ defaultTheme }: { defaultTheme: string })
             <div className="theme-grid">
               {Object.entries(THEMES).map(([key, t]) => (
                 <button type="button" key={key} className={`theme-swatch ${theme === key ? "on" : ""}`}
-                  style={{ background: t.background }} onClick={() => setTheme(key)} aria-label={t.label} aria-pressed={theme === key}>
+                  style={{ background: t.background }} onClick={() => setTheme(key)} aria-label={t.label}>
                   <span>{t.label}</span>
                 </button>
               ))}
@@ -87,7 +90,10 @@ export default function NewEventForm({ defaultTheme }: { defaultTheme: string })
 
           <div className="panel">
             <div className="panel-label">Tickets</div>
-            <p className="muted small">Tickets are free for now. Paid tickets arrive when online payments are ready.</p>
+            <div className="ticket-type">
+              <button type="button" className={isFree ? "on" : ""} onClick={() => { setIsFree(true); setTiers((t) => t.map((x) => ({ ...x, price: "0" }))); }}>Free</button>
+              <button type="button" className={!isFree ? "on" : ""} onClick={() => setIsFree(false)}>Paid</button>
+            </div>
             {tiers.map((t) => (
               <div className="tier-card" key={t.id}>
                 <div className="row2">
@@ -96,12 +102,17 @@ export default function NewEventForm({ defaultTheme }: { defaultTheme: string })
                   <label className="field"><span>Quantity (blank = unlimited)</span>
                     <input className="input" name="tier_qty" inputMode="numeric" value={t.qty} onChange={(e) => updateTier(t.id, "qty", e.target.value)} /></label>
                 </div>
+                {!isFree && (
+                  <label className="field"><span>Price (₦)</span>
+                    <input className="input" name="tier_price" inputMode="numeric" value={t.price} onChange={(e) => updateTier(t.id, "price", e.target.value)} /></label>
+                )}
+                {isFree && <input type="hidden" name="tier_price" value="0" />}
                 {tiers.length > 1 && (
                   <button type="button" className="link-btn" onClick={() => setTiers((x) => x.filter((y) => y.id !== t.id))}>Remove ticket</button>
                 )}
               </div>
             ))}
-            <button type="button" className="btn-ghost" onClick={() => setTiers((x) => [...x, { id: nextTierId.current++, name: "", qty: "" }])}>+ Add ticket type</button>
+            <button type="button" className="btn-ghost" onClick={() => setTiers((x) => [...x, { id: nextId++, name: "", price: "0", qty: "" }])}>+ Add ticket type</button>
           </div>
 
           <div className="panel">
@@ -112,9 +123,9 @@ export default function NewEventForm({ defaultTheme }: { defaultTheme: string })
                 <div className="option-title">Who can find it</div>
                 <div className="muted small">Public events appear in Discover. Private events open only by link.</div>
               </div>
-              <div className="seg" role="group" aria-label="Who can find it">
-                <button type="button" className={visibility === "public" ? "on" : ""} aria-pressed={visibility === "public"} onClick={() => setVisibility("public")}>Public</button>
-                <button type="button" className={visibility === "private" ? "on" : ""} aria-pressed={visibility === "private"} onClick={() => setVisibility("private")}>Private</button>
+              <div className="seg">
+                <button type="button" className={visibility === "public" ? "on" : ""} onClick={() => setVisibility("public")}>Public</button>
+                <button type="button" className={visibility === "private" ? "on" : ""} onClick={() => setVisibility("private")}>Private</button>
               </div>
               <input type="hidden" name="visibility" value={visibility} />
             </div>
@@ -139,7 +150,7 @@ export default function NewEventForm({ defaultTheme }: { defaultTheme: string })
               <textarea className="input" name="refund_policy" rows={3} placeholder="e.g. Full refund up to 7 days before the event" /></label>
           </div>
 
-          {state?.error && <p className="error" role="alert">{state.error}</p>}
+          {state?.error && <p className="error">{state.error}</p>}
 
           <div className="publish-bar">
             <button className="btn-ghost" type="submit" name="intent" value="draft" disabled={pending}>Save as draft</button>

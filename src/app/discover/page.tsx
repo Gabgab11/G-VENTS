@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Suspense } from "react";
-import BackLink from "@/components/BackLink";
 import { getFeaturedEvents } from "@/lib/events";
 import { themeBackground } from "@/lib/themes";
 import { CATEGORIES, isCategory } from "@/lib/categories";
@@ -15,7 +14,9 @@ export default async function DiscoverPage({ searchParams }: { searchParams: Pro
 
   return (
     <main className="wrap page wide">
-      <div className="back-row"><BackLink fallback="/" label="← Home" /></div>
+      <div className="back-row">
+        <Link href="/" className="back-link">← Home</Link>
+      </div>
       <div className="section-head">
         <h1>Discover</h1>
         <p className="muted">Events on G-vents{category ? "" : ", and what's happening elsewhere"}.</p>
