@@ -15,6 +15,7 @@ const CSS = `
   min-height: 100vh; overflow-x: hidden; -webkit-font-smoothing: antialiased;
 }
 .hp a { color: inherit; text-decoration: none; }
+.hp .hp-btn, .hp .hp-c4, .hp .hp-c5 { color: #fff; }
 .hp-wrap { max-width: 1200px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 64px); }
 
 .hp-top { display: flex; justify-content: space-between; align-items: center; padding: 22px clamp(20px, 5vw, 64px); max-width: 1200px; margin: 0 auto; }
