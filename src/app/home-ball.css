@@ -186,3 +186,22 @@
   height: 100%;
   opacity: 0;
 }
+/* Mobile fit for the OTP boxes */
+.otp-row {
+  gap: clamp(6px, 2.4vw, 12px);
+  max-width: 100%;
+}
+.otp-slot {
+  width: clamp(40px, 13vw, 56px);
+  height: clamp(50px, 16vw, 68px);
+  font-size: clamp(22px, 6vw, 28px);
+}
+.otp-fan {
+  height: clamp(96px, 30vw, 110px);
+}
+.otp-card {
+  width: clamp(56px, 19vw, 72px);
+  height: clamp(72px, 24vw, 92px);
+  margin-left: calc(clamp(56px, 19vw, 72px) / -2);
+  font-size: clamp(24px, 7vw, 30px);
+}
