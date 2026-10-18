@@ -1,37 +1,62 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { startJazz, type JazzHandle } from "@/lib/jazz";
+import { createTrack } from "@/lib/jazz";
 
-// Site-wide music, off until the visitor turns it on with the music button.
-// It never starts by itself: unexpected sound is an accessibility problem and
-// costs data on mobile.
+// Starts on every visit. If the browser blocks sound until the visitor
+// interacts, it starts on their first tap or key press. The button pauses
+// and resumes.
+const UNLOCK_EVENTS = ["pointerdown", "keydown", "touchstart"] as const;
+
 export default function SiteMusic() {
-  const handle = useRef<JazzHandle | null>(null);
-  const [state, setState] = useState<"off" | "playing" | "paused">("off");
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
+    const audio = createTrack();
+    if (!audio) return;
+    audioRef.current = audio;
+
+    const onPlay = () => setPlaying(true);
+    const onStop = () => setPlaying(false);
+
+    function attach() {
+      UNLOCK_EVENTS.forEach((e) => window.addEventListener(e, unlock));
+    }
+    function detach() {
+      UNLOCK_EVENTS.forEach((e) => window.removeEventListener(e, unlock));
+    }
+    function unlock() {
+      detach();
+      audio!.play().catch(() => {});
+    }
+
+    audio.addEventListener("play", onPlay);
+    audio.addEventListener("pause", onStop);
+    audio.addEventListener("ended", onStop);
+
+    // Try to start now. If the browser blocks it, wait for the first touch or key press.
+    audio.play().catch(attach);
+
     return () => {
-      handle.current?.stop();
-      handle.current = null;
+      detach();
+      audio.removeEventListener("play", onPlay);
+      audio.removeEventListener("pause", onStop);
+      audio.removeEventListener("ended", onStop);
+      audio.pause();
+      audio.removeAttribute("src");
+      audio.load();
+      audioRef.current = null;
     };
   }, []);
 
   function toggle() {
-    const h = handle.current;
-    if (!h) {
-      const started = startJazz();
-      if (!started) return;
-      handle.current = started;
-      setState("playing");
-      return;
-    }
-    if (state === "playing") {
-      h.pause();
-      setState("paused");
+    const a = audioRef.current;
+    if (!a) return;
+    if (a.paused) {
+      a.play().catch(() => {});
     } else {
-      h.resume();
-      setState("playing");
+      a.pause();
     }
   }
 
@@ -40,10 +65,10 @@ export default function SiteMusic() {
       type="button"
       className="music-fab"
       onClick={toggle}
-      aria-label={state === "playing" ? "Pause music" : "Play music"}
-      aria-pressed={state === "playing"}
+      aria-label={playing ? "Pause music" : "Play music"}
+      aria-pressed={playing}
     >
-      {state === "playing" ? "❚❚" : "♪"}
+      {playing ? "❚❚" : "♪"}
     </button>
   );
 }
