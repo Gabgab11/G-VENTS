@@ -190,3 +190,28 @@
   height: 100%;
   opacity: 0;
 }
+/* OTP boxes: a fixed grid that always fits the screen */
+.otp-wrap { width: 100%; }
+.otp-row {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 6px;
+  width: 100%;
+  max-width: 340px;
+  margin: 0 auto;
+}
+.otp-slot {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 5 / 6.5;
+  font-size: clamp(18px, 5vw, 26px);
+  border-radius: 12px;
+}
+.otp-fan { height: 100px; }
+.otp-card {
+  width: 52px;
+  height: 70px;
+  margin-left: -26px;
+  font-size: 22px;
+  border-radius: 14px;
+}
