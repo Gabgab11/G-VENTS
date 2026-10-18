@@ -122,3 +122,67 @@
 .cur-btn[aria-pressed="true"] { background: var(--text); color: var(--bg); border-color: var(--text); }
 .pr-flip { animation: prFlip .45s ease; }
 @keyframes prFlip { from { opacity: 0; transform: rotateX(-12deg) translateY(6px); } to { opacity: 1; transform: none; } }
+.otp-wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 110px;
+  padding: 16px 0;
+  cursor: text;
+}
+.otp-row {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+.otp-slot {
+  width: 56px;
+  height: 68px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font: 600 28px/1 system-ui, sans-serif;
+  color: #fff;
+  background: linear-gradient(160deg, #1f2a4a, #151d33);
+  border: 1px solid rgba(160, 190, 255, 0.18);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.otp-slot.active {
+  border-color: #9ec1ff;
+  box-shadow: 0 0 0 3px rgba(158, 193, 255, 0.25);
+}
+.otp-fan {
+  position: relative;
+  width: 100%;
+  height: 110px;
+}
+.otp-card {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  margin-left: -36px;
+  width: 72px;
+  height: 92px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  font: 600 30px/1 system-ui, sans-serif;
+  color: #fff;
+  background: linear-gradient(160deg, #3a5593, #22346a);
+  border: 1px solid rgba(160, 190, 255, 0.45);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.4);
+  transform-origin: 50% 320%;
+  animation: otp-fade 0.3s ease both;
+}
+@keyframes otp-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.otp-hidden {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}

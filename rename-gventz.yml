@@ -1,0 +1,59 @@
+# ONE-TIME RENAME: G-vents -> G-ventZ
+# Upload to: G-VENTS / .github / workflows / rename-gventz.yml
+# on branch Gabgab11-patch-1. It runs once on that upload commit,
+# commits the rename, then DELETE this file afterwards.
+
+name: One-time rename G-vents to G-ventZ
+
+on:
+  push:
+    branches:
+      - Gabgab11-patch-1
+
+permissions:
+  contents: write
+
+jobs:
+  rename:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          ref: Gabgab11-patch-1
+
+      - name: Replace G-vents with G-ventZ
+        run: |
+          # Find text files containing the old name, skipping folders and files
+          # that must not change (repo name, Vercel domain, package lock, this file).
+          grep -rIlE "G-vents|G-Vents" . \
+            --exclude-dir=.git \
+            --exclude-dir=node_modules \
+            --exclude-dir=.next \
+            --exclude-dir=.github \
+            --exclude=package-lock.json \
+            --exclude=RENAME.md \
+            > changed-files.txt || true
+
+          if [ ! -s changed-files.txt ]; then
+            echo "Nothing to rename."
+            exit 0
+          fi
+
+          echo "Files to update:"
+          cat changed-files.txt
+
+          # Skip any line that contains the repo path, GitHub links, or the Vercel domain.
+          xargs -a changed-files.txt perl -pi -e 'next if /vercel\.app|github\.com|supabase\.co|G-VENTS/; s/G-vents/G-ventZ/g; s/G-Vents/G-ventZ/g'
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Rename G-vents to G-ventZ"
+            git push origin HEAD:Gabgab11-patch-1
+          fi

@@ -4,10 +4,10 @@ import { useState } from "react";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 import { safeNextPath } from "@/lib/redirect";
 import BackLink from "@/components/BackLink";
+import OtpInput from "@/components/OtpInput";
 
 export default function SignInPage() {
   const [email, setEmail] = useState("");
-  const [code, setCode] = useState("");
   const [sent, setSent] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -31,12 +31,11 @@ export default function SignInPage() {
     setSent(true);
   }
 
-  async function verifyCode(e: React.FormEvent) {
-    e.preventDefault();
+  async function verifyCode(code: string) {
     setError(null);
     setBusy(true);
     const supabase = createSupabaseBrowserClient();
-    const { error } = await supabase.auth.verifyOtp({ email: email.trim(), token: code.trim(), type: "email" });
+    const { error } = await supabase.auth.verifyOtp({ email: email.trim(), token: code, type: "email" });
     setBusy(false);
     if (error) return setError("That code is wrong or has expired. Try again or request a new one.");
     window.location.href = nextPath();
@@ -67,19 +66,14 @@ export default function SignInPage() {
             </button>
           </form>
         ) : (
-          <form onSubmit={verifyCode} className="auth-form">
-            <p className="muted" id="sign-in-code-hint">Enter the 6-digit code we sent to <span className="auth-email">{email}</span>.</p>
-            <label className="sr-only" htmlFor="sign-in-code">6-digit code</label>
-            <input id="sign-in-code" aria-describedby="sign-in-code-hint" className="auth-input auth-code"
-              inputMode="numeric" autoComplete="one-time-code" maxLength={6} required autoFocus value={code}
-              onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))} placeholder="000000" />
-            <button className="auth-primary" type="submit" disabled={busy}>
-              {busy ? "Checking..." : "Sign in"}
-            </button>
-            <button type="button" className="auth-link" onClick={() => { setSent(false); setCode(""); setError(null); }}>
+          <div className="auth-form">
+            <p className="muted">Enter the 6-digit code we sent to <span className="auth-email">{email}</span>.</p>
+            <OtpInput length={6} onComplete={verifyCode} />
+            {busy && <p className="muted" role="status">Checking...</p>}
+            <button type="button" className="auth-link" onClick={() => { setSent(false); setError(null); }}>
               Use a different email
             </button>
-          </form>
+          </div>
         )}
 
         {error && <p className="error auth-error" role="alert">{error}</p>}

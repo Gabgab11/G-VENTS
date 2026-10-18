@@ -1,9 +1,101 @@
 import Link from "next/link";
-import Globe from "@/components/Globe";
 import { getFeaturedEvents } from "@/lib/events";
-import { CATEGORIES, CATEGORY_COLORS } from "@/lib/categories";
 import { formatEventDate } from "@/lib/dates";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+
+const CSS = `
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&display=swap");
+
+.hp {
+  --ink: #121212; --muted: #6b6a66; --line: #ebe9e2; --soft: #f6f5f1;
+  --coral: #ff5a3c; --sun: #ffc23d; --mint: #7ee0b6; --sky: #8ec5ff; --rose: #ffb3c7;
+  --display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: #fff; color: var(--ink); font-family: var(--body);
+  min-height: 100vh; overflow-x: hidden; -webkit-font-smoothing: antialiased;
+}
+.hp a { color: inherit; text-decoration: none; }
+.hp .hp-btn, .hp .hp-c4, .hp .hp-c5 { color: #fff; }
+.hp-wrap { max-width: 1200px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 64px); }
+
+.hp-top { display: flex; justify-content: space-between; align-items: center; padding: 22px clamp(20px, 5vw, 64px); max-width: 1200px; margin: 0 auto; }
+.hp-logo { font-family: var(--display); font-weight: 800; font-size: 22px; letter-spacing: -0.4px; }
+.hp-logo b { color: var(--coral); }
+.hp-signin { font-size: 14px; font-weight: 600; border: 1px solid var(--line); padding: 9px 16px; border-radius: 999px; }
+
+.hp-hero { padding: clamp(36px, 7vw, 96px) 0 30px; }
+.hp-pill { display: inline-block; font-size: 13px; font-weight: 600; background: var(--soft); border: 1px solid var(--line); padding: 7px 14px; border-radius: 999px; color: var(--muted); }
+.hp-hero h1 { font-family: var(--display); font-weight: 800; font-size: clamp(52px, 9.5vw, 120px); line-height: 0.95; letter-spacing: -3px; margin: 22px 0 0; }
+.hp-hl { background: var(--sun); padding: 0 0.12em; border-radius: 0.15em; }
+.hp-lede { max-width: 520px; color: var(--muted); font-size: clamp(16px, 2vw, 18px); line-height: 1.6; margin: 26px 0 32px; }
+.hp-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.hp-btn { padding: 15px 26px; border-radius: 14px; font-weight: 600; font-size: 15px; background: var(--ink); color: #fff; display: inline-block; }
+.hp-ghost { padding: 15px 26px; border-radius: 14px; font-weight: 600; font-size: 15px; border: 1px solid var(--line); color: var(--ink); display: inline-block; }
+
+.hp-ticker { margin-top: 64px; border-block: 1px solid var(--line); overflow: hidden; white-space: nowrap; padding: 16px 0; }
+.hp-run { display: inline-flex; gap: 40px; animation: hp-slide 40s linear infinite; font-family: var(--display); font-weight: 800; font-size: 24px; letter-spacing: -0.5px; color: #cfcdc6; }
+.hp-run span:nth-child(4n+1) { color: var(--coral); }
+.hp-run span:nth-child(4n+3) { color: var(--sun); }
+@keyframes hp-slide { to { transform: translateX(-50%); } }
+
+.hp-section { padding: 56px 0 20px; }
+.hp-head { display: flex; justify-content: space-between; align-items: end; gap: 16px; flex-wrap: wrap; margin-bottom: 22px; }
+.hp-head h2 { font-family: var(--display); font-weight: 800; font-size: clamp(28px, 4vw, 40px); letter-spacing: -1px; margin: 0; }
+.hp-head p { color: var(--muted); margin: 0; font-size: 15px; }
+
+.hp-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
+.hp-tile { position: relative; border-radius: 22px; padding: 22px; min-height: 210px; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.3s ease; animation: hp-swing 2.4s ease-in-out; }
+.hp-tile:hover { transform: translateY(-4px); }
+.hp-wide { grid-column: span 4; }
+.hp-sq { grid-column: span 2; }
+.hp-tag { font-size: 12px; font-weight: 600; opacity: 0.7; }
+.hp-when { font-size: 13px; opacity: 0.65; }
+.hp-tile h3 { font-family: var(--display); font-weight: 800; font-size: 30px; line-height: 1; letter-spacing: -0.8px; margin: 10px 0 0; }
+.hp-c0 { background: var(--sun); }
+.hp-c1 { background: var(--rose); }
+.hp-c2 { background: var(--mint); }
+.hp-c3 { background: var(--sky); }
+.hp-c4 { background: var(--ink); color: #fff; }
+.hp-c5 { background: var(--coral); color: #fff; }
+.hp-empty { color: var(--muted); }
+.hp-empty a { font-weight: 600; color: var(--ink); text-decoration: underline; }
+
+@keyframes hp-swing {
+  0% { transform: translate(0, 0); }
+  8% { transform: translate(-6px, 21px); }
+  17% { transform: translate(-21px, 36px); }
+  25% { transform: translate(-42px, 42px); }
+  33% { transform: translate(-63px, 36px); }
+  42% { transform: translate(-78px, 21px); }
+  50% { transform: translate(-84px, 0); }
+  58% { transform: translate(-78px, -21px); }
+  67% { transform: translate(-63px, -36px); }
+  75% { transform: translate(-42px, -42px); }
+  83% { transform: translate(-21px, -36px); }
+  92% { transform: translate(-6px, -21px); }
+  100% { transform: translate(0, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hp-tile, .hp-run { animation: none; }
+}
+
+.hp-closing { text-align: center; padding: 100px 20px 110px; }
+.hp-closing h2 { font-family: var(--display); font-weight: 800; font-size: clamp(40px, 7vw, 80px); line-height: 0.98; letter-spacing: -2.5px; margin: 0 0 28px; }
+
+.hp-foot { border-top: 1px solid var(--line); padding: 24px clamp(20px, 5vw, 64px); color: var(--muted); font-size: 13px; max-width: 1200px; margin: 0 auto; }
+.hp-foot-row { display: flex; gap: 22px; flex-wrap: wrap; margin-bottom: 10px; }
+.hp-foot-legal { display: flex; gap: 18px; flex-wrap: wrap; opacity: 0.8; }
+
+@media (max-width: 820px) {
+  .hp-grid { grid-template-columns: 1fr 1fr; }
+  .hp-wide, .hp-sq { grid-column: span 2; }
+}
+`;
+
+const TICKER = [
+  "Owambe", "Outdooring", "Braai Day", "Sangeet Night", "Moji's Birthday",
+  "Quinceañera", "Festa Junina", "Send-Off", "Naming Ceremony", "Mehndi",
+];
 
 export default async function HomePage() {
   const supabase = await createSupabaseServerClient();
@@ -13,81 +105,83 @@ export default async function HomePage() {
   ]);
 
   return (
-    <main>
-      <header className="topbar">
-        <Link href="/" className="wordmark">G<span>-</span>vents</Link>
+    <main className="hp">
+      <style dangerouslySetInnerHTML={{ __html: CSS }} />
+
+      <header className="hp-top">
+        <Link href="/" className="hp-logo">G-vent<b>Z</b></Link>
         {user
-          ? <Link href="/dashboard" className="pill">Dashboard</Link>
-          : <Link href="/sign-in" className="pill">Sign In</Link>}
+          ? <Link href="/dashboard" className="hp-signin">Dashboard</Link>
+          : <Link href="/sign-in" className="hp-signin">Sign in</Link>}
       </header>
 
-      <div className="wrap">
-        <section className="hero">
-          <div className="globe-wrap-outer">
-            <Globe />
-          </div>
-          <div className="copy">
-            <h1>Events from <span className="grad-text">everywhere</span></h1>
-            <p style={{ marginTop: 20 }}>
-              Concerts, conferences, meetups, church nights, and everything in between. Create one in minutes and share it with anyone, anywhere.
-            </p>
-            <div className="actions" style={{ marginTop: 32 }}>
-              <Link href="/events/new" className="btn-white">Create Your First Event</Link>
-              <Link href="/discover" className="muted">Discover Events</Link>
-            </div>
-          </div>
-        </section>
+      <section className="hp-wrap hp-hero">
+        <span className="hp-pill">Create events in minutes</span>
+        <h1>Every celebration,<br /><span className="hp-hl">one place.</span></h1>
+        <p className="hp-lede">
+          Owambe, outdooring, braai, sangeet or a Saturday birthday. Create your event, share one link, and let guests register from anywhere.
+        </p>
+        <div className="hp-actions">
+          <Link href="/events/new" className="hp-btn">Create your first event</Link>
+          <Link href="/discover" className="hp-ghost">Browse events</Link>
+        </div>
+      </section>
 
-        <section className="section">
-          <h2>Browse by category</h2>
-          <div className="cats">
-            {CATEGORIES.map((c) => (
-              <Link key={c} href={`/discover?category=${encodeURIComponent(c)}`} className="cat">
-                <span className="dot" style={{ background: CATEGORY_COLORS[c] }} />
-                {c}
+      <div className="hp-ticker" aria-hidden="true">
+        <div className="hp-run">
+          {[...TICKER, ...TICKER].map((t, i) => <span key={i}>{t}</span>)}
+        </div>
+      </div>
+
+      <section className="hp-wrap hp-section">
+        <div className="hp-head">
+          <h2>Happening soon</h2>
+          <p>Public events you can register for right now.</p>
+        </div>
+
+        {events.length > 0 ? (
+          <div className="hp-grid">
+            {events.map((e, i) => (
+              <Link
+                key={e.id}
+                href={`/e/${e.slug}`}
+                className={`hp-tile hp-c${i % 6} ${i === 0 ? "hp-wide" : "hp-sq"}`}
+                style={{ animationDelay: `${i * 120}ms` }}
+              >
+                <div className="hp-tag">{[e.city, e.country].filter(Boolean).join(" · ")}</div>
+                <div>
+                  <div className="hp-when">{formatEventDate(e.starts_at, e.timezone)}</div>
+                  <h3>{e.title}</h3>
+                </div>
               </Link>
             ))}
           </div>
-        </section>
+        ) : (
+          <p className="hp-empty">
+            No public events yet. <Link href="/events/new">Be the first to create one.</Link>
+          </p>
+        )}
+      </section>
 
-        <section className="section">
-          <h2>Happening soon</h2>
-          {events.length > 0 ? (
-            <div className="events">
-              {events.map((e) => (
-                <Link key={e.id} href={`/e/${e.slug}`} className="event-card">
-                  <div className="when">{formatEventDate(e.starts_at, e.timezone)}</div>
-                  <div className="title">{e.title}</div>
-                  <div className="where">
-                    {[e.venue_name, e.city, e.country].filter(Boolean).join(" · ")}
-                  </div>
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <p className="muted">No upcoming public events yet. <Link href="/events/new" className="gold">Be the first to create one.</Link></p>
-          )}
-        </section>
+      <section className="hp-closing">
+        <h2>Your guests are<br /><span className="hp-hl">already waiting.</span></h2>
+        <div className="hp-actions" style={{ justifyContent: "center" }}>
+          <Link href="/discover" className="hp-ghost">Discover events</Link>
+          <Link href="/events/new" className="hp-btn">Create an event free</Link>
+        </div>
+      </section>
 
-        <section className="closing">
-          <h2>Your next <span className="grad-text">gathering</span> starts here.</h2>
-          <div className="actions">
-            <Link href="/discover" className="btn-ghost">Discover Events</Link>
-            <Link href="/events/new" className="btn-white">Create an event</Link>
-          </div>
-        </section>
-      </div>
-
-      <footer>
-        <div className="foot-row">
+      <footer className="hp-foot">
+        <div className="hp-foot-row">
           <Link href="/discover">Discover</Link>
           <Link href="/pricing">Pricing</Link>
           <Link href="/help">Help</Link>
         </div>
-        <div className="foot-legal">
+        <div className="hp-foot-legal">
           <Link href="/terms">Terms</Link>
           <Link href="/privacy">Privacy</Link>
           <Link href="/refunds">Refunds</Link>
+          <span>© G-ventZ</span>
         </div>
       </footer>
     </main>
