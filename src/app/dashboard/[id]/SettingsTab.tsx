@@ -2,6 +2,7 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { themeBackground } from "@/lib/themes";
 import { updateEventDetails, uploadFlyer, removeFlyer, cancelEvent, updateEventTheme } from "./actions";
 import { THEMES } from "@/lib/themes";
+import DeleteEventForm from "./DeleteEventForm";
 
 export default async function SettingsTab({ id }: { id: string }) {
   const supabase = await createSupabaseServerClient();
@@ -11,6 +12,10 @@ export default async function SettingsTab({ id }: { id: string }) {
     .eq("id", id)
     .maybeSingle();
   if (!e) return null;
+
+  // Only the person who created the event sees the delete section.
+  const { data: check } = await supabase.rpc("event_delete_check", { p_event: id });
+  const del = check as { is_owner: boolean; guests: number; paid: number } | null;
 
   return (
     <div className="stack">
@@ -90,6 +95,17 @@ export default async function SettingsTab({ id }: { id: string }) {
           </form>
         )}
       </section>
+
+      {del?.is_owner && (
+        <section className="panel danger">
+          <div className="panel-label">Delete event</div>
+          {del.paid > 0 ? (
+            <p className="muted small">This event has paid tickets, so it can&apos;t be deleted. Cancel it instead, so guests can be refunded.</p>
+          ) : (
+            <DeleteEventForm id={id} title={e.title} guests={Number(del.guests) || 0} />
+          )}
+        </section>
+      )}
     </div>
   );
 }
