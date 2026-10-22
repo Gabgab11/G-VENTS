@@ -25,10 +25,22 @@ npm run build
 Schema changes are migrations in `supabase/migrations/`. See `supabase/README.md` for how to apply them. Apply to staging first, then production.
 
 ## Working on the code
-- Work on a branch and open a pull request. `main` deploys to production, so nothing is pushed to it directly.
+- Work on a branch and open a pull request into `staging`. When staging has been checked, open a pull request from `staging` into `main`. Nothing is pushed to `staging` or `main` directly.
 - Permission checks live in the database (row-level security and functions). The app also checks access up front, using `requireEventRole` in `src/lib/auth.ts`, so users get a clear answer.
 
-## Deploying to Vercel
-1. In Vercel, import the repo. Framework preset: Next.js.
-2. Add the environment variables from `.env.example`: staging keys for Preview, production keys for Production.
-3. Every pull request gets its own preview URL. Merging to `main` deploys production.
+## Deploying
+```
+feature branch ──PR──▶ staging ──PR──▶ main
+   preview URL        staging site      production site
+                      staging database  production database
+```
+- **CI** (`.github/workflows/ci.yml`) runs lint, typecheck, tests, build and the migration checks on every pull request.
+- **Vercel** deploys every branch through its Git integration:
+  - `main` → Production, with the production Supabase keys, at `gventz.com` (`www.gventz.com` redirects to it).
+  - `staging` → a Preview with the staging Supabase keys, at `staging.gventz.com` (the domain is assigned to the `staging` branch in Vercel → Settings → Domains).
+  - any other branch or pull request → its own preview URL with the staging keys.
+- **Database migrations** (`.github/workflows/migrate.yml`):
+  - merging into `staging` applies new migrations to `gvents-staging` automatically;
+  - production is migrated only by hand: Actions → Database migrations → Run workflow from `staging`, target `production`, confirm with "apply to production". Do this **before** merging `staging` into `main`, so the database is ready when the new code goes live.
+
+Environment variables per Vercel environment are listed in `.env.example`. `NEXT_PUBLIC_SITE_URL` must be the public address of each environment (production domain for Production, the staging domain for the `staging` branch).
