@@ -166,8 +166,9 @@ async function featuredEvents() {
 export default async function HomePage() {
   const events = await featuredEvents();
 
-  // Signed-out visitors go straight to sign-up, then on to the event form.
-  const createHref = user ? "/events/new" : "/sign-in?next=%2Fevents%2Fnew";
+  // The page is shared by every visitor, so it can't know who is signed in.
+  // /events/new sends signed-out visitors to sign-up and then back to the form.
+  const createHref = "/events/new";
 
   return (
     <main className={`hp ${pageFonts}`}>

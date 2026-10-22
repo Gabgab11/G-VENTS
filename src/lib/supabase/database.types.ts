@@ -301,6 +301,12 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"delete_event":
+{ Args: { "p_confirm_title": string,"p_event": string }; Returns: Json
+                           },
+"event_delete_check":
+{ Args: { "p_event": string }; Returns: Json
+                           },
 "get_event_page":
 { Args: { "p_slug": string }; Returns: Json
                            },
