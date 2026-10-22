@@ -41,6 +41,22 @@ feature branch ──PR──▶ staging ──PR──▶ main
   - any other branch or pull request → its own preview URL with the staging keys.
 - **Database migrations** (`.github/workflows/migrate.yml`):
   - merging into `staging` applies new migrations to `gvents-staging` automatically;
-  - production is migrated only by hand: Actions → Database migrations → Run workflow from `staging`, target `production`, confirm with "apply to production". Do this **before** merging `staging` into `main`, so the database is ready when the new code goes live.
+  - production is migrated only by hand: Actions → Database migrations → Run workflow from `staging`, target `production`, confirm with "apply to production". The automatic release waits for this, so the database is always ready before the new code goes live.
+
+### Automatic release (`.github/workflows/promote.yml`)
+When Vercel finishes deploying `staging`, the pipeline checks that:
+1. the staging deployment succeeded,
+2. CI passed for that exact commit,
+3. smoke tests pass on `staging.gventz.com`,
+4. production has every migration the commit needs.
+
+It then fast-forwards `main` to that commit, and Vercel deploys production from exactly the code that was tested. It also smoke-tests production afterwards.
+
+If any step fails, nothing reaches production. The pipeline opens (or comments on) a GitHub issue labelled `deploy-failure`, which GitHub emails to everyone watching the repo, and posts to Slack when `SLACK_WEBHOOK_URL` is set.
+
+It stops instead of promoting when:
+- `main` has commits that `staging` doesn't: merge `main` into `staging` first.
+- production is missing a migration: run Database migrations for production, then re-run the workflow.
+- the release changes `.github/workflows/`: GitHub doesn't let the pipeline push those, so open a pull request from `staging` into `main`.
 
 Environment variables per Vercel environment are listed in `.env.example`. `NEXT_PUBLIC_SITE_URL` must be the public address of each environment (production domain for Production, the staging domain for the `staging` branch).
