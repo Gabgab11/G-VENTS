@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState } from "react";
 import { registerGuest, type RegisterState } from "./actions";
 import type { PageQuestion, PageTier } from "@/lib/event-page";
@@ -12,7 +13,8 @@ export default function RegisterForm({ eventId, tiers, questions, userEmail }: {
       return (
         <div className="done" role="status">
           <b>You&apos;re on the waiting list</b>
-          <p className="muted">The event is full. We&apos;ll contact you if a place opens.</p>
+          <p className="muted">The event is full. If a place opens, we&apos;ll email your ticket.</p>
+          {state.ticketCode && <Link className="pill" href={`/t/${state.ticketCode}`}>Follow your place</Link>}
         </div>
       );
     }
@@ -27,8 +29,8 @@ export default function RegisterForm({ eventId, tiers, questions, userEmail }: {
     return (
       <div className="done" role="status">
         <b>You&apos;re registered</b>
-        <p className="muted">Keep this ticket code. You&apos;ll show it at the door.</p>
-        {state.ticketCode && <div className="ticket-code">{state.ticketCode}</div>}
+        <p className="muted">Your ticket has a QR code to show at the door. Check your email for a copy.</p>
+        {state.ticketCode && <Link className="pill" href={`/t/${state.ticketCode}`}>View and print your ticket</Link>}
       </div>
     );
   }
