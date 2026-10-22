@@ -3,6 +3,7 @@ import { getFeaturedEvents } from "@/lib/events";
 import { formatEventDate } from "@/lib/dates";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import HeroCards from "./HeroCards";
+import HeroTilt from "./HeroTilt";
 
 const CSS = `
 @import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&display=swap");
@@ -66,6 +67,12 @@ const CSS = `
   91%  { transform: translate(0, -7px) rotate(calc(var(--tilt) + 1.5deg)); }
   100% { transform: translate(0, 0) rotate(var(--tilt)); }
 }
+/* Tilt game (phones): every card drops onto the line, then slides with the tilt. */
+.hp-tilting .hp-fall { bottom: calc(var(--lift) * var(--s) * 1px); transition: bottom .7s cubic-bezier(.5, 0, .75, 0); }
+.hp-tilt { display: block; margin-top: 14px; }
+.hp-tilt:empty { display: none; }
+.hp-tilt-btn { appearance: none; font: inherit; font-weight: 600; font-size: 14px; color: var(--ink); background: var(--soft); border: 1px solid var(--line); border-radius: 999px; padding: 10px 16px; cursor: pointer; }
+.hp-tilt-hint { font-size: 13px; color: var(--muted); }
 @media (max-width: 1099px) { .hp-stage { --s: 0.62; --band: 210px; } .hp-row3 { display: none; } }
 @media (max-width: 699px) {
   .hp-stage { --s: 0.46; --band: 104px; }
@@ -162,6 +169,7 @@ export default async function HomePage() {
           <Link href="/events/new" className="hp-btn">Create your first event</Link>
           <Link href="/discover" className="hp-ghost">Browse events</Link>
         </div>
+        <HeroTilt />
       </section>
       </div>
 
