@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getFeaturedEvents } from "@/lib/events";
 import { formatEventDate } from "@/lib/dates";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import HeroCards from "./HeroCards";
 
 const CSS = `
 @import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&display=swap");
@@ -32,11 +33,41 @@ const CSS = `
 .hp-btn { padding: 15px 26px; border-radius: 14px; font-weight: 600; font-size: 15px; background: var(--ink); color: #fff; display: inline-block; }
 .hp-ghost { padding: 15px 26px; border-radius: 14px; font-weight: 600; font-size: 15px; border: 1px solid var(--line); color: var(--ink); display: inline-block; }
 
-.hp-ticker { margin-top: 64px; border-block: 1px solid var(--line); overflow: hidden; white-space: nowrap; padding: 16px 0; }
+.hp-ticker { margin-top: 0; border-block: 1px solid var(--line); overflow: hidden; white-space: nowrap; padding: 16px 0; }
 .hp-run { display: inline-flex; gap: 40px; animation: hp-slide 40s linear infinite; font-family: var(--display); font-weight: 800; font-size: 24px; letter-spacing: -0.5px; color: #cfcdc6; }
 .hp-run span:nth-child(4n+1) { color: var(--coral); }
 .hp-run span:nth-child(4n+3) { color: var(--sun); }
 @keyframes hp-slide { to { transform: translateX(-50%); } }
+
+/* Falling cards: they land in a pile resting on the ticker's top line.
+   --s scales the cards, --band is the empty strip under the buttons they land in. */
+.hp-stage { position: relative; --s: 0.78; --band: 258px; }
+.hp-stage .hp-hero { padding-bottom: calc(30px + var(--band)); }
+.hp-drop { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 2; }
+.hp-fall {
+  position: absolute; left: var(--left); bottom: calc(var(--bottom) * var(--s) * 1px);
+  width: calc(var(--w) * var(--s) * 1px); transform-origin: 50% 100%;
+  transform: rotate(var(--tilt)); pointer-events: auto;
+  animation: hp-drop var(--dur) ease-in-out var(--delay) both;
+}
+.hp-card { display: block; transition: transform .35s cubic-bezier(.2,.8,.3,1.2); transform-origin: 50% 100%; border-radius: 14px; }
+.hp-card svg { display: block; width: 100%; height: auto; overflow: visible; filter: drop-shadow(0 10px 12px rgba(60,44,20,.2)); }
+.hp-card:hover, .hp-card:focus-visible { transform: translateY(-10px) rotate(-2deg) scale(1.04); }
+.hp-card:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+@keyframes hp-drop {
+  0%   { transform: translate(var(--sway), -115vh) rotate(calc(var(--tilt) + var(--spin))); }
+  30%  { transform: translate(calc(var(--sway) * -0.6), -70vh) rotate(calc(var(--tilt) - var(--spin) * 0.6)); }
+  60%  { transform: translate(calc(var(--sway) * 0.35), -28vh) rotate(calc(var(--tilt) + var(--spin) * 0.3)); }
+  84%  { transform: translate(0, 0) rotate(var(--tilt)); }
+  91%  { transform: translate(0, -7px) rotate(calc(var(--tilt) + 1.5deg)); }
+  100% { transform: translate(0, 0) rotate(var(--tilt)); }
+}
+@media (max-width: 1099px) { .hp-stage { --s: 0.62; --band: 210px; } .hp-row3 { display: none; } }
+@media (max-width: 699px) {
+  .hp-stage { --s: 0.46; --band: 104px; }
+  .hp-row2, .hp-row3, .hp-fall:nth-child(3), .hp-fall:nth-child(4), .hp-fall:nth-child(6) { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .hp-fall { animation: none; } .hp-card { transition: none; } }
 
 .hp-section { padding: 56px 0 20px; }
 .hp-head { display: flex; justify-content: space-between; align-items: end; gap: 16px; flex-wrap: wrap; margin-bottom: 22px; }
@@ -108,6 +139,8 @@ export default async function HomePage() {
     <main className="hp">
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
 
+      <div className="hp-stage">
+      <HeroCards />
       <header className="hp-top">
         <Link href="/" className="hp-logo">G-vent<b>Z</b></Link>
         {user
@@ -126,6 +159,7 @@ export default async function HomePage() {
           <Link href="/discover" className="hp-ghost">Browse events</Link>
         </div>
       </section>
+      </div>
 
       <div className="hp-ticker" aria-hidden="true">
         <div className="hp-run">
