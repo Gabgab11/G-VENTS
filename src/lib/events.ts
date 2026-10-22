@@ -1,4 +1,4 @@
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createSupabasePublicClient } from "@/lib/supabase/public";
 import type { Category } from "@/lib/categories";
 
 export type EventCard = {
@@ -18,8 +18,9 @@ export type EventCard = {
 // Public, published, upcoming events. Optionally limited to one category.
 // A database failure throws, so the page's error boundary shows it instead of
 // passing an outage off as "no events".
+// Public data only, so it uses the cookieless client and can be cached.
 export async function getFeaturedEvents(limit = 6, category?: Category): Promise<EventCard[]> {
-  const supabase = await createSupabaseServerClient();
+  const supabase = createSupabasePublicClient();
   let query = supabase
     .from("events")
     .select("id, title, slug, category, starts_at, timezone, venue_name, city, country, cover_theme, cover_url")

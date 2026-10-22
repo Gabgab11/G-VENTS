@@ -1,18 +1,18 @@
 import Link from "next/link";
 import { getFeaturedEvents } from "@/lib/events";
 import { formatEventDate } from "@/lib/dates";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import AccountLink from "./AccountLink";
 import HeroCards from "./HeroCards";
 import HeroTilt from "./HeroTilt";
+import { pageFonts } from "@/app/fonts";
 
 const CSS = `
-@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&display=swap");
 
 .hp {
   --ink: #121212; --muted: #6b6a66; --line: #ebe9e2; --soft: #f6f5f1;
   --coral: #ff5a3c; --sun: #ffc23d; --mint: #7ee0b6; --sky: #8ec5ff; --rose: #ffb3c7;
-  --display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
-  --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --display: var(--font-display), "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --body: var(--font-body), "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   background: #fff; color: var(--ink); font-family: var(--body);
   min-height: 100vh; overflow-x: hidden; -webkit-font-smoothing: antialiased;
 }
@@ -69,10 +69,12 @@ const CSS = `
 }
 /* Tilt game (phones): every card drops onto the line, then slides with the tilt. */
 .hp-tilting .hp-fall { bottom: calc(var(--lift) * var(--s) * 1px); transition: bottom .7s cubic-bezier(.5, 0, .75, 0); }
+/* The cards move every frame while tilting: keep each on its own layer so its shadow is not repainted. */
+.hp-tilting .hp-fall { will-change: translate, rotate; }
 .hp-tilt { display: block; margin-top: 14px; }
 .hp-tilt:empty { display: none; }
 .hp-tilt-btn { appearance: none; font: inherit; font-weight: 600; font-size: 14px; color: var(--ink); background: var(--soft); border: 1px solid var(--line); border-radius: 999px; padding: 10px 16px; cursor: pointer; }
-.hp-tilt-hint { font-size: 13px; color: var(--muted); }
+.hp-tilt-btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 @media (max-width: 1099px) { .hp-stage { --s: 0.62; --band: 210px; } .hp-row3 { display: none; } }
 @media (max-width: 699px) {
   .hp-stage { --s: 0.46; --band: 104px; }
@@ -139,24 +141,28 @@ const TICKER = [
   "Quinceañera", "Festa Junina", "Send-Off", "Naming Ceremony", "Mehndi",
 ];
 
+// Rendered once and refreshed at most every minute, instead of on every visit.
+export const revalidate = 60;
+
+// Builds without Supabase settings (CI) render no events; the deployed page
+// refreshes with real ones within a minute.
+async function featuredEvents() {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) return [];
+  return getFeaturedEvents(6);
+}
+
 export default async function HomePage() {
-  const supabase = await createSupabaseServerClient();
-  const [{ data: { user } }, events] = await Promise.all([
-    supabase.auth.getUser(),
-    getFeaturedEvents(6),
-  ]);
+  const events = await featuredEvents();
 
   return (
-    <main className="hp">
+    <main className={`hp ${pageFonts}`}>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
 
       <div className="hp-stage">
       <HeroCards />
       <header className="hp-top">
         <Link href="/" className="hp-logo">G-vent<b>Z</b></Link>
-        {user
-          ? <Link href="/dashboard" className="hp-signin">Dashboard</Link>
-          : <Link href="/sign-in" className="hp-signin">Sign in</Link>}
+        <AccountLink />
       </header>
 
       <section className="hp-wrap hp-hero">

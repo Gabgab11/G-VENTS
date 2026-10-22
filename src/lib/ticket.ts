@@ -84,11 +84,16 @@ export function ticketPrice(tier: Ticket["tier"]): string {
 }
 
 // The address people use to reach the site, for links in QR codes and emails.
-// NEXT_PUBLIC_SITE_URL wins when it is set to a real address; otherwise the
-// request's own host is used, so preview deployments link to themselves.
+// NEXT_PUBLIC_SITE_URL wins when it is set to a real address, then Vercel's
+// production domain; otherwise (previews, local) the request's own host is used,
+// so preview deployments link to themselves.
 export async function siteOrigin(): Promise<string> {
   const configured = (process.env.NEXT_PUBLIC_SITE_URL ?? "").replace(/\/+$/, "");
   if (configured && !configured.includes("localhost")) return configured;
+  // Production links never come from request headers, which a client can set.
+  // Vercel provides the production domain itself.
+  const production = process.env.VERCEL_ENV === "production" && process.env.VERCEL_PROJECT_PRODUCTION_URL;
+  if (production) return `https://${production}`;
   const h = await headers();
   const host = h.get("x-forwarded-host") ?? h.get("host");
   if (!host) return configured || "http://localhost:3000";

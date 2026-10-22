@@ -7,6 +7,23 @@ Every schema change is a SQL file in `migrations/`, named `YYYYMMDDHHMMSS_descri
 | `20261013000000_baseline.sql` | The original schema as first committed. |
 | `20261014000100_reconcile_live_schema.sql` | Objects that were created by hand and never committed: `event_questions`, extra columns, the `waitlisted` status, and `register_guest`, `public_attendee_count` and `promote_next_waitlisted`. |
 | `20261014000200_security_hardening.sql` | Fixes from the architecture review: private events, anonymous ticket reservation, email squatting, staff permissions, theme values, atomic event creation, and storage rules. |
+| `20261022000100_ticket_page.sql` | `get_ticket` for the ticket page (`/t/[code]`). |
+| `20261022000200_event_location_details.sql` | Venue details from the place search. |
+| `20261022000300_registration_email.sql` | `register_guest` stores the account's verified email, so tickets can't be emailed to arbitrary addresses. |
+| `20261022000400_places_quota.sql` | Shared per-user limit for Google Places lookups (`take_places_quota`). |
+
+## Testing locally
+
+Needs Docker. `config.toml` holds the local settings.
+
+```bash
+supabase db start           # empty local database with every migration applied
+npm run test:db             # tests in tests/*.test.sql (pgTAP)
+npm run db:types:local      # regenerates src/lib/supabase/database.types.ts; commit it
+supabase stop
+```
+
+CI runs the same steps on every pull request and fails if the committed types are out of date.
 
 ## Applying changes
 

@@ -1,0 +1,4 @@
+# Local Supabase settings. Used by `supabase start` and by CI to prove that
+# every migration in migrations/ applies cleanly, in order, to an empty
+# database. Unlisted settings use the CLI's defaults.
+project_id = "g-vents"

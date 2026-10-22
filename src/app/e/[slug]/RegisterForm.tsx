@@ -56,7 +56,8 @@ export default function RegisterForm({ eventId, tiers, questions, userEmail }: {
       <label className="field"><span>Full name</span>
         <input className="input" name="name" required minLength={2} maxLength={120} autoComplete="name" /></label>
       <label className="field"><span>Email</span>
-        <input className="input" name="email" type="email" required maxLength={254} autoComplete="email" defaultValue={userEmail} /></label>
+        <input className="input" type="email" value={userEmail} readOnly aria-describedby="email-note" />
+        <small id="email-note" className="muted">Your ticket is sent to your account email.</small></label>
 
       {questions.map((q) => (
         <label className="field" key={q.id}>

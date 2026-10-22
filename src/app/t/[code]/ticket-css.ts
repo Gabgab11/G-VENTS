@@ -1,13 +1,12 @@
 // Styles for the ticket page. Same palette and fonts as the home page.
 // The print rules turn the page into one clean ticket on A4 or Letter paper.
 export const TICKET_CSS = `
-@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&display=swap");
 
 .tk {
   --ink: #121212; --muted: #6b6a66; --line: #ebe9e2; --soft: #f6f5f1; --page: #f6f5f1;
   --coral: #ff5a3c; --sun: #ffc23d; --mint: #7ee0b6;
-  --display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
-  --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --display: var(--font-display), "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --body: var(--font-body), "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   min-height: 100vh; background: var(--page); color: var(--ink); font-family: var(--body);
   padding: 22px 16px 64px;
 }

@@ -79,6 +79,25 @@ export default function ThemeStage({ theme }: { theme: string }) {
     const base = t.effect === "stars" ? 140 : t.effect === "waves" ? 0 : 60;
     const count = small ? Math.round(base / 2) : base;
 
+    // Firefly glows are drawn once per colour and reused, instead of building a
+    // new gradient for every firefly on every frame.
+    const glows = new Map<string, HTMLCanvasElement>();
+    function glow(color: string) {
+      let sprite = glows.get(color);
+      if (!sprite) {
+        sprite = document.createElement("canvas");
+        sprite.width = sprite.height = 64;
+        const g2 = sprite.getContext("2d")!;
+        const g = g2.createRadialGradient(32, 32, 0, 32, 32, 32);
+        g.addColorStop(0, color);
+        g.addColorStop(1, "rgba(0,0,0,0)");
+        g2.fillStyle = g;
+        g2.fillRect(0, 0, 64, 64);
+        glows.set(color, sprite);
+      }
+      return sprite;
+    }
+
     function resize() {
       const r = canvas!.getBoundingClientRect();
       w = r.width; h = r.height;
@@ -137,12 +156,8 @@ export default function ThemeStage({ theme }: { theme: string }) {
           ctx!.restore();
         } else if (t.effect === "fireflies") {
           const a = 0.25 + (Math.sin(p.ph * 2) + 1) * 0.35;
-          const g = ctx!.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 4);
-          g.addColorStop(0, p.c);
-          g.addColorStop(1, "rgba(0,0,0,0)");
           ctx!.globalAlpha = a;
-          ctx!.fillStyle = g;
-          ctx!.fillRect(p.x - p.r * 4, p.y - p.r * 4, p.r * 8, p.r * 8);
+          ctx!.drawImage(glow(p.c), p.x - p.r * 4, p.y - p.r * 4, p.r * 8, p.r * 8);
         } else if (t.effect === "sparks") {
           ctx!.globalAlpha = 0.25 + (Math.sin(p.ph * 3) + 1) * 0.35;
           ctx!.fillStyle = p.c;
