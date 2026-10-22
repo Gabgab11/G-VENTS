@@ -7,6 +7,7 @@ import { isThemeKey } from "@/lib/themes";
 import { checkbox, field, isUuid } from "@/lib/forms";
 import type { SupabaseServerClient } from "@/lib/supabase/server";
 import type { MessageCode } from "./messages";
+import { queueTicketEmail } from "@/lib/email/send-ticket";
 
 const KINDS = ["text", "options", "social", "company", "terms", "phone", "website"] as const;
 const SEGMENTS = ["all", "paid", "checked_in", "not_checked_in", "waitlist"] as const;
@@ -118,10 +119,14 @@ export async function checkInGuest(formData: FormData) {
 
 export async function promoteFromWaitlist(formData: FormData) {
   const { id, supabase } = await authorize(formData);
-  const { error } = await supabase.rpc("promote_next_waitlisted", { p_event: id });
+  const { data, error } = await supabase.rpc("promote_next_waitlisted", { p_event: id });
   if (error) {
     logError("promote", error);
     fail(id, "guests", "promote_failed");
+  }
+  const promoted = data as { ticket_code?: string; attendee_email?: string } | null;
+  if (promoted?.ticket_code && promoted.attendee_email) {
+    await queueTicketEmail(supabase, promoted.ticket_code, promoted.attendee_email);
   }
   done(id, "guests", "promoted");
 }

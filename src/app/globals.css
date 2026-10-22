@@ -347,3 +347,20 @@ input, select, textarea, button { max-width: 100%; min-width: 0; }
 .welcome-banner { position: fixed; top: calc(12px + env(safe-area-inset-top, 0px)); left: 12px; right: 12px; max-width: 520px; margin: 0 auto; z-index: 70; display: flex; justify-content: space-between; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 12px 14px; box-shadow: 0 12px 40px rgba(0,0,0,.25); }
 .welcome-close { background: var(--surface-hi); border: 0; color: var(--text); width: 36px; height: 36px; border-radius: 999px; cursor: pointer; font: inherit; flex: 0 0 auto; }
 .music-fab { position: fixed; left: 14px; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); z-index: 70; width: 52px; height: 52px; border-radius: 999px; border: 0; background: var(--grad); color: #141414; font: inherit; font-weight: 800; font-size: 18px; box-shadow: 0 10px 30px rgba(0,0,0,.3); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+/* ---------- Searchable dropdowns (event location) ---------- */
+.combo { position: relative; }
+.combo-input { padding-right: 40px; cursor: pointer; }
+.combo-input:focus { cursor: text; }
+.combo-caret { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; font-size: 14px; }
+.combo-spin { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); display: flex; pointer-events: none; }
+.combo-list { position: absolute; z-index: 40; left: 0; right: 0; top: calc(100% + 6px); max-height: 264px; overflow-y: auto; overscroll-behavior: contain; margin: 0; padding: 6px; list-style: none; background: var(--surface-hi); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 18px 40px rgba(0,0,0,.35); }
+.combo-opt { padding: 11px 12px; border-radius: 8px; cursor: pointer; font-size: 15px; line-height: 1.35; color: var(--text); }
+.combo-opt small { display: block; margin-top: 2px; font-size: 13px; color: var(--muted); }
+.combo-opt.active, .combo-opt:hover { background: var(--surface); }
+.combo-opt[aria-selected="true"] { color: var(--gold); font-weight: 700; }
+.combo-keep { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); border-radius: 0 0 8px 8px; margin-top: 4px; }
+.combo-empty { padding: 11px 12px; color: var(--muted); font-size: 14px; }
+.spinner { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--line); border-top-color: var(--gold); animation: combo-spin .8s linear infinite; }
+@keyframes combo-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 2.4s; } }

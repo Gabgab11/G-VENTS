@@ -3,6 +3,7 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { field, isUuid } from "@/lib/forms";
 import { userMessage } from "@/lib/errors";
+import { queueTicketEmail } from "@/lib/email/send-ticket";
 
 export type RegisterState =
   | { error?: string; status?: "confirmed" | "waitlisted" | "pending"; ticketCode?: string }
@@ -37,6 +38,7 @@ export async function registerGuest(_prev: RegisterState, formData: FormData): P
   });
 
   if (error || !data) return { error: userMessage(error, "We couldn't complete your registration. Please try again.") };
-  const row = data as { status: "confirmed" | "waitlisted" | "pending"; ticket_code: string };
-  return { status: row.status, ticketCode: row.status === "confirmed" ? row.ticket_code : undefined };
+  const row = data as { status: "confirmed" | "waitlisted" | "pending"; ticket_code: string; attendee_email?: string };
+  if (row.status === "confirmed") await queueTicketEmail(supabase, row.ticket_code, row.attendee_email || email);
+  return { status: row.status, ticketCode: row.ticket_code };
 }

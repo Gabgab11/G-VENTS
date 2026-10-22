@@ -8,6 +8,7 @@ import { isThemeKey } from "@/lib/themes";
 import { DEFAULT_TIMEZONE, zonedTimeToUtc } from "@/lib/dates";
 import { checkbox, field } from "@/lib/forms";
 import { userMessage } from "@/lib/errors";
+import { countryName, isCountryCode, regionsFor } from "@/lib/locations";
 
 export type CreateEventState = { error?: string } | undefined;
 
@@ -18,6 +19,61 @@ function makeSlug(title: string) {
   // 5 random base-36 characters: enough that slugs can't be guessed or collide in practice.
   const suffix = Array.from(randomBytes(5), (b) => (b % 36).toString(36)).join("");
   return `${base || "event"}-${suffix}`;
+}
+
+type Location = {
+  venue_name: string;
+  address: string;
+  city: string;
+  region: string;
+  country: string;
+  country_code: string;
+  lat: number | null;
+  lng: number | null;
+  place_id: string;
+};
+
+const PLACE_ID = /^[A-Za-z0-9_-]{10,300}$/;
+
+function coordinate(value: string, limit: number): number | null {
+  if (!value) return null;
+  const n = Number(value);
+  return Number.isFinite(n) && Math.abs(n) <= limit ? n : null;
+}
+
+// Location from the form: Country, State/Region, then the venue. The venue is
+// either a Google Places result (with address, coordinates and Place ID) or
+// whatever the host typed. Place details are only kept when they come together,
+// so a stale Place ID can't be saved next to a hand-typed venue.
+function readLocation(formData: FormData): Location | { error: string } {
+  const countryCode = field(formData, "country_code", 2).toUpperCase();
+  const country = field(formData, "country", 120);
+  const region = field(formData, "region", 120);
+  const venue = field(formData, "venue", 300);
+
+  if (countryCode && !isCountryCode(countryCode)) return { error: "Choose a country from the list." };
+  const regions = countryCode ? regionsFor(countryCode) : null;
+  if (regions && region && !regions.regions.includes(region)) {
+    return { error: `Choose a ${regions.label.toLowerCase()} from the list.` };
+  }
+
+  const placeId = field(formData, "place_id", 300);
+  const lat = coordinate(field(formData, "lat", 40), 90);
+  const lng = coordinate(field(formData, "lng", 40), 180);
+  const hasPlace = PLACE_ID.test(placeId) && venue !== "";
+
+  return {
+    venue_name: venue,
+    address: hasPlace ? field(formData, "address", 300) : "",
+    // Pages show "venue · city · country"; without a Google town, the region fills that spot.
+    city: (hasPlace ? field(formData, "city", 120) : "") || region,
+    region,
+    country: countryName(countryCode) ?? country,
+    country_code: countryCode,
+    lat: hasPlace && lat !== null && lng !== null ? lat : null,
+    lng: hasPlace && lat !== null && lng !== null ? lng : null,
+    place_id: hasPlace ? placeId : "",
+  };
 }
 
 export async function createEvent(_prev: CreateEventState, formData: FormData): Promise<CreateEventState> {
@@ -62,6 +118,9 @@ export async function createEvent(_prev: CreateEventState, formData: FormData): 
   if (tiers.length === 0) return { error: "Add at least one ticket." };
   if (tiers.length > MAX_TIERS) return { error: `Add at most ${MAX_TIERS} ticket types.` };
 
+  const location = readLocation(formData);
+  if ("error" in location) return { error: location.error };
+
   // Event and tickets are written in one transaction, so a failure never leaves half an event.
   const { data: event, error } = await supabase.rpc("create_event_with_tiers", {
     p_event: {
@@ -72,9 +131,7 @@ export async function createEvent(_prev: CreateEventState, formData: FormData): 
       starts_at: startsAt.toISOString(),
       ends_at: endsAt?.toISOString() ?? null,
       timezone,
-      venue_name: field(formData, "venue", 300),
-      city: field(formData, "city", 120),
-      country: field(formData, "country", 120),
+      ...location,
       refund_policy: field(formData, "refund_policy", 2000),
       visibility: field(formData, "visibility") === "private" ? "private" : "public",
       show_attendee_count: checkbox(formData, "show_attendee_count"),

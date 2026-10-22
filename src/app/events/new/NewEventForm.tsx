@@ -7,11 +7,20 @@ import { THEMES, themeBackground } from "@/lib/themes";
 import ThemeStage from "@/components/ThemeStage";
 import BackLink from "@/components/BackLink";
 import MirrorBall from "@/components/MirrorBall";
+import LocationFields from "./LocationFields";
 
 type Tier = { id: number; name: string; price: string; qty: string };
 let nextId = 2;
 
-export default function NewEventForm({ defaultTheme }: { defaultTheme: string }) {
+export default function NewEventForm({
+  defaultTheme,
+  detectedCountry,
+  placesEnabled,
+}: {
+  defaultTheme: string;
+  detectedCountry: string | null;
+  placesEnabled: boolean;
+}) {
   const [state, formAction, pending] = useActionState<CreateEventState, FormData>(createEvent, undefined);
   const [title, setTitle] = useState("");
   const [theme, setTheme] = useState(defaultTheme);
@@ -71,12 +80,7 @@ export default function NewEventForm({ defaultTheme }: { defaultTheme: string })
           </div>
 
           <div className="panel">
-            <label className="field"><span>Location</span>
-              <input className="input" name="venue" placeholder="Venue name, address, or online link" /></label>
-            <div className="row2">
-              <label className="field"><span>City</span><input className="input" name="city" /></label>
-              <label className="field"><span>Country</span><input className="input" name="country" /></label>
-            </div>
+            <LocationFields detectedCountry={detectedCountry} placesEnabled={placesEnabled} />
           </div>
 
           <div className="panel">
