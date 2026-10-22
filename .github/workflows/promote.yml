@@ -1,0 +1,203 @@
+name: Promote staging to production
+
+# Automatic release: when Vercel finishes deploying the `staging` branch,
+#   1. the staging deployment must have succeeded,
+#   2. CI (`verify` and `migrations`) must have passed for that exact commit,
+#   3. smoke tests against staging.gventz.com must pass,
+#   4. production must not be missing any database migration,
+# and then `main` is fast-forwarded to that commit, so Vercel builds production
+# from exactly the code that was tested on staging. Any failure, including a
+# failed production deployment afterwards, opens a GitHub issue labelled
+# `deploy-failure` (and posts to Slack when SLACK_WEBHOOK_URL is set).
+#
+# Safety:
+#   - main only ever moves by fast-forward; if main has commits that staging
+#     doesn't, promotion stops instead of overwriting them.
+#   - a run for an older staging commit never promotes over a newer one.
+#   - production migrations stay manual (migrate.yml); a pending one blocks promotion.
+#
+# GitHub runs deployment_status workflows from the default branch, so this
+# file only takes effect once it is on `main`.
+#
+# Repository secrets:
+#   VERCEL_AUTOMATION_BYPASS_SECRET  Vercel → Settings → Deployment Protection →
+#                                    Protection Bypass for Automation (staging is behind Vercel login)
+#   SUPABASE_ACCESS_TOKEN, SUPABASE_PROD_REF, SUPABASE_PROD_DB_PASSWORD  (same as migrate.yml)
+#   SLACK_WEBHOOK_URL                optional: also post failures to Slack
+
+on:
+  deployment_status:
+
+permissions:
+  contents: write     # fast-forward main
+  issues: write       # failure notifications
+  checks: read
+  statuses: read
+  deployments: read
+
+concurrency:
+  group: promote-${{ github.event.deployment.environment }}
+  cancel-in-progress: false
+
+env:
+  STAGING_URL: https://staging.gventz.com
+  PRODUCTION_URL: https://gventz.com
+
+jobs:
+  # ---------------------------------------------------------------- staging
+  promote:
+    if: >-
+      github.event.deployment.environment == 'Preview' &&
+      contains(fromJSON('["success","failure","error"]'), github.event.deployment_status.state)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      SHA: ${{ github.event.deployment.sha }}
+      STATE: ${{ github.event.deployment_status.state }}
+      GH_TOKEN: ${{ github.token }}
+    outputs:
+      is_staging: ${{ steps.which.outputs.is_staging }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Vercel reports every branch as "Preview"; only the commit at the tip of
+      # `staging` counts. Anything else is ignored quietly.
+      - name: Is this the staging deployment?
+        id: which
+        run: |
+          head=$(gh api "repos/$GITHUB_REPOSITORY/branches/staging" --jq .commit.sha)
+          if [ "$head" = "$SHA" ]; then echo "is_staging=true" >> "$GITHUB_OUTPUT"
+          else echo "Not the staging head ($head); nothing to do."; echo "is_staging=false" >> "$GITHUB_OUTPUT"; fi
+
+      - name: Staging deployment succeeded
+        if: steps.which.outputs.is_staging == 'true'
+        run: |
+          if [ "$STATE" != "success" ]; then
+            echo "::error::Vercel staging deployment for $SHA ended in '$STATE'."; exit 1
+          fi
+
+      - name: CI passed for this commit
+        if: steps.which.outputs.is_staging == 'true'
+        run: |
+          # CI runs on the same push, so it may still be going: wait up to 20 minutes.
+          for _ in $(seq 1 40); do
+            runs=$(gh api "repos/$GITHUB_REPOSITORY/commits/$SHA/check-runs?per_page=100" \
+              --jq '[.check_runs[] | select(.name == "verify" or .name == "migrations")]')
+            total=$(jq 'length' <<<"$runs")
+            done_ok=$(jq '[.[] | select(.status == "completed" and .conclusion == "success")] | length' <<<"$runs")
+            bad=$(jq -r '[.[] | select(.status == "completed" and .conclusion != "success") | "\(.name): \(.conclusion)"] | join(", ")' <<<"$runs")
+            if [ -n "$bad" ]; then echo "::error::CI failed for $SHA ($bad)."; exit 1; fi
+            if [ "$total" -ge 2 ] && [ "$done_ok" -ge 2 ]; then echo "CI passed."; exit 0; fi
+            echo "Waiting for CI ($done_ok of 2 checks done)..."; sleep 30
+          done
+          echo "::error::CI did not finish within 20 minutes for $SHA."; exit 1
+
+      - name: Smoke test staging
+        if: steps.which.outputs.is_staging == 'true'
+        env:
+          BYPASS: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+        run: |
+          if [ -z "$BYPASS" ]; then
+            echo "::error::VERCEL_AUTOMATION_BYPASS_SECRET is not set, so staging (behind Vercel login) can't be tested."; exit 1
+          fi
+          check() { # path, expected status
+            code=$(curl -s -o /dev/null -w '%{http_code}' -m 20 -H "x-vercel-protection-bypass: $BYPASS" "$STAGING_URL$1")
+            echo "$1 → $code (want $2)"; [ "$code" = "$2" ]
+          }
+          ok=1
+          check / 200 || ok=0
+          check /sign-in 200 || ok=0
+          check /discover 200 || ok=0
+          check /api/places/autocomplete 401 || ok=0   # server code runs and refuses signed-out callers
+          [ $ok = 1 ] || { echo "::error::Smoke tests failed on staging."; exit 1; }
+
+      - uses: supabase/setup-cli@v1
+        if: steps.which.outputs.is_staging == 'true'
+        with:
+          version: 2.121.0
+
+      # Production migrations stay manual. If this commit brings one that
+      # production doesn't have yet, stop here and say how to apply it.
+      - name: Production database is ready
+        if: steps.which.outputs.is_staging == 'true'
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          REF: ${{ secrets.SUPABASE_PROD_REF }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_PROD_DB_PASSWORD }}
+        run: |
+          if [ -z "$SUPABASE_ACCESS_TOKEN" ] || [ -z "$REF" ] || [ -z "$SUPABASE_DB_PASSWORD" ]; then
+            echo "::error::Missing Supabase production secrets; can't check production migrations."; exit 1
+          fi
+          git checkout -q "$SHA"
+          supabase link --project-ref "$REF" --password "$SUPABASE_DB_PASSWORD" >/dev/null
+          out=$(supabase db push --linked --dry-run 2>&1) || { echo "$out"; echo "::error::Couldn't check production migrations."; exit 1; }
+          echo "$out"
+          if grep -qi "would push" <<<"$out"; then
+            echo "::error::Production is missing migrations. Run Actions → Database migrations (target production) from staging, then re-run this workflow."; exit 1
+          fi
+          grep -qi "up to date" <<<"$out" || { echo "::error::Unexpected output from the migration check."; exit 1; }
+          echo "Production database is up to date."
+
+      - name: Fast-forward main to the tested commit
+        if: steps.which.outputs.is_staging == 'true'
+        run: |
+          git fetch -q origin main staging
+          if [ "$(git rev-parse origin/staging)" != "$SHA" ]; then
+            echo "Staging moved on since this deployment; the newer commit will be promoted by its own run."; exit 0
+          fi
+          if ! git merge-base --is-ancestor origin/main "$SHA"; then
+            echo "::error::main has commits that staging doesn't. Merge main into staging first; nothing was promoted."; exit 1
+          fi
+          if [ "$(git rev-parse origin/main)" = "$SHA" ]; then echo "main is already at $SHA."; exit 0; fi
+          # GitHub refuses workflow-file changes pushed with the workflow token.
+          if git diff --name-only origin/main "$SHA" | grep -q '^\.github/workflows/'; then
+            echo "::error::This release changes .github/workflows/, which the pipeline isn't allowed to push. Open a pull request from staging into main instead."; exit 1
+          fi
+          git push origin "$SHA:refs/heads/main"
+          echo "### Promoted \`${SHA:0:7}\` to production" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Notify about the failure
+        if: failure() && steps.which.outputs.is_staging == 'true'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          STAGE: staging
+        run: bash .github/scripts/notify-failure.sh
+
+  # ------------------------------------------------------------- production
+  # After promotion Vercel deploys main. Check it worked; notify if not.
+  production:
+    if: >-
+      github.event.deployment.environment == 'Production' &&
+      contains(fromJSON('["success","failure","error"]'), github.event.deployment_status.state)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      SHA: ${{ github.event.deployment.sha }}
+      STATE: ${{ github.event.deployment_status.state }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Production deployment succeeded
+        run: |
+          if [ "$STATE" != "success" ]; then
+            echo "::error::Vercel production deployment for $SHA ended in '$STATE'. The previous version is still live."; exit 1
+          fi
+      - name: Smoke test production
+        run: |
+          check() {
+            code=$(curl -s -o /dev/null -w '%{http_code}' -m 20 "$PRODUCTION_URL$1")
+            echo "$1 → $code (want $2)"; [ "$code" = "$2" ]
+          }
+          ok=1
+          check / 200 || ok=0
+          check /sign-in 200 || ok=0
+          check /api/places/autocomplete 401 || ok=0
+          [ $ok = 1 ] || { echo "::error::Smoke tests failed on production. Roll back in Vercel → Deployments → Instant Rollback."; exit 1; }
+      - name: Notify about the failure
+        if: failure()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          STAGE: production
+        run: bash .github/scripts/notify-failure.sh
