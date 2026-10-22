@@ -43,7 +43,11 @@ const CSS = `
    --s scales the cards, --band is the empty strip under the buttons they land in. */
 .hp-stage { position: relative; --s: 0.78; --band: 258px; }
 .hp-stage .hp-hero { padding-bottom: calc(30px + var(--band)); }
-.hp-drop { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 2; }
+.hp-drop { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+/* Text sits above the falling cards; the hero's empty strip lets clicks through to the resting cards. */
+.hp-stage .hp-top, .hp-stage .hp-hero { position: relative; z-index: 1; }
+.hp-stage .hp-hero { pointer-events: none; }
+.hp-stage .hp-hero > * { pointer-events: auto; }
 .hp-fall {
   position: absolute; left: var(--left); bottom: calc(var(--bottom) * var(--s) * 1px);
   width: calc(var(--w) * var(--s) * 1px); transform-origin: 50% 100%;
