@@ -44,7 +44,7 @@ const CARDS: Card[] = [
   { shape: "shield", words: ["Quince-", "añera"], meta: "Mexico City", tone: "sky", category: "Family", left: 80, bottom: 0, tilt: 6, delay: 0.8, row: 1 },
   { shape: "hex", words: ["Detty", "December"], meta: "Accra", tone: "sun", category: "Nightlife", left: 90.5, bottom: 0, tilt: -5, delay: 0.4, row: 1 },
   { shape: "leaf", words: ["Festa", "Junina"], meta: "São Paulo", tone: "mint", category: "Food", left: 51, bottom: 140, tilt: 9, delay: 2.0, row: 2 },
-  { shape: "tag", words: ["Send-Off"], meta: "Abuja · Friday", tone: "paper", category: "Community", left: 61.5, bottom: 186, tilt: -8, delay: 2.3, row: 2 },
+  { shape: "tag", words: ["Send-Off"], meta: "Abuja · Friday", tone: "paper", category: "Community", left: 61.5, bottom: 150, tilt: -8, delay: 2.3, row: 2 },
   { shape: "squircle", words: ["Iftar", "Night"], meta: "Cairo", tone: "coral", category: "Faith", left: 74, bottom: 148, tilt: -7, delay: 1.8, row: 2 },
   { shape: "card", words: ["Naming", "Ceremony"], meta: "Ibadan · Sunday", tone: "lilac", category: "Faith", left: 86, bottom: 150, tilt: 5, delay: 2.1, row: 2 },
   { shape: "stamp", words: ["Mehndi"], meta: "Dubai", tone: "rose", category: "Arts", left: 79, bottom: 290, tilt: -4, delay: 2.9, row: 3 },
@@ -95,9 +95,11 @@ export default function HeroCards() {
         // Each card sways a little differently on the way down.
         const sway = (i % 2 ? 1 : -1) * (18 + (i * 7) % 26);
         const spin = (i % 3 === 0 ? -1 : 1) * (14 + (i * 5) % 18);
+        // A tilted card rests on its lowest corner, so lift it by the height that corner drops.
+        const lift = Math.round((s.w / 2) * Math.sin((Math.abs(card.tilt) * Math.PI) / 180));
         const style = {
           "--left": `${card.left}%`,
-          "--bottom": card.bottom,
+          "--bottom": card.bottom + lift,
           "--w": s.w,
           "--h": s.h,
           "--tilt": `${card.tilt}deg`,
