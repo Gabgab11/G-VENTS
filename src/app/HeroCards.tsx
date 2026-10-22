@@ -100,6 +100,7 @@ export default function HeroCards() {
         const style = {
           "--left": `${card.left}%`,
           "--bottom": card.bottom + lift,
+          "--lift": lift, // resting height when the tilt game drops every card onto the line
           "--w": s.w,
           "--h": s.h,
           "--tilt": `${card.tilt}deg`,
