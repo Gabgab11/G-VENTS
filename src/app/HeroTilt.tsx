@@ -2,9 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 
-// Tilt game for the home page cards. Tilt the phone left or right and the cards
-// slide along the line and pile up on the low side, like coins in a tray. They
-// only ever move sideways along the line, so they still never pass it.
+// Tilt game for the home page cards. Tilt the phone and the cards roll around the
+// top of the page: left/right slides them sideways, tipping the top of the phone
+// away from you floats them up, tipping it back drops them onto the line. They
+// bump into each other and pile up. They stay inside the hero: never below the
+// line above the name ticker, never off the top or sides of the screen.
 //
 // Android: starts on its own. iPhone/iPad: Safari only shares motion after a tap,
 // so a "Tilt to play" button asks once. Computers and visitors who prefer
@@ -12,28 +14,42 @@ import { useEffect, useRef, useState } from "react";
 
 const SETTLE_MS = 4200;   // the opening fall finishes before the game starts
 const GRAVITY = 2600;     // px/s² at a 90° tilt
-const DEADZONE = 3;       // degrees of tilt ignored, so a phone held "flat" stays still
-const FRICTION = 2.4;     // how quickly sliding slows down (per second)
-const OVERLAP = 0.62;     // neighbours may overlap by 38% of a card, like a heap (less room → more overlap)
+const REST_PULL = 0.12;   // a little pull towards the line, so a phone held still lets cards settle
+const DEADZONE = 3;       // degrees of tilt ignored
+const FRICTION = 2.2;     // how quickly movement slows down (per second)
+const BOUNCE = 0.2;       // how much speed survives hitting an edge
+const PUSH_CAP = 12;      // px per frame cards may push each other apart (keeps it smooth)
 
-type Body = { el: HTMLElement; base: number; w: number; x: number; v: number };
+type Body = {
+  el: HTMLElement;
+  left: number; top: number; // resting position inside the stage
+  w: number; h: number; r: number;
+  x: number; y: number;      // offset from the resting position (y < 0 is up)
+  vx: number; vy: number;
+};
 
 type Mode = "off" | "ask" | "hint" | "on";
+type Tilt = { x: number; y: number };
 
-function tiltFrom(e: DeviceOrientationEvent): number {
+// Left-right and front-back tilt in screen terms, whichever way the phone is turned.
+function tiltFrom(e: DeviceOrientationEvent): Tilt {
   const angle = (screen.orientation?.angle ?? (window as unknown as { orientation?: number }).orientation ?? 0) as number;
   const beta = e.beta ?? 0;
   const gamma = e.gamma ?? 0;
-  if (angle === 90) return beta;
-  if (angle === -90 || angle === 270) return -beta;
-  if (angle === 180) return -gamma;
-  return gamma;
+  if (angle === 90) return { x: beta, y: -gamma };
+  if (angle === -90 || angle === 270) return { x: -beta, y: gamma };
+  if (angle === 180) return { x: -gamma, y: -beta };
+  return { x: gamma, y: beta };
 }
+
+const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
+const toRad = (deg: number) => (deg * Math.PI) / 180;
 
 export default function HeroTilt() {
   const [mode, setMode] = useState<Mode>("off");
   const anchor = useRef<HTMLSpanElement>(null);
-  const tilt = useRef(0);
+  const tilt = useRef<Tilt | null>(null);
+  const firstY = useRef<number | null>(null);
   const listening = useRef(false);
   const ready = useRef(false);
 
@@ -42,9 +58,11 @@ export default function HeroTilt() {
     listening.current = true;
     window.addEventListener("deviceorientation", (e) => {
       if (e.gamma === null && e.beta === null) return;
-      tilt.current = tiltFrom(e);
+      const t = tiltFrom(e);
+      tilt.current = t;
+      if (firstY.current === null) firstY.current = t.y;
       if (!ready.current) return;
-      const tilted = Math.abs(tilt.current) > 8;
+      const tilted = Math.abs(t.x) > 8 || Math.abs(t.y - firstY.current) > 10;
       setMode((m) => (m === "on" || tilted ? "on" : m === "off" ? "hint" : m));
     });
   }
@@ -69,20 +87,26 @@ export default function HeroTilt() {
     if (mode !== "on") return;
     const stage = anchor.current?.closest<HTMLElement>(".hp-stage");
     if (!stage) return;
-    stage.classList.add("hp-tilting");
+    stage.classList.add("hp-tilting"); // every card drops onto the line first
 
     const bodies: Body[] = [...stage.querySelectorAll<HTMLElement>(".hp-fall")]
       .filter((el) => getComputedStyle(el).display !== "none")
-      .map((el) => ({ el, base: el.offsetLeft, w: el.offsetWidth, x: 0, v: 0 }));
+      .map((el) => ({ el, left: 0, top: 0, w: 0, h: 0, r: 0, x: 0, y: 0, vx: 0, vy: 0 }));
 
-    // Measured once and again after a resize or rotation, not every frame.
-    let width = stage.clientWidth;
-    let spacing = OVERLAP;
+    // Sizes are measured once, and again after a resize or rotation, not every frame.
+    let width = 0;
     const measure = () => {
       width = stage.clientWidth;
-      for (const b of bodies) { b.base = b.el.offsetLeft; b.w = b.el.offsetWidth; }
-      const total = bodies.reduce((sum, b) => sum + b.w, 0);
-      spacing = Math.min(OVERLAP, (width * 0.95) / Math.max(1, total));
+      const height = stage.clientHeight;
+      const scale = parseFloat(getComputedStyle(stage).getPropertyValue("--s")) || 1;
+      for (const b of bodies) {
+        const lift = (parseFloat(getComputedStyle(b.el).getPropertyValue("--lift")) || 0) * scale;
+        b.left = b.el.offsetLeft;
+        b.w = b.el.offsetWidth;
+        b.h = b.el.offsetHeight;
+        b.top = height - b.h - lift;              // resting on the line
+        b.r = 0.42 * Math.sqrt(b.w * b.h);        // cards overlap a little, like a real heap
+      }
     };
     measure();
     window.addEventListener("resize", measure);
@@ -90,6 +114,20 @@ export default function HeroTilt() {
     let visible = true;
     const seen = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; });
     seen.observe(stage);
+
+    // However the phone is held when the game starts counts as level
+    // (set from the first sensor reading, which can arrive a moment later).
+    let neutral: number | null = tilt.current ? clamp(tilt.current.y, 10, 80) : null;
+
+    const keepInside = (b: Body, bounce: boolean) => {
+      const minX = -b.left - b.w * 0.08;
+      const maxX = width - b.left - b.w * 0.92;
+      const minY = -b.top;                      // top of the page
+      if (b.x < minX) { b.x = minX; if (bounce) b.vx = -b.vx * BOUNCE; }
+      if (b.x > maxX) { b.x = maxX; if (bounce) b.vx = -b.vx * BOUNCE; }
+      if (b.y > 0) { b.y = 0; if (bounce) b.vy = -b.vy * BOUNCE; }   // the line
+      if (b.y < minY) { b.y = minY; if (bounce) b.vy = -b.vy * BOUNCE; }
+    };
 
     let frame = 0;
     let last = performance.now();
@@ -99,43 +137,55 @@ export default function HeroTilt() {
       last = now;
       if (!visible) return;
 
-      const deg = Math.abs(tilt.current) < DEADZONE ? 0 : tilt.current;
-      const accel = Math.sin((Math.max(-90, Math.min(90, deg)) * Math.PI) / 180) * GRAVITY;
+      if (neutral === null) {
+        if (!tilt.current) return;
+        neutral = clamp(tilt.current.y, 10, 80);
+      }
+      const t = tilt.current ?? { x: 0, y: neutral };
+      const tx = Math.abs(t.x) < DEADZONE ? 0 : clamp(t.x, -90, 90);
+      const ty = Math.abs(t.y - neutral) < DEADZONE ? 0 : clamp(t.y - neutral, -90, 90);
+      const ax = Math.sin(toRad(tx)) * GRAVITY;
+      const ay = (Math.sin(toRad(ty)) + REST_PULL) * GRAVITY;
 
+      const slow = Math.exp(-FRICTION * dt);
       for (const b of bodies) {
-        b.v += accel * dt;
-        b.v *= Math.exp(-FRICTION * dt);
-        b.x += b.v * dt;
-        // Walls: each card stays on screen and bumps softly off the edges.
-        const min = -b.base - b.w * 0.08;
-        const max = width - b.base - b.w * 0.92;
-        if (b.x < min) { b.x = min; b.v = -b.v * 0.2; }
-        if (b.x > max) { b.x = max; b.v = -b.v * 0.2; }
+        b.vx = (b.vx + ax * dt) * slow;
+        b.vy = (b.vy + ay * dt) * slow;
+        b.x += b.vx * dt;
+        b.y += b.vy * dt;
+        keepInside(b, true);
       }
 
-      // Cards rest against their neighbours instead of passing through them, so they heap up
-      // from the wall they slide towards. Corrections are capped per frame so the heap
-      // shifts smoothly instead of jumping.
-      const leftward = accel <= 0;
-      const order = [...bodies].sort((a, c) => (a.base + a.x - (c.base + c.x)) * (leftward ? 1 : -1));
-      for (let i = 1; i < order.length; i++) {
-        const prev = order[i - 1];
-        const b = order[i];
-        const pos = b.base + b.x;
-        const prevPos = prev.base + prev.x;
-        if (leftward) {
-          const minPos = prevPos + prev.w * spacing;
-          if (pos < minPos) { b.x += Math.min(minPos - pos, 30); b.v = Math.max(b.v, prev.v); }
-        } else {
-          const maxPos = prevPos - b.w * spacing;
-          if (pos > maxPos) { b.x -= Math.min(pos - maxPos, 30); b.v = Math.min(b.v, prev.v); }
+      // Cards bump into each other and share their speed, so they pile up.
+      for (let pass = 0; pass < 3; pass++) {
+        for (let i = 0; i < bodies.length; i++) {
+          for (let j = i + 1; j < bodies.length; j++) {
+            const a = bodies[i];
+            const c = bodies[j];
+            const dx = c.left + c.x + c.w / 2 - (a.left + a.x + a.w / 2);
+            const dy = c.top + c.y + c.h / 2 - (a.top + a.y + a.h / 2);
+            const dist = Math.hypot(dx, dy) || 0.01;
+            const overlap = a.r + c.r - dist;
+            if (overlap <= 0) continue;
+            const nx = dx / dist;
+            const ny = dy / dist;
+            const push = Math.min(overlap / 2, PUSH_CAP);
+            a.x -= nx * push; a.y -= ny * push;
+            c.x += nx * push; c.y += ny * push;
+            const closing = (c.vx - a.vx) * nx + (c.vy - a.vy) * ny;
+            if (closing < 0) {
+              const impulse = (-(1 + BOUNCE) * closing) / 2;
+              a.vx -= impulse * nx; a.vy -= impulse * ny;
+              c.vx += impulse * nx; c.vy += impulse * ny;
+            }
+          }
         }
-        b.x = Math.max(-b.base - b.w * 0.08, Math.min(width - b.base - b.w * 0.92, b.x));
+        for (const b of bodies) keepInside(b, false);
       }
 
       for (const b of bodies) {
-        b.el.style.translate = `${b.x.toFixed(1)}px 0`;
-        b.el.style.rotate = `${Math.max(-10, Math.min(10, b.v * 0.012)).toFixed(2)}deg`;
+        b.el.style.translate = `${b.x.toFixed(1)}px ${b.y.toFixed(1)}px`;
+        b.el.style.rotate = `${clamp(b.vx * 0.012, -12, 12).toFixed(2)}deg`;
       }
     };
     frame = requestAnimationFrame(step);
