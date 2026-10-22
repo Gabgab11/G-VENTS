@@ -15,7 +15,7 @@ export async function signedInUser(): Promise<{ id: string } | Response> {
   const supabase = await createSupabaseServerClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return json({ error: "signed_out" }, 401);
-  if (rateLimited(user.id)) return json({ error: "rate_limited" }, 429);
+  if (await rateLimited(supabase, user.id)) return json({ error: "rate_limited" }, 429);
   return { id: user.id };
 }
 

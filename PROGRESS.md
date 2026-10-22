@@ -6,9 +6,7 @@
 - Build: passes (`npm run build`)
 
 ## Done
-- Site-wide jazz on every page. Off until the visitor presses the music button (bottom-left); a dismissible welcome banner points to it.
 - Phone layout: single-column forms and cards under 600px, 44px tap targets, no sideways scrolling, wrapped tabs and buttons.
-- Slow jazz loop on event pages, generated live in the browser (Dm7-G7-Cmaj7-Am7, walking bass, brushed hi-hats). Starts only when a visitor presses Play. No audio file.
 - Create event requires an account (sign-up first). New events start with the host's dashboard style.
 - Event and registration pages use the event's chosen style. Hosts can change it in Settings.
 - Host Settings tab per event: flyer upload (JPG/PNG/WebP, 5 MB max, stored in the event-covers bucket), event details, email-on-registration preference (sending not connected yet), cancel event.
@@ -29,7 +27,7 @@
 - Organizer dashboard (/dashboard): public/private toggle, show-count toggle, draft publish, registration count (only the owner sees it when hidden).
 - Public event page shows the attendee count only when the organizer allows it.
 - Database: events.visibility, events.show_attendee_count, events.require_approval, events.cover_theme (applied to staging and production).
-- Home page: globe with city pins, categories, "Happening soon" list (sample data until real events exist)
+- Home page: falling event cards (with a tap-to-play tilt game on phones), categories, "Happening soon" list
 - Sign in with email code (`/sign-in`)
 - Create event, 3 steps: basics, tickets, review. Saves as draft or published (`/events/new`)
 - Public event page (`/e/[slug]`): details and tickets, shows drafts only to the owner
@@ -42,8 +40,18 @@
 - Paid tickets are hidden until payments exist. The database refuses them too.
 - Error and not-found pages. Sample events removed. Sign out added. Music is opt-in.
 
+## Architecture review fixes (22 October 2026, branch `fix/review-2026-10-22`)
+- CI applies every migration to a throwaway database, lints it, runs the database tests (`supabase/tests/`) and fails if `database.types.ts` is stale.
+- Ticket emails go to the guest's verified account email only (`register_guest` ignores the typed address).
+- Places lookups: shared per-user limit in the database (60 a minute, 1000 a day).
+- Supabase clients are typed from the generated schema.
+- Security headers: no framing, motion sensors for this site only, no camera/microphone/location.
+- Tilt game: starts only on tap and can be stopped; sensor listener removed on leaving the page; the loop sleeps when the cards settle; physics unit tested.
+- Home page is cached (refreshed every minute) and its fonts load through `next/font`.
+- Removed unused music, globe, hero photo and old CSS files.
+
 ## Not done yet (in order)
-1. Apply the October 2026 migrations to staging, test, then production (`supabase/README.md`).
+1. Apply the October 2026 migrations to staging, test, then production (`supabase/README.md`). Check what each database has with `supabase migration list --linked`. CI proves they apply in order to an empty database, not that the live databases have them.
 2. Supabase Auth email template must show the 6-digit code (`{{ .Token }}`). Set it in Supabase: Authentication → Email Templates.
 3. Custom SMTP for auth emails (Supabase's built-in sender is limited). Use Resend.
 4. Confirmation emails to guests and sending announcements (needs RESEND_API_KEY in Vercel and a verified domain). The registration page shows the ticket code for now.
@@ -53,8 +61,10 @@
 8. A captcha on sign-in and registration if abuse appears (Supabase rate-limits sign-in codes already).
 9. Error monitoring (e.g. Sentry) and end-to-end tests for create → register → check in.
 10. Time zone picker on create event (code supports any zone; the form still uses Lagos).
-11. Replace sample globe pins with real city counts from the database.
-12. Turn on Supabase daily backups before the December event.
+11. Turn on Supabase daily backups before the December event.
+12. In Google Cloud, set a daily quota and API restrictions on the Places key (the app limit is per user, not a total).
+13. A full Content-Security-Policy for scripts and styles (needs nonces, and the inline `<style>` blocks moved into CSS files first).
+14. Upload flyers straight to Supabase Storage with a signed URL, so the 6 MB server action limit can go back to the default.
 
 ## Decisions made
 - Currency: NGN (kobo stored in `price_minor`). Prices are typed in whole naira.

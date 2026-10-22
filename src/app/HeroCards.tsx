@@ -4,7 +4,8 @@ import { SHAPES, type ShapeName } from "./hero-shapes";
 
 // Cards that drift down from the top of the screen when the home page opens and
 // settle in a pile on the line above the name ticker. The layer is clipped at that
-// line, so nothing ever falls or floats past it. Pure CSS: no JavaScript runs.
+// line, so nothing ever falls or floats past it. The fall is pure CSS; the optional
+// tilt game on phones (HeroTilt.tsx) moves the cards afterwards.
 
 type Tone = "sun" | "coral" | "mint" | "sky" | "rose" | "ink" | "paper" | "lilac";
 
@@ -112,7 +113,7 @@ export default function HeroCards() {
           "--dur": `${2.6 + (i % 4) * 0.25}s`,
         } as CSSProperties;
         return (
-          <div key={card.shape} className={`hp-fall hp-row${card.row}`} style={style}>
+          <div key={`${card.shape}-${i}`} className={`hp-fall hp-row${card.row}`} style={style}>
             <Link href={`/discover?category=${encodeURIComponent(card.category)}`} className="hp-card" aria-label={`${name} events`}>
               <CardSvg card={card} />
             </Link>

@@ -7,6 +7,7 @@
 // bills the whole search-and-pick as one session.
 
 import { fold } from "@/lib/locations";
+import type { SupabaseServerClient } from "@/lib/supabase/server";
 
 const AUTOCOMPLETE_URL = "https://places.googleapis.com/v1/places:autocomplete";
 const DETAILS_URL = "https://places.googleapis.com/v1/places/";
@@ -146,17 +147,28 @@ export async function placeDetails(placeId: string, sessionToken: string): Promi
   };
 }
 
-// A small per-user limit so a signed-in account can't run up the Google bill.
-// Kept in memory per server instance, which is enough to stop runaway scripts.
+// A per-user limit so a signed-in account can't run up the Google bill. The count
+// lives in the database (take_places_quota, 60 a minute and 1000 a day), so it holds
+// across every server instance. If that function is unavailable, a per-instance
+// count in memory still stops runaway scripts.
 const WINDOW_MS = 60_000;
 const MAX_PER_WINDOW = 60;
 const hits = new Map<string, number[]>();
 
-export function rateLimited(userId: string): boolean {
+function rateLimitedInMemory(userId: string): boolean {
   const now = Date.now();
   const recent = (hits.get(userId) ?? []).filter((t) => now - t < WINDOW_MS);
   recent.push(now);
   hits.set(userId, recent);
   if (hits.size > 5000) hits.clear();
   return recent.length > MAX_PER_WINDOW;
+}
+
+export async function rateLimited(supabase: SupabaseServerClient, userId: string): Promise<boolean> {
+  const { data, error } = await supabase.rpc("take_places_quota");
+  if (error || typeof data !== "boolean") {
+    console.error("[places] shared quota unavailable, using the in-memory limit:", error?.message);
+    return rateLimitedInMemory(userId);
+  }
+  return !data;
 }

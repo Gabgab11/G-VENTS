@@ -28,3 +28,24 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
+
+  # Applies every migration, in order, to a throwaway local Supabase database,
+  # then lints the schema and runs the database tests. Catches a migration that would fail on staging or
+  # production before it is merged. Never touches the real databases.
+  migrations:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.121.0 # pinned: generated types must match byte for byte
+      - run: supabase db start
+      - run: supabase db lint --local --level error --fail-on error
+      - run: supabase test db # supabase/tests/*.test.sql (pgTAP)
+      # Fails when a migration changed the schema but database.types.ts wasn't
+      # regenerated (npm run db:types:local) and committed.
+      - name: Database types are up to date
+        run: |
+          supabase gen types typescript --local --schema public > "$RUNNER_TEMP/database.types.ts"
+          diff -u src/lib/supabase/database.types.ts "$RUNNER_TEMP/database.types.ts"

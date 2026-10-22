@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { acceleration, clamp, isMoving, step, type Body, type Tilt } from "@/lib/tilt-physics";
 
 // Tilt game for the home page cards. Tilt the phone and the cards roll around the
 // top of the page: left/right slides them sideways, tipping the top of the phone
@@ -8,28 +9,22 @@ import { useEffect, useRef, useState } from "react";
 // bump into each other and pile up. They stay inside the hero: never below the
 // line above the name ticker, never off the top or sides of the screen.
 //
-// Android: starts on its own. iPhone/iPad: Safari only shares motion after a tap,
-// so a "Tilt to play" button asks once. Computers and visitors who prefer
-// reduced motion get nothing extra.
+// The game only starts when the visitor taps "Tilt to play" (and can be stopped
+// again), so moving content never starts on its own. On Android the button only
+// appears once the motion sensor reports; iPhone/iPad ask for permission on that
+// tap. Computers and visitors who prefer reduced motion get nothing extra.
+// The choice is remembered for the browser session.
+//
+// Battery: the animation loop sleeps once the cards have settled or the hero is
+// off screen, and wakes when the phone is tilted again.
 
-const SETTLE_MS = 4200;   // the opening fall finishes before the game starts
-const GRAVITY = 2600;     // px/s² at a 90° tilt
-const REST_PULL = 0.12;   // a little pull towards the line, so a phone held still lets cards settle
-const DEADZONE = 3;       // degrees of tilt ignored
-const FRICTION = 2.2;     // how quickly movement slows down (per second)
-const BOUNCE = 0.2;       // how much speed survives hitting an edge
-const PUSH_CAP = 12;      // px per frame cards may push each other apart (keeps it smooth)
+const SETTLE_MS = 4200;   // the opening fall finishes before the game is offered
+const WAKE_DEG = 1.5;     // a sleeping heap wakes when the tilt changes by this much
+const STILL_FRAMES = 20;  // frames with no visible movement before the loop sleeps
+const STORE_KEY = "gv-tilt";
 
-type Body = {
-  el: HTMLElement;
-  left: number; top: number; // resting position inside the stage
-  w: number; h: number; r: number;
-  x: number; y: number;      // offset from the resting position (y < 0 is up)
-  vx: number; vy: number;
-};
-
-type Mode = "off" | "ask" | "hint" | "on";
-type Tilt = { x: number; y: number };
+type Mode = "off" | "ask" | "on";
+type Card = Body & { el: HTMLElement };
 
 // Left-right and front-back tilt in screen terms, whichever way the phone is turned.
 function tiltFrom(e: DeviceOrientationEvent): Tilt {
@@ -42,179 +37,198 @@ function tiltFrom(e: DeviceOrientationEvent): Tilt {
   return { x: gamma, y: beta };
 }
 
-const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
-const toRad = (deg: number) => (deg * Math.PI) / 180;
+function remembered(): boolean {
+  try { return sessionStorage.getItem(STORE_KEY) === "on"; } catch { return false; }
+}
+function remember(on: boolean) {
+  try { sessionStorage.setItem(STORE_KEY, on ? "on" : "off"); } catch { /* storage blocked: not remembered */ }
+}
+
+const needsPermission = () =>
+  typeof (DeviceOrientationEvent as unknown as { requestPermission?: unknown }).requestPermission === "function";
 
 export default function HeroTilt() {
   const [mode, setMode] = useState<Mode>("off");
   const anchor = useRef<HTMLSpanElement>(null);
   const tilt = useRef<Tilt | null>(null);
-  const firstY = useRef<number | null>(null);
-  const listening = useRef(false);
-  const ready = useRef(false);
+  const wake = useRef<(() => void) | null>(null); // set by the physics loop while it sleeps
 
-  function listen() {
-    if (listening.current) return;
-    listening.current = true;
-    window.addEventListener("deviceorientation", (e) => {
-      if (e.gamma === null && e.beta === null) return;
-      const t = tiltFrom(e);
-      tilt.current = t;
-      if (firstY.current === null) firstY.current = t.y;
-      if (!ready.current) return;
-      const tilted = Math.abs(t.x) > 8 || Math.abs(t.y - firstY.current) > 10;
-      setMode((m) => (m === "on" || tilted ? "on" : m === "off" ? "hint" : m));
-    });
-  }
-
-  // Decide what this device gets once the cards have landed.
+  // Once the cards have landed: listen to the sensor (removed again on unmount)
+  // and offer the game. The handler only stores the reading; React state changes
+  // at most once, on the first reading.
   useEffect(() => {
     const touch = window.matchMedia("(pointer: coarse)").matches;
     const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (!touch || calm || typeof DeviceOrientationEvent === "undefined") return;
 
-    const needsPermission = typeof (DeviceOrientationEvent as unknown as { requestPermission?: unknown }).requestPermission === "function";
+    const ask = needsPermission();
+    let offered = false;
+    const onOrientation = (e: DeviceOrientationEvent) => {
+      if (e.gamma === null && e.beta === null) return;
+      tilt.current = tiltFrom(e);
+      wake.current?.();
+      if (!offered && !ask) {
+        offered = true;
+        setMode(remembered() ? "on" : "ask");
+      }
+    };
+
     const timer = setTimeout(() => {
-      ready.current = true;
-      if (needsPermission) setMode("ask");
-      else listen(); // the hint appears once the sensor reports, so phones without one see nothing
+      window.addEventListener("deviceorientation", onOrientation);
+      if (ask) setMode("ask"); // Safari shares no readings until the visitor allows it
     }, SETTLE_MS);
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("deviceorientation", onOrientation);
+    };
   }, []);
 
-  // The physics: runs only while the game is on and the cards are on screen.
+  // The physics: runs only while the game is on.
   useEffect(() => {
     if (mode !== "on") return;
     const stage = anchor.current?.closest<HTMLElement>(".hp-stage");
     if (!stage) return;
     stage.classList.add("hp-tilting"); // every card drops onto the line first
 
-    const bodies: Body[] = [...stage.querySelectorAll<HTMLElement>(".hp-fall")]
-      .filter((el) => getComputedStyle(el).display !== "none")
-      .map((el) => ({ el, left: 0, top: 0, w: 0, h: 0, r: 0, x: 0, y: 0, vx: 0, vy: 0 }));
-
-    // Sizes are measured once, and again after a resize or rotation, not every frame.
+    // Which cards are shown depends on the screen width, so the list is rebuilt
+    // on every resize or rotation (keeping each card's current offset).
+    let cards: Card[] = [];
     let width = 0;
     const measure = () => {
+      const old = new Map(cards.map((c) => [c.el, c]));
       width = stage.clientWidth;
       const height = stage.clientHeight;
       const scale = parseFloat(getComputedStyle(stage).getPropertyValue("--s")) || 1;
-      for (const b of bodies) {
-        const lift = (parseFloat(getComputedStyle(b.el).getPropertyValue("--lift")) || 0) * scale;
-        b.left = b.el.offsetLeft;
-        b.w = b.el.offsetWidth;
-        b.h = b.el.offsetHeight;
-        b.top = height - b.h - lift;              // resting on the line
-        b.r = 0.42 * Math.sqrt(b.w * b.h);        // cards overlap a little, like a real heap
-      }
+      cards = [...stage.querySelectorAll<HTMLElement>(".hp-fall")]
+        .filter((el) => getComputedStyle(el).display !== "none")
+        .map((el) => {
+          const c = old.get(el) ?? { el, left: 0, top: 0, w: 0, h: 0, r: 0, x: 0, y: 0, vx: 0, vy: 0 };
+          const lift = (parseFloat(getComputedStyle(el).getPropertyValue("--lift")) || 0) * scale;
+          c.left = el.offsetLeft;
+          c.w = el.offsetWidth;
+          c.h = el.offsetHeight;
+          c.top = height - c.h - lift;          // resting on the line
+          c.r = 0.42 * Math.sqrt(c.w * c.h);    // cards overlap a little, like a real heap
+          return c;
+        });
     };
     measure();
-    window.addEventListener("resize", measure);
-
-    let visible = true;
-    const seen = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; });
-    seen.observe(stage);
 
     // However the phone is held when the game starts counts as level
     // (set from the first sensor reading, which can arrive a moment later).
     let neutral: number | null = tilt.current ? clamp(tilt.current.y, 10, 80) : null;
 
-    const keepInside = (b: Body, bounce: boolean) => {
-      const minX = -b.left - b.w * 0.08;
-      const maxX = width - b.left - b.w * 0.92;
-      const minY = -b.top;                      // top of the page
-      if (b.x < minX) { b.x = minX; if (bounce) b.vx = -b.vx * BOUNCE; }
-      if (b.x > maxX) { b.x = maxX; if (bounce) b.vx = -b.vx * BOUNCE; }
-      if (b.y > 0) { b.y = 0; if (bounce) b.vy = -b.vy * BOUNCE; }   // the line
-      if (b.y < minY) { b.y = minY; if (bounce) b.vy = -b.vy * BOUNCE; }
-    };
-
     let frame = 0;
-    let last = performance.now();
-    const step = (now: number) => {
-      frame = requestAnimationFrame(step);
+    let running = false;
+    let visible = true;
+    let still = 0;
+    let sleptAt: Tilt | null = null;
+    let last = 0;
+
+    const loop = (now: number) => {
       const dt = Math.min(0.05, (now - last) / 1000);
       last = now;
-      if (!visible) return;
+      if (!visible) { running = false; return; }
 
       if (neutral === null) {
-        if (!tilt.current) return;
+        if (!tilt.current) { running = false; return; } // woken by the first reading
         neutral = clamp(tilt.current.y, 10, 80);
       }
       const t = tilt.current ?? { x: 0, y: neutral };
-      const tx = Math.abs(t.x) < DEADZONE ? 0 : clamp(t.x, -90, 90);
-      const ty = Math.abs(t.y - neutral) < DEADZONE ? 0 : clamp(t.y - neutral, -90, 90);
-      const ax = Math.sin(toRad(tx)) * GRAVITY;
-      const ay = (Math.sin(toRad(ty)) + REST_PULL) * GRAVITY;
+      const before = cards.map((c) => [c.x, c.y]);
+      const moving = step(cards, acceleration(t, neutral), width, dt);
 
-      const slow = Math.exp(-FRICTION * dt);
-      for (const b of bodies) {
-        b.vx = (b.vx + ax * dt) * slow;
-        b.vy = (b.vy + ay * dt) * slow;
-        b.x += b.vx * dt;
-        b.y += b.vy * dt;
-        keepInside(b, true);
-      }
+      let shift = 0;
+      cards.forEach((c, i) => {
+        shift = Math.max(shift, Math.abs(c.x - before[i][0]), Math.abs(c.y - before[i][1]));
+        c.el.style.translate = `${c.x.toFixed(1)}px ${c.y.toFixed(1)}px`;
+        c.el.style.rotate = `${clamp(c.vx * 0.012, -12, 12).toFixed(2)}deg`;
+      });
 
-      // Cards bump into each other and share their speed, so they pile up.
-      for (let pass = 0; pass < 3; pass++) {
-        for (let i = 0; i < bodies.length; i++) {
-          for (let j = i + 1; j < bodies.length; j++) {
-            const a = bodies[i];
-            const c = bodies[j];
-            const dx = c.left + c.x + c.w / 2 - (a.left + a.x + a.w / 2);
-            const dy = c.top + c.y + c.h / 2 - (a.top + a.y + a.h / 2);
-            const dist = Math.hypot(dx, dy) || 0.01;
-            const overlap = a.r + c.r - dist;
-            if (overlap <= 0) continue;
-            const nx = dx / dist;
-            const ny = dy / dist;
-            const push = Math.min(overlap / 2, PUSH_CAP);
-            a.x -= nx * push; a.y -= ny * push;
-            c.x += nx * push; c.y += ny * push;
-            const closing = (c.vx - a.vx) * nx + (c.vy - a.vy) * ny;
-            if (closing < 0) {
-              const impulse = (-(1 + BOUNCE) * closing) / 2;
-              a.vx -= impulse * nx; a.vy -= impulse * ny;
-              c.vx += impulse * nx; c.vy += impulse * ny;
-            }
-          }
-        }
-        for (const b of bodies) keepInside(b, false);
+      // Sleep once nothing visibly moves (also covers cards pressed against an edge).
+      still = !moving || shift < 0.1 ? still + 1 : 0;
+      if (still >= STILL_FRAMES) {
+        running = false;
+        sleptAt = { ...t };
+        return;
       }
-
-      for (const b of bodies) {
-        b.el.style.translate = `${b.x.toFixed(1)}px ${b.y.toFixed(1)}px`;
-        b.el.style.rotate = `${clamp(b.vx * 0.012, -12, 12).toFixed(2)}deg`;
-      }
+      frame = requestAnimationFrame(loop);
     };
-    frame = requestAnimationFrame(step);
+
+    const start = () => {
+      if (running || !visible) return;
+      running = true;
+      still = 0;
+      last = performance.now();
+      frame = requestAnimationFrame(loop);
+    };
+
+    wake.current = () => {
+      if (running) return;
+      const t = tilt.current;
+      if (sleptAt && t && Math.abs(t.x - sleptAt.x) < WAKE_DEG && Math.abs(t.y - sleptAt.y) < WAKE_DEG) return;
+      sleptAt = null;
+      start();
+    };
+
+    const onResize = () => { measure(); sleptAt = null; start(); };
+    window.addEventListener("resize", onResize);
+
+    const seen = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      if (visible) { sleptAt = null; start(); }
+    });
+    seen.observe(stage);
+
+    // A card that is still sliding doesn't open its link: taps on moving cards
+    // are almost always accidental.
+    const onClick = (e: MouseEvent) => {
+      const el = (e.target as HTMLElement).closest<HTMLElement>(".hp-fall");
+      const card = el && cards.find((c) => c.el === el);
+      if (card && isMoving(card)) { e.preventDefault(); e.stopPropagation(); }
+    };
+    stage.addEventListener("click", onClick, true);
+
+    start();
 
     return () => {
       cancelAnimationFrame(frame);
+      wake.current = null;
       seen.disconnect();
-      window.removeEventListener("resize", measure);
+      window.removeEventListener("resize", onResize);
+      stage.removeEventListener("click", onClick, true);
       stage.classList.remove("hp-tilting");
+      for (const c of cards) { c.el.style.translate = ""; c.el.style.rotate = ""; }
     };
   }, [mode]);
 
-  async function askPermission() {
-    try {
-      const request = (DeviceOrientationEvent as unknown as { requestPermission: () => Promise<string> }).requestPermission;
-      const answer = await request();
-      if (answer === "granted") { listen(); setMode("on"); }
-      else setMode("off");
-    } catch {
-      setMode("off");
+  async function play() {
+    if (needsPermission()) {
+      try {
+        const request = (DeviceOrientationEvent as unknown as { requestPermission: () => Promise<string> }).requestPermission;
+        if ((await request()) !== "granted") { setMode("off"); return; }
+      } catch {
+        setMode("off");
+        return;
+      }
     }
+    remember(true);
+    setMode("on");
+  }
+
+  function stop() {
+    remember(false);
+    setMode("ask");
   }
 
   return (
     <span ref={anchor} className="hp-tilt">
       {mode === "ask" && (
-        <button type="button" className="hp-tilt-btn" onClick={askPermission}>Tilt to play ✨</button>
+        <button type="button" className="hp-tilt-btn" onClick={play}>Tilt to play <span aria-hidden="true">✨</span></button>
       )}
-      {mode === "hint" && <span className="hp-tilt-hint">Tilt your phone ✨</span>}
+      {mode === "on" && (
+        <button type="button" className="hp-tilt-btn" onClick={stop}>Stop tilting</button>
+      )}
     </span>
   );
 }

@@ -11,6 +11,7 @@ import {
 import { checkInFromTicket } from "./actions";
 import PrintButton from "./PrintButton";
 import { TICKET_CSS } from "./ticket-css";
+import { pageFonts } from "@/app/fonts";
 
 // Tickets are private to whoever holds the link.
 export const metadata: Metadata = {
@@ -62,7 +63,7 @@ export default async function TicketPage({
   const checkedInAt = ticket.checked_in_at ? ticketTime(ticket.checked_in_at, tz) : null;
 
   return (
-    <main className="tk">
+    <main className={`tk ${pageFonts}`}>
       <style dangerouslySetInnerHTML={{ __html: TICKET_CSS }} />
 
       <header className="tk-top">

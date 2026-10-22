@@ -8,6 +8,7 @@ import { checkbox, field, isUuid } from "@/lib/forms";
 import type { SupabaseServerClient } from "@/lib/supabase/server";
 import type { MessageCode } from "./messages";
 import { queueTicketEmail } from "@/lib/email/send-ticket";
+import type { TablesUpdate } from "@/lib/supabase/database.types";
 
 const KINDS = ["text", "options", "social", "company", "terms", "phone", "website"] as const;
 const SEGMENTS = ["all", "paid", "checked_in", "not_checked_in", "waitlist"] as const;
@@ -38,7 +39,7 @@ async function authorize(formData: FormData, roles?: EventRole[]) {
 
 // Updates one event and confirms a row really changed. When RLS blocks an update,
 // Postgres reports success with zero rows, which used to show a false "Saved".
-async function updateEvent(supabase: SupabaseServerClient, id: string, tab: Tab, patch: Record<string, unknown>) {
+async function updateEvent(supabase: SupabaseServerClient, id: string, tab: Tab, patch: TablesUpdate<"events">) {
   const { data, error } = await supabase.from("events").update(patch).eq("id", id).select("id");
   if (error) {
     logError("update event", error);
@@ -124,9 +125,8 @@ export async function promoteFromWaitlist(formData: FormData) {
     logError("promote", error);
     fail(id, "guests", "promote_failed");
   }
-  const promoted = data as { ticket_code?: string; attendee_email?: string } | null;
-  if (promoted?.ticket_code && promoted.attendee_email) {
-    await queueTicketEmail(supabase, promoted.ticket_code, promoted.attendee_email);
+  if (data?.ticket_code && data.attendee_email) {
+    await queueTicketEmail(supabase, data.ticket_code, data.attendee_email);
   }
   done(id, "guests", "promoted");
 }
