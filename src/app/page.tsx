@@ -25,7 +25,8 @@ const CSS = `
 .hp-logo b { color: var(--coral); }
 .hp-signin { font-size: 14px; font-weight: 600; border: 1px solid var(--line); padding: 9px 16px; border-radius: 999px; }
 
-.hp-hero { padding: clamp(36px, 7vw, 96px) 0 30px; }
+/* padding-block, not padding: the side padding comes from .hp-wrap and must survive on phones */
+.hp-hero { padding-block: clamp(36px, 7vw, 96px) 30px; }
 .hp-pill { display: inline-block; font-size: 13px; font-weight: 600; background: var(--soft); border: 1px solid var(--line); padding: 7px 14px; border-radius: 999px; color: var(--muted); }
 .hp-hero h1 { font-family: var(--display); font-weight: 800; font-size: clamp(52px, 9.5vw, 120px); line-height: 0.95; letter-spacing: -3px; margin: 22px 0 0; }
 .hp-hl { background: var(--sun); padding: 0 0.12em; border-radius: 0.15em; }
@@ -76,11 +77,13 @@ const CSS = `
 @media (max-width: 1099px) { .hp-stage { --s: 0.62; --band: 210px; } .hp-row3 { display: none; } }
 @media (max-width: 699px) {
   .hp-stage { --s: 0.46; --band: 104px; }
+  .hp-fall { left: var(--left-phone); }
   .hp-row2, .hp-row3, .hp-fall:nth-child(3), .hp-fall:nth-child(4), .hp-fall:nth-child(6) { display: none; }
 }
+@media (max-width: 360px) { .hp-stage { --s: 0.4; --band: 92px; } }
 @media (prefers-reduced-motion: reduce) { .hp-fall { animation: none; } .hp-card { transition: none; } }
 
-.hp-section { padding: 56px 0 20px; }
+.hp-section { padding-block: 56px 20px; }
 .hp-head { display: flex; justify-content: space-between; align-items: end; gap: 16px; flex-wrap: wrap; margin-bottom: 22px; }
 .hp-head h2 { font-family: var(--display); font-weight: 800; font-size: clamp(28px, 4vw, 40px); letter-spacing: -1px; margin: 0; }
 .hp-head p { color: var(--muted); margin: 0; font-size: 15px; }
@@ -121,6 +124,15 @@ const CSS = `
   .hp-tile, .hp-run { animation: none; }
 }
 
+/* Phones: the top section is centred, with buttons stacked at one width. */
+@media (max-width: 640px) {
+  .hp-hero { text-align: center; }
+  .hp-hero h1 { letter-spacing: -2px; }
+  .hp-lede { margin-left: auto; margin-right: auto; }
+  .hp-hero .hp-actions { flex-direction: column; align-items: stretch; max-width: 340px; margin: 0 auto; }
+  .hp-hero .hp-actions a { text-align: center; }
+}
+
 .hp-closing { text-align: center; padding: 100px 20px 110px; }
 .hp-closing h2 { font-family: var(--display); font-weight: 800; font-size: clamp(40px, 7vw, 80px); line-height: 0.98; letter-spacing: -2.5px; margin: 0 0 28px; }
 
@@ -146,6 +158,9 @@ export default async function HomePage() {
     getFeaturedEvents(6),
   ]);
 
+  // Signed-out visitors go straight to sign-up, then on to the event form.
+  const createHref = user ? "/events/new" : "/sign-in?next=%2Fevents%2Fnew";
+
   return (
     <main className="hp">
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
@@ -166,7 +181,7 @@ export default async function HomePage() {
           Owambe, outdooring, braai, sangeet or a Saturday birthday. Create your event, share one link, and let guests register from anywhere.
         </p>
         <div className="hp-actions">
-          <Link href="/events/new" className="hp-btn">Create your first event</Link>
+          <Link href={createHref} className="hp-btn">Create your first event</Link>
           <Link href="/discover" className="hp-ghost">Browse events</Link>
         </div>
         <HeroTilt />
@@ -204,7 +219,7 @@ export default async function HomePage() {
           </div>
         ) : (
           <p className="hp-empty">
-            No public events yet. <Link href="/events/new">Be the first to create one.</Link>
+            No public events yet. <Link href={createHref}>Be the first to create one.</Link>
           </p>
         )}
       </section>
@@ -213,7 +228,7 @@ export default async function HomePage() {
         <h2>Your guests are<br /><span className="hp-hl">already waiting.</span></h2>
         <div className="hp-actions" style={{ justifyContent: "center" }}>
           <Link href="/discover" className="hp-ghost">Discover events</Link>
-          <Link href="/events/new" className="hp-btn">Create an event free</Link>
+          <Link href={createHref} className="hp-btn">Create an event free</Link>
         </div>
       </section>
 
