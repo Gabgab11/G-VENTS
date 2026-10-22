@@ -6,8 +6,9 @@ import ThemePanel from "./ThemePanel";
 import SignOutButton from "@/components/SignOutButton";
 import { getDashboardTheme } from "./getTheme";
 
-export default async function DashboardPage() {
+export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ deleted?: string }> }) {
   const { supabase, user } = await requireUser("/dashboard");
+  const { deleted } = await searchParams;
 
   // One query: each event with its confirmed-registration count embedded.
   const [theme, { data: events, error }] = await Promise.all([
@@ -41,6 +42,8 @@ export default async function DashboardPage() {
         <Link href="/events/new" className="btn-white">+ Create event</Link>
       </div>
       <p className="muted">Manage registrations, guests, and announcements. Private events open only by link.</p>
+
+      {deleted === "1" && <p className="ok" role="status">Event deleted.</p>}
 
       <ThemePanel current={theme} />
 

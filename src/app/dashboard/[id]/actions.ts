@@ -244,6 +244,45 @@ export async function cancelEvent(formData: FormData) {
   done(id, "settings", "event_cancelled");
 }
 
+// Same rule as delete_event() in the database: ends trimmed, letter case ignored.
+function sameName(typed: string, title: string): boolean {
+  return typed.trim().toLowerCase() === title.trim().toLowerCase();
+}
+
+type DeleteCheck = { title: string; is_owner: boolean; guests: number; paid: number };
+
+// Permanently deletes the event, its tickets and its flyer. Owner only; the host
+// types the event name to confirm. delete_event() in the database re-checks all of it.
+export async function deleteEvent(formData: FormData) {
+  const { id, supabase } = await authorize(formData);
+  const { data, error } = await supabase.rpc("event_delete_check", { p_event: id });
+  const check = data as DeleteCheck | null;
+  if (error || !check) {
+    logError("delete check", error);
+    fail(id, "settings");
+  }
+  if (!check.is_owner) fail(id, "settings", "delete_forbidden");
+  if (check.paid > 0) fail(id, "settings", "delete_paid");
+  const typed = field(formData, "confirm_title", 200);
+  if (!sameName(typed, check.title)) fail(id, "settings", "delete_confirm");
+
+  // The flyer goes first: once the event is gone, storage no longer lets anyone manage its folder.
+  const { data: files } = await supabase.storage.from(FLYER_BUCKET).list(id, { limit: 100 });
+  if (files?.length) {
+    const { error: rmErr } = await supabase.storage.from(FLYER_BUCKET).remove(files.map((f) => `${id}/${f.name}`));
+    logError("delete event flyers", rmErr); // a leftover image only costs storage
+  }
+
+  const { error: delErr } = await supabase.rpc("delete_event", { p_event: id, p_confirm_title: typed });
+  if (delErr) {
+    logError("delete event", delErr);
+    fail(id, "settings", "delete_failed");
+  }
+  revalidatePath("/dashboard");
+  revalidatePath("/");
+  redirect("/dashboard?deleted=1");
+}
+
 export async function updateEventTheme(formData: FormData) {
   const { id, supabase } = await authorize(formData);
   const theme = field(formData, "cover_theme");

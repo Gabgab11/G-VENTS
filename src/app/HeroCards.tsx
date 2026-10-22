@@ -31,19 +31,20 @@ type Card = {
   tilt: number;     // resting angle, degrees
   delay: number;    // seconds before it starts falling
   row: 1 | 2 | 3;   // 2 and 3 rest on cards below; hidden on phones
+  phoneLeft?: number; // % across on phones, so the six phone cards sit fully on screen
 };
 
 // Bottom row first (they land first), then the cards that land on top of them.
 const CARDS: Card[] = [
-  { shape: "ticket", words: ["Traditional", "Engagement"], meta: "Enugu · December", tone: "lilac", category: "Family", left: -1, bottom: 0, tilt: -4, delay: 0.1, row: 1 },
-  { shape: "burst", words: ["Owambe"], meta: "Lagos · Saturday", tone: "sun", category: "Community", left: 12, bottom: 0, tilt: 8, delay: 0.5, row: 1 },
+  { shape: "ticket", words: ["Traditional", "Engagement"], meta: "Enugu · December", tone: "lilac", category: "Family", left: -1, bottom: 0, tilt: -4, delay: 0.1, row: 1, phoneLeft: 2 },
+  { shape: "burst", words: ["Owambe"], meta: "Lagos · Saturday", tone: "sun", category: "Community", left: 12, bottom: 0, tilt: 8, delay: 0.5, row: 1, phoneLeft: 22 },
   { shape: "pill", words: ["Outdooring"], meta: "Kumasi", tone: "mint", category: "Family", left: 23.5, bottom: 0, tilt: -6, delay: 0.9, row: 1 },
   { shape: "folder", words: ["Afrobeats", "Night"], meta: "Lagos · Island", tone: "paper", category: "Music", left: 33, bottom: 0, tilt: 3, delay: 0.3, row: 1 },
-  { shape: "disc", words: ["Braai", "Day"], meta: "Cape Town", tone: "coral", category: "Food", left: 47, bottom: 0, tilt: -10, delay: 1.1, row: 1 },
+  { shape: "disc", words: ["Braai", "Day"], meta: "Cape Town", tone: "coral", category: "Food", left: 47, bottom: 0, tilt: -10, delay: 1.1, row: 1, phoneLeft: 41 },
   { shape: "arch", words: ["Sangeet", "Night"], meta: "Mumbai", tone: "rose", category: "Music", left: 57, bottom: 0, tilt: 4, delay: 0.6, row: 1 },
-  { shape: "bubble", words: ["Moji's", "Birthday"], meta: "Lekki · 8pm", tone: "ink", category: "Nightlife", left: 67, bottom: 0, tilt: -3, delay: 0.2, row: 1 },
-  { shape: "shield", words: ["Quince-", "añera"], meta: "Mexico City", tone: "sky", category: "Family", left: 80, bottom: 0, tilt: 6, delay: 0.8, row: 1 },
-  { shape: "hex", words: ["Detty", "December"], meta: "Accra", tone: "sun", category: "Nightlife", left: 90.5, bottom: 0, tilt: -5, delay: 0.4, row: 1 },
+  { shape: "bubble", words: ["Moji's", "Birthday"], meta: "Lekki · 8pm", tone: "ink", category: "Nightlife", left: 67, bottom: 0, tilt: -3, delay: 0.2, row: 1, phoneLeft: 55 },
+  { shape: "shield", words: ["Quince-", "añera"], meta: "Mexico City", tone: "sky", category: "Family", left: 80, bottom: 0, tilt: 6, delay: 0.8, row: 1, phoneLeft: 69 },
+  { shape: "hex", words: ["Detty", "December"], meta: "Accra", tone: "sun", category: "Nightlife", left: 90.5, bottom: 0, tilt: -5, delay: 0.4, row: 1, phoneLeft: 79.5 },
   { shape: "leaf", words: ["Festa", "Junina"], meta: "São Paulo", tone: "mint", category: "Food", left: 51, bottom: 140, tilt: 9, delay: 2.0, row: 2 },
   { shape: "tag", words: ["Send-Off"], meta: "Abuja · Friday", tone: "paper", category: "Community", left: 61.5, bottom: 150, tilt: -8, delay: 2.3, row: 2 },
   { shape: "squircle", words: ["Iftar", "Night"], meta: "Cairo", tone: "coral", category: "Faith", left: 74, bottom: 148, tilt: -7, delay: 1.8, row: 2 },
@@ -100,6 +101,7 @@ export default function HeroCards() {
         const lift = Math.round((s.w / 2) * Math.sin((Math.abs(card.tilt) * Math.PI) / 180));
         const style = {
           "--left": `${card.left}%`,
+          "--left-phone": `${card.phoneLeft ?? card.left}%`,
           "--bottom": card.bottom + lift,
           "--lift": lift, // resting height when the tilt game drops every card onto the line
           "--w": s.w,

@@ -364,3 +364,4 @@ input, select, textarea, button { max-width: 100%; min-width: 0; }
 .spinner { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--line); border-top-color: var(--gold); animation: combo-spin .8s linear infinite; }
 @keyframes combo-spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 2.4s; } }
+.btn-danger:disabled { opacity: .45; cursor: not-allowed; }

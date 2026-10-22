@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 import { safeNextPath } from "@/lib/redirect";
 import BackLink from "@/components/BackLink";
@@ -11,6 +11,11 @@ export default function SignInPage() {
   const [sent, setSent] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // Visitors who tapped a "Create event" button see a sign-up welcome.
+  const [fromCreate, setFromCreate] = useState(false);
+  useEffect(() => {
+    setFromCreate(new URLSearchParams(window.location.search).get("next") === "/events/new");
+  }, []);
 
   function nextPath() {
     if (typeof window === "undefined") return "/dashboard";
@@ -53,11 +58,15 @@ export default function SignInPage() {
           </svg>
         </div>
 
-        <h1 className="auth-title">Create your account or sign in</h1>
+        <h1 className="auth-title">{fromCreate ? "Create your free account" : "Create your account or sign in"}</h1>
 
         {!sent ? (
           <form onSubmit={sendCode} className="auth-form">
-            <p className="muted">New here? Enter your email and we&apos;ll create your free account. No password needed.</p>
+            <p className="muted">
+              {fromCreate
+                ? "Enter your email and we'll create your free account. No password needed. Then you'll go straight to creating your event. Already have an account? The same email signs you in."
+                : "New here? Enter your email and we'll create your free account. No password needed."}
+            </p>
             <label className="auth-label" htmlFor="sign-in-email">Email</label>
             <input id="sign-in-email" className="auth-input" type="email" required autoFocus autoComplete="email" value={email}
               onChange={(e) => setEmail(e.target.value)} placeholder="you@email.com" />
