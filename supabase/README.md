@@ -10,7 +10,9 @@ Every schema change is a SQL file in `migrations/`, named `YYYYMMDDHHMMSS_descri
 | `20261022000100_ticket_page.sql` | `get_ticket` for the ticket page (`/t/[code]`). |
 | `20261022000200_event_location_details.sql` | Venue details from the place search. |
 | `20261022000400_registration_email.sql` | `register_guest` stores the account's verified email, so tickets can't be emailed to arbitrary addresses. |
+| `20261022000300_delete_event.sql` | Owners can delete their own event (`delete_event`, `event_delete_check`). |
 | `20261022000500_places_quota.sql` | Shared per-user limit for Google Places lookups (`take_places_quota`). |
+| `20261023000100_owner_reads_own_events.sql` | Restores the owner's read rule on `events`, so draft and private events can be created again. |
 
 ## Testing locally
 
