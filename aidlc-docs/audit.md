@@ -760,3 +760,36 @@ we will also implement paystack and maybe stripe for other users around the worl
 **Context**: CONSTRUCTION - U1 Code Generation Part 2 starting
 
 ---
+
+## U1 Platform (Change 1) - Code Generation: mid-stage request
+**Timestamp**: 2026-10-24T18:25:00Z
+**User Input**: "let's also auto route to swagger api/docs on startup with the render url - theme switch(dark/system/light mode) modern swagger design"
+**AI Response**: "Added Step 15b to the U1 code generation plan: Swagger UI at /api/docs with a modern theme and System/Light/Dark switch, root URL redirects to it. Flagged conflict with SECURITY-09 (docs endpoints off in production): docs enabled on local and staging only; production stays off unless the user asks for a login-protected version."
+**Context**: CONSTRUCTION - U1 Code Generation Part 2
+
+---
+
+## U1 Platform (Change 1) - Code Generation Complete
+**Timestamp**: 2026-10-24T18:45:00Z
+**User Input**: (none; continuation)
+**AI Response**: "All U1 rework plan steps ticked (deviations noted on steps). gventz-api: Supabase pooler pools with TLS, schema column maps plus drift test, outbox, resilience, telemetry, Loki shipping and nightly R2 export, rate-limit changes, themed Swagger UI at /api/docs (local/staging only), deploy files, Grafana alerts and dashboards, runbooks. G-VENTS: api role and outbox migrations, pgTAP, regenerated types, migrations deploy workflow. Verification: lint/typecheck clean, 150 unit/PBT, 33 integration (Supabase Postgres image + migrations, as gventz_api), build, OpenAPI, Docker image; Supabase CLI db lint clean, test db 17/17, G-VENTS lint/typecheck/39 tests. Docs page not viewed in a browser (Chrome extension not connected). Finding for U3: audit_log FK cascades on event delete. Nothing committed. Approval prompt: Request Changes, or Continue to Next Stage (U2 Identity)."
+**Context**: CONSTRUCTION - U1 Code Generation, awaiting approval
+
+---
+
+## U1 Platform (Change 1) - Docs page feedback
+**Timestamp**: 2026-10-24T18:55:00Z
+**User Input**: (screenshot of http://localhost:3998/api/docs in dark mode showing the theme switch, a low-contrast Authorize button and "No operations defined in spec!")
+**AI Response**: "Made the Authorize button text and padlock white; documented /health/live and /health/ready under a Health tag so the page has content before U2. OpenAPI snapshot regenerated; 33 integration tests pass; local server restarted on port 3998."
+**Context**: CONSTRUCTION - U1 Code Generation, awaiting approval
+
+---
+
+## U1 Platform (Change 1) - Code Generation Approval
+**Timestamp**: 2026-10-24T19:05:00Z
+**AI Prompt**: "Code Generation Complete - u1-platform-foundation. Request Changes, or Continue to Next Stage (U2 Identity)"
+**User Response**: "continue"
+**Status**: Approved
+**Context**: CONSTRUCTION - U1 Platform (rework) complete; starting U2 Identity (replaced)
+
+---

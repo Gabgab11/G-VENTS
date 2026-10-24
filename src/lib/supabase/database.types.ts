@@ -143,6 +143,20 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"outbox_events": {
+                  Row: {
+                    "created_at": string,"dispatched_at": string | null,"event_type": string,"id": string,"job_id": string,"job_name": string,"job_queue": string,"payload": NonNullable<Json>
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"dispatched_at"?: string | null,"event_type": string,"id": string,"job_id": string,"job_name": string,"job_queue": string,"payload"?: NonNullable<Json>
+                  }
+                  Update: {
+                    "created_at"?: string,"dispatched_at"?: string | null,"event_type"?: string,"id"?: string,"job_id"?: string,"job_name"?: string,"job_queue"?: string,"payload"?: NonNullable<Json>
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"places_usage": {
                   Row: {
                     "day": string,"day_count": number,"minute_count": number,"minute_start": string,"user_id": string

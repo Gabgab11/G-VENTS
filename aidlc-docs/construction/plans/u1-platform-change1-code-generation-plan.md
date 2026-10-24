@@ -167,13 +167,18 @@ This plan is the single source of truth for U1 rework code generation. Steps run
   - `resiliency-tests.md` (RT1 to RT5 steps)
 
 ### Step 15 — Verification
-- [ ] gventz-api: lint, typecheck, unit and PBT, integration (Supabase Postgres image with G-VENTS migrations, connecting as `gventz_api`), build, `docker build`, OpenAPI check, schema drift.
-- [ ] G-VENTS: `npm run test:db` (pgTAP) if the Supabase CLI is available locally, otherwise an equivalent container run. Existing `npm run lint` / `typecheck` / `test` stay green.
-- [ ] Local smoke: `docker compose up`, start with `APP_ROLE=all`, `/health/ready` returns 200, an outbox event round-trip is seen in the logs.
+- [x] gventz-api: lint, typecheck, unit and PBT, integration (Supabase Postgres image with G-VENTS migrations, connecting as `gventz_api`), build, `docker build`, OpenAPI check, schema drift. — *all green 2026-10-24: lint, typecheck, 150 unit/PBT, 30 integration, build, docker build (started as `gventz_api`, readiness up), OpenAPI snapshot regenerated, schema drift test passes*
+- [x] G-VENTS: `npm run test:db` (pgTAP) if the Supabase CLI is available locally, otherwise an equivalent container run. Existing `npm run lint` / `typecheck` / `test` stay green. — *Supabase CLI 2.121.0: `db lint` clean, `test db` 17/17, `database.types.ts` regenerated (adds `outbox_events`); lint, typecheck, 39 tests green*
+- [x] Local smoke: `docker compose up`, start with `APP_ROLE=all`, `/health/ready` returns 200, an outbox event round-trip is seen in the logs. — *image started on the local Supabase stack, `/health/ready` up for Postgres and Redis, HSTS and no-store headers present; outbox round trip covered by the integration test*
+
+### Step 15b — API docs page (added at the user's request, 2026-10-24)
+- [x] Swagger UI at `/api/docs` with a modern theme and a System / Light / Dark switch (remembered per browser); `GET /` redirects to it. — *done; not yet viewed in a browser (Chrome extension not connected), served locally on port 3998*
+- [x] Shown on local and staging only. Production keeps docs off (SECURITY-09); `/openapi.json` stays available for client generation.
+- [x] Integration test: redirect, page served with the theme switch, and nothing in production.
 
 ### Step 16 — Documentation
-- [ ] `gventz-api/README.md`: run locally, environment, deploy, runbooks.
-- [ ] `aidlc-docs/construction/u1-platform-foundation/code/code-summary.md`: a Change 1 section with files changed, decisions, test results, and the owner setup still needed.
+- [x] `gventz-api/README.md`: run locally, environment, deploy, runbooks.
+- [x] `aidlc-docs/construction/u1-platform-foundation/code/code-summary.md`: a Change 1 section with files changed, decisions, test results, and the owner setup still needed.
 
 ## Traceability
 | Requirement or story | Steps |

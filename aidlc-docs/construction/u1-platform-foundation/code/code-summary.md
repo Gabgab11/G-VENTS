@@ -90,3 +90,67 @@
 - **Not run on Render yet:** needs the GitHub repo (O2), Render setup, secrets and the Supabase staging connection string (checklist in deployment-architecture.md).
 - **`openapi.json` is generated but not committed.** It goes in with the first commit.
 - **Local services:** docker compose Postgres and Redis are left running locally, with the tables emptied after testing.
+
+---
+
+# Change 1 rework (2026-10-24)
+
+- **Plan:** `aidlc-docs/construction/plans/u1-platform-change1-code-generation-plan.md`. Every step is ticked; deviations are noted on the step.
+- **Repositories:** `/Users/payazaafrica/gventz-api` (no commits yet) and G-VENTS branch `feature/backend-split` (uncommitted).
+- **Own-auth (U2 v1):** removed from the tree; the snapshot is `/Users/payazaafrica/gventz-api-own-auth-snapshot.tar.gz`, because no first commit was approved for a `parked/own-auth` branch.
+
+## What changed
+
+| Area | Change | Files |
+|---|---|---|
+| Schema (G-VENTS) | `gventz_api` login role: grants per table, one RLS policy per table for this role only, insert-only audit, `extensions` usage, statement timeout 5 s | `supabase/migrations/20261024000100_api_role.sql` |
+| Schema (G-VENTS) | `outbox_events`; RLS on; default grants to `anon` and `authenticated` revoked | `supabase/migrations/20261024000200_outbox.sql` |
+| Tests (G-VENTS) | pgTAP for the role and outbox; regenerated `database.types.ts` | `supabase/tests/api_role_and_outbox.test.sql`, `src/lib/supabase/database.types.ts` |
+| CI/CD (G-VENTS) | Deploy migrations: staging on push, production by hand with approval | `.github/workflows/supabase-migrations.yml`, `supabase/README.md` |
+| Database | Supabase pooler, three pools, TLS with Supabase CA; hand-maintained column maps plus a drift test; Drizzle migrations removed | `src/platform/database/{pool,database.module,database.tokens}.ts`, `schema/tables.ts`, `certs/`, `test/integration/schema-drift.integration.spec.ts` |
+| Test database | Supabase's Postgres image with G-VENTS migrations, tests connect as `gventz_api` | `scripts/db/{supabase-db,reset-local}.ts`, `scripts/db/sql/supabase-stubs.sql`, `test/support/containers.global-setup.ts`, `docker-compose.yml` |
+| Outbox | Registry, writer (inside the UnitOfWork transaction), relay with SKIP LOCKED, 1-second worker loop, 7-day clean-up | `src/platform/outbox/*`, `src/platform/transaction/unit-of-work.ts` |
+| Resilience | Clock-driven breaker state machine, `CircuitBreaker` with timeouts, retry with jitter | `src/platform/resilience/*` |
+| Telemetry | OpenTelemetry SDK preload, Sentry (errors only), `Metrics`, RED metrics per route, pool, breaker, outbox and queue gauges | `src/telemetry/register.ts`, `src/platform/telemetry/*`, `src/platform/http/configure-http.ts` |
+| Logging | Loki transport, trace ids, payment-field redaction, nightly export to R2 | `src/platform/logging/{logging.module,redaction,log-archive,log-export.job}.ts` |
+| HTTP | HSTS, raw body kept, per-IP limit 1,500, webhooks excluded, fail-closed policies return 503 | `configure-http.ts`, `src/platform/rate-limit/*`, `src/main.ts` |
+| API docs (user request) | `/api/docs`: modern Swagger UI with a System / Light / Dark switch; `/` redirects there; off in production | `src/platform/openapi/{openapi,docs-theme}.ts`, `test/integration/api-docs.integration.spec.ts` |
+| Config | Supabase, pools, telemetry, log settings; own-auth settings removed | `src/platform/config/*`, `.env.example` |
+| Deploy | Blueprint without Render Postgres, autoscaling 2–6, digest-pinned image, CI with G-VENTS migrations, SBOM, Sentry release, Dependabot | `render.yaml`, `Dockerfile`, `.github/{workflows/ci.yml,workflows/release.yml,dependabot.yml}`, `gvents-migrations.ref`, `scripts/generate-secrets.sh` |
+| Operations | 13 alert rules, 2 dashboards, runbooks (deploy/rollback, restore, pre-scale, incidents, drills, 12 alert pages) | `ops/grafana/*`, `docs/runbooks/*` |
+
+## Verification (2026-10-24, local)
+
+| Check | Result |
+|---|---|
+| gventz-api lint, typecheck | Clean |
+| Unit and property-based tests | 150 passed (36 files) |
+| Integration tests (Supabase Postgres 17 image + G-VENTS migrations, as `gventz_api`; Redis 7) | 33 passed (6 files) |
+| Build, OpenAPI check | Pass (snapshot regenerated: own-auth paths removed) |
+| Docker image | Builds; started in production mode it refuses an unencrypted database (TLS required), and in test mode it serves `/health/ready` with Postgres and Redis up, HSTS and `no-store` headers |
+| G-VENTS with Supabase CLI 2.121.0 | `db lint` clean; `test db` 17/17; types regenerated; `npm run lint`, `typecheck`, `npm test` (39) green |
+| Docs page in a browser | Viewed by the product owner (dark theme and switch work). Fixed after review: Authorize button text and icon made white for contrast; health endpoints now listed under "Health" so the page isn't empty before U2 |
+| Coverage | 60.7% lines (gate of 80% applies at go-live, Build and Test) |
+
+New property tests: outbox delivers every committed row exactly once by job id, in order, under flaky relays; breaker state machine against a model; retry backoff bounds; log archive hours cover a day exactly once.
+
+## Changes from the design
+
+1. **No `BYPASSRLS` for `gventz_api`:** a per-table RLS policy for the role gives the same access, keeps RLS on, and doesn't depend on Supabase allowing the attribute.
+2. **No generated Drizzle schema:** `drizzle-kit pull` output doesn't compile (it references `auth.users` and copies policies badly). Column maps are hand-written and a drift test compares them with the database.
+3. **Outbox relay and log export are timers on the worker,** not BullMQ repeatable jobs, so they keep working while Redis is down.
+4. **Own breaker** instead of `opossum`, so the property test checks our logic. It closes after one successful trial (the design said three).
+5. **Body limit stays 100 KB** for webhooks too (Paystack and Stripe payloads are small); revisit in U7.
+6. **Local database port 55432,** so it doesn't clash with the Supabase CLI's 54322.
+7. **API docs page added** at the user's request; shown on local and staging only (SECURITY-09).
+
+## Findings for later units
+
+- **U3:** Supabase's `audit_log.event_id` foreign key is `on delete cascade`, so deleting an event deletes its audit rows. The U3 design expects them to survive. U3 needs a migration changing it to `on delete set null`.
+- **U2:** the alert on failed token checks expects `auth_token_rejected_total` from the token guard.
+- **Follow-up:** the daily Supabase backup check (`backup_check_failed`) needs a Supabase Management API token (owner item); its alert rule is ready.
+- **U7:** `webhook_rejected_total` metric and the webhook body limit.
+
+## Owner items still open
+
+O9 (Supabase region; Blueprint uses Frankfurt), O19 (point-in-time recovery before go-live), O7 (Render workspace), O16 (Grafana, Sentry, R2), O10 (on-call contact), the first commits and GitHub remote for gventz-api, and the GitHub environment secrets for the migrations workflow.

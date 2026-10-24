@@ -4,7 +4,7 @@
 - **Project Name**: G-ventZ — event creation, registration and check-in platform
 - **Project Type**: Brownfield
 - **Start Date**: 2026-10-23T12:45:39Z
-- **Current Stage**: INCEPTION - Requirements Analysis, Change 1 (stay on Supabase, payments, 20k-ticket scale) — requirements v2 approved 2026-10-24T03:10:00Z. User Stories approved 2026-10-24T05:00:00Z. Workflow Planning approved 2026-10-24T05:30:00Z. Application Design approved 2026-10-24T06:25:00Z. Units Generation approved 2026-10-24T07:15:00Z. Now: CONSTRUCTION - U1 Platform (rework) Infrastructure Design generated + Code Generation plan created — awaiting combined approval (NFR Requirements approved 07:55, NFR Design approved 08:30). U3 Code Generation paused (plan not approved).
+- **Current Stage**: CONSTRUCTION - U2 Identity (Supabase token adapter), Functional Design (light) - questions issued.
 
 ## Workspace State
 - **Existing Code**: Yes
@@ -65,7 +65,7 @@
 - [x] Workflow Planning (Change 1) — approved 2026-10-24T05:30:00Z
 - [x] Application Design (Change 1, revise) — approved 2026-10-24T06:25:00Z
 - [x] Units Generation (Change 1, revise) — approved 2026-10-24T07:15:00Z (U1-U8)
-- [ ] Construction (Change 1) — U1 Platform rework: FD skipped (v1 holds); NFR Requirements plan issued 2026-10-24T07:20:00Z
+- [ ] Construction (Change 1) — U1 Platform rework: FD skipped (v1 holds); NFR Requirements approved 07:55; NFR Design approved 08:30; Infrastructure Design + Code Generation plan approved 09:00; U1 COMPLETE (code approved 2026-10-24T19:05:00Z; nothing committed); U2 Identity FD (light) started
 - [x] Construction (v1, superseded by Change 1 units; history kept): U1 Functional Design approved 2026-10-23T17:40:00Z; U1 NFR Requirements approved 2026-10-23T18:10:00Z; U1 NFR Design approved 2026-10-23T18:35:00Z; U1 Infrastructure Design approved 2026-10-23T19:05:00Z; U1 COMPLETE (code approved 2026-10-23T21:10:00Z; /Users/payazaafrica/gventz-api, not committed); U2 Functional Design approved 2026-10-23T21:40:00Z; U2 NFR Requirements approved 2026-10-23T22:00:00Z; U2 NFR Design approved 2026-10-23T22:15:00Z; U2 Infrastructure Design SKIPPED (per execution plan); U2 COMPLETE (code approved 2026-10-24T00:15:00Z, not committed); U3 Functional Design approved 2026-10-24T01:00:00Z; U3 NFR/Infrastructure stages not executed (per execution plan); U3 Code Generation Part 1 (plan awaiting approval). Per-unit loop: Functional Design EXECUTE; NFR Requirements/Design EXECUTE for U1, U2, U4; Infrastructure Design EXECUTE for U1, U6; Code Generation EXECUTE
 - [ ] Build and Test
 - [ ] Operations (placeholder)
