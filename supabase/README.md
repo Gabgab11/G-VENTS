@@ -11,6 +11,8 @@ Every schema change is a SQL file in `migrations/`, named `YYYYMMDDHHMMSS_descri
 | `20261022000200_event_location_details.sql` | Venue details from the place search. |
 | `20261022000400_registration_email.sql` | `register_guest` stores the account's verified email, so tickets can't be emailed to arbitrary addresses. |
 | `20261022000500_places_quota.sql` | Shared per-user limit for Google Places lookups (`take_places_quota`). |
+| `20261024000100_api_role.sql` | The `gventz_api` login role for the NestJS API (Change 1): table grants, one RLS policy per table for that role only, timeouts. Its password is set once per project by hand (see below). |
+| `20261024000200_outbox.sql` | `outbox_events`, the API's transactional outbox. Only `gventz_api` can reach it. |
 
 ## Testing locally
 
@@ -25,7 +27,21 @@ supabase stop
 
 CI runs the same steps on every pull request and fails if the committed types are out of date.
 
-## Applying changes
+## Applying changes (GitHub Actions)
+
+`.github/workflows/supabase-migrations.yml` applies migrations for you:
+
+- **Staging:** automatic on push to `feature/backend-split` or `main` when a migration changes.
+- **Production:** run the workflow by hand with target `production`; the `production` GitHub environment asks for one approval.
+- **Order:** apply production migrations **before** releasing an API version (gventz-api) that needs them. Migrations only add things until the split has gone live (application design AD17), so the current app keeps working.
+
+GitHub environment secrets (one set per environment `staging` and `production`): `SUPABASE_ACCESS_TOKEN`, `SUPABASE_DB_PASSWORD`, `SUPABASE_PROJECT_REF`.
+
+### The API role password (once per project)
+
+`20261024000100_api_role.sql` creates `gventz_api` without a password. Run `gventz-api/scripts/generate-secrets.sh`, then in the SQL editor of the project run the single `alter role gventz_api with password '...'` line it prints. This is the only statement run by hand, and it changes no schema.
+
+## Applying changes by hand
 
 Apply to `gvents-staging`, test, then apply to `gvents-prod`.
 

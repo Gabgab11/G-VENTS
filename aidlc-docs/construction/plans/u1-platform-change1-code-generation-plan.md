@@ -82,7 +82,7 @@ This plan is the single source of truth for U1 rework code generation. Steps run
   - **`UnitOfWork` change:** durable events (marked by a `durable` job mapping on the event class) go to the outbox. In-process events stay on `DomainEventBus` after commit.
   - **`OutboxRelay`:** repeatable `outbox-relay` job, every 1 s, batches of 200 with `FOR UPDATE SKIP LOCKED`; enqueues with the stored job id, then marks the rows dispatched.
   - **Maintenance:** deletes dispatched rows after 7 days.
-- [ ] Metrics: `outbox_backlog`, `outbox_dispatch_lag_ms`. (wired in Step 7)
+- [x] Metrics: `outbox_backlog`, `outbox_dispatch_lag_ms`. (wired in Step 7) — *done in Step 7 (`outbox_backlog`, `outbox_oldest_age_ms`)*
 - [x] Tests:
   - unit tests
   - **PBT:** every committed row is enqueued exactly once by job id, under random interleavings of relay runs and failures
@@ -91,74 +91,74 @@ This plan is the single source of truth for U1 rework code generation. Steps run
 ### Step 6 — Resilience module
 - [x] `platform/resilience/`: a `CircuitBreaker` interface with an `opossum` implementation, one named breaker per dependency, thresholds from configuration; a `withTimeout` helper; `retry` with backoff and jitter for safe operations. — *changed: own `BreakerState` (pure, clock-driven) instead of `opossum`, so the property test checks our logic; closes after one successful trial*
 - [x] `ServiceUnavailable` mapped to 503 `dependency_unavailable`.
-- [ ] Metrics: `breaker_state`.
+- [x] Metrics: `breaker_state`.
 - [x] Tests:
   - unit tests
   - **PBT (stateful):** the breaker state machine (closed → open → half-open → closed) matches a model under random success and failure sequences
 
 ### Step 7 — Telemetry and Sentry
-- [ ] `src/telemetry/register.ts`, loaded with `--import` before Nest:
+- [x] `src/telemetry/register.ts`, loaded with `--import` before Nest: — *done; loaded with `--require` (CommonJS build)*
   - OpenTelemetry Node SDK with HTTP, Fastify, `pg` and ioredis instrumentations, OTLP exporter and a sampler (10%, plus errors and slow requests).
   - Off when `OTEL_EXPORTER_OTLP_ENDPOINT` is empty (local, CI).
-- [ ] `platform/telemetry/`: a `Metrics` interface backed by OpenTelemetry metrics; RED metrics per route; pool use; queue depth and age.
-- [ ] Sentry init (`@sentry/nestjs`). `beforeSend` scrubs headers, cookies and bodies. Release = git SHA. Wired into the problem-details filter for 5xx.
-- [ ] Tests: telemetry disabled has no side effects; Sentry scrubbing (unit).
+- [x] `platform/telemetry/`: a `Metrics` interface backed by OpenTelemetry metrics; RED metrics per route; pool use; queue depth and age.
+- [x] Sentry init (`@sentry/nestjs`). `beforeSend` scrubs headers, cookies and bodies. Release = git SHA. Wired into the problem-details filter for 5xx. — *Sentry runs with `enableOpenTelemetrySetup: false` so our OpenTelemetry pipeline stays in charge*
+- [x] Tests: telemetry disabled has no side effects; Sentry scrubbing (unit).
 
 ### Step 8 — Logging and log export
-- [ ] `LoggingModule`:
+- [x] `LoggingModule`: — *done; access logs come from pino-http (method, url, status, duration, request id)*
   - adds the `pino-loki` transport when `LOKI_URL` is set
   - adds `traceId` to log lines
   - updates the redaction list (NFR SECURITY-03)
   - logs every request as an access log (method, route, status, duration, request id)
-- [ ] `platform/logging/log-export.job.ts`: repeatable worker job at 03:00 UTC. It queries the Loki API hour by hour for the previous day, writes gzip NDJSON to R2 (`@aws-sdk/client-s3`) under `logs/{env}/{yyyy}/{mm}/{dd}/{hh}.ndjson.gz`, records counts, and on failure retries 5 times then sets the metric `log_export_failed`.
-- [ ] Tests: path and chunk calculation (PBT: hours cover the day exactly once); export against a fake Loki and fake S3 (unit).
+- [x] `platform/logging/log-export.job.ts`: repeatable worker job at 03:00 UTC. It queries the Loki API hour by hour for the previous day, writes gzip NDJSON to R2 (`@aws-sdk/client-s3`) under `logs/{env}/{yyyy}/{mm}/{dd}/{hh}.ndjson.gz`, records counts, and on failure retries 5 times then sets the metric `log_export_failed`. — *done; a 10-minute timer on the worker runs the export once per day after 03:00 UTC*
+- [x] Tests: path and chunk calculation (PBT: hours cover the day exactly once); export against a fake Loki and fake S3 (unit).
 
 ### Step 9 — Rate limits and HTTP
-- [ ] Global per-IP limit default **1500**; health and `/v1/webhooks/*` excluded.
-- [ ] `onStoreFailure: 'closed'` support (already in the version 1 design) is pre-registered for the policy names `orders.place`, `checkout.start` and `checkin.scan`. The policies themselves are added by U4 and U7.
-- [ ] HSTS `max-age=31536000; includeSubDomains` in helmet.
-- [ ] Raw body kept for `/v1/webhooks/*` (for U7), with a 1 MB limit there.
-- [ ] Tests updated.
+- [x] Global per-IP limit default **1500**; health and `/v1/webhooks/*` excluded.
+- [x] `onStoreFailure: 'closed'` support (already in the version 1 design) is pre-registered for the policy names `orders.place`, `checkout.start` and `checkin.scan`. The policies themselves are added by U4 and U7. — *`definePolicy()` applies the rule by name; a store failure now gives 503 `rate_limiter_unavailable`*
+- [x] HSTS `max-age=31536000; includeSubDomains` in helmet.
+- [x] Raw body kept for `/v1/webhooks/*` (for U7), with a 1 MB limit there. — *changed: `rawBody: true` everywhere; the body limit stays 100 KB (Paystack and Stripe payloads are small), revisit in U7 if needed*
+- [x] Tests updated.
 
 ### Step 10 — Configuration
-- [ ] `EnvironmentVariables` and config classes:
+- [x] `EnvironmentVariables` and config classes:
   - **Added:** `DATABASE_CA_FILE`, pool maximums, `SUPABASE_URL`, `SUPABASE_JWKS_URL`, `SUPABASE_JWT_ISSUER`, `SUPABASE_JWT_AUDIENCE` (used by U2), `OTEL_*`, `LOKI_*`, `SENTRY_*`, `LOG_ARCHIVE_*`, `RATE_LIMIT_GLOBAL_PER_MINUTE`.
   - **Removed:** the obsolete own-auth settings.
   - Production requires the secrets; local and CI use safe defaults.
-- [ ] `.env.example` updated.
-- [ ] Tests for validation (required in production, defaults in development).
+- [x] `.env.example` updated.
+- [x] Tests for validation (required in production, defaults in development).
 
 ### Step 11 — Health and shutdown
-- [ ] Readiness uses the web pool (`select 1`) plus Redis `PING`, each with a 1 s timeout.
-- [ ] Shutdown order: stop HTTP, drain, finish jobs, flush telemetry and Sentry, close BullMQ, Redis and pools.
-- [ ] Integration test.
+- [x] Readiness uses the web pool (`select 1`) plus Redis `PING`, each with a 1 s timeout.
+- [x] Shutdown order: stop HTTP, drain, finish jobs, flush telemetry and Sentry, close BullMQ, Redis and pools.
+- [x] Integration test.
 
 ### Step 12 — Deployment files (gventz-api)
-- [ ] `render.yaml`:
+- [x] `render.yaml`: — *plan ids `0.5c-512mb`, `1c-2g`, Key Value `256mb`/`1g` checked against Render's spec 2026-10-24*
   - Staging web (Starter, `all`) plus Key Value Starter.
   - Production web (Standard, scaling 2 to 6 at CPU 70% and memory 80%) plus worker (Standard) plus Key Value Standard (persistent), with `noeviction`.
   - No databases, no `preDeployCommand`.
   - Region frankfurt, with an O9 note.
   - Plan ids checked against Render's current Blueprint spec.
-- [ ] `Dockerfile`: base images pinned by digest; copy `certs/`; `CMD` with the telemetry preload; non-root user.
-- [ ] `.github/workflows/ci.yml`:
+- [x] `Dockerfile`: base images pinned by digest; copy `certs/`; `CMD` with the telemetry preload; non-root user.
+- [x] `.github/workflows/ci.yml`: — *`gvents-migrations.ref` holds `feature/backend-split` until the migrations are committed and pushed*
   - Check out G-VENTS migrations at the ref pinned in `gvents-migrations.ref`.
   - Steps: lint, typecheck, unit with coverage, integration, build, OpenAPI drift, schema drift, `npm audit --audit-level=high`.
-- [ ] `.github/workflows/release.yml`: fast-forward `production` on a `v*` tag; CycloneDX SBOM attached to the release; Sentry release step (skipped if no token).
-- [ ] `.github/dependabot.yml`: npm, Actions and Docker, weekly.
-- [ ] `scripts/generate-secrets.sh`: prints random values for `BFF_SHARED_SECRET`, `REVALIDATE_SECRET`, and the `gventz_api` password (with the one-line SQL to set it).
+- [x] `.github/workflows/release.yml`: fast-forward `production` on a `v*` tag; CycloneDX SBOM attached to the release; Sentry release step (skipped if no token).
+- [x] `.github/dependabot.yml`: npm, Actions and Docker, weekly.
+- [x] `scripts/generate-secrets.sh`: prints random values for `BFF_SHARED_SECRET`, `REVALIDATE_SECRET`, and the `gventz_api` password (with the one-line SQL to set it).
 
 ### Step 13 — Migrations workflow (G-VENTS)
-- [ ] `.github/workflows/supabase-migrations.yml`:
+- [x] `.github/workflows/supabase-migrations.yml`: — *pull-request checks already exist in `ci.yml` (apply, lint, pgTAP, types), so this workflow only deploys*
   - **Pull request:** `supabase start`, `db reset` and pgTAP.
   - **Push** to `feature/backend-split` or `main` touching migrations: `db push` to staging.
   - **Manual dispatch** `production` with environment protection: `db push` to production.
-- [ ] A note in `supabase/README.md` on the order rule: production migrations go before the API release.
+- [x] A note in `supabase/README.md` on the order rule: production migrations go before the API release.
 
 ### Step 14 — Operations as code and runbooks (gventz-api)
-- [ ] `ops/grafana/alerts.yaml`: the alert rules from NFR U1-O6.
-- [ ] `ops/grafana/dashboards/operations.json` and `ticketing.json`, minimal panels for the metrics above.
-- [ ] `docs/runbooks/`:
+- [x] `ops/grafana/alerts.yaml`: the alert rules from NFR U1-O6. — *13 rules; `auth_token_rejected_total` (U2), `webhook_rejected_total` (U7) and `backup_check_failed` (follow-up job) arrive later*
+- [x] `ops/grafana/dashboards/operations.json` and `ticketing.json`, minimal panels for the metrics above.
+- [x] `docs/runbooks/`:
   - `deploy-and-rollback.md`
   - `restore-database.md` (RT1)
   - `pre-scale.md`
