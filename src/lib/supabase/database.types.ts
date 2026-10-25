@@ -221,7 +221,7 @@ isOneToOne: false
                     "channel"?: string,"created_at"?: string,"destination"?: string,"error"?: string | null,"id"?: string,"status"?: string,"ticket_code"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"ticket_tiers": {
                   Row: {
