@@ -209,6 +209,20 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"ticket_deliveries": {
+                  Row: {
+                    "channel": string,"created_at": string,"destination": string,"error": string | null,"id": string,"status": string,"ticket_code": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "channel": string,"created_at"?: string,"destination": string,"error"?: string | null,"id"?: string,"status": string,"ticket_code": string
+                  }
+                  Update: {
+                    "channel"?: string,"created_at"?: string,"destination"?: string,"error"?: string | null,"id"?: string,"status"?: string,"ticket_code"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"ticket_tiers": {
                   Row: {
                     "created_at": string,"currency": string,"event_id": string,"id": string,"is_active": boolean,"name": string,"price_minor": number,"quantity": number | null,"sales_end": string | null,"sales_start": string | null,"sold": number

@@ -62,6 +62,16 @@ export const TICKET_CSS = `
 
 /* Actions under the ticket */
 .tk-actions { max-width: 860px; margin: 22px auto 0; display: flex; gap: 10px; flex-wrap: wrap; }
+.tk-wa { max-width: 860px; margin: 18px auto 0; padding: 18px; border-radius: 18px; background: #fff; border: 1px solid var(--line); }
+.tk-wa p { margin: 0 0 12px; font-size: 15px; line-height: 1.45; }
+.tk-wa-label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+.tk-wa-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.tk-wa-input { flex: 1 1 220px; min-width: 0; font: inherit; font-size: 16px; padding: 13px 14px; border-radius: 14px; border: 1px solid var(--line); }
+.tk-wa-error { color: #b42318; margin: 10px 0 0; font-size: 14px; }
+.tk-ok { color: #067647; margin: 0 0 12px; font-size: 14px; }
+.tk-mail-form { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.tk-mail-confirm { display: flex; gap: 8px; align-items: center; font-size: 15px; }
+@media print { .tk-wa { display: none !important; } }
 .tk-btn { appearance: none; border: 0; cursor: pointer; font: inherit; font-weight: 600; font-size: 15px; padding: 14px 22px; border-radius: 14px; background: var(--ink); color: #fff; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
 .tk-ghost { background: #fff; color: var(--ink); border: 1px solid var(--line); }
 .tk-go { background: #15925f; }

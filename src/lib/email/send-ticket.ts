@@ -4,6 +4,7 @@ import { getTicket, siteOrigin, ticketUrl } from "@/lib/ticket";
 import { qrPng } from "@/lib/qr-png";
 import { QR_CID, ticketEmail } from "@/lib/email/ticket-email";
 import { sendEmail } from "@/lib/email/send";
+import { recordEmailDelivery } from "@/lib/ticket-delivery";
 
 // Emails a confirmed guest their ticket. The ticket is read now (while the
 // request's session is available) and the email is sent after the response,
@@ -25,6 +26,7 @@ export async function queueTicketEmail(supabase: SupabaseServerClient, code: str
         text,
         images: [{ filename: "ticket-qr.png", contentBase64: qr, contentId: QR_CID }],
       });
+      await recordEmailDelivery(ticket.code, to, sent, "The email service did not accept the message.");
       if (sent) console.info(`[email] ticket ${ticket.code.slice(0, 6)}… sent`);
     });
   } catch (error) {
