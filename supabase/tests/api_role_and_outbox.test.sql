@@ -2,11 +2,15 @@
 -- Run by `supabase test db`. Each test runs inside a transaction that is rolled back.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(11);
+select plan(12);
 
 select has_role('gventz_api', 'the API role exists');
 
 select col_is_null('public', 'outbox_events', 'run_at', 'outbox rows may carry a run-at time (U5)');
+
+select ok(
+  (select setconfig @> array['lock_timeout=3s'] from pg_db_role_setting s join pg_roles r on r.oid = s.setrole where r.rolname = 'gventz_api' and s.setdatabase = 0),
+  'the API role waits at most 3 s for a lock');
 
 select table_privs_are('public', 'audit_log', 'gventz_api', array['SELECT', 'INSERT'],
   'the API can only read and append the audit log');
@@ -35,7 +39,7 @@ insert into public.outbox_events (id, event_type, job_queue, job_name, job_id)
 set local role gventz_api;
 select is((select count(*)::int from public.events where id = '33333333-3333-3333-3333-333333333333'), 1,
   'the API role can read a draft event');
-select is((select count(*)::int from public.outbox_events), 1, 'the API role can read the outbox');
+select is((select count(*)::int from public.outbox_events where job_id = 'test.1'), 1, 'the API role can read the outbox');
 select throws_ok($$delete from public.audit_log$$, '42501', null, 'the API role cannot delete audit rows');
 select lives_ok($$update public.events set status = 'published' where id = '33333333-3333-3333-3333-333333333333'$$,
   'the API role can change event status (events_guard steps aside; the API checks permissions)');

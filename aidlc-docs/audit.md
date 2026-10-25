@@ -1102,3 +1102,37 @@ we will also implement paystack and maybe stripe for other users around the worl
 **Context**: CONSTRUCTION - U6b Code Generation Part 2
 
 ---
+
+## U6b - Code Generation Complete
+**Timestamp**: 2026-10-25T09:40:00Z
+**User Input**: "continue" / "Continue"
+**AI Response**: "U6b done and verified. All remaining screens go through gventz-api; Supabase is sign-in only. Guest list with search/filters, approvals, decline, promote and CSV export; flyer via signed upload; venue search via server actions; outside listings, /api/places and legacy email code removed; HMAC /api/revalidate; security headers (camera fixed for the scanner, CSP with Supabase origin). API additions: notifyRegistration on the dashboard, showAttendeeCount on my events. Results: lint/typecheck clean, 59 unit tests, build passes (home still static), U6b smoke 33/33 twice, U6a smoke 12/12. Approval prompt: Request Changes, or Continue to Next Stage (Build and Test)."
+**Context**: CONSTRUCTION - U6b Code Generation complete, awaiting approval
+
+---
+
+## U6b - Code Generation Approval
+**Timestamp**: 2026-10-25T09:50:00Z
+**User Input**: "continue"
+**AI Response**: "U6b approved. U6b COMPLETE. Starting Build and Test for the go-live scope (U1-U6)."
+**Context**: CONSTRUCTION - U6b complete; Build and Test starting
+
+---
+
+## Build and Test - Results
+**Timestamp**: 2026-10-25T11:30:00Z
+**User Input**: "continue"
+**AI Response**: "Build and Test executed for U1-U6. Builds pass (API, Docker image, website). API 403 tests / 84 files, 95.75% line coverage (combined unit+integration, new test:cov:all with 80% threshold); pgTAP 46/46; website 59/59; smoke U6a 12/12, U6b 33/33. Local k6: no oversell in 4 runs; p95/throughput targets not met on one laptop. Fixed: 500 on pool exhaustion -> 503 service.busy; statement-level active_count trigger (migration 0500); per-event KeyedGate; role lock_timeout (migration 0600); k6 synthetic visitor IPs; Next.js critical advisory (15.5.28 + postcss override); Fastify high advisory (5.12.7, trust function); pgTAP outbox test. Critical finding: Render Frankfurt + Supabase London round trips cap one event at ~7-9 orders/s. Created construction/build-and-test/{build,unit-test,integration-test,performance-test,security-test,e2e-test}-instructions.md, build-and-test-summary.md and region-decision-questions.md (Q1 placement, Q2 restore drill). Ready for Operations: not yet."
+**Context**: CONSTRUCTION - Build and Test, awaiting decisions
+
+---
+
+## Build and Test - Decisions and Change Request (announcement emails)
+**Timestamp**: 2026-10-25T13:45:00Z
+**User Input**: "done
+
+these apis need to be ready tonight" (with two screenshots of the team chat: "Host can send a mail to all registered Guest on the free version only twice before the event. Only paid users can send multiple" ... "We have to set for free version 1k emails per host free. Meaning each host can send free 1k emails to their guests registered" ... "Resend pro version is 20$ Offers 50k emails" ... "The system code is designed to send a blast emails from Host page. Host can decide to send blast email to either registered guests about a reminder for the event")
+**AI Response**: Read region-decision-questions.md: Q1 A (move Supabase to Frankfurt), Q2 A (owner enables PITR; AI writes the drill). Treated the chat as a change request: announcement sending (until now drafts only, D25) with free-plan limits. Defaults taken (no time for a question round; all are settings): 2 sends per event, only before the event starts; 1,000 announcement emails per host per calendar month (UTC), counted per recipient and charged to the event owner; ticket/order emails do not count; one email per distinct guest address; suppressed addresses skipped; unsubscribe link and List-Unsubscribe headers; announcement emails queued behind ticket emails.
+**Context**: Build and Test decisions recorded; change request C2 (announcement sending) implemented in U3 Engagement + U4 Notifications + U6b website.
+
+---

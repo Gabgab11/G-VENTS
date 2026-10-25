@@ -85,6 +85,6 @@ The current `Permissions-Policy` sets `camera=()`, which would block the U6a doo
 - *Changed from the plan: `script-src 'self' 'unsafe-inline'` instead of a per-request nonce. The home page is static (refreshed every minute), and cached HTML can't carry a fresh nonce, so a nonce policy would block its scripts. Every other directive is strict (no external scripts, `object-src 'none'`, `frame-ancestors 'none'`, connections only to the site and Supabase). Headers live in `src/lib/csp.ts` and are applied in `next.config.ts`; COOP same-origin added.*
 
 ### Step 9 — Verification and docs
-- [ ] `lint`, `typecheck`, `test`, `build`.
-- [ ] Smoke (production build + API + local Supabase): the dashboard list, overview counts, edit details, add and remove a question, flyer upload (API storage on local Supabase), guest list search, approve and decline on an approval event, promote, CSV download, cancel, delete; home and Discover listings; `/api/revalidate` accepts a signed call and refuses a forged one; no direct Supabase data calls.
-- [ ] README; `aidlc-docs/construction/u6b-frontend-switch/code/code-summary.md`.
+- [x] `lint`, `typecheck`, `test`, `build`.
+- [x] Smoke (production build + API + local Supabase): the dashboard list, overview counts, edit details, add and remove a question, flyer upload (API storage on local Supabase), guest list search, approve and decline on an approval event, promote, CSV download, cancel, delete; home and Discover listings; `/api/revalidate` accepts a signed call and refuses a forged one; no direct Supabase data calls.
+- [x] README; `aidlc-docs/construction/u6b-frontend-switch/code/code-summary.md`.
