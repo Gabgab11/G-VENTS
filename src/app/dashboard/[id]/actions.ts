@@ -120,6 +120,17 @@ export async function createAnnouncement(formData: FormData) {
   done(id, "announcements", "announcement_saved");
 }
 
+// Free plan (C2): the API enforces 2 sends per event, before it starts, and 1,000 emails a month.
+export async function sendAnnouncement(formData: FormData) {
+  const id = await eventIdFrom(formData);
+  const announcementId = field(formData, "announcement_id");
+  if (!isUuid(announcementId)) fail(id, "announcements");
+  await call(id, "announcements", async () =>
+    data(await (await api()).POST("/v1/events/{id}/announcements/{announcementId}/send", { params: { path: { id, announcementId } } })),
+  );
+  done(id, "announcements", "announcement_sending");
+}
+
 export async function updateEventDetails(formData: FormData) {
   const id = await eventIdFrom(formData);
   const title = field(formData, "title", 200);

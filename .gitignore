@@ -42,3 +42,9 @@ yarn-error.log*
 supabase/.branches
 supabase/.temp
 supabase/signing_keys.json
+
+# AI-DLC working docs and AI tooling: kept locally, not in the repo
+/aidlc-docs/
+/.aidlc-rule-details/
+/.claude/
+/CLAUDE.md

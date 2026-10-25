@@ -345,13 +345,73 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Announcement drafts
-         * @description Newest first. Sending is not available yet.
+         * Announcements
+         * @description Drafts and sent announcements, newest first.
          */
         get: operations["AnnouncementsController_list_v1"];
         put?: never;
         /** Save an announcement draft */
         post: operations["AnnouncementsController_draft_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/events/{id}/announcements/allowance": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Free-plan sending allowance
+         * @description Sends left for this event, announcement emails left this month for its owner, and audience sizes.
+         */
+        get: operations["AnnouncementsController_allowance_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/events/{id}/announcements/{announcementId}/send": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Send an announcement
+         * @description Emails the chosen audience (one email per address, unsubscribed left out). Free plan: 2 sends per event, only before it starts, and 1,000 announcement emails per host per month. 409 with announcement.already_sent, event_started, event_draft, event_limit, no_recipients or quota_exceeded.
+         */
+        post: operations["AnnouncementsController_send_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/unsubscribe": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Unsubscribe from an event’s announcements
+         * @description The token comes from the email. Repeating it is harmless. 404 announcement.unsubscribe_unknown for a token that matches nothing.
+         */
+        post: operations["UnsubscribeController_unsubscribe_v1"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1118,11 +1178,17 @@ export interface components {
             /** @enum {string} */
             segment: "all" | "paid" | "checked_in" | "not_checked_in" | "waitlist";
             /** @enum {string} */
-            status: "draft";
+            status: "draft" | "sending" | "sent";
             /** Format: uuid */
             createdBy: string;
             /** Format: date-time */
             createdAt: string;
+            /** Format: date-time */
+            sentAt: string | null;
+            /** @description Addresses the send went to (0 for drafts) */
+            recipientCount: number;
+            /** @description Emails delivered to the provider so far */
+            sentCount: number;
         };
         DraftAnnouncementDto: {
             subject: string;
@@ -1132,6 +1198,47 @@ export interface components {
              * @enum {string}
              */
             segment: "all" | "paid" | "checked_in" | "not_checked_in" | "waitlist";
+        };
+        AudienceCountsDto: {
+            all: number;
+            paid: number;
+            checked_in: number;
+            not_checked_in: number;
+            waitlist: number;
+        };
+        AllowanceDto: {
+            /** @description Announcements already sent for this event */
+            sendsUsed: number;
+            /** @description Sends allowed per event on the free plan */
+            sendsAllowed: number;
+            /** @description Announcement emails the event owner used this month (UTC) */
+            emailsUsed: number;
+            /** @description Announcement emails allowed per host per month */
+            emailsAllowed: number;
+            /**
+             * Format: date-time
+             * @description When the monthly allowance resets
+             */
+            periodEndsAt: string;
+            /** @description Distinct addresses per audience, unsubscribed left out */
+            audience: components["schemas"]["AudienceCountsDto"];
+        };
+        SentAnnouncementDto: {
+            /** Format: uuid */
+            id: string;
+            /** @enum {string} */
+            status: "sending";
+            recipients: number;
+            emailsLeftThisMonth: number;
+            sendsLeftForEvent: number;
+        };
+        UnsubscribeDto: {
+            /** @description From the unsubscribe link */
+            token: string;
+        };
+        UnsubscribedDto: {
+            /** @description The event whose announcements stop */
+            eventTitle: string;
         };
         OrderLineInputDto: {
             /** Format: uuid */
@@ -2202,6 +2309,114 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    AnnouncementsController_allowance_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AllowanceDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.forbidden: needs event.viewDashboard */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.not_found (also when you have no role on the event) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AnnouncementsController_send_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                announcementId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SentAnnouncementDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.forbidden: needs announcements.send */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.not_found (also when you have no role on the event) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    UnsubscribeController_unsubscribe_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UnsubscribeDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnsubscribedDto"];
+                };
             };
         };
     };

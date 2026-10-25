@@ -120,6 +120,19 @@ ok("a guest can't export", csvGuest.status === 404 || csvGuest.status === 403, S
 const outsider = await text(await get(guest1, dash));
 ok("a guest sees 'Page not found' and no event data on the dashboard", outsider.includes("Page not found") && !outsider.includes("Give the next waiting group") && !outsider.includes("Export CSV"));
 
+// ---- Announcements on event A (C2): draft, send within the free plan, the event limit ----
+r = await form(host, "createAnnouncement", dash, [["event_id", a.id], ["segment", "all"], ["subject", "Doors open at 6"], ["body", "Bring your QR code."]]);
+ok("save an announcement draft", query(r).get("ok") === "announcement_saved");
+let ann = await text(await get(host, `${dash}?tab=announcements`));
+const annId = /name="announcement_id" value="([0-9a-f-]{36})"/.exec(ann)?.[1];
+ok("the tab shows the free plan and a send button sized to the audience", ann.includes("2 of 2") && ann.includes("1,000 of 1,000") && ann.includes("Send to 2 guests") && !!annId);
+r = await form(host, "sendAnnouncement", dash, [["event_id", a.id], ["announcement_id", annId ?? ""]]);
+ok("send it", query(r).get("ok") === "announcement_sending");
+r = await form(host, "sendAnnouncement", dash, [["event_id", a.id], ["announcement_id", annId ?? ""]]);
+ok("sending twice shows the API's message", query(r).get("err") === "api.announcement.already_sent");
+ann = await text(await get(host, `${dash}?tab=announcements`));
+ok("the tab counts the send against both allowances", ann.includes("1 of 2") && ann.includes("998 of 1,000") && /Sen(t|ding) · \d of 2 emailed/.test(ann));
+
 // ---- Event B: approvals ----
 const b = await createEvent("U6b Approval Night", [["require_approval", "on"]]);
 await order(guest1, b);

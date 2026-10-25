@@ -4,7 +4,14 @@
 // API message includes a value (a number, a label) get a fixed wording here.
 
 export const API_MESSAGES: Readonly<Record<string, string>> = {
+  "announcement.already_sent": "This announcement has already been sent.",
+  "announcement.event_draft": "Publish the event before sending announcements.",
+  "announcement.event_limit": "You've used both free announcements for this event.",
+  "announcement.event_started": "Announcements can only be sent before the event starts.",
   "announcement.fields_required": "Add a subject and a message.",
+  "announcement.no_recipients": "Nobody in this audience can receive emails yet.",
+  "announcement.not_found": "This announcement could not be found.",
+  "announcement.quota_exceeded": "This would go over your free announcement emails for this month. Pick a smaller audience or wait for the monthly reset.",
   "announcement.segment_invalid": "Choose who receives this announcement.",
   "event.already_cancelled": "This event is already cancelled.",
   "event.buyer_limit_invalid": "Choose a limit from 1 to 10 tickets per person.",

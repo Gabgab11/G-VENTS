@@ -28,17 +28,24 @@ create table if not exists public.email_campaign_recipients (
   email        text not null,
   name         text,
   status       text not null default 'queued' check (status in ('queued', 'sent', 'skipped', 'failed')),
-  sent_at      timestamptz
+  sent_at      timestamptz,
+  -- The unsubscribe link in the email: unguessable, so no signing secret is needed.
+  token        text not null default replace(gen_random_uuid()::text, '-', '')
 );
 
 -- One email per address per announcement.
 create unique index if not exists email_campaign_recipients_one_per_address
   on public.email_campaign_recipients (campaign_id, lower(email));
+create unique index if not exists email_campaign_recipients_token
+  on public.email_campaign_recipients (token);
 create index if not exists email_campaign_recipients_queued
   on public.email_campaign_recipients (campaign_id, id) where status = 'queued';
 
 -- Server-only, like email_suppressions: RLS on, only the API role admitted.
 alter table public.email_campaign_recipients enable row level security;
+-- Supabase's default privileges give the Data API roles every right on new tables; RLS already
+-- blocks them, and this takes the rights away too (SECURITY-06).
+revoke all on table public.email_campaign_recipients from anon, authenticated;
 grant select, insert, update, delete on table public.email_campaign_recipients to gventz_api;
 grant usage, select on all sequences in schema public to gventz_api;
 drop policy if exists "api_all" on public.email_campaign_recipients;

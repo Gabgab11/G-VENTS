@@ -20,6 +20,7 @@ Every schema change is a SQL file in `migrations/`, named `YYYYMMDDHHMMSS_descri
 | `20261025000100_orders.sql` | `orders`: one purchase by one buyer for one event (U4). Only `gventz_api` can reach it. |
 | `20261025000200_registrations_orders.sql` | Tickets get `order_id`, `ticket_number`, `guest_name` and the `declined` status; one buyer may hold several tickets (the one-per-user index is dropped; `register_guest` still refuses a second registration itself). |
 | `20261025000600_api_role_lock_timeout.sql` | `lock_timeout = 3s` for `gventz_api` (one round trip less per order). |
+| `20261025000700_announcement_sending.sql` | Sending announcements (C2): send facts on `email_campaigns`, the `email_campaign_recipients` audience snapshot with unsubscribe tokens; API role only. |
 | `20261025000500_active_count_per_statement.sql` | `active_count` kept per statement (one event-row update per order, not per ticket), found by the load test. |
 | `20261025000400_outbox_run_at.sql` | `outbox_events.run_at`: delayed jobs (the once-a-minute page refresh after orders, U5). |
 | `20261025000300_events_active_count.sql` | `events.active_count` (confirmed + pending), backfilled and kept by a trigger on registrations; `updated_at` ignores count-only changes. |
