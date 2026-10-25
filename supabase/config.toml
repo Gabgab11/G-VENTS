@@ -2,3 +2,15 @@
 # every migration in migrations/ applies cleanly, in order, to an empty
 # database. Unlisted settings use the CLI's defaults.
 project_id = "g-vents"
+
+[auth]
+# Asymmetric (ES256) access tokens, as in production (O17); gventz-api accepts only ES256/RS256.
+# The key file is local and gitignored: create it with `node supabase/scripts/gen-signing-key.mjs`.
+signing_keys_path = "./signing_keys.json"
+site_url = "http://localhost:3000"
+additional_redirect_urls = ["http://localhost:3000/auth/callback"]
+
+# Local emails carry the 6-digit code the sign-in page asks for (production uses the same template, O17).
+[auth.email.template.magic_link]
+subject = "Your G-ventZ sign-in code"
+content_path = "./supabase/templates/sign-in-code.html"

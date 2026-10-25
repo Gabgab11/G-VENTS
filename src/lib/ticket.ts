@@ -1,33 +1,11 @@
 import { headers } from "next/headers";
-import type { SupabaseServerClient } from "@/lib/supabase/server";
 import { DEFAULT_TIMEZONE } from "@/lib/dates";
+import type { components } from "@/lib/api/schema";
+import { api, data } from "@/lib/api/server";
+import { ApiError } from "@/lib/api/problem";
 
-export type TicketStatus = "pending" | "confirmed" | "waitlisted" | "cancelled" | "refunded";
-
-export type Ticket = {
-  id: string;
-  code: string;
-  name: string;
-  status: TicketStatus;
-  checked_in_at: string | null;
-  created_at: string;
-  tier: { name: string; price_minor: number; currency: string };
-  event: {
-    title: string;
-    slug: string;
-    starts_at: string;
-    ends_at: string | null;
-    timezone: string;
-    is_online: boolean;
-    venue_name: string | null;
-    address: string | null;
-    city: string | null;
-    country: string | null;
-    status: "draft" | "published" | "cancelled";
-    refund_policy: string | null;
-  };
-  can_check_in: boolean;
-};
+/** A ticket from gventz-api (U6a): the ticket page. */
+export type Ticket = components["schemas"]["TicketViewResponse"];
 
 const CODE = /^[0-9a-f]{24}$/;
 
@@ -35,12 +13,15 @@ export function isTicketCode(code: string): boolean {
   return CODE.test(code);
 }
 
-// Reads one ticket by its code. See get_ticket in supabase/migrations.
-export async function getTicket(supabase: SupabaseServerClient, code: string): Promise<Ticket | null> {
+// One ticket by its code from gventz-api, with the viewer's token so staff see "Check in".
+export async function getTicket(code: string): Promise<Ticket | null> {
   if (!isTicketCode(code)) return null;
-  const { data, error } = await supabase.rpc("get_ticket", { p_code: code });
-  if (error) throw new Error(`Could not load ticket: ${error.message}`);
-  return (data as Ticket | null) ?? null;
+  try {
+    return data(await (await api()).GET("/v1/tickets/{code}", { params: { path: { code } } }));
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) return null;
+    throw error;
+  }
 }
 
 // "9F3C 2A71 B0E4 D5C6 A7B8 C9D0": easier to read out at the door.
@@ -66,21 +47,6 @@ export function ticketDate(iso: string, timeZone: string): string {
 // "18:00"
 export function ticketTime(iso: string, timeZone: string): string {
   return format(iso, timeZone, { hour: "2-digit", minute: "2-digit" });
-}
-
-export function ticketPlace(event: Ticket["event"]): string {
-  if (event.is_online) return "Online";
-  const parts = [event.venue_name, event.address, event.city, event.country].filter(Boolean);
-  return parts.length ? parts.join(", ") : "Venue to be announced";
-}
-
-export function ticketPrice(tier: Ticket["tier"]): string {
-  if (tier.price_minor === 0) return "Free";
-  try {
-    return new Intl.NumberFormat("en-NG", { style: "currency", currency: tier.currency }).format(tier.price_minor / 100);
-  } catch {
-    return `${tier.currency} ${(tier.price_minor / 100).toFixed(2)}`;
-  }
 }
 
 // The address people use to reach the site, for links in QR codes and emails.

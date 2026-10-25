@@ -1,11 +1,19 @@
 # G-vents
 
-Events from everywhere. Next.js on Vercel, Supabase for data, login, and storage.
+Events for everyone. Next.js on Vercel; the backend is gventz-api (NestJS on Render). Supabase holds the data and storage, and handles sign-in.
 
 ## Local setup
 1. `npm install`
-2. Copy `.env.example` to `.env.local` and fill in the staging values (project `gvents-staging`).
+2. Copy `.env.example` to `.env.local` and fill in the staging values (project `gvents-staging`), or use a local stack (below).
 3. `npm run dev`, then open http://localhost:3000
+
+The website reaches the backend only from the server (`src/lib/api/server.ts`): set `API_URL` and `BFF_SHARED_SECRET` (the same value as on the API).
+
+**Fully local** (website + gventz-api + local Supabase):
+1. `node supabase/scripts/gen-signing-key.mjs` once (local ES256 signing key; the API accepts only asymmetric tokens), then `npx supabase start`.
+2. Run gventz-api on port 4000 against the local database (see its README), with `SUPABASE_URL=http://127.0.0.1:54321`.
+3. In `.env.local`: `NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321`, the local publishable key from `npx supabase status`, `API_URL=http://localhost:4000`.
+4. Sign-in codes arrive in Mailpit: http://127.0.0.1:54324.
 
 ## Checks
 CI runs these on every pull request. Run them locally before pushing:
@@ -26,7 +34,9 @@ Schema changes are migrations in `supabase/migrations/`. See `supabase/README.md
 
 ## Working on the code
 - Work on a branch and open a pull request. `main` deploys to production, so nothing is pushed to it directly.
-- Permission checks live in the database (row-level security and functions). The app also checks access up front, using `requireEventRole` in `src/lib/auth.ts`, so users get a clear answer.
+- Event creation, the public event page, tickets, the ticket page, My tickets and the door scanner go through gventz-api (U6a). The other dashboard screens still use Supabase directly until U6b.
+- API types: `npm run api:types` regenerates `src/lib/api/schema.d.ts` from `../gventz-api/openapi.json` (or `API_OPENAPI_URL`). Run it when the API changes.
+- Errors from the API carry messages written for users (`apiMessage` in `src/lib/api/problem.ts`); anything unexpected shows a generic message and is logged.
 
 ## Deploying to Vercel
 1. In Vercel, import the repo. Framework preset: Next.js.

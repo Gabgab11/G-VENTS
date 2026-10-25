@@ -1,19 +1,5 @@
 import type { NextConfig } from "next";
-
-// Baseline security headers for every page (review finding M6).
-// - No page may be framed by another site, so buttons such as "Check in" on the
-//   ticket page can't be clickjacked.
-// - Motion sensors are allowed for this site only (the home page tilt game);
-//   the camera, microphone and location are off until a feature needs them.
-// A full Content-Security-Policy for scripts and styles needs nonces and moving
-// the inline <style> blocks into CSS files first; it is not set yet.
-const securityHeaders = [
-  { key: "Content-Security-Policy", value: "frame-ancestors 'none'; base-uri 'self'; object-src 'none'; form-action 'self'" },
-  { key: "X-Frame-Options", value: "DENY" },
-  { key: "X-Content-Type-Options", value: "nosniff" },
-  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-  { key: "Permissions-Policy", value: "accelerometer=(self), gyroscope=(self), magnetometer=(self), camera=(), microphone=(), geolocation=(), payment=()" },
-];
+import { securityHeaders } from "./src/lib/csp";
 
 const nextConfig: NextConfig = {
   experimental: {
@@ -22,7 +8,7 @@ const nextConfig: NextConfig = {
     serverActions: { bodySizeLimit: "6mb" },
   },
   async headers() {
-    return [{ source: "/:path*", headers: securityHeaders }];
+    return [{ source: "/:path*", headers: securityHeaders(process.env.NEXT_PUBLIC_SUPABASE_URL) }];
   },
 };
 

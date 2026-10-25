@@ -90,3 +90,44 @@ Integration tests cover:
 - **Mobile Google sign-in:** designed but not tried; it needs the app's deep link added to `GOOGLE_REDIRECT_URIS` (Q8 A).
 - **Real email:** not run against Resend yet (needs O5 and a key). The adapter is covered with a mocked `fetch`.
 - **Not committed.**
+
+---
+
+# Change 1: Supabase token adapter (2026-10-24)
+
+The version 1 own-auth code described above was removed from the tree (snapshot `/Users/payazaafrica/gventz-api-own-auth-snapshot.tar.gz`). This section describes what replaces it.
+
+- **Plan:** `aidlc-docs/construction/plans/u2-identity-change1-code-generation-plan.md`, all steps ticked.
+- **Design:** `u2-identity/functional-design/change1-identity.md`.
+- **Not committed.**
+
+## Files
+
+| Area | Files |
+|---|---|
+| Migration (G-VENTS) | `supabase/migrations/20261024000300_platform_staff.sql` (seeds `stefaneey@gmail.com`), `supabase/tests/platform_staff.test.sql`, regenerated `src/lib/supabase/database.types.ts` |
+| Domain | `src/modules/identity/domain/{authenticated-user,errors,index}.ts` |
+| Application | `application/{ports,dto,profile.service,user-directory,platform-staff-directory}.ts` |
+| Infrastructure | `infrastructure/{supabase-token-verifier,drizzle-profile.repository,drizzle-platform-staff.reader}.ts` |
+| Presentation | `presentation/{access-token.guard,decorators,platform-staff.guard,me.controller,request-user}.ts` |
+| Module | `identity.module.ts` (global, `APP_GUARD`), `index.ts`; wired in `src/app.module.ts` |
+| Platform | `WWW-Authenticate: Bearer` on 401s (`problem-details.filter.ts`); `platformStaff` in `schema/tables.ts`; lint module list updated |
+| Tests | `infrastructure/supabase-token-verifier.spec.ts` (PBT oracle and invariant), `domain/authenticated-user.pbt.spec.ts`, `application/profile.service.spec.ts` (PBT: unsent fields unchanged), `test/integration/identity.integration.spec.ts`, `test/support/supabase-tokens.ts`, probe secure routes |
+
+## Verification (2026-10-24)
+
+| Check | Result |
+|---|---|
+| Lint, typecheck | Clean |
+| Unit and property-based tests | 161 passed |
+| Integration tests (local test key server) | 42 passed. U2 cases: profile, profile created on demand, six refusal codes, public route with a bad token, PATCH rules, MFA guard, staff 404/403/200, keys unreachable → 503 |
+| Build, OpenAPI | Pass; snapshot now has `/v1/me` |
+| Supabase CLI | `db lint` clean, `test db` 3 files pass, types regenerated |
+
+## Changes from the design
+- No separate circuit breaker around the key fetch: `jose`'s remote key set caches keys for 10 minutes, refreshes at most every 30 s and times out at 3 s. Fetch failures become 503.
+- `IdentityModule` is global, so every module's controllers can use its guards.
+- The country check is a two-letter format check for now; the U3 country catalog replaces it.
+
+## Owner items
+Supabase settings (O17): access-token lifetime 15 minutes, asymmetric signing keys, Google provider, custom SMTP via Resend (O5), MFA (TOTP), Turnstile.

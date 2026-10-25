@@ -13,6 +13,14 @@ Every schema change is a SQL file in `migrations/`, named `YYYYMMDDHHMMSS_descri
 | `20261022000500_places_quota.sql` | Shared per-user limit for Google Places lookups (`take_places_quota`). |
 | `20261024000100_api_role.sql` | The `gventz_api` login role for the NestJS API (Change 1): table grants, one RLS policy per table for that role only, timeouts. Its password is set once per project by hand (see below). |
 | `20261024000200_outbox.sql` | `outbox_events`, the API's transactional outbox. Only `gventz_api` can reach it. |
+| `20261024000300_platform_staff.sql` | `platform_staff`: G-ventZ staff by verified email (read-only for the API). |
+| `20261024000400_events_purchase_policy.sql` | `events.per_buyer_limit` (1–10) and `events.fee_choice`. |
+| `20261024000500_audit_keep_on_event_delete.sql` | Audit rows survive event deletion (`event_id` set to null). |
+| `20261024000600_events_guard_api_role.sql` | `events_guard` steps aside for `gventz_api`, which checks the same rules itself. |
+| `20261025000100_orders.sql` | `orders`: one purchase by one buyer for one event (U4). Only `gventz_api` can reach it. |
+| `20261025000200_registrations_orders.sql` | Tickets get `order_id`, `ticket_number`, `guest_name` and the `declined` status; one buyer may hold several tickets (the one-per-user index is dropped; `register_guest` still refuses a second registration itself). |
+| `20261025000400_outbox_run_at.sql` | `outbox_events.run_at`: delayed jobs (the once-a-minute page refresh after orders, U5). |
+| `20261025000300_events_active_count.sql` | `events.active_count` (confirmed + pending), backfilled and kept by a trigger on registrations; `updated_at` ignores count-only changes. |
 
 ## Testing locally
 

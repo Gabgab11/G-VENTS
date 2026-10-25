@@ -19,3 +19,15 @@ export const env = {
     return (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(/\/+$/, "");
   },
 };
+
+/**
+ * Server-only settings for the gventz-api backend (U6a). Never NEXT_PUBLIC_: the browser doesn't
+ * call the API. Read on first use, like `env`, so builds work without secrets.
+ */
+export function serverEnv() {
+  return {
+    apiUrl: required("API_URL", process.env.API_URL).replace(/\/+$/, ""),
+    // Optional locally; required in production by the API (it trusts the client IP only with this key).
+    bffSharedSecret: process.env.BFF_SHARED_SECRET ?? "",
+  };
+}

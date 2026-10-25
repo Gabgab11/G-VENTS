@@ -156,10 +156,10 @@ const TICKER = [
 // Rendered once and refreshed at most every minute, instead of on every visit.
 export const revalidate = 60;
 
-// Builds without Supabase settings (CI) render no events; the deployed page
-// refreshes with real ones within a minute.
+// Builds without the API setting (CI) render no events; the deployed page refreshes with real
+// ones within a minute.
 async function featuredEvents() {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) return [];
+  if (!process.env.API_URL) return [];
   return getFeaturedEvents(6);
 }
 

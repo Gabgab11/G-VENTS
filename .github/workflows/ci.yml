@@ -40,6 +40,7 @@ jobs:
       - uses: supabase/setup-cli@v1
         with:
           version: 2.121.0 # pinned: generated types must match byte for byte
+      - run: node supabase/scripts/gen-signing-key.mjs
       - run: supabase db start
       - run: supabase db lint --local --level error --fail-on error
       - run: supabase test db # supabase/tests/*.test.sql (pgTAP)

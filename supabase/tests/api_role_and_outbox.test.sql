@@ -2,9 +2,11 @@
 -- Run by `supabase test db`. Each test runs inside a transaction that is rolled back.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(9);
+select plan(11);
 
 select has_role('gventz_api', 'the API role exists');
+
+select col_is_null('public', 'outbox_events', 'run_at', 'outbox rows may carry a run-at time (U5)');
 
 select table_privs_are('public', 'audit_log', 'gventz_api', array['SELECT', 'INSERT'],
   'the API can only read and append the audit log');
@@ -35,6 +37,8 @@ select is((select count(*)::int from public.events where id = '33333333-3333-333
   'the API role can read a draft event');
 select is((select count(*)::int from public.outbox_events), 1, 'the API role can read the outbox');
 select throws_ok($$delete from public.audit_log$$, '42501', null, 'the API role cannot delete audit rows');
+select lives_ok($$update public.events set status = 'published' where id = '33333333-3333-3333-3333-333333333333'$$,
+  'the API role can change event status (events_guard steps aside; the API checks permissions)');
 
 reset role;
 set local role anon;

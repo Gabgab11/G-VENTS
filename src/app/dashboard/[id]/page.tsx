@@ -1,13 +1,12 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { requireEventRole, STAFF_ROLES } from "@/lib/auth";
+import { can, requireEvent } from "@/lib/auth";
 import { env } from "@/lib/env";
 import ThemeStage from "@/components/ThemeStage";
 import BackLink from "@/components/BackLink";
 import ThemePanel from "../ThemePanel";
 import { getDashboardTheme } from "../getTheme";
 import OverviewTab from "./OverviewTab";
-import GuestsTab from "./GuestsTab";
+import GuestsTab, { type GuestQuery } from "./GuestsTab";
 import RegistrationTab from "./RegistrationTab";
 import AnnouncementsTab from "./AnnouncementsTab";
 import SettingsTab from "./SettingsTab";
@@ -23,28 +22,19 @@ const TABS = [
 
 type TabKey = (typeof TABS)[number]["key"];
 
+// The event dashboard, from gventz-api (U6b). Only the event's team gets here (others: 404);
+// controls show according to the caller's permissions, and the API checks them again.
 export default async function ManageEventPage({
   params, searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ tab?: string; ok?: string; err?: string; page?: string }>;
+  searchParams: Promise<{ tab?: string; ok?: string; err?: string } & GuestQuery>;
 }) {
   const { id } = await params;
   const sp = await searchParams;
   const tab: TabKey = TABS.find((t) => t.key === sp.tab)?.key ?? "overview";
 
-  // Only this event's team gets past here; everyone else sees a 404.
-  const { supabase, user } = await requireEventRole(id, STAFF_ROLES);
-
-  const [{ data: event }, theme] = await Promise.all([
-    supabase
-      .from("events")
-      .select("id, title, slug, status, visibility, starts_at, capacity, registration_open, show_attendee_count")
-      .eq("id", id)
-      .maybeSingle(),
-    getDashboardTheme(supabase, user.id),
-  ]);
-  if (!event) notFound();
+  const [event, theme] = await Promise.all([requireEvent(id), getDashboardTheme()]);
 
   const url = `${env.siteUrl}/e/${event.slug}`;
   const ok = messageFor(sp.ok);
@@ -56,7 +46,10 @@ export default async function ManageEventPage({
       <ThemeStage theme={theme} />
       <BackLink fallback="/dashboard" label="← All events" />
       <h1>{event.title}</h1>
-      <p className="muted small">{statusLabel} · {event.visibility === "private" ? "Private" : "Public"}</p>
+      <p className="muted small">{statusLabel} · {event.visibility === "private" ? "Private" : "Public"} · You are {event.role}</p>
+      {event.status === "published" && can(event, "guests.checkIn") && (
+        <p><Link href={`/dashboard/${id}/scan`} className="btn-grad">Scan tickets at the door</Link></p>
+      )}
 
       <nav className="tabs" aria-label="Event sections">
         {TABS.map((t) => (
@@ -70,11 +63,11 @@ export default async function ManageEventPage({
       {ok && <p className="ok" role="status">{ok}</p>}
       {err && <p className="error" role="alert">{err}</p>}
 
-      {tab === "overview" && <OverviewTab id={id} url={url} event={event} />}
-      {tab === "guests" && <GuestsTab id={id} page={Number(sp.page) || 1} />}
-      {tab === "registration" && <RegistrationTab id={id} url={url} />}
-      {tab === "announcements" && <AnnouncementsTab id={id} />}
-      {tab === "settings" && <SettingsTab id={id} />}
+      {tab === "overview" && <OverviewTab event={event} url={url} />}
+      {tab === "guests" && <GuestsTab event={event} query={sp} />}
+      {tab === "registration" && <RegistrationTab event={event} url={url} />}
+      {tab === "announcements" && <AnnouncementsTab event={event} />}
+      {tab === "settings" && <SettingsTab event={event} />}
     </main>
   );
 }

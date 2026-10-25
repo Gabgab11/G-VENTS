@@ -130,6 +130,11 @@ textarea.input { resize: vertical; }
 .auth-input { width: 100%; padding: 15px 16px; border-radius: 12px; background: #141414; border: 1px solid var(--line); color: #fff; font: inherit; font-size: 16px; }
 .auth-input:focus { outline: none; border-color: var(--gold); }
 .auth-code { text-align: center; letter-spacing: 8px; font-size: 22px; font-weight: 700; }
+.auth-google { width: 100%; padding: 14px; border-radius: 999px; background: #141414; color: #fff; font-weight: 700; font-size: 16px; border: 1px solid var(--line); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
+.auth-google:hover { border-color: #5a5a5e; }
+.auth-google:disabled { opacity: .6; cursor: default; }
+.auth-divider { display: flex; align-items: center; gap: 12px; color: #8e8e93; font-size: 13px; }
+.auth-divider::before, .auth-divider::after { content: ""; flex: 1; height: 1px; background: var(--line); }
 .auth-primary { width: 100%; padding: 15px; border-radius: 999px; background: #ffffff; color: #141414; font-weight: 700; font-size: 16px; border: 0; cursor: pointer; }
 .auth-primary:disabled { opacity: .6; cursor: default; }
 .auth-link { background: none; border: 0; color: var(--muted); font: inherit; font-weight: 600; cursor: pointer; padding: 6px; }
@@ -365,3 +370,22 @@ input, select, textarea, button { max-width: 100%; min-width: 0; }
 @keyframes combo-spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 2.4s; } }
 .btn-danger:disabled { opacity: .45; cursor: not-allowed; }
+
+/* Orders and My tickets (U6a) */
+.order-card { margin-top: 14px; }
+.order-event { font-weight: 800; font-size: 18px; color: var(--text); }
+.order-tickets { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 10px; }
+.order-ticket { display: flex; align-items: center; gap: 12px; padding: 10px; border: 1px solid var(--line); border-radius: 12px; }
+.order-qr { width: 72px; height: 72px; background: #fff; border-radius: 8px; padding: 4px; flex: none; }
+.order-qr svg { width: 100%; height: 100%; display: block; }
+.register .qty { width: 72px; flex: none; padding: 8px 10px; }
+
+/* Door scanner (U6a) */
+.scanner { display: grid; gap: 12px; }
+.scanner-view { position: relative; border-radius: 18px; overflow: hidden; background: #000; aspect-ratio: 3 / 4; max-height: 70vh; }
+.scanner-video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.scan-result { position: absolute; inset: 0; display: grid; place-content: center; gap: 8px; text-align: center; padding: 24px; color: #fff; font-size: 18px; }
+.scan-result b { font-size: 34px; font-weight: 800; letter-spacing: -0.02em; }
+.scan-result.green { background: rgba(22, 163, 74, 0.94); }
+.scan-result.red { background: rgba(220, 38, 38, 0.94); }
+.scanner-manual { display: flex; gap: 8px; }

@@ -11,6 +11,21 @@ Version 2 replaces version 1, which is kept in `requirements-v1-superseded.md`. 
 
 Sources: `inception/plans/story-generation-plan.md` (Q5–Q10) and `inception/plans/story-clarification-questions.md` (S1–S6).
 
+**Revision 2.2 (2026-10-24, from the Luma and EventPorte research, U4 FD Q7 A):**
+
+**Added before go-live (U4 and U6):**
+- **I1:** a calendar invite (.ics) with the tickets email
+- **I2:** guest list search and filters
+- **I3:** guest list CSV export
+- **I4:** a "declined" status for approval events, with an email
+- **I7:** "My tickets" for attendees
+
+**Recorded as backlog for after M5:** early-bird pricing, promoter links, a join link per guest for online events, a feedback email after the event.
+
+**Not adopted for now:** hiding the address until approval (I6) and bulk status updates (I11).
+
+Source: `inception/research/luma-eventporte-notes.md`.
+
 The answers it is built from are in:
 - `requirements-verification-questions.md` and `requirement-clarification-questions.md` (version 1, still valid where not replaced)
 - `requirements-change-1-questions.md` (Q1–Q15)
@@ -490,6 +505,7 @@ Unchanged from version 1 FR-9:
 | O13 | Taxes and VAT on fees and tickets in each country. | Before M4 |
 | O14 | Deferred (D57). Venue connectivity for the December event should be checked; staff need mobile data or Wi-Fi. | M3 |
 | O15 | Paystack business account (live keys, split payments enabled) and Stripe account with Connect (Express) enabled. | M4 / M5 |
+| O20 | **Email throughput for the December peak:** ask Resend to raise the limit to 50/s, and/or set up ZeptoMail (account, domain, Zoho confirming about 20,000 emails an hour). Both are supported by a setting (U4 NFR Q1a C). | 8 November |
 | O18 | **Terms of service and checkout wording** stating that the organizer is legally responsible for refunds (D43). Legal review recommended. | M4 |
 | O16 | Grafana Cloud and Sentry accounts. | M2 |
 | O17 | Supabase Auth: Google provider client id and secret (Google Cloud OAuth client, replaces version 1's O4), MFA (TOTP) on, Turnstile keys. | M1 |
@@ -542,3 +558,7 @@ Units are re-planned in Workflow Planning and Units Generation.
 | NFR-2, NFR-3 | — | D37, Q5, F2 |
 | NFR-4, NFR-5 | — | D46–D51, F3–F8 |
 | NFR-6 | — | D45, Q14 |
+
+
+## Change Note 2026-10-25 — Outside listings removed
+Requested by the product owner during U5 code generation: "no ticketmaster or external ticketing integration, we do not need that". The Discover page lists G-ventZ events only. Ticketmaster, PredictHQ and iCal feeds are out of scope (the current app's `src/lib/external.ts` and `ElsewhereEvents` go in U6b). Places venue search stays.
