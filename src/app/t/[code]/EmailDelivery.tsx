@@ -28,14 +28,14 @@ export default function EmailDelivery({
 
   return (
     <section className="tk-wa" aria-label="Email my ticket">
-      <p><b>Get your ticket by email</b> We'll send it to {maskedEmail}, the address you registered with.</p>
+      <p><b>Get your ticket by email</b> We&apos;ll send it to {maskedEmail}, the address you registered with.</p>
       {message && (
         <p className={message.tone === "ok" ? "tk-ok" : "tk-wa-error"} role={message.tone === "ok" ? "status" : "alert"}>
           {message.text}
         </p>
       )}
       {!message && failedBefore && (
-        <p className="tk-wa-error" role="status">Your last email didn't go through.</p>
+        <p className="tk-wa-error" role="status">Your last email didn&apos;t go through.</p>
       )}
       <form action={sendTicketByEmail} className="tk-mail-form">
         <input type="hidden" name="code" value={code} />
