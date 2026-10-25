@@ -11,6 +11,10 @@ import {
 import { checkInFromTicket } from "./actions";
 import PrintButton from "./PrintButton";
 import WhatsAppDelivery from "./WhatsAppDelivery";
+import EmailDelivery from "./EmailDelivery";
+import { adminConfigured } from "@/lib/supabase/admin";
+import { lastEmailDelivery, registeredEmail } from "@/lib/ticket-delivery";
+import { maskEmail } from "@/lib/email/mask";
 import { TICKET_CSS } from "./ticket-css";
 import { pageFonts } from "@/app/fonts";
 
@@ -43,10 +47,10 @@ export default async function TicketPage({
   searchParams,
 }: {
   params: Promise<{ code: string }>;
-  searchParams: Promise<{ checkin?: string }>;
+  searchParams: Promise<{ checkin?: string; email?: string }>;
 }) {
   const { code: rawCode } = await params;
-  const { checkin } = await searchParams;
+  const { checkin, email: emailState } = await searchParams;
   const code = rawCode.toLowerCase();
   if (!isTicketCode(code)) notFound();
 
@@ -62,6 +66,8 @@ export default async function TicketPage({
   const tz = event.timezone;
   const endTime = event.ends_at ? ticketTime(event.ends_at, tz) : null;
   const checkedInAt = ticket.checked_in_at ? ticketTime(ticket.checked_in_at, tz) : null;
+  const emailTo = valid && adminConfigured() ? await registeredEmail(ticket.code) : null;
+  const lastEmail = emailTo ? await lastEmailDelivery(ticket.code) : null;
 
   return (
     <main className={`tk ${pageFonts}`}>
@@ -137,6 +143,10 @@ export default async function TicketPage({
         {valid && <PrintButton />}
         <Link href={`/e/${event.slug}`} className="tk-btn tk-ghost">Event page</Link>
       </div>
+
+      {emailTo && (
+        <EmailDelivery code={ticket.code} maskedEmail={maskEmail(emailTo)} last={lastEmail} state={emailState} />
+      )}
 
       {valid && process.env.NEXT_PUBLIC_WHATSAPP_NUMBER && (
         <WhatsAppDelivery
