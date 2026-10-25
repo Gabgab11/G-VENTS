@@ -10,6 +10,7 @@ import {
 } from "@/lib/ticket";
 import { checkInFromTicket } from "./actions";
 import PrintButton from "./PrintButton";
+import WhatsAppDelivery from "./WhatsAppDelivery";
 import { TICKET_CSS } from "./ticket-css";
 import { pageFonts } from "@/app/fonts";
 
@@ -136,6 +137,15 @@ export default async function TicketPage({
         {valid && <PrintButton />}
         <Link href={`/e/${event.slug}`} className="tk-btn tk-ghost">Event page</Link>
       </div>
+
+      {valid && process.env.NEXT_PUBLIC_WHATSAPP_NUMBER && (
+        <WhatsAppDelivery
+          businessNumber={process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}
+          eventTitle={event.title}
+          displayCode={displayCode(ticket.code)}
+          ticketUrl={ticketUrl(origin, ticket.code)}
+        />
+      )}
 
       {ticket.can_check_in && valid && (
         <section className="tk-staff" aria-label="Door check-in">
