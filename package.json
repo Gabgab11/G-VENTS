@@ -16,7 +16,8 @@
     "test:db": "supabase test db",
     "db:types": "supabase gen types typescript --linked --schema public > src/lib/supabase/database.types.ts",
     "db:types:local": "supabase gen types typescript --local --schema public > src/lib/supabase/database.types.ts",
-    "api:types": "openapi-typescript ${API_OPENAPI_URL:-../gventz-api/openapi.json} -o src/lib/api/schema.d.ts"
+    "api:types": "openapi-typescript ${API_OPENAPI_URL:-../gventz-api/openapi.json} -o src/lib/api/schema.d.ts",
+    "api:types:pinned": "API_OPENAPI_URL=https://raw.githubusercontent.com/aristokratos/gventz-api/$(tr -d '[:space:]' < api-contract.ref)/openapi.json npm run -s api:types"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
