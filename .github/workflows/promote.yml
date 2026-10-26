@@ -110,7 +110,7 @@ jobs:
           check / 200 || ok=0
           check /sign-in 200 || ok=0
           check /discover 200 || ok=0
-          check /api/places/autocomplete 401 || ok=0   # server code runs and refuses signed-out callers
+          check /api/health 200 || ok=0   # the website reaches gventz-api and the API is ready
           [ $ok = 1 ] || { echo "::error::Smoke tests failed on staging."; exit 1; }
 
       - uses: supabase/setup-cli@v1
@@ -193,7 +193,7 @@ jobs:
           ok=1
           check / 200 || ok=0
           check /sign-in 200 || ok=0
-          check /api/places/autocomplete 401 || ok=0
+          check /api/health 200 || ok=0
           [ $ok = 1 ] || { echo "::error::Smoke tests failed on production. Roll back in Vercel → Deployments → Instant Rollback."; exit 1; }
       - name: Notify about the failure
         if: failure()

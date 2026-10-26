@@ -156,11 +156,18 @@ const TICKER = [
 // Rendered once and refreshed at most every minute, instead of on every visit.
 export const revalidate = 60;
 
-// Builds without the API setting (CI) render no events; the deployed page refreshes with real
-// ones within a minute.
+// Builds without the API setting (CI), or while the API isn't reachable yet, render no events; the
+// deployed page refreshes with real ones within a minute. At runtime a failure still throws: the
+// error page shows it, and a failed refresh keeps serving the last good page.
 async function featuredEvents() {
   if (!process.env.API_URL) return [];
-  return getFeaturedEvents(6);
+  try {
+    return await getFeaturedEvents(6);
+  } catch (error) {
+    if (process.env.NEXT_PHASE !== "phase-production-build") throw error;
+    console.warn("[home] API not reachable during the build; events appear after the first refresh.");
+    return [];
+  }
 }
 
 export default async function HomePage() {
