@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ColorModeToggle from "@/components/ColorModeToggle";
 import { notFound } from "next/navigation";
 import { api, data } from "@/lib/api/server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
@@ -24,7 +25,9 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
   const me = signedIn ? await (await api()).GET("/v1/me").then(data).catch(() => null) : null;
 
   const date = eventDateParts(event.startsAt, event.endsAt, event.timeZone);
-  const signInHref = `/sign-in?next=${encodeURIComponent(`/e/${event.slug}`)}`;
+  const back = encodeURIComponent(`/e/${event.slug}`);
+  const signInHref = `/sign-in?next=${back}`;
+  const signUpHref = `/sign-up?next=${back}`;
   // Paid tickets arrive with payments (U7); until then they're shown but not offered.
   const freeTypes = event.ticketTypes.filter((t) => t.priceMinor === 0);
   const canOrder = event.status === "published" && event.registrationOpen && freeTypes.length > 0;
@@ -37,7 +40,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
   return (
     <main className="ev stage-content">
       <ThemeStage theme={event.coverTheme ?? "minimal"} />
-      <div className="ev-top"><BackLink fallback="/discover" label="← Back" /></div>
+      <div className="ev-top"><BackLink fallback="/discover" label="← Back" /><ColorModeToggle /></div>
 
       {(event.status !== "published" || event.canManage) && (
         <div className="ev-notices">
@@ -115,7 +118,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
               {canOrder && !signedIn && (
                 <div className="ev-signup">
                   <p>Welcome! Create a free account or sign in to get your tickets. It takes a few seconds with Google or a 6-digit email code.</p>
-                  <Link href={signInHref} className="btn-grad ev-cta">Get tickets</Link>
+                  <Link href={signUpHref} className="btn-grad ev-cta">Get tickets</Link>
                   <p className="muted small">Already have an account? <Link href={signInHref} className="gold">Sign in</Link></p>
                 </div>
               )}

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ColorModeToggle from "@/components/ColorModeToggle";
 import Link from "next/link";
 import { api, data } from "@/lib/api/server";
 import { requireUser } from "@/lib/auth";
@@ -19,7 +20,7 @@ export default async function MyTicketsPage({ searchParams }: { searchParams: Pr
 
   return (
     <main className="tickets-page">
-      <h1>My tickets</h1>
+      <div className="spread"><h1>My tickets</h1><ColorModeToggle /></div>
       <div className="seg" role="tablist" aria-label="Which tickets">
         <Link href="/my-tickets" className={when === "upcoming" ? "on" : ""} role="tab" aria-selected={when === "upcoming"}>Upcoming</Link>
         <Link href="/my-tickets?when=past" className={when === "past" ? "on" : ""} role="tab" aria-selected={when === "past"}>Past</Link>

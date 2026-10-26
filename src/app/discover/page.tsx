@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ColorModeToggle from "@/components/ColorModeToggle";
 import { getFeaturedEvents } from "@/lib/events";
 import { themeBackground } from "@/lib/themes";
 import { CATEGORIES, isCategory } from "@/lib/categories";
@@ -12,8 +13,9 @@ export default async function DiscoverPage({ searchParams }: { searchParams: Pro
 
   return (
     <main className="wrap page wide">
-      <div className="back-row">
+      <div className="back-row spread">
         <Link href="/" className="back-link">← Home</Link>
+        <ColorModeToggle />
       </div>
       <div className="section-head">
         <h1>Discover</h1>

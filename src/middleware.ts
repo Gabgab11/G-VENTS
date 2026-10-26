@@ -42,6 +42,6 @@ export async function middleware(request: NextRequest) {
 export const config = {
   // Static assets and the information pages never read the session.
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|pricing|help|terms|privacy|refunds|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|txt|xml)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|sw.js|manifest.webmanifest|icons/|pricing|help|terms|privacy|refunds|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|txt|xml)$).*)",
   ],
 };

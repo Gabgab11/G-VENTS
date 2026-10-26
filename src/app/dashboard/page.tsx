@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ColorModeToggle from "@/components/ColorModeToggle";
 import { api, data } from "@/lib/api/server";
 import { requireUser } from "@/lib/auth";
 import ThemeStage from "@/components/ThemeStage";
@@ -37,7 +38,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
       <ThemeStage theme={theme} />
       <div className="back-row spread">
         <Link href="/" className="back-link">← Home</Link>
-        <SignOutButton />
+        <div className="row-gap"><ColorModeToggle /><SignOutButton /></div>
       </div>
       <div className="spread">
         <div>

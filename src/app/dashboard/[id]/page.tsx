@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ColorModeToggle from "@/components/ColorModeToggle";
 import { can, requireEvent } from "@/lib/auth";
 import { env } from "@/lib/env";
 import ThemeStage from "@/components/ThemeStage";
@@ -44,7 +45,7 @@ export default async function ManageEventPage({
   return (
     <main className="wrap page wide stage-content">
       <ThemeStage theme={theme} />
-      <BackLink fallback="/dashboard" label="← All events" />
+      <div className="back-row spread"><BackLink fallback="/dashboard" label="← All events" /><ColorModeToggle /></div>
       <h1>{event.title}</h1>
       <p className="muted small">{statusLabel} · {event.visibility === "private" ? "Private" : "Public"} · You are {event.role}</p>
       {event.status === "published" && can(event, "guests.checkIn") && (

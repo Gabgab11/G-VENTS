@@ -21,7 +21,7 @@ const PLANS = [
       "Standard event pages",
       "1 team member",
     ],
-    href: "/sign-in?next=/events/new",
+    href: "/sign-up?next=/events/new",
     cta: "Sign up free",
     featured: false,
   },
