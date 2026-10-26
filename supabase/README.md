@@ -9,21 +9,25 @@ Every schema change is a SQL file in `migrations/`, named `YYYYMMDDHHMMSS_descri
 | `20261014000200_security_hardening.sql` | Fixes from the architecture review: private events, anonymous ticket reservation, email squatting, staff permissions, theme values, atomic event creation, and storage rules. |
 | `20261022000100_ticket_page.sql` | `get_ticket` for the ticket page (`/t/[code]`). |
 | `20261022000200_event_location_details.sql` | Venue details from the place search. |
+| `20261022000300_delete_event.sql` | Owners can delete their own event (`delete_event`, `event_delete_check`). |
 | `20261022000400_registration_email.sql` | `register_guest` stores the account's verified email, so tickets can't be emailed to arbitrary addresses. |
 | `20261022000500_places_quota.sql` | Shared per-user limit for Google Places lookups (`take_places_quota`). |
+| `20261023000100_owner_reads_own_events.sql` | Restores the owner's read rule on `events`, so draft and private events can be created again. |
 | `20261024000100_api_role.sql` | The `gventz_api` login role for the NestJS API (Change 1): table grants, one RLS policy per table for that role only, timeouts. Its password is set once per project by hand (see below). |
 | `20261024000200_outbox.sql` | `outbox_events`, the API's transactional outbox. Only `gventz_api` can reach it. |
 | `20261024000300_platform_staff.sql` | `platform_staff`: G-ventZ staff by verified email (read-only for the API). |
 | `20261024000400_events_purchase_policy.sql` | `events.per_buyer_limit` (1–10) and `events.fee_choice`. |
 | `20261024000500_audit_keep_on_event_delete.sql` | Audit rows survive event deletion (`event_id` set to null). |
 | `20261024000600_events_guard_api_role.sql` | `events_guard` steps aside for `gventz_api`, which checks the same rules itself. |
-| `20261025000100_orders.sql` | `orders`: one purchase by one buyer for one event (U4). Only `gventz_api` can reach it. |
-| `20261025000200_registrations_orders.sql` | Tickets get `order_id`, `ticket_number`, `guest_name` and the `declined` status; one buyer may hold several tickets (the one-per-user index is dropped; `register_guest` still refuses a second registration itself). |
-| `20261025000600_api_role_lock_timeout.sql` | `lock_timeout = 3s` for `gventz_api` (one round trip less per order). |
-| `20261025000700_announcement_sending.sql` | Sending announcements (C2): send facts on `email_campaigns`, the `email_campaign_recipients` audience snapshot with unsubscribe tokens; API role only. |
-| `20261025000500_active_count_per_statement.sql` | `active_count` kept per statement (one event-row update per order, not per ticket), found by the load test. |
-| `20261025000400_outbox_run_at.sql` | `outbox_events.run_at`: delayed jobs (the once-a-minute page refresh after orders, U5). |
-| `20261025000300_events_active_count.sql` | `events.active_count` (confirmed + pending), backfilled and kept by a trigger on registrations; `updated_at` ignores count-only changes. |
+| `20261025000100_ticket_deliveries.sql` | `ticket_deliveries`: the log of "Email my ticket" sends from the ticket page (written by the API). |
+| `20261026000100_orders.sql` | `orders`: one purchase by one buyer for one event (U4). Only `gventz_api` can reach it. |
+| `20261026000200_registrations_orders.sql` | Tickets get `order_id`, `ticket_number`, `guest_name` and the `declined` status; one buyer may hold several tickets (the one-per-user index is dropped; `register_guest` still refuses a second registration itself). |
+| `20261026000300_events_active_count.sql` | `events.active_count` (confirmed + pending), backfilled and kept by a trigger on registrations; `updated_at` ignores count-only changes. |
+| `20261026000400_outbox_run_at.sql` | `outbox_events.run_at`: delayed jobs (the once-a-minute page refresh after orders, U5). |
+| `20261026000500_active_count_per_statement.sql` | `active_count` kept per statement (one event-row update per order, not per ticket), found by the load test. |
+| `20261026000600_api_role_lock_timeout.sql` | `lock_timeout = 3s` for `gventz_api` (one round trip less per order). |
+| `20261026000700_announcement_sending.sql` | Sending announcements (C2): send facts on `email_campaigns`, the `email_campaign_recipients` audience snapshot with unsubscribe tokens; API role only. |
+| `20261026000800_ticket_deliveries_api.sql` | The API may read and append the ticket delivery log (it sends "Email my ticket" now). |
 
 ## Testing locally
 
