@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatEventDate, timezoneLabel, zonedTimeToUtc } from "./dates";
+import { formatEventDate, timezoneLabel, zonedTimeToUtc, eventDateParts } from "./dates";
 
 describe("zonedTimeToUtc", () => {
   it("converts Lagos wall-clock time (UTC+1, no DST)", () => {
@@ -47,5 +47,17 @@ describe("timezoneLabel", () => {
     expect(timezoneLabel("Africa/Lagos")).toBe("Lagos");
     expect(timezoneLabel("America/New_York")).toBe("New York");
     expect(timezoneLabel(null)).toBe("Lagos");
+  });
+});
+
+describe("eventDateParts (event page date block)", () => {
+  it("shows the calendar tile, the day and the time range in the event's zone", () => {
+    const p = eventDateParts("2027-02-20T17:00:00.000Z", "2027-02-20T22:00:00.000Z", "Africa/Lagos");
+    expect(p).toEqual({ month: "FEB", day: "20", dateLine: "Saturday, 20 February 2027", timeLine: "18:00 – 23:00 · Lagos time" });
+  });
+
+  it("names both days when the event runs past midnight, and copes with no end or an unknown zone", () => {
+    expect(eventDateParts("2027-02-20T21:00:00.000Z", "2027-02-21T01:00:00.000Z", "Africa/Lagos").timeLine).toBe("20 Feb 22:00 – 21 Feb 02:00 · Lagos time");
+    expect(eventDateParts("2027-02-20T17:00:00.000Z", null, "Not/AZone").timeLine).toBe("18:00 · Lagos time");
   });
 });

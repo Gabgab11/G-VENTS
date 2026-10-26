@@ -996,6 +996,8 @@ export interface components {
             viewerRole: "owner" | "admin" | "editor" | "checkin" | "finance" | "viewer" | null;
             /** @description Shown when the host allows it, or to staff */
             attendeeCount: number | null;
+            /** @description The owner's display name ("Hosted by"); null when they haven't set one */
+            hostName: string | null;
             ticketTypes: components["schemas"]["TicketTypeViewDto"][];
             questions: components["schemas"]["QuestionViewDto"][];
             /** @enum {string} */
@@ -1087,6 +1089,8 @@ export interface components {
             viewerRole: "owner" | "admin" | "editor" | "checkin" | "finance" | "viewer" | null;
             /** @description Shown when the host allows it, or to staff */
             attendeeCount: number | null;
+            /** @description The owner's display name ("Hosted by"); null when they haven't set one */
+            hostName: string | null;
             ticketTypes: components["schemas"]["TicketTypeViewDto"][];
             questions: components["schemas"]["QuestionViewDto"][];
         };

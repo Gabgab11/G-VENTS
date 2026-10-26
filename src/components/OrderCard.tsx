@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { components } from "@/lib/api/schema";
-import { formatEventDate, timezoneLabel } from "@/lib/dates";
+import { eventDateParts } from "@/lib/dates";
 import { qrSvg } from "@/lib/qr";
 
 export type MyOrder = components["schemas"]["MyOrderResponse"];
@@ -21,27 +21,28 @@ export default function OrderCard({ order, origin, showQr }: { order: MyOrder; o
   const status = STATUS[order.status] ?? STATUS.cancelled!;
   const event = order.event;
   const total = order.tickets.length;
+  const date = event?.startsAt ? eventDateParts(event.startsAt, event.endsAt ?? null, event.timeZone) : null;
   return (
-    <section className="done order-card" aria-label={event ? `Tickets for ${event.title}` : "Tickets"}>
-      {event && (
-        <>
-          <Link href={`/e/${event.slug}`} className="order-event">{event.title}</Link>
-          <p className="muted small">
-            {formatEventDate(`${event.startsAtLocal}:00Z`, "UTC", "long")} ({timezoneLabel(event.timeZone)}) · {event.where}
-          </p>
-        </>
-      )}
-      <b>{status.title}</b>
-      <p className="muted small">{status.body}</p>
-      <ul className="order-tickets">
+    <section className="oc" aria-label={event ? `Tickets for ${event.title}` : "Tickets"}>
+      <header className="oc-head">
+        {date && <div className="ev-cal" aria-hidden="true"><span>{date.month}</span><b>{date.day}</b></div>}
+        <div className="oc-head-text">
+          {event ? <Link href={`/e/${event.slug}`} className="oc-title">{event.title}</Link> : <span className="oc-title">Tickets</span>}
+          {date && <div className="ev-fact-sub">{date.dateLine} · {date.timeLine}</div>}
+          {event?.where && <div className="ev-fact-sub">{event.where}</div>}
+        </div>
+        <span className={`oc-status oc-${order.status}`}>{status.title}</span>
+      </header>
+      <p className="oc-note">{status.body}</p>
+      <ul className="oc-list">
         {order.tickets.map((t) => (
-          <li key={t.code} className="order-ticket">
+          <li key={t.code} className="oc-ticket">
             {showQr && t.status === "confirmed" && (
-              <div className="order-qr" aria-hidden="true" dangerouslySetInnerHTML={{ __html: qrSvg(`${origin}/t/${t.code}`) }} />
+              <div className="oc-qr" aria-hidden="true" dangerouslySetInnerHTML={{ __html: qrSvg(`${origin}/t/${t.code}`) }} />
             )}
-            <div className="grow">
-              <div><b>{t.displayName}</b></div>
-              <div className="muted small">
+            <div className="oc-ticket-text">
+              <b>{t.displayName}</b>
+              <div className="ev-fact-sub">
                 {t.ticketType}{t.number && total > 1 ? ` · ${t.number} of ${total}` : ""}{t.checkedInAt ? " · Checked in" : ""}
               </div>
             </div>

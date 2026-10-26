@@ -15,6 +15,10 @@ export const env = {
   get supabaseAnonKey() {
     return required("NEXT_PUBLIC_SUPABASE_ANON_KEY", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
   },
+  /** Cloudflare Turnstile (FR-1.7). Empty: no widget (local); set it when Turnstile is on in Supabase Auth. */
+  get turnstileSiteKey() {
+    return process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
+  },
   get siteUrl() {
     return (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(/\/+$/, "");
   },

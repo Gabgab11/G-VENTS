@@ -14,3 +14,11 @@ additional_redirect_urls = ["http://localhost:3000/auth/callback"]
 [auth.email.template.magic_link]
 subject = "Your G-ventZ sign-in code"
 content_path = "./supabase/templates/sign-in-code.html"
+
+# Bot protection on sign-in code requests (FR-1.7). Off locally; to try it, set enabled = true
+# with Cloudflare's always-pass test keys (secret 1x0000000000000000000000000000000AA, site key
+# 1x00000000000000000000AA in NEXT_PUBLIC_TURNSTILE_SITE_KEY). Production: Supabase dashboard.
+[auth.captcha]
+enabled = false
+provider = "turnstile"
+secret = "1x0000000000000000000000000000000AA"

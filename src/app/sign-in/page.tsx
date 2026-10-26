@@ -1,16 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 import { safeNextPath } from "@/lib/redirect";
 import BackLink from "@/components/BackLink";
 import OtpInput from "@/components/OtpInput";
+import Turnstile, { type TurnstileHandle } from "@/components/Turnstile";
+import { env } from "@/lib/env";
 
 export default function SignInPage() {
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // Bot protection (FR-1.7): with a site key set, a code is only requested with a Turnstile token.
+  const siteKey = env.turnstileSiteKey;
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const captcha = useRef<TurnstileHandle>(null);
   // Visitors who tapped a "Create event" button see a sign-up welcome.
   const [fromCreate, setFromCreate] = useState(false);
   useEffect(() => {
@@ -41,13 +47,16 @@ export default function SignInPage() {
   async function sendCode(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+    if (siteKey && !captchaToken) return setError("Please wait a moment while we check you're not a robot, then try again.");
     setBusy(true);
     const supabase = createSupabaseBrowserClient();
     const { error } = await supabase.auth.signInWithOtp({
       email: email.trim(),
-      options: { shouldCreateUser: true },
+      options: { shouldCreateUser: true, ...(siteKey && captchaToken ? { captchaToken } : {}) },
     });
     setBusy(false);
+    // Each token works once: get a fresh one for the next request.
+    captcha.current?.reset();
     if (error) return setError(error.message);
     setSent(true);
   }
@@ -97,6 +106,10 @@ export default function SignInPage() {
             <label className="auth-label" htmlFor="sign-in-email">Email</label>
             <input id="sign-in-email" className="auth-input" type="email" required autoFocus autoComplete="email" value={email}
               onChange={(e) => setEmail(e.target.value)} placeholder="you@email.com" />
+            {siteKey && (
+              <Turnstile ref={captcha} siteKey={siteKey} onToken={setCaptchaToken}
+                onError={() => setError("The robot check didn't load. Refresh the page, or continue with Google.")} />
+            )}
             <button className="auth-primary" type="submit" disabled={busy}>
               {busy ? "Sending code..." : "Continue with Email"}
             </button>

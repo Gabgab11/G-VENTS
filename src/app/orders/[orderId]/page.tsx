@@ -26,9 +26,9 @@ export default async function OrderPage({ params }: { params: Promise<{ orderId:
   }
 
   return (
-    <main className="wrap page">
+    <main className="tickets-page">
       <BackLink fallback={order.event ? `/e/${order.event.slug}` : "/my-tickets"} label="← Back" />
-      <h1>Your tickets</h1>
+      <h1>{order.status === "completed" ? "You're in" : "Your tickets"}</h1>
       <OrderCard order={order} origin={await siteOrigin()} showQr />
       <p className="muted small">
         {order.status === "completed" ? "We've also emailed your tickets to your account email. " : ""}

@@ -18,7 +18,7 @@ export default async function MyTicketsPage({ searchParams }: { searchParams: Pr
   const origin = await siteOrigin();
 
   return (
-    <main className="wrap page">
+    <main className="tickets-page">
       <h1>My tickets</h1>
       <div className="seg" role="tablist" aria-label="Which tickets">
         <Link href="/my-tickets" className={when === "upcoming" ? "on" : ""} role="tab" aria-selected={when === "upcoming"}>Upcoming</Link>
