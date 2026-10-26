@@ -454,5 +454,7 @@ input, select, textarea, button { max-width: 100%; min-width: 0; }
 .oc-ticket-text { display: grid; gap: 2px; }
 .tickets-page { max-width: 760px; margin: 0 auto; padding: 32px 20px 72px; display: grid; gap: 16px; }
 .tickets-page h1 { margin: 0; font-size: 36px; letter-spacing: -0.03em; }
+/* fit-content: inside grid pages the switch would otherwise stretch full width */
+.tickets-page .seg { width: fit-content; }
 .seg a { padding: 8px 16px; border-radius: 999px; font-size: 14px; font-weight: 600; color: var(--muted); }
 .seg a.on { background: var(--text); color: var(--bg); }

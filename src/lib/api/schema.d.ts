@@ -1392,16 +1392,10 @@ export interface components {
             title: string;
             /** @example 2026-12-05T18:00 */
             startsAtLocal: string;
-            /**
-             * Format: date-time
-             * @description On the ticket page
-             */
-            startsAt?: string;
-            /**
-             * Format: date-time
-             * @description On the ticket page
-             */
-            endsAt?: string | null;
+            /** Format: date-time */
+            startsAt: string;
+            /** Format: date-time */
+            endsAt: string | null;
             /**
              * @description On the ticket page
              * @enum {string}

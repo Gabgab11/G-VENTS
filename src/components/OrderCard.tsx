@@ -21,7 +21,7 @@ export default function OrderCard({ order, origin, showQr }: { order: MyOrder; o
   const status = STATUS[order.status] ?? STATUS.cancelled!;
   const event = order.event;
   const total = order.tickets.length;
-  const date = event?.startsAt ? eventDateParts(event.startsAt, event.endsAt ?? null, event.timeZone) : null;
+  const date = event ? eventDateParts(event.startsAt, event.endsAt, event.timeZone) : null;
   return (
     <section className="oc" aria-label={event ? `Tickets for ${event.title}` : "Tickets"}>
       <header className="oc-head">
