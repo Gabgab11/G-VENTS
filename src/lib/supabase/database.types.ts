@@ -31,19 +31,45 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
-                },"email_campaigns": {
+                },"email_campaign_recipients": {
                   Row: {
-                    "body": string,"created_at": string,"created_by": string,"event_id": string,"id": string,"scheduled_at": string | null,"segment": string,"sent_count": number,"status": string,"subject": string
+                    "campaign_id": string,"email": string,"id": number,"name": string | null,"sent_at": string | null,"status": string,"token": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "body": string,"created_at"?: string,"created_by": string,"event_id": string,"id"?: string,"scheduled_at"?: string | null,"segment": string,"sent_count"?: number,"status"?: string,"subject": string
+                    "campaign_id": string,"email": string,"id"?: never,"name"?: string | null,"sent_at"?: string | null,"status"?: string,"token"?: string
                   }
                   Update: {
-                    "body"?: string,"created_at"?: string,"created_by"?: string,"event_id"?: string,"id"?: string,"scheduled_at"?: string | null,"segment"?: string,"sent_count"?: number,"status"?: string,"subject"?: string
+                    "campaign_id"?: string,"email"?: string,"id"?: never,"name"?: string | null,"sent_at"?: string | null,"status"?: string,"token"?: string
                   }
                   Relationships: [
                     {
+      foreignKeyName: "email_campaign_recipients_campaign_id_fkey"
+      columns: ["campaign_id"]
+isOneToOne: false
+      referencedRelation: "email_campaigns"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"email_campaigns": {
+                  Row: {
+                    "body": string,"charged_to": string | null,"created_at": string,"created_by": string,"event_id": string,"id": string,"recipient_count": number,"scheduled_at": string | null,"segment": string,"sent_at": string | null,"sent_by": string | null,"sent_count": number,"status": string,"subject": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "body": string,"charged_to"?: string | null,"created_at"?: string,"created_by": string,"event_id": string,"id"?: string,"recipient_count"?: number,"scheduled_at"?: string | null,"segment": string,"sent_at"?: string | null,"sent_by"?: string | null,"sent_count"?: number,"status"?: string,"subject": string
+                  }
+                  Update: {
+                    "body"?: string,"charged_to"?: string | null,"created_at"?: string,"created_by"?: string,"event_id"?: string,"id"?: string,"recipient_count"?: number,"scheduled_at"?: string | null,"segment"?: string,"sent_at"?: string | null,"sent_by"?: string | null,"sent_count"?: number,"status"?: string,"subject"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "email_campaigns_charged_to_fkey"
+      columns: ["charged_to"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
       foreignKeyName: "email_campaigns_created_by_fkey"
       columns: ["created_by"]
 isOneToOne: false
@@ -54,6 +80,12 @@ isOneToOne: false
       columns: ["event_id"]
 isOneToOne: false
       referencedRelation: "events"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "email_campaigns_sent_by_fkey"
+      columns: ["sent_by"]
+isOneToOne: false
+      referencedRelation: "profiles"
       referencedColumns: ["id"]
     }
                   ]

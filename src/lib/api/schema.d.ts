@@ -578,6 +578,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/tickets/{code}/email": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Email my ticket
+         * @description Sends the ticket again to the address it was registered with (never a typed one). Public: the ticket link is the credential. At most 5 an hour per ticket: 429 ticket.email_limit. 409 ticket.email_unavailable when the ticket is not confirmed or the event was cancelled.
+         */
+        post: operations["TicketsController_email_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/tickets/{code}": {
         parameters: {
             query?: never;
@@ -1385,6 +1405,23 @@ export interface components {
             waitlistCount: number;
             counts: components["schemas"]["GuestCountsResponse"];
         };
+        TicketEmailQueuedResponse: {
+            /** @enum {string} */
+            status: "queued";
+            /** @example a•••@gmail.com */
+            masked: string;
+        };
+        TicketEmailDeliveryResponse: {
+            /**
+             * @description The registered address, masked
+             * @example a•••@gmail.com
+             */
+            masked: string;
+            /** @enum {string|null} */
+            lastStatus: "sent" | "failed" | null;
+            /** Format: date-time */
+            lastAt: string | null;
+        };
         TicketEventResponse: {
             /** Format: uuid */
             id: string;
@@ -1420,6 +1457,8 @@ export interface components {
             qrPayload: string;
             /** @description The viewer may check this ticket in */
             canCheckIn: boolean;
+            /** @description "Email my ticket"; null when the ticket can't be used */
+            email: components["schemas"]["TicketEmailDeliveryResponse"] | null;
             event: components["schemas"]["TicketEventResponse"];
         };
         MyTicketResponse: {
@@ -2781,6 +2820,34 @@ export interface operations {
                 content?: never;
             };
             /** @description event.not_found (also when you have no role on the event) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    TicketsController_email_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                code: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TicketEmailQueuedResponse"];
+                };
+            };
+            /** @description ticket.not_found */
             404: {
                 headers: {
                     [name: string]: unknown;

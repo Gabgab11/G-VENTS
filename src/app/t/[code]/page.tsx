@@ -8,9 +8,6 @@ import { checkInFromTicket } from "./actions";
 import PrintButton from "./PrintButton";
 import WhatsAppDelivery from "./WhatsAppDelivery";
 import EmailDelivery from "./EmailDelivery";
-import { adminConfigured } from "@/lib/supabase/admin";
-import { lastEmailDelivery, registeredEmail } from "@/lib/ticket-delivery";
-import { maskEmail } from "@/lib/email/mask";
 import { TICKET_CSS } from "./ticket-css";
 import { pageFonts } from "@/app/fonts";
 
@@ -70,22 +67,12 @@ export default async function TicketPage({
   const note = statusNote(ticket);
   const checkInNote = checkin ? CHECK_IN[checkin] ?? CHECK_IN.failed : null;
   const valid = ticket.status === "confirmed" && event.status !== "cancelled";
-<<<<<<< HEAD
   const qr = valid ? qrSvg(ticket.qrPayload) : null;
   const tz = event.timeZone;
   const start = event.startsAt ?? `${event.startsAtLocal}:00Z`;
   const endTime = event.endsAt ? ticketTime(event.endsAt, tz) : null;
   const checkedInAt = ticket.checkedInAt ? ticketTime(ticket.checkedInAt, tz) : null;
   const ofTotal = ticket.number && ticket.total && ticket.total > 1 ? ` · ${ticket.number} of ${ticket.total}` : "";
-=======
-  const origin = await siteOrigin();
-  const qr = valid ? qrSvg(ticketUrl(origin, ticket.code)) : null;
-  const tz = event.timezone;
-  const endTime = event.ends_at ? ticketTime(event.ends_at, tz) : null;
-  const checkedInAt = ticket.checked_in_at ? ticketTime(ticket.checked_in_at, tz) : null;
-  const emailTo = valid && adminConfigured() ? await registeredEmail(ticket.code) : null;
-  const lastEmail = emailTo ? await lastEmailDelivery(ticket.code) : null;
->>>>>>> origin/staging
 
   return (
     <main className={`tk ${pageFonts}`}>
@@ -159,11 +146,8 @@ export default async function TicketPage({
         <Link href={`/e/${event.slug}`} className="tk-btn tk-ghost">Event page</Link>
       </div>
 
-<<<<<<< HEAD
-      {ticket.canCheckIn && valid && (
-=======
-      {emailTo && (
-        <EmailDelivery code={ticket.code} maskedEmail={maskEmail(emailTo)} last={lastEmail} state={emailState} />
+      {ticket.email && (
+        <EmailDelivery code={ticket.code} maskedEmail={ticket.email.masked} last={{ status: ticket.email.lastStatus }} state={emailState} />
       )}
 
       {valid && process.env.NEXT_PUBLIC_WHATSAPP_NUMBER && (
@@ -171,12 +155,11 @@ export default async function TicketPage({
           businessNumber={process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}
           eventTitle={event.title}
           displayCode={displayCode(ticket.code)}
-          ticketUrl={ticketUrl(origin, ticket.code)}
+          ticketUrl={ticket.qrPayload}
         />
       )}
 
-      {ticket.can_check_in && valid && (
->>>>>>> origin/staging
+      {ticket.canCheckIn && valid && (
         <section className="tk-staff" aria-label="Door check-in">
           {checkedInAt ? (
             <p><b>Already checked in</b> at {checkedInAt}. Don&apos;t let this ticket in twice.</p>
