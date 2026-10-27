@@ -38,7 +38,7 @@ Schema changes are migrations in `supabase/migrations/`. See `supabase/README.md
 - Dashboard actions return to their tab with a message code; API errors travel as `?err=api.<code>` and are shown from a fixed table (`src/lib/api/messages.ts`), so links can't inject text.
 - `/api/revalidate` accepts HMAC-signed page refreshes from the API (`REVALIDATE_SECRET`, same value as on the API).
 - Security headers live in `src/lib/csp.ts` (applied in `next.config.ts`).
-- API types: `npm run api:types` regenerates `src/lib/api/schema.d.ts` from `../gventz-api/openapi.json` (or `API_OPENAPI_URL`). Run it when the API changes.
+- API types: `src/lib/api/schema.d.ts` is generated from the gventz-api contract pinned in `api-contract.ref` (a commit SHA, or a `vX.Y.Z` release tag once the API is released). To move to a newer API, change the ref and run `npm run api:types:pinned`; CI fails if the committed types don't match the pinned contract. `npm run api:types` still generates from a local `../gventz-api/openapi.json` while you work on both repos.
 - Errors from the API carry messages written for users (`apiMessage` in `src/lib/api/problem.ts`); anything unexpected shows a generic message and is logged.
 
 ## Deploying
