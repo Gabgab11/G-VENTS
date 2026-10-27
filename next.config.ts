@@ -1,22 +1,8 @@
 import type { NextConfig } from "next";
+import { securityHeaders } from "./src/lib/csp";
 
-// Baseline security headers for every page (review finding M6).
-// - No page may be framed by another site, so buttons such as "Check in" on the
-//   ticket page can't be clickjacked.
-// - Browsers always use HTTPS for two years (HSTS). Subdomains are left out on
-//   purpose: send.gventz.com and rsend.gventz.com are email records, not websites.
-// - Motion sensors are allowed for this site only (the home page tilt game);
-//   the camera, microphone and location are off until a feature needs them.
-// A full Content-Security-Policy for scripts and styles needs nonces and moving
-// the inline <style> blocks into CSS files first; it is not set yet.
-const securityHeaders = [
-  { key: "Content-Security-Policy", value: "frame-ancestors 'none'; base-uri 'self'; object-src 'none'; form-action 'self'" },
-  { key: "Strict-Transport-Security", value: "max-age=63072000" },
-  { key: "X-Frame-Options", value: "DENY" },
-  { key: "X-Content-Type-Options", value: "nosniff" },
-  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-  { key: "Permissions-Policy", value: "accelerometer=(self), gyroscope=(self), magnetometer=(self), camera=(), microphone=(), geolocation=(), payment=()" },
-];
+// Vercel always serves https; elsewhere (local `next start`) follow the site URL.
+const servedOverHttps = process.env.VERCEL === "1" || (process.env.NEXT_PUBLIC_SITE_URL ?? "").startsWith("https://");
 
 const nextConfig: NextConfig = {
   experimental: {
@@ -25,7 +11,11 @@ const nextConfig: NextConfig = {
     serverActions: { bodySizeLimit: "6mb" },
   },
   async headers() {
-    return [{ source: "/:path*", headers: securityHeaders }];
+    return [
+      // The service worker must always be fresh, so a new version reaches every device.
+      { source: "/sw.js", headers: [{ key: "Cache-Control", value: "no-cache, no-store, must-revalidate" }, { key: "Content-Type", value: "application/javascript; charset=utf-8" }] },
+      { source: "/:path*", headers: securityHeaders(process.env.NEXT_PUBLIC_SUPABASE_URL, !!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY, servedOverHttps) },
+    ];
   },
 };
 

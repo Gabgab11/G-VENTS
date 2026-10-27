@@ -24,6 +24,18 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # The API contract the website is built against: api-contract.ref names a gventz-api commit
+      # SHA or release tag (vX.Y.Z). Fails when src/lib/api/schema.d.ts wasn't regenerated from
+      # exactly that contract (npm run api:types:pinned), so the two repos can't drift silently.
+      - name: API types match the pinned gventz-api contract
+        run: |
+          ref=$(tr -d '[:space:]' < api-contract.ref)
+          [[ "$ref" =~ ^([0-9a-f]{40}|v[0-9]+\.[0-9]+\.[0-9]+)$ ]] || { echo "::error file=api-contract.ref::Must be a full gventz-api commit SHA or a vX.Y.Z tag, not '$ref'."; exit 1; }
+          cp src/lib/api/schema.d.ts "$RUNNER_TEMP/committed.d.ts"
+          npm run -s api:types:pinned
+          diff -u "$RUNNER_TEMP/committed.d.ts" src/lib/api/schema.d.ts || { echo "::error file=src/lib/api/schema.d.ts::Out of date with gventz-api@$ref. Run npm run api:types:pinned and commit it."; exit 1; }
+      - name: Release scripts
+        run: node --test .github/scripts/check-api-contract.test.mjs
       - run: npm run lint
       - run: npm run typecheck
       - run: npm test
@@ -40,6 +52,7 @@ jobs:
       - uses: supabase/setup-cli@v1
         with:
           version: 2.121.0 # pinned: generated types must match byte for byte
+      - run: node supabase/scripts/gen-signing-key.mjs
       - run: supabase db start
       - run: supabase db lint --local --level error --fail-on error
       - run: supabase test db # supabase/tests/*.test.sql (pgTAP)

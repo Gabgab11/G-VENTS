@@ -1,4 +1,6 @@
-import { createSupabasePublicClient } from "@/lib/supabase/public";
+import "server-only";
+
+import { api, data } from "@/lib/api/server";
 import type { Category } from "@/lib/categories";
 
 export type EventCard = {
@@ -15,21 +17,28 @@ export type EventCard = {
   cover_url: string | null;
 };
 
-// Public, published, upcoming events. Optionally limited to one category.
-// A database failure throws, so the page's error boundary shows it instead of
-// passing an outage off as "no events".
-// Public data only, so it uses the cookieless client and can be cached.
+/**
+ * Public, published, upcoming events from gventz-api, optionally one category. Anonymous and cached
+ * for a minute, so the home page stays static. An API failure throws, so the page's error boundary
+ * shows it instead of passing an outage off as "no events".
+ */
 export async function getFeaturedEvents(limit = 6, category?: Category): Promise<EventCard[]> {
-  const supabase = createSupabasePublicClient();
-  let query = supabase
-    .from("events")
-    .select("id, title, slug, category, starts_at, timezone, venue_name, city, country, cover_theme, cover_url")
-    .eq("status", "published")
-    .eq("visibility", "public")
-    .gte("starts_at", new Date().toISOString());
-  if (category) query = query.eq("category", category);
-
-  const { data, error } = await query.order("starts_at", { ascending: true }).limit(limit);
-  if (error) throw new Error(`Could not load events: ${error.message}`);
-  return (data ?? []) as EventCard[];
+  const page = data(
+    await (await api({ anonymous: true, revalidate: 60 })).GET("/v1/events/featured", {
+      params: { query: { limit, ...(category ? { category } : {}) } },
+    }),
+  );
+  return page.items.map((e) => ({
+    id: e.id,
+    title: e.title,
+    slug: e.slug,
+    category: e.category,
+    starts_at: e.startsAt,
+    timezone: e.timeZone,
+    venue_name: e.venueName,
+    city: e.city,
+    country: e.country,
+    cover_theme: e.coverTheme,
+    cover_url: e.coverUrl,
+  }));
 }

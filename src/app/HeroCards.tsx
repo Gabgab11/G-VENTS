@@ -7,7 +7,7 @@ import { SHAPES, type ShapeName } from "./hero-shapes";
 // line, so nothing ever falls or floats past it. The fall is pure CSS; the optional
 // tilt game on phones (HeroTilt.tsx) moves the cards afterwards.
 
-type Tone = "sun" | "coral" | "mint" | "sky" | "rose" | "ink" | "paper" | "lilac";
+export type Tone = "sun" | "coral" | "mint" | "sky" | "rose" | "ink" | "paper" | "lilac";
 
 const TONES: Record<Tone, { fill: string; text: string; border?: string }> = {
   sun: { fill: "#ffc23d", text: "#121212" },
@@ -20,7 +20,7 @@ const TONES: Record<Tone, { fill: string; text: string; border?: string }> = {
   lilac: { fill: "#cdbde8", text: "#121212" },
 };
 
-type Card = {
+export type Card = {
   shape: ShapeName;
   words: [string] | [string, string];
   meta: string;
@@ -58,7 +58,7 @@ function fitSize(base: number, words: string[], width: number): number {
   return Math.min(base, Math.floor((width / (longest * 0.6)) * 10) / 10);
 }
 
-function CardSvg({ card }: { card: Card }) {
+export function CardSvg({ card }: { card: Pick<Card, "shape" | "words" | "meta" | "tone"> }) {
   const s = SHAPES[card.shape];
   const tone = TONES[card.tone];
   const room = s.anchor === "middle" ? s.w * 0.72 : s.w - s.x - 16;

@@ -1,38 +1,28 @@
-import type { SupabaseServerClient } from "@/lib/supabase/server";
+import "server-only";
 
-export type PageTier = { id: string; name: string; price_minor: number; quantity: number | null; sold: number };
-export type PageQuestion = { id: string; label: string; kind: string; options: string[]; required: boolean };
+import { api, data } from "@/lib/api/server";
+import { ApiError } from "@/lib/api/problem";
+import type { components } from "@/lib/api/schema";
 
-export type EventPageData = {
-  event: {
-    id: string;
-    title: string;
-    slug: string;
-    category: string;
-    description: string | null;
-    starts_at: string;
-    ends_at: string | null;
-    timezone: string;
-    venue_name: string | null;
-    city: string | null;
-    country: string | null;
-    status: "draft" | "published" | "cancelled";
-    visibility: "public" | "private";
-    refund_policy: string | null;
-    cover_theme: string | null;
-    cover_url: string | null;
-    registration_open: boolean;
-    can_manage: boolean;
-  };
-  tiers: PageTier[];
-  questions: PageQuestion[];
-};
+export type EventPage = components["schemas"]["EventPageDto"];
+export type PageTicketType = components["schemas"]["TicketTypeViewDto"];
+export type PageQuestion = components["schemas"]["QuestionViewDto"];
 
-// The public event page, for public and private events. Private events are only
-// reachable by slug, so the database returns them through this function instead of
-// a table read (see get_event_page in supabase/migrations).
-export async function getEventPage(supabase: SupabaseServerClient, slug: string): Promise<EventPageData | null> {
-  const { data, error } = await supabase.rpc("get_event_page", { p_slug: slug });
-  if (error) throw new Error(`Could not load event "${slug}": ${error.message}`);
-  return (data as EventPageData | null) ?? null;
+/**
+ * The public event page from gventz-api (U6a). Published events for everyone; drafts and cancelled
+ * events only for the event's team, which the API decides from the viewer's token. Null = not found.
+ */
+export async function getEventPage(slug: string): Promise<EventPage | null> {
+  try {
+    return data(await (await api()).GET("/v1/events/by-slug/{slug}", { params: { path: { slug } } }));
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) return null;
+    throw error;
+  }
+}
+
+/** "Venue · City · Country", or "Online". */
+export function whereText(location: EventPage["location"]): string {
+  if (location.kind === "online") return "Online";
+  return [location.venueName, location.city, location.country].filter(Boolean).join(" · ");
 }

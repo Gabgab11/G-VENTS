@@ -67,3 +67,41 @@ export function zonedTimeToUtc(date: string, time: string, timeZone: string = DE
   if (check.getUTCMonth() !== mo - 1 || check.getUTCDate() !== d) return null;
   return result;
 }
+
+export type EventDateParts = {
+  /** "FEB" and "20" for the calendar tile. */
+  month: string;
+  day: string;
+  /** "Saturday, 20 February 2027" */
+  dateLine: string;
+  /** "18:00 – 23:00 · Lagos time", or "20 Feb 18:00 – 21 Feb 02:00 · Lagos time" across days. */
+  timeLine: string;
+};
+
+// The date block on the event page, in the event's own time zone.
+export function eventDateParts(startsAt: string, endsAt: string | null, timeZone: string | null | undefined): EventDateParts {
+  let tz = timeZone || DEFAULT_TIMEZONE;
+  try {
+    new Intl.DateTimeFormat("en-GB", { timeZone: tz });
+  } catch {
+    tz = DEFAULT_TIMEZONE;
+  }
+  const start = new Date(startsAt);
+  const end = endsAt ? new Date(endsAt) : null;
+  const fmt = (d: Date, o: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat("en-GB", { ...o, timeZone: tz }).format(d);
+  const clock = (d: Date) => fmt(d, { hour: "2-digit", minute: "2-digit", hourCycle: "h23" });
+  const dayKey = (d: Date) => fmt(d, { year: "numeric", month: "2-digit", day: "2-digit" });
+  const short = (d: Date) => fmt(d, { day: "numeric", month: "short" });
+  const zone = `${timezoneLabel(tz)} time`;
+
+  let range = clock(start);
+  if (end && !Number.isNaN(end.getTime())) {
+    range = dayKey(end) === dayKey(start) ? `${clock(start)} – ${clock(end)}` : `${short(start)} ${clock(start)} – ${short(end)} ${clock(end)}`;
+  }
+  return {
+    month: fmt(start, { month: "short" }).toUpperCase(),
+    day: fmt(start, { day: "numeric" }),
+    dateLine: fmt(start, { weekday: "long", day: "numeric", month: "long", year: "numeric" }).replace(/^(\w+) /, "$1, "),
+    timeLine: `${range} · ${zone}`,
+  };
+}

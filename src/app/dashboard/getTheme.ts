@@ -1,9 +1,11 @@
-import type { SupabaseServerClient } from "@/lib/supabase/server";
+import "server-only";
+
+import { api, data } from "@/lib/api/server";
 import { isThemeKey } from "@/lib/themes";
 
-// The organizer's chosen dashboard style, saved to their profile.
-export async function getDashboardTheme(supabase: SupabaseServerClient, userId: string) {
-  const { data } = await supabase.from("profiles").select("dashboard_theme").eq("id", userId).maybeSingle();
-  const theme = data?.dashboard_theme;
+// The organizer's chosen dashboard style, saved to their profile (GET /v1/me).
+export async function getDashboardTheme(): Promise<string> {
+  const me = await (await api()).GET("/v1/me").then(data).catch(() => null);
+  const theme = me?.dashboardTheme;
   return isThemeKey(theme) ? theme : "minimal";
 }
