@@ -5,6 +5,8 @@ name: Promote staging to production
 #   2. CI (`verify` and `migrations`) must have passed for that exact commit,
 #   3. smoke tests against staging.gventz.com must pass,
 #   4. production must not be missing any database migration,
+#   5. the production API must serve the gventz-api contract this commit is built against
+#      (api-contract.ref), so the website never goes live ahead of its API,
 # and then `main` is fast-forwarded to that commit, so Vercel builds production
 # from exactly the code that was tested on staging. Any failure, including a
 # failed production deployment afterwards, opens a GitHub issue labelled
@@ -24,6 +26,10 @@ name: Promote staging to production
 #                                    Protection Bypass for Automation (staging is behind Vercel login)
 #   SUPABASE_ACCESS_TOKEN, SUPABASE_PROD_REF, SUPABASE_PROD_DB_PASSWORD  (same as migrate.yml)
 #   SLACK_WEBHOOK_URL                optional: also post failures to Slack
+#
+# Repository variables:
+#   PRODUCTION_API_URL               production gventz-api base URL, the same value as Vercel's
+#                                    Production API_URL (for example https://api.gventz.com)
 
 on:
   deployment_status:
@@ -112,6 +118,23 @@ jobs:
           check /discover 200 || ok=0
           check /api/health 200 || ok=0   # the website reaches gventz-api and the API is ready
           [ $ok = 1 ] || { echo "::error::Smoke tests failed on staging."; exit 1; }
+
+      # The website calls gventz-api, which is released separately (a vX.Y.Z tag). Release
+      # order is: migrations, then the API, then the website. This stops a website that needs
+      # an API change production doesn't have yet.
+      - name: Production API serves this website's contract
+        if: steps.which.outputs.is_staging == 'true'
+        env:
+          PRODUCTION_API_URL: ${{ vars.PRODUCTION_API_URL }}
+        run: |
+          if [ -z "$PRODUCTION_API_URL" ]; then
+            echo "::error::Repository variable PRODUCTION_API_URL is not set, so the production API contract can't be checked."; exit 1
+          fi
+          git checkout -q "$SHA"
+          ref=$(tr -d '[:space:]' < api-contract.ref)
+          node .github/scripts/check-api-contract.mjs \
+            "https://raw.githubusercontent.com/aristokratos/gventz-api/$ref/openapi.json" \
+            "${PRODUCTION_API_URL%/}/openapi.json"
 
       - uses: supabase/setup-cli@v1
         if: steps.which.outputs.is_staging == 'true'

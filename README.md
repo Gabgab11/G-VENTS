@@ -61,7 +61,8 @@ When Vercel finishes deploying `staging`, the pipeline checks that:
 1. the staging deployment succeeded,
 2. CI passed for that exact commit,
 3. smoke tests pass on `staging.gventz.com`,
-4. production has every migration the commit needs.
+4. production has every migration the commit needs,
+5. the production API serves the gventz-api contract the commit is built against (`api-contract.ref`): no operation the website uses is missing, and none needs a parameter or body field the website doesn't send. Set the repository variable `PRODUCTION_API_URL` (the same value as Vercel's Production `API_URL`).
 
 It then fast-forwards `main` to that commit, and Vercel deploys production from exactly the code that was tested. It also smoke-tests production afterwards.
 
@@ -70,6 +71,7 @@ If any step fails, nothing reaches production. The pipeline opens (or comments o
 It stops instead of promoting when:
 - `main` has commits that `staging` doesn't: merge `main` into `staging` first.
 - production is missing a migration: run Database migrations for production, then re-run the workflow.
+- the production API is behind the website: release gventz-api first (push its `vX.Y.Z` tag), then re-run the workflow. The release order is always migrations, then the API, then the website.
 - the release changes `.github/workflows/`: GitHub doesn't let the pipeline push those, so open a pull request from `staging` into `main`.
 
 Environment variables per Vercel environment are listed in `.env.example`. `NEXT_PUBLIC_SITE_URL` must be the public address of each environment (production domain for Production, the staging domain for the `staging` branch).
