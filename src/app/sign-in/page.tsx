@@ -11,6 +11,9 @@ export default function SignInPage() {
   const [sent, setSent] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [wrongCode, setWrongCode] = useState(false);
+  const [cooldown, setCooldown] = useState(0);
+  const [notice, setNotice] = useState<string | null>(null);
   // Visitors who tapped a "Create event" button see a sign-up welcome.
   const [fromCreate, setFromCreate] = useState(false);
   useEffect(() => {
@@ -22,27 +25,57 @@ export default function SignInPage() {
     return safeNextPath(new URLSearchParams(window.location.search).get("next"));
   }
 
-  async function sendCode(e: React.FormEvent) {
-    e.preventDefault();
-    setError(null);
-    setBusy(true);
+  // Counts down the 30 seconds before "Resend code" works again.
+  useEffect(() => {
+    if (cooldown <= 0) return;
+    const timer = setTimeout(() => setCooldown((c) => c - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [cooldown]);
+
+  async function requestCode() {
     const supabase = createSupabaseBrowserClient();
-    const { error } = await supabase.auth.signInWithOtp({
+    return supabase.auth.signInWithOtp({
       email: email.trim(),
       options: { shouldCreateUser: true },
     });
+  }
+
+  async function sendCode(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setNotice(null);
+    setBusy(true);
+    const { error } = await requestCode();
     setBusy(false);
     if (error) return setError(error.message);
     setSent(true);
+    setCooldown(30);
+  }
+
+  async function resendCode() {
+    setError(null);
+    setNotice(null);
+    setWrongCode(false);
+    setBusy(true);
+    const { error } = await requestCode();
+    setBusy(false);
+    if (error) return setError(error.message);
+    setNotice("A new code is on its way.");
+    setCooldown(30);
   }
 
   async function verifyCode(code: string) {
     setError(null);
+    setNotice(null);
+    setWrongCode(false);
     setBusy(true);
     const supabase = createSupabaseBrowserClient();
     const { error } = await supabase.auth.verifyOtp({ email: email.trim(), token: code, type: "email" });
     setBusy(false);
-    if (error) return setError("That code is wrong or has expired. Try again or request a new one.");
+    if (error) {
+      setWrongCode(true);
+      return setError("That code is wrong or has expired. Check the latest email and try again.");
+    }
     window.location.href = nextPath();
   }
 
@@ -76,10 +109,14 @@ export default function SignInPage() {
           </form>
         ) : (
           <div className="auth-form">
-            <p className="muted">Enter the 6-digit code we sent to <span className="auth-email">{email}</span>.</p>
-            <OtpInput length={6} onComplete={verifyCode} />
+            <p className="muted">Enter the 6-digit code we sent to <span className="auth-email">{email}</span>. It expires soon, so use the latest email.</p>
+            <OtpInput length={6} onComplete={verifyCode} invalid={wrongCode} />
             {busy && <p className="muted" role="status">Checking...</p>}
-            <button type="button" className="auth-link" onClick={() => { setSent(false); setError(null); }}>
+            {notice && <p className="muted" role="status">{notice}</p>}
+            <button type="button" className="auth-link" onClick={resendCode} disabled={busy || cooldown > 0}>
+              {cooldown > 0 ? `Resend code in ${cooldown}s` : "Resend code"}
+            </button>
+            <button type="button" className="auth-link" onClick={() => { setSent(false); setError(null); setNotice(null); setWrongCode(false); }}>
               Use a different email
             </button>
           </div>

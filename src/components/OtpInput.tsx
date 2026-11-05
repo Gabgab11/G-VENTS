@@ -5,10 +5,13 @@ import { useEffect, useRef, useState } from 'react';
 type Props = {
   length?: number;
   onComplete?: (code: string) => void;
+  // Set to true when the code was rejected. The boxes clear, turn red and refocus.
+  invalid?: boolean;
 };
 
-export default function OtpInput({ length = 6, onComplete }: Props) {
+export default function OtpInput({ length = 6, onComplete, invalid = false }: Props) {
   const [code, setCode] = useState('');
+  const [wrong, setWrong] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const onCompleteRef = useRef(onComplete);
   const complete = code.length === length;
@@ -26,7 +29,17 @@ export default function OtpInput({ length = 6, onComplete }: Props) {
     inputRef.current?.focus();
   }, []);
 
+  // A rejected code: clear the boxes, show them in red, and start again.
+  useEffect(() => {
+    if (invalid) {
+      setCode('');
+      setWrong(true);
+      inputRef.current?.focus();
+    }
+  }, [invalid]);
+
   function handleChange(value: string) {
+    setWrong(false);
     setCode(value.replace(/\D/g, '').slice(0, length));
   }
 
@@ -53,7 +66,11 @@ export default function OtpInput({ length = 6, onComplete }: Props) {
       ) : (
         <div className="otp-row">
           {Array.from({ length }, (_, i) => (
-            <div key={i} className={`otp-slot${i === activeIndex ? ' active' : ''}`}>
+            <div
+              key={i}
+              className={`otp-slot${i === activeIndex ? ' active' : ''}${wrong ? ' bad' : ''}`}
+              aria-hidden="true"
+            >
               {code[i] ?? ''}
             </div>
           ))}
