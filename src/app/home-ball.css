@@ -129,6 +129,21 @@
   border-color: #9ec1ff;
   box-shadow: 0 0 0 3px rgba(158, 193, 255, 0.25);
 }
+.otp-slot.bad {
+  border-color: #f04438;
+  background: linear-gradient(160deg, #3a1d24, #2a1419);
+  color: #fecdca;
+  box-shadow: 0 0 0 3px rgba(240, 68, 56, 0.25);
+  animation: otp-shake 0.4s;
+}
+@keyframes otp-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .otp-slot.bad { animation: none; }
+}
 .otp-fan { position: relative; width: 100%; height: 100px; }
 .otp-card {
   position: absolute;
