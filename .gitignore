@@ -51,3 +51,9 @@ supabase/signing_keys.json
 
 # Downloaded gventz-api contract (npm run api:types:pinned)
 .api-contract.json
+
+# cloudflare workers (OpenNext build output, wrangler state, local secrets)
+/.open-next/
+/.wrangler/
+.dev.vars*
+!.dev.vars.example

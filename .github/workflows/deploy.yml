@@ -1,0 +1,282 @@
+name: Deploy
+
+# The website on Cloudflare Workers (OpenNext; wrangler.jsonc). Runbook: docs/deploy-cloudflare.md.
+#
+#   push to staging   CI ─▶ deploy gventz-web-staging (GitHub environment website-staging)
+#                        ─▶ smoke tests on staging
+#                        ─▶ release gates: production API serves this commit's gventz-api
+#                           contract; production database has its migrations
+#                        ─▶ open or update the pull request staging → main
+#   push to main      CI ─▶ same code as a staging deployment that passed? ─▶ release gates again
+#   (the merged PR)      ─▶ approval by a required reviewer (environment website-production)
+#                        ─▶ deploy gventz-web ─▶ smoke tests on production
+#
+# Any failure opens (or comments on) a GitHub issue labelled `deploy-failure`, and posts to Slack
+# when SLACK_WEBHOOK_URL is set. Nothing here runs for pull requests or forks: deploy secrets
+# exist only in the website-* environments, which only accept the staging and main branches.
+#
+# Environment website-staging      (deployment branch: staging)
+#   secrets    CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID, BFF_SHARED_SECRET, REVALIDATE_SECRET,
+#              MAINTENANCE_BYPASS (optional), CF_ACCESS_CLIENT_ID / CF_ACCESS_CLIENT_SECRET
+#              (optional: a Cloudflare Access service token when staging is behind Access)
+#   variables  NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, NEXT_PUBLIC_TURNSTILE_SITE_KEY,
+#              NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY, NEXT_PUBLIC_WHATSAPP_NUMBER, MAINTENANCE_MODE,
+#              STAGING_URL (optional: smoke-test this address instead of workers.dev)
+# Environment website-production   (deployment branch: main; required reviewers; no self-review)
+#   the same names with production values; PRODUCTION_URL (optional, https://gventz.com after cutover)
+# Repository: secrets SUPABASE_ACCESS_TOKEN, SUPABASE_PROD_REF, SUPABASE_PROD_DB_PASSWORD
+#             (as migrate.yml), SLACK_WEBHOOK_URL (optional); variable PRODUCTION_API_URL
+#             (https://api.gventz.com).
+# API URLs per environment are not settings: they are committed in wrangler.jsonc.
+
+on:
+  push:
+    branches: [staging, main]
+
+permissions: {}
+
+# One deploy per branch at a time, in order; a running deploy is never cancelled halfway.
+concurrency:
+  group: deploy-${{ github.ref_name }}
+  cancel-in-progress: false
+
+env:
+  WRANGLER_SEND_METRICS: "false"
+
+jobs:
+  ci:
+    uses: ./.github/workflows/ci.yml
+    permissions:
+      contents: read
+
+  # ------------------------------------------------------------------------------------ staging
+  staging:
+    if: github.ref == 'refs/heads/staging'
+    needs: ci
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    outputs:
+      url: ${{ vars.STAGING_URL || steps.deploy.outputs.url }}
+    environment:
+      name: website-staging
+      url: ${{ vars.STAGING_URL || steps.deploy.outputs.url }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Build and deploy
+        id: deploy
+        uses: ./.github/actions/deploy-website
+        with:
+          environment: staging
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          BFF_SHARED_SECRET: ${{ secrets.BFF_SHARED_SECRET }}
+          REVALIDATE_SECRET: ${{ secrets.REVALIDATE_SECRET }}
+          MAINTENANCE_BYPASS: ${{ secrets.MAINTENANCE_BYPASS }}
+          MAINTENANCE_MODE: ${{ vars.MAINTENANCE_MODE }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.NEXT_PUBLIC_TURNSTILE_SITE_KEY }}
+          NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY: ${{ vars.NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY }}
+          NEXT_PUBLIC_WHATSAPP_NUMBER: ${{ vars.NEXT_PUBLIC_WHATSAPP_NUMBER }}
+      # In the same job as the deploy on purpose: the website-staging deployment is marked
+      # successful only when these pass, and production checks for exactly that (tested-on-staging.sh).
+      - name: Smoke test staging
+        env:
+          URL: ${{ vars.STAGING_URL || steps.deploy.outputs.url }}
+          CF_ACCESS_CLIENT_ID: ${{ secrets.CF_ACCESS_CLIENT_ID }}
+          CF_ACCESS_CLIENT_SECRET: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
+        run: bash .github/scripts/smoke-test.sh "$URL" / /sign-in /discover /api/health
+
+  # The release order is migrations, then gventz-api, then the website. These stop a promotion
+  # pull request for a website that production's API or database isn't ready for. Read-only.
+  promotion-gates:
+    if: github.ref == 'refs/heads/staging'
+    needs: staging
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - name: Production API serves this website's contract
+        env:
+          PRODUCTION_API_URL: ${{ vars.PRODUCTION_API_URL }}
+        run: bash .github/scripts/release-gates.sh api-contract
+      - uses: supabase/setup-cli@1dedf2c611547ede7232d26866dd3c56ab903bbb # v1.7.3
+        with:
+          version: 2.121.0
+      - name: Production database is ready
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROD_REF: ${{ secrets.SUPABASE_PROD_REF }}
+          SUPABASE_PROD_DB_PASSWORD: ${{ secrets.SUPABASE_PROD_DB_PASSWORD }}
+        run: bash .github/scripts/release-gates.sh migrations
+
+  # Opens the pull request staging → main, or refreshes its description. Merging it needs a
+  # review (ruleset on main), and the production deploy then needs an environment approval.
+  promotion-pr:
+    if: github.ref == 'refs/heads/staging'
+    needs: [staging, promotion-gates]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      STAGING_URL: ${{ needs.staging.outputs.url }}
+    steps:
+      - name: Staging moved on?
+        id: fresh
+        run: |
+          head=$(gh api "repos/$GH_REPO/branches/staging" --jq .commit.sha)
+          if [ "$head" != "$GITHUB_SHA" ]; then
+            echo "staging is now at ${head:0:7}; its own run will update the pull request."
+            echo "current=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "current=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Open or update the release pull request
+        if: steps.fresh.outputs.current == 'true'
+        run: |
+          ahead=$(gh api "repos/$GH_REPO/compare/main...$GITHUB_SHA" --jq .ahead_by)
+          if [ "$ahead" = "0" ]; then echo "main already has everything on staging."; exit 0; fi
+          behind=$(gh api "repos/$GH_REPO/compare/main...$GITHUB_SHA" --jq .behind_by)
+          if [ "$behind" != "0" ]; then
+            echo "::warning::main has $behind commit(s) that staging doesn't. Merge main into staging first, or production will refuse code that staging never ran."
+          fi
+          run_url="$GITHUB_SERVER_URL/$GH_REPO/actions/runs/$GITHUB_RUN_ID"
+          body=$(cat <<MD
+          Release of \`staging\` at ${GITHUB_SHA:0:7} to production.
+
+          Checked by [this run]($run_url):
+          - CI (lint, typecheck, tests, build, Worker bundle, migrations) passed
+          - deployed to staging ($STAGING_URL) and smoke-tested
+          - the production API serves this commit's gventz-api contract (\`api-contract.ref\`)
+          - the production database has every migration this commit needs
+
+          Merging starts the production deploy, which waits for approval in the
+          \`website-production\` environment. Commits on main that staging lacks: $behind (must be 0).
+
+          _Opened by the Deploy workflow; updated on every staging deploy._
+          MD
+          )
+          pr=$(gh pr list --base main --head staging --state open --json number --jq '.[0].number // empty')
+          if [ -n "$pr" ]; then
+            gh pr edit "$pr" --body "$body"
+            echo "Updated #$pr" >> "$GITHUB_STEP_SUMMARY"
+          else
+            gh pr create --base main --head staging --title "Release: staging → production" --body "$body"
+            echo "Opened the release pull request" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+  # --------------------------------------------------------------------------------- production
+  production-gates:
+    if: github.ref == 'refs/heads/main'
+    needs: ci
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      deployments: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Same code as a staging deployment that passed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash .github/scripts/tested-on-staging.sh
+      # Checked again: time passes between the pull request and its merge.
+      - name: Production API serves this website's contract
+        env:
+          PRODUCTION_API_URL: ${{ vars.PRODUCTION_API_URL }}
+        run: bash .github/scripts/release-gates.sh api-contract
+      - uses: supabase/setup-cli@1dedf2c611547ede7232d26866dd3c56ab903bbb # v1.7.3
+        with:
+          version: 2.121.0
+      - name: Production database is ready
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROD_REF: ${{ secrets.SUPABASE_PROD_REF }}
+          SUPABASE_PROD_DB_PASSWORD: ${{ secrets.SUPABASE_PROD_DB_PASSWORD }}
+        run: bash .github/scripts/release-gates.sh migrations
+
+  production:
+    if: github.ref == 'refs/heads/main'
+    needs: production-gates
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    # Required reviewers on this environment: the job waits here until someone approves.
+    environment:
+      name: website-production
+      url: ${{ vars.PRODUCTION_URL || steps.deploy.outputs.url }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Build and deploy
+        id: deploy
+        uses: ./.github/actions/deploy-website
+        with:
+          environment: production
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          BFF_SHARED_SECRET: ${{ secrets.BFF_SHARED_SECRET }}
+          REVALIDATE_SECRET: ${{ secrets.REVALIDATE_SECRET }}
+          MAINTENANCE_BYPASS: ${{ secrets.MAINTENANCE_BYPASS }}
+          MAINTENANCE_MODE: ${{ vars.MAINTENANCE_MODE }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.NEXT_PUBLIC_TURNSTILE_SITE_KEY }}
+          NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY: ${{ vars.NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY }}
+          NEXT_PUBLIC_WHATSAPP_NUMBER: ${{ vars.NEXT_PUBLIC_WHATSAPP_NUMBER }}
+      - name: Smoke test production
+        env:
+          URL: ${{ vars.PRODUCTION_URL || steps.deploy.outputs.url }}
+        run: bash .github/scripts/smoke-test.sh "$URL" / /sign-in /api/health
+
+  # ----------------------------------------------------------------------------------- failures
+  notify:
+    if: failure()
+    needs: [ci, staging, promotion-gates, promotion-pr, production-gates, production]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - name: Notify about the failure
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
+          STAGE: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
+          PRODUCTION_URL: ${{ vars.PRODUCTION_URL || 'the production Worker gventz-web' }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: bash .github/scripts/notify-failure.sh

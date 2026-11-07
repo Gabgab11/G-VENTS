@@ -1,25 +1,32 @@
 name: CI
 
+# Pull requests run it directly. Pushes to staging and main run it through deploy.yml
+# (workflow_call), so every deployment is gated on CI for exactly the commit it ships.
 on:
   pull_request:
-  push:
-    branches: [main, staging]
+  workflow_call:
+
+permissions:
+  contents: read
 
 concurrency:
-  group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  # A newer push to a pull request replaces the older run; deploy runs are never cancelled.
+  group: ci-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    # No Supabase variables on purpose: the build must not need secrets, so a
-    # Vercel environment without them still deploys. Real keys live in Vercel.
+    # No Supabase variables on purpose: the build must not need secrets. Real keys live in the
+    # GitHub environments website-staging / website-production (deploy.yml) and in Vercel.
     env:
       NEXT_PUBLIC_SITE_URL: https://g-vents.vercel.app
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22
           cache: npm
@@ -38,11 +45,23 @@ jobs:
           npm run -s api:types:pinned
           diff -u "$RUNNER_TEMP/committed.d.ts" src/lib/api/schema.d.ts || { echo "::error file=src/lib/api/schema.d.ts::Out of date with gventz-api@$ref. Run npm run api:types:pinned and commit it."; exit 1; }
       - name: Release scripts
-        run: node --test .github/scripts/check-api-contract.test.mjs
+        run: node --test .github/scripts/check-api-contract.test.mjs scripts/cloudflare/wrangler-vars.test.mjs
       - run: npm run lint
       - run: npm run typecheck
       - run: npm test
-      - run: npm run build
+      # The Cloudflare Workers bundle (OpenNext): runs `next build` and then bundles the Worker,
+      # so it is also the plain Next.js build check. The dry runs validate wrangler.jsonc and
+      # every binding for both environments without uploading anything or needing a token.
+      - name: Build (Next.js + Cloudflare Worker)
+        run: npm run cf:build
+      - name: Worker config is valid for staging and production
+        env:
+          WRANGLER_SEND_METRICS: "false"
+        run: |
+          for target in staging production; do
+            npx wrangler deploy --dry-run --env "$target" --outdir "$RUNNER_TEMP/dry-run-$target" >/dev/null
+            echo "$target: ok"
+          done
 
   # Applies every migration, in order, to a throwaway local Supabase database,
   # then lints the schema and runs the database tests. Catches a migration that would fail on staging or
@@ -51,8 +70,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: supabase/setup-cli@v1
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - uses: supabase/setup-cli@1dedf2c611547ede7232d26866dd3c56ab903bbb # v1.7.3
         with:
           version: 2.121.0 # pinned: generated types must match byte for byte
       - run: node supabase/scripts/gen-signing-key.mjs
