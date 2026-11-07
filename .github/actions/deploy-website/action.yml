@@ -1,10 +1,11 @@
 name: Build and deploy the website to Cloudflare Workers
 description: >
   Builds the site with OpenNext for one wrangler.jsonc environment and deploys it.
-  Used only by deploy.yml, inside a job bound to the matching GitHub environment.
-  The calling step passes, through `env:`, CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID,
-  the public NEXT_PUBLIC_* settings (environment variables) and the Worker secrets
-  BFF_SHARED_SECRET, REVALIDATE_SECRET and optional MAINTENANCE_BYPASS (environment secrets).
+  Used only by deploy.yml. Reads no secrets itself: the calling step maps one environment's
+  repository secrets and variables (STAGING_* or PRODUCTION_*, plus the shared CLOUDFLARE_*)
+  through `env:` to the unprefixed names used here: CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID,
+  the public NEXT_PUBLIC_* settings, MAINTENANCE_MODE, and the Worker secrets BFF_SHARED_SECRET,
+  REVALIDATE_SECRET and optional MAINTENANCE_BYPASS.
 
 inputs:
   environment:
@@ -32,8 +33,13 @@ runs:
         for name in CLOUDFLARE_API_TOKEN CLOUDFLARE_ACCOUNT_ID NEXT_PUBLIC_SUPABASE_URL NEXT_PUBLIC_SUPABASE_ANON_KEY BFF_SHARED_SECRET REVALIDATE_SECRET; do
           [ -n "${!name:-}" ] || missing+=("$name")
         done
+        # The environment variable would override wrangler.jsonc's account_id; they must agree.
+        pinned=$(node --input-type=module -e 'import { readFileSync } from "node:fs"; import { stripJsonc } from "./scripts/cloudflare/wrangler-vars.mjs"; console.log(JSON.parse(stripJsonc(readFileSync("wrangler.jsonc", "utf8"))).account_id ?? "")')
+        if [ -n "${CLOUDFLARE_ACCOUNT_ID:-}" ] && [ "$CLOUDFLARE_ACCOUNT_ID" != "$pinned" ]; then
+          echo "::error::CLOUDFLARE_ACCOUNT_ID doesn't match account_id in wrangler.jsonc."; exit 1
+        fi
         if [ ${#missing[@]} -gt 0 ]; then
-          echo "::error::Missing in the GitHub environment for $TARGET: ${missing[*]} (docs/deploy-cloudflare.md, Settings)."; exit 1
+          echo "::error::Not set for $TARGET: ${missing[*]} (repository secrets/variables, prefixed ${TARGET^^}_ except CLOUDFLARE_*; docs/deploy-cloudflare.md §2)."; exit 1
         fi
 
     - name: Build (Next.js + OpenNext)

@@ -2,31 +2,22 @@ name: Deploy
 
 # The website on Cloudflare Workers (OpenNext; wrangler.jsonc). Runbook: docs/deploy-cloudflare.md.
 #
-#   push to staging   CI ─▶ deploy gventz-web-staging (GitHub environment website-staging)
-#                        ─▶ smoke tests on staging
-#                        ─▶ release gates: production API serves this commit's gventz-api
-#                           contract; production database has its migrations
+#   push to staging   CI ─▶ deploy gventz-web-staging ─▶ smoke tests on staging
+#                        ─▶ gate: the production API serves this commit's gventz-api contract
 #                        ─▶ open or update the pull request staging → main
-#   push to main      CI ─▶ same code as a staging deployment that passed? ─▶ release gates again
-#   (the merged PR)      ─▶ approval by a required reviewer (environment website-production)
+#   push to main      CI ─▶ same code as a staging deployment that passed? ─▶ gates: API contract
+#   (the merged PR)      and production migrations ─▶ approval (environment website-production)
 #                        ─▶ deploy gventz-web ─▶ smoke tests on production
 #
 # Any failure opens (or comments on) a GitHub issue labelled `deploy-failure`, and posts to Slack
-# when SLACK_WEBHOOK_URL is set. Nothing here runs for pull requests or forks: deploy secrets
-# exist only in the website-* environments, which only accept the staging and main branches.
+# when SLACK_WEBHOOK_URL is set. Nothing here runs for pull requests or forks.
 #
-# Environment website-staging      (deployment branch: staging)
-#   secrets    CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID, BFF_SHARED_SECRET, REVALIDATE_SECRET,
-#              MAINTENANCE_BYPASS (optional), CF_ACCESS_CLIENT_ID / CF_ACCESS_CLIENT_SECRET
-#              (optional: a Cloudflare Access service token when staging is behind Access)
-#   variables  NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, NEXT_PUBLIC_TURNSTILE_SITE_KEY,
-#              NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY, NEXT_PUBLIC_WHATSAPP_NUMBER, MAINTENANCE_MODE,
-#              STAGING_URL (optional: smoke-test this address instead of workers.dev)
-# Environment website-production   (deployment branch: main; required reviewers; no self-review)
-#   the same names with production values; PRODUCTION_URL (optional, https://gventz.com after cutover)
-# Repository: secrets SUPABASE_ACCESS_TOKEN, SUPABASE_PROD_REF, SUPABASE_PROD_DB_PASSWORD
-#             (as migrate.yml), SLACK_WEBHOOK_URL (optional); variable PRODUCTION_API_URL
-#             (https://api.gventz.com).
+# Settings are repository-level secrets and variables (docs/deploy-cloudflare.md §2 lists them all):
+# shared ones unprefixed (CLOUDFLARE_*), the rest STAGING_* or PRODUCTION_*. Each job maps only its
+# own environment's names to the unprefixed names the deploy action reads. Staging jobs never touch
+# production secrets: .github/scripts/workflow-secrets.test.mjs (run by CI) fails if one does.
+# The environments hold no secrets: website-production is the approval gate (required reviewer),
+# website-staging records staging deployments, which the production gate checks.
 # API URLs per environment are not settings: they are committed in wrangler.jsonc.
 
 on:
@@ -79,26 +70,28 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          BFF_SHARED_SECRET: ${{ secrets.BFF_SHARED_SECRET }}
-          REVALIDATE_SECRET: ${{ secrets.REVALIDATE_SECRET }}
-          MAINTENANCE_BYPASS: ${{ secrets.MAINTENANCE_BYPASS }}
-          MAINTENANCE_MODE: ${{ vars.MAINTENANCE_MODE }}
-          NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-          NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.NEXT_PUBLIC_TURNSTILE_SITE_KEY }}
-          NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY: ${{ vars.NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY }}
-          NEXT_PUBLIC_WHATSAPP_NUMBER: ${{ vars.NEXT_PUBLIC_WHATSAPP_NUMBER }}
+          BFF_SHARED_SECRET: ${{ secrets.STAGING_BFF_SHARED_SECRET }}
+          REVALIDATE_SECRET: ${{ secrets.STAGING_REVALIDATE_SECRET }}
+          MAINTENANCE_BYPASS: ${{ secrets.STAGING_MAINTENANCE_BYPASS }}
+          MAINTENANCE_MODE: ${{ vars.STAGING_MAINTENANCE_MODE }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ vars.STAGING_NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.STAGING_NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.STAGING_NEXT_PUBLIC_TURNSTILE_SITE_KEY }}
+          NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY: ${{ vars.STAGING_NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY }}
+          NEXT_PUBLIC_WHATSAPP_NUMBER: ${{ vars.STAGING_NEXT_PUBLIC_WHATSAPP_NUMBER }}
       # In the same job as the deploy on purpose: the website-staging deployment is marked
       # successful only when these pass, and production checks for exactly that (tested-on-staging.sh).
       - name: Smoke test staging
         env:
           URL: ${{ vars.STAGING_URL || steps.deploy.outputs.url }}
-          CF_ACCESS_CLIENT_ID: ${{ secrets.CF_ACCESS_CLIENT_ID }}
-          CF_ACCESS_CLIENT_SECRET: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
+          CF_ACCESS_CLIENT_ID: ${{ secrets.STAGING_CF_ACCESS_CLIENT_ID }}
+          CF_ACCESS_CLIENT_SECRET: ${{ secrets.STAGING_CF_ACCESS_CLIENT_SECRET }}
         run: bash .github/scripts/smoke-test.sh "$URL" / /sign-in /discover /api/health
 
-  # The release order is migrations, then gventz-api, then the website. These stop a promotion
-  # pull request for a website that production's API or database isn't ready for. Read-only.
+  # The release order is migrations, then gventz-api, then the website. This stops a promotion
+  # pull request for a website that the production API isn't ready for (public data only: the
+  # pinned contract and the API's /openapi.json). The production-migration check needs production
+  # database secrets, so it runs only in production-gates, before the approval.
   promotion-gates:
     if: github.ref == 'refs/heads/staging'
     needs: staging
@@ -114,15 +107,6 @@ jobs:
         env:
           PRODUCTION_API_URL: ${{ vars.PRODUCTION_API_URL }}
         run: bash .github/scripts/release-gates.sh api-contract
-      - uses: supabase/setup-cli@1dedf2c611547ede7232d26866dd3c56ab903bbb # v1.7.3
-        with:
-          version: 2.121.0
-      - name: Production database is ready
-        env:
-          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-          SUPABASE_PROD_REF: ${{ secrets.SUPABASE_PROD_REF }}
-          SUPABASE_PROD_DB_PASSWORD: ${{ secrets.SUPABASE_PROD_DB_PASSWORD }}
-        run: bash .github/scripts/release-gates.sh migrations
 
   # Opens the pull request staging → main, or refreshes its description. Merging it needs a
   # review (ruleset on main), and the production deploy then needs an environment approval.
@@ -166,7 +150,10 @@ jobs:
           - CI (lint, typecheck, tests, build, Worker bundle, migrations) passed
           - deployed to staging ($STAGING_URL) and smoke-tested
           - the production API serves this commit's gventz-api contract (\`api-contract.ref\`)
-          - the production database has every migration this commit needs
+
+          After the merge, production checks again that its API serves the contract and that the
+          production database has every migration this commit needs. If one is missing, it stops
+          before the approval: run Actions → Database migrations (target production) and re-run.
 
           Merging starts the production deploy, which waits for approval in the
           \`website-production\` environment. Commits on main that staging lacks: $behind (must be 0).
@@ -223,7 +210,8 @@ jobs:
     timeout-minutes: 25
     permissions:
       contents: read
-    # Required reviewers on this environment: the job waits here until someone approves.
+    # The approval gate: website-production has a required reviewer and no secrets. Don't turn on
+    # "Prevent self-review": the person who merges the release PR is often the approver.
     environment:
       name: website-production
       url: ${{ vars.PRODUCTION_URL || steps.deploy.outputs.url }}
@@ -244,15 +232,15 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          BFF_SHARED_SECRET: ${{ secrets.BFF_SHARED_SECRET }}
-          REVALIDATE_SECRET: ${{ secrets.REVALIDATE_SECRET }}
-          MAINTENANCE_BYPASS: ${{ secrets.MAINTENANCE_BYPASS }}
-          MAINTENANCE_MODE: ${{ vars.MAINTENANCE_MODE }}
-          NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-          NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.NEXT_PUBLIC_TURNSTILE_SITE_KEY }}
-          NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY: ${{ vars.NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY }}
-          NEXT_PUBLIC_WHATSAPP_NUMBER: ${{ vars.NEXT_PUBLIC_WHATSAPP_NUMBER }}
+          BFF_SHARED_SECRET: ${{ secrets.PRODUCTION_BFF_SHARED_SECRET }}
+          REVALIDATE_SECRET: ${{ secrets.PRODUCTION_REVALIDATE_SECRET }}
+          MAINTENANCE_BYPASS: ${{ secrets.PRODUCTION_MAINTENANCE_BYPASS }}
+          MAINTENANCE_MODE: ${{ vars.PRODUCTION_MAINTENANCE_MODE }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ vars.PRODUCTION_NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.PRODUCTION_NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.PRODUCTION_NEXT_PUBLIC_TURNSTILE_SITE_KEY }}
+          NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY: ${{ vars.PRODUCTION_NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY }}
+          NEXT_PUBLIC_WHATSAPP_NUMBER: ${{ vars.PRODUCTION_NEXT_PUBLIC_WHATSAPP_NUMBER }}
       - name: Smoke test production
         env:
           URL: ${{ vars.PRODUCTION_URL || steps.deploy.outputs.url }}

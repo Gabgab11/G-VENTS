@@ -25,6 +25,7 @@ test("wrangler.jsonc wires each environment to its own API and site", async () =
   assert.equal(varsFor(config, "staging").NEXT_PUBLIC_SITE_URL, "https://staging.gventz.com");
   assert.equal(varsFor(config, "production").API_URL, "https://api.gventz.com");
   assert.equal(varsFor(config, "production").NEXT_PUBLIC_SITE_URL, "https://gventz.com");
+  assert.equal(config.account_id, "cae583a64c8e68a3fa05d93e36cb3f89", "the project's Cloudflare account");
   for (const name of ["staging", "production"]) {
     const env = config.env[name];
     assert.ok(env.r2_buckets?.some((b) => b.binding === "NEXT_INC_CACHE_R2_BUCKET"), `${name}: R2 cache binding`);

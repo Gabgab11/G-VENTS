@@ -11,6 +11,9 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "gventz-web",
+  // "Johnabayomi6040@gmail.com's Account". Pinned so a wrangler session logged into another
+  // account can't deploy or create resources there. An identifier, not a secret.
+  "account_id": "cae583a64c8e68a3fa05d93e36cb3f89",
   "main": ".open-next/worker.js",
   "compatibility_date": "2026-10-20",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],

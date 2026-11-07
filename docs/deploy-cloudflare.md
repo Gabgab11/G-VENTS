@@ -23,7 +23,8 @@ Server-only secrets (`BFF_SHARED_SECRET`, `REVALIDATE_SECRET`) must never reach 
 | **Workers + `@opennextjs/cloudflare`** | **Yes (chosen)** | Cloudflare's supported adapter for existing Next.js apps. Node.js runtime (`nodejs_compat`), Server Actions, middleware, ISR with R2 + Durable Objects, static assets served by Workers Assets. Built and dry-run in CI. |
 | Workers + vinext | Later, maybe | Cloudflare's Vite reimplementation of the Next.js API, now its default for *new* projects. Not a drop-in for an existing production app without a compatibility pass; revisit separately. |
 
-So the target is **Cloudflare Workers**, not Pages. Workers is what Cloudflare now recommends for
+**Decision (2026-11-07): Workers + `@opennextjs/cloudflare`; Pages dropped.** So the target is
+**Cloudflare Workers**, not Pages. Workers is what Cloudflare now recommends for
 full-stack frameworks (Workers Assets replaced Pages for this case). What you asked for still holds:
 a staging and a production deployment per branch, custom domains, preview URLs on `workers.dev`, and
 an approval gate on production.
@@ -44,7 +45,7 @@ an approval gate on production.
 |---|---|---|
 | Branch | `staging` | `main` (the production branch; gventz-api's is called `prd`) |
 | Worker (wrangler env) | `gventz-web-staging` (`--env staging`) | `gventz-web` (`--env production`) |
-| GitHub environment | `website-staging` | `website-production` (required reviewers) |
+| GitHub environment (no secrets) | `website-staging` (deployment history) | `website-production` (approval gate) |
 | Site | `https://staging.gventz.com` | `https://gventz.com` (`www` → 308 to apex) |
 | **API** (`API_URL`) | **`https://api-staging.gventz.com`** | **`https://api.gventz.com`** |
 | R2 cache bucket | `gventz-web-cache-staging` | `gventz-web-cache-production` |
@@ -57,28 +58,93 @@ environment therefore gets its **own build**. Moving an environment to a differe
 commit, never a settings toggle. A unit test fails if staging and production ever point at each
 other's API. `API_URL` is server-only: the browser never calls the API (application design AD13).
 
-GitHub environment settings (names only; values never go in the repo):
+### Secrets and variables (repository level)
 
-| Kind | Name | Notes |
-|---|---|---|
-| secret | `CLOUDFLARE_API_TOKEN` | see [token scope](#cloudflare-api-token) |
-| secret | `CLOUDFLARE_ACCOUNT_ID` | |
-| secret | `BFF_SHARED_SECRET` | same value as the API of *that* environment |
-| secret | `REVALIDATE_SECRET` | same value as the API of that environment, ≥ 32 chars |
-| secret | `MAINTENANCE_BYPASS` | optional |
-| secret | `CF_ACCESS_CLIENT_ID`, `CF_ACCESS_CLIENT_SECRET` | staging only: Access service token for smoke tests |
-| variable | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` | required |
-| variable | `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY`, `NEXT_PUBLIC_WHATSAPP_NUMBER` | optional |
-| variable | `MAINTENANCE_MODE` | `1` = maintenance page (takes effect on the next deploy) |
-| variable | `STAGING_URL` / `PRODUCTION_URL` | optional: smoke-test the custom domain instead of `workers.dev` |
+Everything is set at **repository** level (Settings → Secrets and variables → Actions). Values that
+differ per environment carry a `STAGING_` or `PRODUCTION_` prefix; shared ones have none. Each
+deploy job maps its own environment's names to the unprefixed names the deploy action reads
+(`BFF_SHARED_SECRET`, `NEXT_PUBLIC_SUPABASE_URL`, …), so the Worker and the app code are unchanged.
+Names only below; values never go in the repo. "Exists" is as of 2026-11-07.
 
-Repository level (unchanged from before): secrets `SUPABASE_ACCESS_TOKEN`, `SUPABASE_PROD_REF`,
-`SUPABASE_PROD_DB_PASSWORD`, `SLACK_WEBHOOK_URL` (optional); variable `PRODUCTION_API_URL` =
-`https://api.gventz.com` (for the contract gate).
+| Kind | Name | Exists | Purpose | Used by (job) |
+|---|---|---|---|---|
+| secret | `CLOUDFLARE_API_TOKEN` | no | deploys the Workers ([scope](#cloudflare-api-token)) | deploy.yml `staging`, `production` |
+| secret | `CLOUDFLARE_ACCOUNT_ID` | no | `cae583a64c8e68a3fa05d93e36cb3f89` ("Johnabayomi6040@gmail.com's Account"). An identifier, not a secret; stored as one only to keep the deploy settings together | `staging`, `production` |
+| secret | `STAGING_BFF_SHARED_SECRET` | no | Worker secret; same value as the staging API's `BFF_SHARED_SECRET` | `staging` |
+| secret | `PRODUCTION_BFF_SHARED_SECRET` | no | same, production API | `production` |
+| secret | `STAGING_REVALIDATE_SECRET` | no | Worker secret; same value as the staging API's `REVALIDATE_SECRET` (≥ 32 chars) | `staging` |
+| secret | `PRODUCTION_REVALIDATE_SECRET` | no | same, production API | `production` |
+| secret | `STAGING_MAINTENANCE_BYPASS` | no | optional; staff cookie value during maintenance (≥ 16 chars) | `staging` |
+| secret | `PRODUCTION_MAINTENANCE_BYPASS` | no | optional; same for production | `production` |
+| secret | `STAGING_CF_ACCESS_CLIENT_ID` | no | optional; Cloudflare Access service token for smoke-testing staging behind Access | `staging` |
+| secret | `STAGING_CF_ACCESS_CLIENT_SECRET` | no | optional; pair of the above | `staging` |
+| secret | `SUPABASE_ACCESS_TOKEN` | **yes** | Supabase CLI login | deploy.yml `production-gates`; migrate.yml |
+| secret | `SUPABASE_PROD_REF` | **yes** | production project ref | `production-gates`; migrate.yml |
+| secret | `SUPABASE_PROD_DB_PASSWORD` | **yes** | production database password (read-only dry run here) | `production-gates`; migrate.yml |
+| secret | `SUPABASE_STAGING_REF` | **no** | staging project ref (migrate.yml, already required by it) | migrate.yml |
+| secret | `SUPABASE_STAGING_DB_PASSWORD` | **no** | staging database password (migrate.yml) | migrate.yml |
+| secret | `SLACK_WEBHOOK_URL` | no | optional; failure alerts | deploy.yml `notify` |
+| secret | `VERCEL_AUTOMATION_BYPASS_SECRET` | **yes** | used only by the removed `promote.yml`; delete it after Vercel is retired | none |
+| variable | `PRODUCTION_API_URL` | no | `https://api.gventz.com`, for the API contract gate (public) | `promotion-gates`, `production-gates` |
+| variable | `STAGING_NEXT_PUBLIC_SUPABASE_URL` | no | required; staging Supabase URL (public, inlined in the browser bundle) | `staging` |
+| variable | `PRODUCTION_NEXT_PUBLIC_SUPABASE_URL` | no | required; production Supabase URL | `production` |
+| variable | `STAGING_NEXT_PUBLIC_SUPABASE_ANON_KEY` | no | required; staging publishable key (public by design) | `staging` |
+| variable | `PRODUCTION_NEXT_PUBLIC_SUPABASE_ANON_KEY` | no | required; production publishable key | `production` |
+| variable | `STAGING_NEXT_PUBLIC_TURNSTILE_SITE_KEY` | no | optional; Turnstile site key | `staging` |
+| variable | `PRODUCTION_NEXT_PUBLIC_TURNSTILE_SITE_KEY` | no | optional | `production` |
+| variable | `STAGING_NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY` | no | optional; referrer-restricted Maps Embed key | `staging` |
+| variable | `PRODUCTION_NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY` | no | optional | `production` |
+| variable | `STAGING_NEXT_PUBLIC_WHATSAPP_NUMBER` | no | optional; WhatsApp fallback number | `staging` |
+| variable | `PRODUCTION_NEXT_PUBLIC_WHATSAPP_NUMBER` | no | optional | `production` |
+| variable | `STAGING_MAINTENANCE_MODE` | no | optional; `1` = maintenance page from the next deploy | `staging` |
+| variable | `PRODUCTION_MAINTENANCE_MODE` | no | optional | `production` |
+| variable | `STAGING_URL` | no | optional; smoke-test this origin (e.g. `https://staging.gventz.com`) instead of `workers.dev` | `staging` |
+| variable | `PRODUCTION_URL` | no | optional; `https://gventz.com` after cutover | `production`, `notify` |
+
+Not settings: `API_URL` and `NEXT_PUBLIC_SITE_URL` (committed in `wrangler.jsonc`, see above).
 
 Worker secrets are uploaded **with** each deployment (`wrangler deploy --secrets-file`, a 0600 temp
 file deleted afterwards), so GitHub stays their source of truth and they never appear on a command
 line or in a log.
+
+### GitHub environments
+
+- **`website-production`: the approval gate, no secrets.** Required reviewer: **`Brozjay1`**.
+  Deployment branches: `main` only. **Leave "Prevent self-review" off.** The production run is
+  triggered by whoever merges the release PR, often Brozjay1. With that option on, GitHub won't let
+  them approve their own run, and the deploy would be stuck with no other reviewer to approve it.
+- **`website-staging`: kept, no reviewers, no secrets.** Deployment branches: `staging` only. It costs
+  nothing and gives a deployment history with the live URL. It is also load-bearing:
+  `tested-on-staging.sh` looks for a successful `website-staging` deployment with the same tree before
+  production may deploy. Dropping it would mean recording "passed staging" some other way.
+- The existing `Production`, `Preview` (Vercel's) and `staging` (manual gventz deploys) environments
+  are left alone. Environment names are case-insensitive, which is why these are `website-*`.
+
+### Security trade-off of repository-level secrets
+
+Repository secrets are readable by **any workflow run that a collaborator with write access
+triggers**, on any branch. Someone with write access could push a branch with a new workflow that
+reads `PRODUCTION_*`, without touching `main`. GitHub only protects secrets from **fork pull
+requests** (they get no secrets) and from people without write access. Environment secrets plus
+deployment-branch rules would close that gap; they were declined for now.
+
+What limits the risk here:
+- **Staging jobs never map production secrets**, and production jobs never read staging ones.
+  `.github/scripts/workflow-secrets.test.mjs` (run in CI) fails the build if a job does, if a job
+  with no branch condition reads a deploy secret, or if the deploy action reads secrets itself.
+- Deploy jobs run only for `refs/heads/staging` or `refs/heads/main`. Production can only be reached
+  through the `website-production` approval, and only from `main`.
+- No `pull_request_target`; PR CI uses no secrets; fork PRs never see secrets.
+- Least privilege: `permissions: {}` by default, actions pinned to SHAs, `persist-credentials: false`.
+  Secrets are passed by temp file, never in arguments.
+- The production migration check (needs `SUPABASE_PROD_DB_PASSWORD`) runs only in `production-gates`
+  on `main`. It no longer runs on staging pushes, as `promote.yml` did.
+
+Recommended in addition: keep the number of people with write access small; add a ruleset that
+requires a PR and review for `.github/**` (CODEOWNERS); scope the Cloudflare token to this account
+with a TTL and rotate it. Later, move the `PRODUCTION_*` deploy secrets into `website-production` as environment
+secrets with the same names. The `production` job already runs in that environment, so no workflow
+change is needed, and only an approved run on `main` could read them.
 
 ## 3. Pipeline
 
@@ -97,25 +163,27 @@ feature ──PR──▶ staging ───────────────�
    - deploys `gventz-web-staging` and smoke-tests `/`, `/sign-in`, `/discover` and `/api/health` (200
      only when the site reaches the staging API). These run in the deploy job, so the
      `website-staging` deployment is marked successful only if they pass;
-   - **promotion gates**, same as the old `promote.yml`: the production API must serve the
-     gventz-api contract pinned in `api-contract.ref` (**the website is never promoted ahead of its
-     API**), and production Supabase must not be missing a migration (read-only dry run);
+   - **promotion gate**: the production API must serve the gventz-api contract pinned in
+     `api-contract.ref`, so **the website is never promoted ahead of its API**. It uses only public
+     data, so no production secret is involved on a staging push;
    - opens, or updates the description of, the PR **`staging` → `main`**.
 3. **Merge the PR into `main`** (needs an approving review: ruleset on `main`). `deploy.yml` then
    runs CI again, then `production-gates`:
    - **tested on staging**: the commit's tree must equal the tree of a commit with a successful
      `website-staging` deployment made by this pipeline. This holds for merge, squash and
      fast-forward alike, and stops anything that reached `main` some other way;
-   - the API contract and migration gates again (time passes between PR and merge).
-4. **`production` waits for approval** in the `website-production` environment (required
-   reviewers, self-review blocked). Then it deploys `gventz-web` and smoke-tests it.
+   - the API contract gate again (time passes between PR and merge), and the production
+     **migration** gate: production Supabase must not be missing a migration (read-only dry run).
+     Like `promote.yml`, a missing migration stops the release, here before the approval.
+4. **`production` waits for approval** in the `website-production` environment (required reviewer
+   Brozjay1). Then it deploys `gventz-web` and smoke-tests it.
 5. Any failure: a `deploy-failure` issue (plus Slack if configured), same as before.
 
 Security properties:
 - every third-party action is pinned to a full commit SHA;
 - `permissions: {}` at workflow level, with each job granted only what it uses;
 - checkouts use `persist-credentials: false`;
-- deploy secrets exist only in environments limited to `staging` / `main`;
+- staging jobs never see production secrets (checked by a test; see the trade-off note above);
 - concurrency: one deploy per branch, never cancelled mid-deploy; PR CI runs replace older ones.
 
 `promote.yml` is **removed**. It fast-forwarded `main` with no human approval, which conflicts with
@@ -142,7 +210,8 @@ Cloudflare account owner.
 
 ### Cloudflare API token
 
-Create a **custom account token**, limited to the G-ventZ account (and the `gventz.com` zone once it
+Create a **custom account token** in "Johnabayomi6040@gmail.com's Account"
+(`cae583a64c8e68a3fa05d93e36cb3f89`), limited to that account (and the `gventz.com` zone once it
 exists). Give it only:
 - Account → **Workers Scripts: Edit** (deploy the Worker, its secrets and versions)
 - Account → **Workers R2 Storage: Edit** (`populateCache remote` writes pre-rendered pages to R2)
@@ -151,9 +220,8 @@ exists). Give it only:
   by wrangler. If they are attached once by hand in the dashboard (recommended, see phase 4), leave
   it out.
 
-"Pages: Edit" isn't enough, because this is a Worker, not a Pages project. Use one token per
-environment (two tokens) if you want staging's token to be unable to touch production. Set a TTL
-and rotate it.
+"Pages: Edit" isn't enough, because this is a Worker, not a Pages project. Cloudflare can't limit
+a token to one Worker, so the shared `CLOUDFLARE_API_TOKEN` can deploy both. Set a TTL and rotate it.
 
 ## 4. DNS inventory (read-only, 2026-11-07)
 
@@ -165,9 +233,17 @@ Sources: `vercel dns ls gventz.com` and `vercel domains inspect gventz.com` (tea
 - **DNSSEC:** off (no DS record at `.com`).
 - **Vercel project `g-vents`:** `gventz.com` (production), `staging.gventz.com` (branch `staging`),
   `www.gventz.com` → 308 to `gventz.com`.
-- **API (gventz-api):** gventz-api `main` documents Render (`gventz-api-staging.onrender.com`). Its
-  branch `feature/vercel-hosting` moves it to Vercel projects `gventz-api-staging`/`gventz-api` with
-  `api-staging.gventz.com`/`api.gventz.com`. **Neither name is attached anywhere yet.**
+- **API (gventz-api): hosted on Vercel** (decision 2026-11-07), in the same Vercel team, projects
+  `gventz-api-staging` and `gventz-api`. Their only domains today are `gventz-api-staging.vercel.app`
+  and `gventz-api.vercel.app`. **`api-staging.gventz.com` and `api.gventz.com` are not attached to
+  either project yet.** Vercel's recommended DNS for them (`vercel api /v6/domains/<host>/config`):
+
+  | Host | Vercel project | Recommended CNAME (rank 1) | Fallback |
+  |---|---|---|---|
+  | `api.gventz.com` | `gventz-api` | `a7148229e4a21beb.vercel-dns-016.com` | `cname.vercel-dns.com` |
+  | `api-staging.gventz.com` | `gventz-api-staging` | `906d99bf27a55ced.vercel-dns-016.com` | `cname.vercel-dns.com` |
+
+  Re-read these values right before creating the records; Vercel can change them.
 
 | # | Name | Type | Value (summary) | TTL | Source | Proposed in Cloudflare |
 |---|---|---|---|---|---|---|
@@ -182,8 +258,13 @@ Sources: `vercel dns ls gventz.com` and `vercel domains inspect gventz.com` (tea
 | 9 | `@` | CAA ×3 | `0 issue` `letsencrypt.org`, `pki.goog`, `sectigo.com` | – | Vercel default | don't copy as-is; see note |
 | – | `www` | (via `*`) | Vercel | – | wildcard | Worker custom domain + redirect rule www → apex (308), proxied |
 | – | `staging` | (via `*`) | Vercel, branch `staging` | – | wildcard | Worker custom domain for `gventz-web-staging`, proxied, behind Cloudflare Access |
-| – | `api` | (via `*`) | **Vercel 404 today** (`server: Vercel`) | – | wildcard | CNAME to the production API host, **DNS-only** (decision D3) |
-| – | `api-staging` | (via `*`) | **Vercel 404 today** | – | wildcard | CNAME to the staging API host, **DNS-only** (decision D3) |
+| – | `api` | (via `*`) | **Vercel 404 today** (`server: Vercel`) | – | wildcard | `CNAME a7148229e4a21beb.vercel-dns-016.com`, **DNS-only** |
+| – | `api-staging` | (via `*`) | **Vercel 404 today** | – | wildcard | `CNAME 906d99bf27a55ced.vercel-dns-016.com`, **DNS-only** |
+| – | `_vercel` | TXT | not present today | – | – | add **only if** Vercel asks to verify the domain (value from Vercel) |
+
+Why the API records stay DNS-only (grey cloud): Vercel terminates TLS and issues the certificate
+itself (HTTP-01 / DNS-01). It also runs its own edge and firewall. A Cloudflare proxy in front would
+add a second CDN hop, hide the visitor IP from Vercel, and can break certificate issuance and renewal.
 
 Clashes and findings:
 - **`api.gventz.com` and `api-staging.gventz.com` have no records of their own.** They resolve only
@@ -204,19 +285,36 @@ Clashes and findings:
 Nothing below has been done. Do it in a quiet hour. Website downtime should be zero; the worst case
 is the TTL of the record you changed.
 
-**Phase 0: decide** (see the decisions in the report): who hosts the API and at which hostnames
-(D3); the Cloudflare account that will own the zone (D1); the production approvers (D2).
+**Phase 0: decided.**
+- The API is on Vercel at `api.gventz.com` / `api-staging.gventz.com`.
+- Production approver: Brozjay1.
+- Cloudflare account: **"Johnabayomi6040@gmail.com's Account"** (`cae583a64c8e68a3fa05d93e36cb3f89`,
+  login johnabayomi6040@gmail.com). It owns the Workers, the R2 buckets and the `gventz.com` zone.
+  It has no zones yet. Log wrangler into this account (`npx wrangler login`, then
+  `npx wrangler whoami`) before any manual step below. A different account in a browser or token is
+  the most likely mistake here. `wrangler.jsonc` pins `account_id` to this account, so wrangler
+  refuses to deploy into any other account.
+
+**Phase 0b: attach the API domains on Vercel (can be done now, before any DNS move)**
+- In Vercel, add `api.gventz.com` to project `gventz-api` and `api-staging.gventz.com` to
+  `gventz-api-staging` (Project → Settings → Domains, or `vercel domains add <host> <project>`).
+  `gventz.com` is in the same Vercel team and still on Vercel DNS, so they verify automatically and
+  start serving straight away (the wildcard already points at Vercel).
+- Check: `curl -s https://api-staging.gventz.com/health/ready` and `…/openapi.json` on both hosts.
+  This unblocks the staging smoke test (`/api/health`) and the contract gate (`PRODUCTION_API_URL`).
 
 **Phase 1: Cloudflare side, no impact on traffic**
 1. Create the R2 buckets `gventz-web-cache-staging` and `gventz-web-cache-production`.
-2. Create the API token ([scope](#cloudflare-api-token)) and the GitHub environments, secrets and
-   variables ([section 2](#2-environments-and-api-urls)).
+2. Create the API token ([scope](#cloudflare-api-token)). Add the repository secrets and variables,
+   and create the two GitHub environments (no secrets in them), as in
+   [section 2](#2-environments-and-api-urls).
 3. Merge this branch through `staging`. The first staging deploy creates `gventz-web-staging` on
-   `workers.dev`. Verify it there; its `/api/health` turns green once D3 is done.
+   `workers.dev`. Verify it there; its `/api/health` turns green once phase 0b is done.
 4. Add zone `gventz.com` to Cloudflare (Free plan is enough). Skip the auto-scan result, or
    compare it against the inventory; it can't see Vercel's ALIAS/wildcard records correctly.
 5. Create the records from the table, **all DNS-only (grey cloud) at first**, TTL Auto:
-   MX/TXT/CNAME rows 1 to 6 exactly. For `api` and `api-staging`, use the CNAME targets from D3.
+   MX/TXT/CNAME rows 1 to 6 exactly. Create `api` and `api-staging` as CNAMEs to the Vercel targets
+   above. Leave them **DNS-only permanently**, not just at first.
    Do **not** create `*`, apex ALIAS or CAA (see the note above).
 6. Before switching, compare the zone against Vercel by querying Cloudflare's assigned nameserver
    directly. Every answer must match the inventory:
@@ -244,17 +342,20 @@ is the TTL of the record you changed.
     The site then stays on Vercel during propagation. Keep `gventz.com`, `www` and `staging` on the
     Vercel project, so Vercel can renew their certificates.
 11. Check: `dig NS gventz.com +trace`, mail delivery to SES inbound, a Resend test email (DKIM
-    pass), `https://gventz.com` still served by Vercel (`server: Vercel`).
+    pass), `https://gventz.com` still served by Vercel (`server: Vercel`). Also check that
+    `api.gventz.com` and `api-staging.gventz.com` answer through the new CNAMEs (`dig +short` shows
+    the `vercel-dns-016.com` target, and `/health/ready` is 200) and Vercel shows them as valid.
 
 **Phase 4: move the website to the Worker (per hostname, staging first)**
 12. Staging: Workers → `gventz-web-staging` → Settings → Domains & Routes → add custom domain
     `staging.gventz.com`. Cloudflare replaces the DNS-only record with a proxied one and issues the
     certificate. Put a Cloudflare Access application on `staging.gventz.com` and on the staging
-    `workers.dev` hostname. Create a service token and save it as `CF_ACCESS_CLIENT_ID/SECRET` in
-    `website-staging`. Set `STAGING_URL=https://staging.gventz.com`.
+    `workers.dev` hostname. Create a service token and save it as the repository secrets
+    `STAGING_CF_ACCESS_CLIENT_ID` / `STAGING_CF_ACCESS_CLIENT_SECRET`. Set the repository variable
+    `STAGING_URL=https://staging.gventz.com`.
 13. Production, after a staging release has gone through the full flow: add custom domains
     `gventz.com` and `www.gventz.com` to `gventz-web`. Add a redirect rule: `www.gventz.com/*` →
-    `https://gventz.com/${1}` with 308. Set `PRODUCTION_URL=https://gventz.com`.
+    `https://gventz.com/${1}` with 308. Set the repository variable `PRODUCTION_URL=https://gventz.com`.
 14. Commit: `workers_dev: false` for production in `wrangler.jsonc`, optionally also the custom
     domains as `routes` (then the token needs Zone → Workers Routes: Edit).
 15. Verify: `curl -sI https://gventz.com | grep -i server` shows `cloudflare`. Smoke paths are 200,
@@ -264,9 +365,15 @@ is the TTL of the record you changed.
 **Phase 5: retire Vercel for the website (after a week without issues)**
 16. Disconnect the `g-vents` project's Git integration (stops the parallel Vercel production builds;
     see the transition caveat), then remove its domains. Keep the project until rollback isn't needed.
-17. Remove the domain from Vercel DNS, and from the Vercel account if no Vercel project uses it.
-    **If the API stays on Vercel (D3)**, keep `api.gventz.com`/`api-staging.gventz.com` attached to
-    the API projects and keep their CNAMEs DNS-only to `cname.vercel-dns.com`.
+17. **Keep `gventz.com` in the Vercel team.** The API projects use `api.gventz.com` and
+    `api-staging.gventz.com`, and keeping the apex domain in the team keeps those subdomains
+    verified. Only the website's domains come off the `g-vents` project. Vercel DNS records no
+    longer matter once the nameservers point at Cloudflare. **Verification while DNS is on
+    Cloudflare:** if Vercel shows a domain as unverified (for example after the domain was removed
+    from the team, or was claimed by another team), it gives a TXT record `_vercel.gventz.com` with a
+    `vc-domain-verify=…` value. Add exactly that TXT record in Cloudflare (DNS-only by nature), then
+    press Verify in Vercel. Afterwards confirm in Vercel → Domains that both API hosts show
+    "Valid Configuration" and a certificate.
 18. Optional hardening: DNSSEC in Cloudflare, then the DS record at Namecheap. CAA records.
     Tightening SPF/DMARC.
 

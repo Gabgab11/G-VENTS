@@ -45,7 +45,7 @@ jobs:
           npm run -s api:types:pinned
           diff -u "$RUNNER_TEMP/committed.d.ts" src/lib/api/schema.d.ts || { echo "::error file=src/lib/api/schema.d.ts::Out of date with gventz-api@$ref. Run npm run api:types:pinned and commit it."; exit 1; }
       - name: Release scripts
-        run: node --test .github/scripts/check-api-contract.test.mjs scripts/cloudflare/wrangler-vars.test.mjs
+        run: node --test .github/scripts/check-api-contract.test.mjs .github/scripts/workflow-secrets.test.mjs scripts/cloudflare/wrangler-vars.test.mjs
       - run: npm run lint
       - run: npm run typecheck
       - run: npm test
