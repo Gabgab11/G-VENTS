@@ -94,14 +94,12 @@ export async function createEvent(_prev: CreateEventState, formData: FormData): 
   const startsAt = zonedTimeToUtc(date, time, timezone);
   if (!startsAt) return { error: "The start date or time is not valid." };
 
-  let endsAt: Date | null = null;
+  // End is required too, and must come after the start.
   const endDate = field(formData, "end_date");
   const endTime = field(formData, "end_time");
-  if (endDate || endTime) {
-    if (!endDate || !endTime) return { error: "Add both an end date and an end time, or leave both empty." };
-    endsAt = zonedTimeToUtc(endDate, endTime, timezone);
-    if (!endsAt || endsAt <= startsAt) return { error: "The end must be after the start." };
-  }
+  if (!endDate || !endTime) return { error: "Add an end date and time." };
+  const endsAt = zonedTimeToUtc(endDate, endTime, timezone);
+  if (!endsAt || endsAt <= startsAt) return { error: "The end must be after the start." };
 
   const tierNames = formData.getAll("tier_name").map(String);
   const tierQty = formData.getAll("tier_qty").map(String);
@@ -129,7 +127,7 @@ export async function createEvent(_prev: CreateEventState, formData: FormData): 
       category,
       description: field(formData, "description"),
       starts_at: startsAt.toISOString(),
-      ends_at: endsAt?.toISOString() ?? null,
+      ends_at: endsAt.toISOString(),
       timezone,
       ...location,
       refund_policy: field(formData, "refund_policy", 2000),
