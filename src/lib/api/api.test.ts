@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { apiHeaders, clientIpFrom } from "./headers";
+import { apiHeaders, clientIpFor, clientIpFrom } from "./headers";
 import { ApiError, apiMessage, GENERIC_MESSAGE, toProblem } from "./problem";
 
 describe("problem details", () => {
@@ -26,6 +26,16 @@ describe("API headers", () => {
     expect(clientIpFrom("203.0.113.9, 10.0.0.1")).toBe("203.0.113.9");
     expect(clientIpFrom(null, "2001:db8::1")).toBe("2001:db8::1");
     expect(clientIpFrom("not-an-ip")).toBeNull();
+  });
+
+  it("on Cloudflare trusts only cf-connecting-ip, never a visitor-sent x-forwarded-for", () => {
+    const req = (h: Record<string, string>) => (name: string) => h[name] ?? null;
+    const spoofed = { "x-forwarded-for": "198.51.100.1, 203.0.113.9", "cf-connecting-ip": "203.0.113.9" };
+    expect(clientIpFor(req(spoofed), true)).toBe("203.0.113.9");
+    expect(clientIpFor(req({ "x-forwarded-for": "198.51.100.1" }), true)).toBeNull();
+    expect(clientIpFor(req({ "cf-connecting-ip": "junk" }), true)).toBeNull();
+    // Off Cloudflare (Vercel) a cf-connecting-ip header came from the visitor: ignored.
+    expect(clientIpFor(req({ "x-forwarded-for": "203.0.113.9", "cf-connecting-ip": "198.51.100.1" }), false)).toBe("203.0.113.9");
   });
 
   it("sends the token, request id and BFF headers; never the IP without the key", () => {

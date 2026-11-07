@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import { api, data } from "@/lib/api/server";
 import { can, type EventDashboard } from "@/lib/auth";
 import { whereText } from "@/lib/event-page";
+import { visitorCountry } from "@/lib/platform";
 import { THEMES, themeBackground } from "@/lib/themes";
 import { cancelEvent, removeFlyer, updateEventDetails, updateEventTheme, uploadFlyer } from "./actions";
 import DeleteEventForm from "./DeleteEventForm";
@@ -13,7 +14,8 @@ export default async function SettingsTab({ event: e }: { event: EventDashboard 
   const edit = can(e, "event.edit");
   // Only the owner can delete; the check also tells whether paid tickets block it.
   const del = can(e, "event.delete") ? await (await api()).GET("/v1/events/{id}/deletion-check", { params: { path: { id } } }).then(data).catch(() => null) : null;
-  const detectedCountry = (await headers()).get("x-vercel-ip-country")?.toUpperCase() ?? null;
+  const incoming = await headers();
+  const detectedCountry = visitorCountry((name) => incoming.get(name));
 
   return (
     <div className="stack">
