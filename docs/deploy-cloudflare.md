@@ -68,8 +68,8 @@ Names only below; values never go in the repo. "Exists" is as of 2026-11-07.
 
 | Kind | Name | Exists | Purpose | Used by (job) |
 |---|---|---|---|---|
-| secret | `CLOUDFLARE_API_TOKEN` | no | deploys the Workers ([scope](#cloudflare-api-token)) | deploy.yml `staging`, `production` |
-| secret | `CLOUDFLARE_ACCOUNT_ID` | no | `cae583a64c8e68a3fa05d93e36cb3f89` ("Johnabayomi6040@gmail.com's Account"). An identifier, not a secret; stored as one only to keep the deploy settings together | `staging`, `production` |
+| secret | `CLOUDFLARE_API_TOKEN` | **yes** | deploys the Workers ([scope](#cloudflare-api-token)) | deploy.yml `staging`, `production` |
+| secret | `CLOUDFLARE_ACCOUNT_ID` | **yes** | `cae583a64c8e68a3fa05d93e36cb3f89` ("Johnabayomi6040@gmail.com's Account"). An identifier, not a secret; stored as one only to keep the deploy settings together | `staging`, `production` |
 | secret | `STAGING_BFF_SHARED_SECRET` | no | Worker secret; same value as the staging API's `BFF_SHARED_SECRET` | `staging` |
 | secret | `PRODUCTION_BFF_SHARED_SECRET` | no | same, production API | `production` |
 | secret | `STAGING_REVALIDATE_SECRET` | no | Worker secret; same value as the staging API's `REVALIDATE_SECRET` (≥ 32 chars) | `staging` |
@@ -78,6 +78,7 @@ Names only below; values never go in the repo. "Exists" is as of 2026-11-07.
 | secret | `PRODUCTION_MAINTENANCE_BYPASS` | no | optional; same for production | `production` |
 | secret | `STAGING_CF_ACCESS_CLIENT_ID` | no | optional; Cloudflare Access service token for smoke-testing staging behind Access | `staging` |
 | secret | `STAGING_CF_ACCESS_CLIENT_SECRET` | no | optional; pair of the above | `staging` |
+| secret | `GVENTZ_API_READ_TOKEN` | **yes** | fine-grained token, Contents: read on `aristokratos/gventz-api` only (that repo is private); downloads the pinned `openapi.json`. Expires; renew it before then | ci.yml `verify`; deploy.yml `promotion-gates`, `production-gates` |
 | secret | `SUPABASE_ACCESS_TOKEN` | **yes** | Supabase CLI login | deploy.yml `production-gates`; migrate.yml |
 | secret | `SUPABASE_PROD_REF` | **yes** | production project ref | `production-gates`; migrate.yml |
 | secret | `SUPABASE_PROD_DB_PASSWORD` | **yes** | production database password (read-only dry run here) | `production-gates`; migrate.yml |

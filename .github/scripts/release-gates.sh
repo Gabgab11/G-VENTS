@@ -2,7 +2,7 @@
 # Release gates shared by the staging promotion and the production deploy (deploy.yml).
 # Each gate checks production's readiness for the commit checked out in the working tree:
 #
-#   release-gates.sh api-contract   PRODUCTION_API_URL
+#   release-gates.sh api-contract   PRODUCTION_API_URL, GVENTZ_API_READ_TOKEN (gventz-api is private)
 #       The production gventz-api must serve the contract this commit is built against
 #       (api-contract.ref), so the website never goes live ahead of its API.
 #       Release order is always: migrations, then the API, then the website.
@@ -18,9 +18,9 @@ case "${1:-}" in
     fi
     ref=$(tr -d '[:space:]' < api-contract.ref)
     [[ "$ref" =~ ^([0-9a-f]{40}|v[0-9]+\.[0-9]+\.[0-9]+)$ ]] || { echo "::error file=api-contract.ref::Must be a full gventz-api commit SHA or a vX.Y.Z tag."; exit 1; }
-    node .github/scripts/check-api-contract.mjs \
-      "https://raw.githubusercontent.com/aristokratos/gventz-api/$ref/openapi.json" \
-      "${PRODUCTION_API_URL%/}/openapi.json"
+    pinned="$(mktemp)"
+    bash .github/scripts/fetch-api-contract.sh "$ref" "$pinned"
+    node .github/scripts/check-api-contract.mjs "$pinned" "${PRODUCTION_API_URL%/}/openapi.json"
     ;;
   migrations)
     if [ -z "${SUPABASE_ACCESS_TOKEN:-}" ] || [ -z "${SUPABASE_PROD_REF:-}" ] || [ -z "${SUPABASE_PROD_DB_PASSWORD:-}" ]; then

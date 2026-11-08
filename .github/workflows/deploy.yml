@@ -89,8 +89,8 @@ jobs:
         run: bash .github/scripts/smoke-test.sh "$URL" / /sign-in /discover /api/health
 
   # The release order is migrations, then gventz-api, then the website. This stops a promotion
-  # pull request for a website that the production API isn't ready for (public data only: the
-  # pinned contract and the API's /openapi.json). The production-migration check needs production
+  # pull request for a website that the production API isn't ready for (the pinned contract,
+  # read with GVENTZ_API_READ_TOKEN, and the API's public /openapi.json). The production-migration check needs production
   # database secrets, so it runs only in production-gates, before the approval.
   promotion-gates:
     if: github.ref == 'refs/heads/staging'
@@ -106,6 +106,7 @@ jobs:
       - name: Production API serves this website's contract
         env:
           PRODUCTION_API_URL: ${{ vars.PRODUCTION_API_URL }}
+          GVENTZ_API_READ_TOKEN: ${{ secrets.GVENTZ_API_READ_TOKEN }}
         run: bash .github/scripts/release-gates.sh api-contract
 
   # Opens the pull request staging → main, or refreshes its description. Merging it needs a
@@ -192,6 +193,7 @@ jobs:
       - name: Production API serves this website's contract
         env:
           PRODUCTION_API_URL: ${{ vars.PRODUCTION_API_URL }}
+          GVENTZ_API_READ_TOKEN: ${{ secrets.GVENTZ_API_READ_TOKEN }}
         run: bash .github/scripts/release-gates.sh api-contract
       - uses: supabase/setup-cli@1dedf2c611547ede7232d26866dd3c56ab903bbb # v1.7.3
         with:
