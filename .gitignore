@@ -48,3 +48,6 @@ supabase/signing_keys.json
 /.aidlc-rule-details/
 /.claude/
 /CLAUDE.md
+
+# Downloaded gventz-api contract (npm run api:types:pinned)
+.api-contract.json

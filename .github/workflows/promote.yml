@@ -126,14 +126,16 @@ jobs:
         if: steps.which.outputs.is_staging == 'true'
         env:
           PRODUCTION_API_URL: ${{ vars.PRODUCTION_API_URL }}
+          GVENTZ_API_READ_TOKEN: ${{ secrets.GVENTZ_API_READ_TOKEN }}
         run: |
           if [ -z "$PRODUCTION_API_URL" ]; then
             echo "::error::Repository variable PRODUCTION_API_URL is not set, so the production API contract can't be checked."; exit 1
           fi
           git checkout -q "$SHA"
           ref=$(tr -d '[:space:]' < api-contract.ref)
+          bash .github/scripts/fetch-api-contract.sh "$ref" "$RUNNER_TEMP/pinned-openapi.json"
           node .github/scripts/check-api-contract.mjs \
-            "https://raw.githubusercontent.com/aristokratos/gventz-api/$ref/openapi.json" \
+            "$RUNNER_TEMP/pinned-openapi.json" \
             "${PRODUCTION_API_URL%/}/openapi.json"
 
       - uses: supabase/setup-cli@v1
