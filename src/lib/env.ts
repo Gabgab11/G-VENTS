@@ -15,7 +15,23 @@ export const env = {
   get supabaseAnonKey() {
     return required("NEXT_PUBLIC_SUPABASE_ANON_KEY", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
   },
+  /** Cloudflare Turnstile (FR-1.7). Empty: no widget (local); set it when Turnstile is on in Supabase Auth. */
+  get turnstileSiteKey() {
+    return process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
+  },
   get siteUrl() {
     return (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(/\/+$/, "");
   },
 };
+
+/**
+ * Server-only settings for the gventz-api backend (U6a). Never NEXT_PUBLIC_: the browser doesn't
+ * call the API. Read on first use, like `env`, so builds work without secrets.
+ */
+export function serverEnv() {
+  return {
+    apiUrl: required("API_URL", process.env.API_URL).replace(/\/+$/, ""),
+    // Optional locally; required in production by the API (it trusts the client IP only with this key).
+    bffSharedSecret: process.env.BFF_SHARED_SECRET ?? "",
+  };
+}

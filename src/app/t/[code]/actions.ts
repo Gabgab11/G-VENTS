@@ -1,28 +1,23 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { getTicket, isTicketCode } from "@/lib/ticket";
+import { api, data } from "@/lib/api/server";
+import { isUuid } from "@/lib/forms";
+import { isTicketCode } from "@/lib/ticket";
 
-// Door check-in from a scanned ticket. A host scans the QR code with their phone
-// camera, the ticket page opens, and event staff see a "Check in" button.
-// check_in_guest() in the database decides who may check guests in and blocks
-// a second check-in of the same ticket.
+// Door check-in from a scanned ticket page (staff see a "Check in" button). gventz-api decides
+// who may check guests in and lets exactly one scan of a ticket through.
 export async function checkInFromTicket(formData: FormData) {
   const code = String(formData.get("code") ?? "").toLowerCase();
-  if (!isTicketCode(code)) redirect("/");
+  const eventId = String(formData.get("event_id") ?? "");
+  if (!isTicketCode(code) || !isUuid(eventId)) redirect("/");
 
-  const supabase = await createSupabaseServerClient();
-  let ok = false;
+  let reason = "failed";
   try {
-    const ticket = await getTicket(supabase, code);
-    if (ticket?.can_check_in) {
-      const { error } = await supabase.rpc("check_in_guest", { p_registration: ticket.id });
-      if (error) console.error(`[ticket] check in: ${error.message}`);
-      ok = !error;
-    }
+    const result = data(await (await api()).POST("/v1/events/{id}/check-in", { params: { path: { id: eventId } }, body: { code } }));
+    reason = result.reason;
   } catch (error) {
     console.error("[ticket] check in:", error);
   }
-  redirect(`/t/${code}?checkin=${ok ? "done" : "failed"}`);
+  redirect(`/t/${code}?checkin=${encodeURIComponent(reason)}`);
 }

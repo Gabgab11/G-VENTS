@@ -1,4 +1,6 @@
 import Link from "next/link";
+import ColorModeToggle from "@/components/ColorModeToggle";
+import { api, data } from "@/lib/api/server";
 import { requireUser } from "@/lib/auth";
 import ThemeStage from "@/components/ThemeStage";
 import EventRow, { type DashEvent } from "./EventRow";
@@ -6,33 +8,37 @@ import ThemePanel from "./ThemePanel";
 import SignOutButton from "@/components/SignOutButton";
 import { getDashboardTheme } from "./getTheme";
 
-export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ deleted?: string }> }) {
-  const { supabase, user } = await requireUser("/dashboard");
-  const { deleted } = await searchParams;
+// The organizer's events from gventz-api: owned, or where they hold an accepted role.
+export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ deleted?: string; page?: string }> }) {
+  await requireUser("/dashboard");
+  const { deleted, page: rawPage } = await searchParams;
+  const page = Math.max(1, Math.floor(Number(rawPage) || 1));
 
-  // One query: each event with its confirmed-registration count embedded.
-  const [theme, { data: events, error }] = await Promise.all([
-    getDashboardTheme(supabase, user.id),
-    supabase
-      .from("events")
-      .select("id, title, slug, status, visibility, show_attendee_count, starts_at, timezone, registrations(count)")
-      .eq("owner_id", user.id)
-      .eq("registrations.status", "confirmed")
-      .order("starts_at", { ascending: false }),
+  const [theme, list] = await Promise.all([
+    getDashboardTheme(),
+    (await api()).GET("/v1/me/events", { params: { query: { page, pageSize: 50 } } }).then(data),
   ]);
-  if (error) throw new Error(`Could not load your events: ${error.message}`);
 
-  const rows: DashEvent[] = (events ?? []).map(({ registrations, ...e }) => ({
-    ...e,
-    going: (registrations as unknown as { count: number }[] | null)?.[0]?.count ?? 0,
+  const rows: DashEvent[] = list.items.map((e) => ({
+    id: e.id,
+    title: e.title,
+    slug: e.slug,
+    status: e.status,
+    visibility: e.visibility,
+    show_attendee_count: e.showAttendeeCount,
+    starts_at: e.startsAt,
+    timezone: e.timeZone,
+    going: e.confirmedCount,
+    role: e.role,
   }));
+  const pages = Math.max(1, Math.ceil(list.total / list.pageSize));
 
   return (
     <main className="wrap page wide stage-content">
       <ThemeStage theme={theme} />
       <div className="back-row spread">
         <Link href="/" className="back-link">← Home</Link>
-        <SignOutButton />
+        <div className="row-gap"><ColorModeToggle /><SignOutButton /></div>
       </div>
       <div className="spread">
         <div>
@@ -51,6 +57,14 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
       <div className="dash-list">
         {rows.map((e) => <EventRow key={e.id} event={e} />)}
       </div>
+
+      {pages > 1 && (
+        <nav className="spread" aria-label="Event pages">
+          {page > 1 ? <Link href={`/dashboard?page=${page - 1}`} className="btn-small">← Previous</Link> : <span />}
+          <span className="muted small">Page {page} of {pages}</span>
+          {page < pages ? <Link href={`/dashboard?page=${page + 1}`} className="btn-small">Next →</Link> : <span />}
+        </nav>
+      )}
     </main>
   );
 }

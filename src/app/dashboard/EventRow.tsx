@@ -15,6 +15,8 @@ export type DashEvent = {
   starts_at: string;
   timezone: string;
   going: number;
+  /** The caller's role: quick toggles show only for roles that can use them. */
+  role: string;
 };
 
 const STATUS_LABEL: Record<string, string> = { draft: "Draft", published: "Published", cancelled: "Cancelled" };
@@ -45,6 +47,7 @@ export default function EventRow({ event }: { event: DashEvent }) {
       </div>
 
       <div className="dash-controls">
+        {["owner", "admin", "editor"].includes(event.role) && <>
         <div className="seg" role="group" aria-label={`Visibility of ${event.title}`}>
           <button type="button" className={vis === "public" ? "on" : ""} aria-pressed={vis === "public"} disabled={pending}
             onClick={() => change("visibility", "public", () => setVis("public"))}>Public</button>
@@ -58,7 +61,8 @@ export default function EventRow({ event }: { event: DashEvent }) {
           <span>Show attendee count</span>
         </label>
 
-        {status === "draft" && (
+        </>}
+        {status === "draft" && ["owner", "admin"].includes(event.role) && (
           <button type="button" className="btn-small" disabled={pending}
             onClick={() => change("status", "published", () => setStatus("published"))}>Publish</button>
         )}
