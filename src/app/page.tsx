@@ -56,10 +56,8 @@ const CSS = `
   transform: rotate(var(--tilt)); pointer-events: auto;
   animation: hp-drop var(--dur) ease-in-out var(--delay) both;
 }
-.hp-card { display: block; transition: transform .35s cubic-bezier(.2,.8,.3,1.2); transform-origin: 50% 100%; border-radius: 14px; }
+.hp-card { display: block; border-radius: 14px; pointer-events: none; user-select: none; }
 .hp-card svg { display: block; width: 100%; height: auto; overflow: visible; filter: drop-shadow(0 10px 12px rgba(60,44,20,.2)); }
-.hp-card:hover, .hp-card:focus-visible { transform: translateY(-10px) rotate(-2deg) scale(1.04); }
-.hp-card:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
 @keyframes hp-drop {
   0%   { transform: translate(var(--sway), -115vh) rotate(calc(var(--tilt) + var(--spin))); }
   30%  { transform: translate(calc(var(--sway) * -0.6), -70vh) rotate(calc(var(--tilt) - var(--spin) * 0.6)); }
@@ -83,7 +81,7 @@ const CSS = `
   .hp-row2, .hp-row3, .hp-fall:nth-child(3), .hp-fall:nth-child(4), .hp-fall:nth-child(6) { display: none; }
 }
 @media (max-width: 360px) { .hp-stage { --s: 0.4; --band: 92px; } }
-@media (prefers-reduced-motion: reduce) { .hp-fall { animation: none; } .hp-card { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .hp-fall { animation: none; } }
 
 .hp-section { padding-block: 56px 20px; }
 .hp-head { display: flex; justify-content: space-between; align-items: end; gap: 16px; flex-wrap: wrap; margin-bottom: 22px; }

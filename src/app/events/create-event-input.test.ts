@@ -12,6 +12,8 @@ const base: [string, string][] = [
   ["category", "Music"],
   ["date", "2026-12-05"],
   ["time", "18:00"],
+  ["end_date", "2026-12-05"],
+  ["end_time", "23:00"],
   ["country_code", "ng"],
   ["region", "Lagos"],
   ["venue", "Eko Hotel"],
@@ -30,6 +32,7 @@ describe("createEventBody", () => {
       title: "Lagos Jazz Night",
       category: "Music",
       startsAt: "2026-12-05T18:00",
+      endsAt: "2026-12-05T23:00",
       location: { kind: "venue", venueName: "Eko Hotel", countryCode: "NG", region: "Lagos", city: "Victoria Island", address: "Adetokunbo Ademola", place: { placeId: "ChIJ1234567890", lat: 6.42, lng: 3.43 } },
       ticketTypes: [{ name: "Regular", priceMinor: 0 }, { name: "VIP", priceMinor: 0, quantity: 50 }],
       visibility: "public",
@@ -56,7 +59,11 @@ describe("createEventBody", () => {
   it("refuses what the form must get right", () => {
     expect(createEventBody(form([["title", "Hi"]]))).toEqual({ error: "Event name must be 3 to 140 characters." });
     expect(createEventBody(form(base.filter(([k]) => k !== "time")))).toEqual({ error: "Add a start date and time." });
-    expect(createEventBody(form([...base, ["end_date", "2026-12-05"]]))).toEqual({ error: "Add both an end date and an end time, or leave both empty." });
+    const noEnd = base.filter(([k]) => k !== "end_date" && k !== "end_time");
+    expect(createEventBody(form(noEnd))).toEqual({ error: "Add an end date and time." });
+    expect(createEventBody(form([...noEnd, ["end_date", "2026-12-05"]]))).toEqual({ error: "Add an end date and time." });
+    expect(createEventBody(form([...noEnd, ["end_date", "2026-12-05"], ["end_time", "18:00"]]))).toEqual({ error: "The end must be after the start." });
+    expect(createEventBody(form([...noEnd, ["end_date", "2026-12-04"], ["end_time", "23:00"]]))).toEqual({ error: "The end must be after the start." });
     expect(createEventBody(form(base.filter(([k]) => k !== "country_code")))).toEqual({ error: "Choose a country from the list." });
     expect(createEventBody(form([...base.filter(([k]) => k !== "tier_qty"), ["tier_qty", "0"]]))).toMatchObject({ error: expect.stringContaining("whole number") });
     expect(createEventBody(form([...base, ["per_buyer_limit", "11"]]))).toEqual({ error: "Choose a limit from 1 to 10 tickets per person." });

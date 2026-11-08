@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useMemo, useState } from "react";
+import { useActionState, useEffect, useMemo, useState, type FormEvent } from "react";
 import { createEvent, type CreateEventState } from "@/app/events/actions";
 import { CATEGORIES } from "@/lib/categories";
 import { THEMES, themeBackground } from "@/lib/themes";
@@ -8,6 +8,7 @@ import ThemeStage from "@/components/ThemeStage";
 import BackLink from "@/components/BackLink";
 import MirrorBall from "@/components/MirrorBall";
 import LocationFields from "./LocationFields";
+import DateTimeWheel from "./DateTimeWheel";
 
 type Tier = { id: number; name: string; price: string; qty: string };
 let nextId = 2;
@@ -34,6 +35,19 @@ export default function NewEventForm({
   const zones = useMemo(() => Intl.supportedValuesOf("timeZone"), []);
   useEffect(() => setBrowserZone(Intl.DateTimeFormat().resolvedOptions().timeZone || "Africa/Lagos"), []);
 
+  const [start, setStart] = useState({ date: "", time: "" });
+  const [end, setEnd] = useState({ date: "", time: "" });
+  const [attempted, setAttempted] = useState(false);
+  const timesMissing = !start.date || !start.time || !end.date || !end.time;
+
+  // Start and end are required. The browser can't check the hidden wheel inputs, so check here.
+  function onSubmit(e: FormEvent<HTMLFormElement>) {
+    if (timesMissing) {
+      e.preventDefault();
+      setAttempted(true);
+    }
+  }
+
   function updateTier(id: number, key: keyof Omit<Tier, "id">, value: string) {
     setTiers((t) => t.map((x) => (x.id === id ? { ...x, [key]: value } : x)));
   }
@@ -43,7 +57,11 @@ export default function NewEventForm({
       <ThemeStage theme={theme} />
       <MirrorBall />
       <div className="back-row"><BackLink fallback="/dashboard" label="← Dashboard" /></div>
-      <form action={formAction} className="create-grid">
+      <header className="create-head">
+        <h1>Create an event</h1>
+        <p className="muted">Add the details, then share one link so guests can register.</p>
+      </header>
+      <form action={formAction} className="create-grid" onSubmit={onSubmit} noValidate>
         {/* LEFT: cover and design */}
         <aside className="create-cover">
           <div className="cover-preview" style={{ background: themeBackground(theme) }}>
@@ -70,18 +88,16 @@ export default function NewEventForm({
             placeholder="Event name" maxLength={140} required />
 
           <div className="panel">
+            <div className="panel-label">When</div>
             <div className="row2">
-              <label className="field"><span>Starts</span>
-                <div className="row2 tight">
-                  <input className="input" type="date" name="date" required />
-                  <input className="input" type="time" name="time" required />
-                </div></label>
-              <label className="field"><span>Ends (optional)</span>
-                <div className="row2 tight">
-                  <input className="input" type="date" name="end_date" />
-                  <input className="input" type="time" name="end_time" />
-                </div></label>
+              <div className="field"><span>Starts <b className="req">*</b></span>
+                <DateTimeWheel label="start" dateName="date" timeName="time" date={start.date} time={start.time}
+                  invalid={attempted} onChange={setStart} /></div>
+              <div className="field"><span>Ends <b className="req">*</b></span>
+                <DateTimeWheel label="end" dateName="end_date" timeName="end_time" date={end.date} time={end.time}
+                  invalid={attempted} onChange={setEnd} /></div>
             </div>
+            {attempted && timesMissing && <p className="error">Add both a start and an end date and time.</p>}
             <label className="field"><span>Time zone</span>
               <select className="input" name="time_zone" value={online && !timeZone ? browserZone : timeZone} onChange={(e) => setTimeZone(e.target.value)}>
                 {!online && <option value="">From the venue</option>}

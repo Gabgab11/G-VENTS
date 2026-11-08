@@ -35,11 +35,10 @@ export function createEventBody(formData: FormData): CreateEventBody | { error: 
   if (!startsAt) return { error: "Add a start date and time." };
   const endDate = field(formData, "end_date");
   const endTime = field(formData, "end_time");
-  let endsAt: string | null = null;
-  if (endDate || endTime) {
-    endsAt = local(endDate, endTime);
-    if (!endsAt) return { error: "Add both an end date and an end time, or leave both empty." };
-  }
+  // End is required too, and must come after the start (same-format local times compare as strings).
+  const endsAt = local(endDate, endTime);
+  if (!endsAt) return { error: "Add an end date and time." };
+  if (endsAt <= startsAt) return { error: "The end must be after the start." };
 
   const timeZone = field(formData, "time_zone", 64);
   const location = locationInput(formData);
@@ -71,7 +70,7 @@ export function createEventBody(formData: FormData): CreateEventBody | { error: 
     title,
     category,
     startsAt,
-    ...(endsAt ? { endsAt } : {}),
+    endsAt,
     ...(timeZone ? { timeZone } : {}),
     location,
     ticketTypes,

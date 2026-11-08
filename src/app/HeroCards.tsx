@@ -1,4 +1,3 @@
-import Link from "next/link";
 import type { CSSProperties } from "react";
 import { SHAPES, type ShapeName } from "./hero-shapes";
 
@@ -114,9 +113,9 @@ export default function HeroCards() {
         } as CSSProperties;
         return (
           <div key={`${card.shape}-${i}`} className={`hp-fall hp-row${card.row}`} style={style}>
-            <Link href={`/discover?category=${encodeURIComponent(card.category)}`} className="hp-card" aria-label={`${name} events`}>
+            <div className="hp-card" aria-hidden="true">
               <CardSvg card={card} />
-            </Link>
+            </div>
           </div>
         );
       })}
