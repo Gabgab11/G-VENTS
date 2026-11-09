@@ -39,6 +39,9 @@ jobs:
     uses: ./.github/workflows/ci.yml
     permissions:
       contents: read
+    # Only what CI reads (the private gventz-api contract); never inherit every secret.
+    secrets:
+      GVENTZ_API_READ_TOKEN: ${{ secrets.GVENTZ_API_READ_TOKEN }}
 
   # ------------------------------------------------------------------------------------ staging
   staging:
