@@ -26,8 +26,10 @@ Server-only secrets (`BFF_SHARED_SECRET`, `REVALIDATE_SECRET`) must never reach 
 **Decision (2026-11-07): Workers + `@opennextjs/cloudflare`; Pages dropped.** So the target is
 **Cloudflare Workers**, not Pages. Workers is what Cloudflare now recommends for
 full-stack frameworks (Workers Assets replaced Pages for this case). What you asked for still holds:
-a staging and a production deployment per branch, custom domains, preview URLs on `workers.dev`, and
-an approval gate on production.
+a staging and a production deployment per branch, custom domains and preview URLs on `workers.dev`.
+
+**Decision (2026-11-09): no approval step.** Branches are the release control: merging into
+`staging` deploys staging, and merging the `staging` → `main` pull request deploys production.
 
 ### What changed in the code for Cloudflare
 
@@ -45,7 +47,6 @@ an approval gate on production.
 |---|---|---|
 | Branch | `staging` | `main` (the production branch; gventz-api's is called `prd`) |
 | Worker (wrangler env) | `gventz-web-staging` (`--env staging`) | `gventz-web` (`--env production`) |
-| GitHub environment (no secrets) | `website-staging` (deployment history) | `website-production` (approval gate) |
 | Site | `https://staging.gventz.com` | `https://gventz.com` (`www` → 308 to apex) |
 | **API** (`API_URL`) | **`https://api-staging.gventz.com`** | **`https://api.gventz.com`** |
 | R2 cache bucket | `gventz-web-cache-staging` | `gventz-web-cache-production` |
@@ -108,18 +109,17 @@ Worker secrets are uploaded **with** each deployment (`wrangler deploy --secrets
 file deleted afterwards), so GitHub stays their source of truth and they never appear on a command
 line or in a log.
 
-### GitHub environments
+### No GitHub environments
 
-- **`website-production`: the approval gate, no secrets.** Required reviewer: **`Brozjay1`**.
-  Deployment branches: `main` only. **Leave "Prevent self-review" off.** The production run is
-  triggered by whoever merges the release PR, often Brozjay1. With that option on, GitHub won't let
-  them approve their own run, and the deploy would be stuck with no other reviewer to approve it.
-- **`website-staging`: kept, no reviewers, no secrets.** Deployment branches: `staging` only. It costs
-  nothing and gives a deployment history with the live URL. It is also load-bearing:
-  `tested-on-staging.sh` looks for a successful `website-staging` deployment with the same tree before
-  production may deploy. Dropping it would mean recording "passed staging" some other way.
-- The existing `Production`, `Preview` (Vercel's) and `staging` (manual gventz deploys) environments
-  are left alone. Environment names are case-insensitive, which is why these are `website-*`.
+The deploy jobs use no GitHub environment and nothing waits for an approval: **merging the
+`staging` → `main` pull request is the release.** "This code passed staging" is read from the Deploy
+workflow's own history (`tested-on-staging.sh`: a Deploy run on `staging` whose `staging` job
+succeeded, for a commit with the same tree). A CI test fails if a deploy job starts using an
+environment again. The existing `Production`, `Preview` (Vercel's) and `staging` environments are
+left alone.
+
+To keep a human check on production, protect `main` with a ruleset: pull request required,
+1 approval, required checks `ci / verify` and `ci / migrations`.
 
 ### Security trade-off of repository-level secrets
 
@@ -133,8 +133,8 @@ What limits the risk here:
 - **Staging jobs never map production secrets**, and production jobs never read staging ones.
   `.github/scripts/workflow-secrets.test.mjs` (run in CI) fails the build if a job does, if a job
   with no branch condition reads a deploy secret, or if the deploy action reads secrets itself.
-- Deploy jobs run only for `refs/heads/staging` or `refs/heads/main`. Production can only be reached
-  through the `website-production` approval, and only from `main`.
+- Deploy jobs run only for `refs/heads/staging` or `refs/heads/main`. Production is reached only
+  from `main`, through the staging → main pull request.
 - No `pull_request_target`; PR CI uses no secrets; fork PRs never see secrets.
 - Least privilege: `permissions: {}` by default, actions pinned to SHAs, `persist-credentials: false`.
   Secrets are passed by temp file, never in arguments.
@@ -143,16 +143,14 @@ What limits the risk here:
 
 Recommended in addition: keep the number of people with write access small; add a ruleset that
 requires a PR and review for `.github/**` (CODEOWNERS); scope the Cloudflare token to this account
-with a TTL and rotate it. Later, move the `PRODUCTION_*` deploy secrets into `website-production` as environment
-secrets with the same names. The `production` job already runs in that environment, so no workflow
-change is needed, and only an approved run on `main` could read them.
+with a TTL and rotate it.
 
 ## 3. Pipeline
 
 ```
 feature ──PR──▶ staging ──────────────────────────────────▶ PR staging → main ──merge──▶ main
          CI:     push: CI ▶ deploy staging ▶ smoke ▶ gates ▶ open/update PR         push: CI ▶ tested on staging?
-         ci.yml                                                                       ▶ gates ▶ APPROVAL ▶ deploy prod ▶ smoke
+         ci.yml                                                                       ▶ gates ▶ deploy prod ▶ smoke
 ```
 
 1. **Pull requests** (any base, including `staging`): `ci.yml` runs the API-contract drift check,
@@ -163,21 +161,21 @@ feature ──PR──▶ staging ───────────────�
    then
    - deploys `gventz-web-staging` and smoke-tests `/`, `/sign-in`, `/discover` and `/api/health` (200
      only when the site reaches the staging API). These run in the deploy job, so the
-     `website-staging` deployment is marked successful only if they pass;
+     `staging` job succeeds only if they pass;
    - **promotion gate**: the production API must serve the gventz-api contract pinned in
-     `api-contract.ref`, so **the website is never promoted ahead of its API**. It uses only public
-     data, so no production secret is involved on a staging push;
+     `api-contract.ref`, so **the website is never promoted ahead of its API**. It reads the pinned contract
+     with `GVENTZ_API_READ_TOKEN` (gventz-api is private) and the API's public `/openapi.json`, so no
+     production secret is involved on a staging push;
    - opens, or updates the description of, the PR **`staging` → `main`**.
-3. **Merge the PR into `main`** (needs an approving review: ruleset on `main`). `deploy.yml` then
+3. **Merge the PR into `main`.** This is the release decision. `deploy.yml` then
    runs CI again, then `production-gates`:
-   - **tested on staging**: the commit's tree must equal the tree of a commit with a successful
-     `website-staging` deployment made by this pipeline. This holds for merge, squash and
+   - **tested on staging**: the commit's tree must equal the tree of a commit whose Deploy run on
+     `staging` had a successful `staging` job. This holds for merge, squash and
      fast-forward alike, and stops anything that reached `main` some other way;
    - the API contract gate again (time passes between PR and merge), and the production
      **migration** gate: production Supabase must not be missing a migration (read-only dry run).
-     Like `promote.yml`, a missing migration stops the release, here before the approval.
-4. **`production` waits for approval** in the `website-production` environment (required reviewer
-   Brozjay1). Then it deploys `gventz-web` and smoke-tests it.
+     Like `promote.yml`, a missing migration stops the release before anything deploys.
+4. **`production`** deploys `gventz-web` and smoke-tests it.
 5. Any failure: a `deploy-failure` issue (plus Slack if configured), same as before.
 
 Security properties:
@@ -187,12 +185,12 @@ Security properties:
 - staging jobs never see production secrets (checked by a test; see the trade-off note above);
 - concurrency: one deploy per branch, never cancelled mid-deploy; PR CI runs replace older ones.
 
-`promote.yml` is **removed**. It fast-forwarded `main` with no human approval, which conflicts with
-the approval gate. Its checks live on in `.github/scripts/release-gates.sh`.
+`promote.yml` is **removed**. It fast-forwarded `main` by itself; now `main` only moves when someone
+merges the staging → main pull request. Its checks live on in `.github/scripts/release-gates.sh`.
 
 > **Transition caveat.** Until Vercel's Git integration is disconnected (phase 5), Vercel still
-> deploys `main` to its own production as soon as the PR merges. The environment approval gates only
-> the Cloudflare deploy. The PR review and the gates before the PR still protect both.
+> deploys `main` to its own production as soon as the PR merges, without the release gates. The gates
+> before the PR still protect both.
 
 ### Rollback
 
@@ -288,7 +286,7 @@ is the TTL of the record you changed.
 
 **Phase 0: decided.**
 - The API is on Vercel at `api.gventz.com` / `api-staging.gventz.com`.
-- Production approver: Brozjay1.
+- No approval step: merging into a branch deploys it.
 - Cloudflare account: **"Johnabayomi6040@gmail.com's Account"** (`cae583a64c8e68a3fa05d93e36cb3f89`,
   login johnabayomi6040@gmail.com). It owns the Workers, the R2 buckets and the `gventz.com` zone.
   It has no zones yet. Log wrangler into this account (`npx wrangler login`, then
@@ -306,8 +304,7 @@ is the TTL of the record you changed.
 
 **Phase 1: Cloudflare side, no impact on traffic**
 1. Create the R2 buckets `gventz-web-cache-staging` and `gventz-web-cache-production`.
-2. Create the API token ([scope](#cloudflare-api-token)). Add the repository secrets and variables,
-   and create the two GitHub environments (no secrets in them), as in
+2. Create the API token ([scope](#cloudflare-api-token)). Add the repository secrets and variables, as in
    [section 2](#2-environments-and-api-urls).
 3. Merge this branch through `staging`. The first staging deploy creates `gventz-web-staging` on
    `workers.dev`. Verify it there; its `/api/health` turns green once phase 0b is done.

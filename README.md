@@ -57,8 +57,8 @@ feature branch ──PR──▶ staging ──PR──▶ main
   - production is migrated only by hand: Actions → Database migrations → Run workflow from `staging`, target `production`, confirm with "apply to production". The automatic release waits for this, so the database is always ready before the new code goes live.
 
 > **Moving to Cloudflare Workers.** `.github/workflows/deploy.yml` deploys `staging` to Cloudflare,
-> opens the `staging` → `main` pull request after the release gates pass, and deploys `main` after an
-> approval in the `website-production` environment. It replaces the automatic fast-forward below
+> opens the `staging` → `main` pull request after the release gates pass, and deploys `main` when that
+> pull request is merged (no approval step). It replaces the automatic fast-forward below
 > (`promote.yml`, removed). Setup, the reasoning (Workers + OpenNext, not Pages) and the DNS move off
 > Vercel: [docs/deploy-cloudflare.md](docs/deploy-cloudflare.md). Until the cutover, Vercel keeps
 > serving `gventz.com` from `main` as described here.

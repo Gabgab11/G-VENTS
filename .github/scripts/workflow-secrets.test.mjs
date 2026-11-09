@@ -82,12 +82,9 @@ test("jobs without a branch condition read no deploy secrets", () => {
   }
 });
 
-test("only the production deploy job uses the approval environment", () => {
+test("no job uses a GitHub environment (branches are the release control, no approval)", () => {
   for (const [name, job] of Object.entries(deploy)) {
-    const env = /^ {6}name: (website-[a-z]+)$/m.exec(job)?.[1];
-    if (name === "production") assert.equal(env, "website-production");
-    else if (name === "staging") assert.equal(env, "website-staging");
-    else assert.equal(env, undefined, `${name} uses an environment`);
+    assert.doesNotMatch(job, /^ {4}environment:/m, `${name} uses an environment`);
   }
 });
 

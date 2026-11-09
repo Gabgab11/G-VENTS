@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     # No Supabase variables on purpose: the build must not need secrets. Real keys live in the
-    # GitHub environments website-staging / website-production (deploy.yml) and in Vercel.
+    # repository's STAGING_* / PRODUCTION_* settings (deploy.yml) and in Vercel.
     env:
       NEXT_PUBLIC_SITE_URL: https://g-vents.vercel.app
     steps:

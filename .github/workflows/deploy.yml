@@ -5,9 +5,11 @@ name: Deploy
 #   push to staging   CI ─▶ deploy gventz-web-staging ─▶ smoke tests on staging
 #                        ─▶ gate: the production API serves this commit's gventz-api contract
 #                        ─▶ open or update the pull request staging → main
-#   push to main      CI ─▶ same code as a staging deployment that passed? ─▶ gates: API contract
-#   (the merged PR)      and production migrations ─▶ approval (environment website-production)
-#                        ─▶ deploy gventz-web ─▶ smoke tests on production
+#   push to main      CI ─▶ same code as a staging deploy that passed? ─▶ gates: API contract
+#   (the merged PR)      and production migrations ─▶ deploy gventz-web ─▶ smoke tests on production
+#
+# Branches are the only release control: merging into staging deploys staging, merging into main
+# deploys production. There is no environment approval; review the staging → main pull request.
 #
 # Any failure opens (or comments on) a GitHub issue labelled `deploy-failure`, and posts to Slack
 # when SLACK_WEBHOOK_URL is set. Nothing here runs for pull requests or forks.
@@ -16,8 +18,6 @@ name: Deploy
 # shared ones unprefixed (CLOUDFLARE_*), the rest STAGING_* or PRODUCTION_*. Each job maps only its
 # own environment's names to the unprefixed names the deploy action reads. Staging jobs never touch
 # production secrets: .github/scripts/workflow-secrets.test.mjs (run by CI) fails if one does.
-# The environments hold no secrets: website-production is the approval gate (required reviewer),
-# website-staging records staging deployments, which the production gate checks.
 # API URLs per environment are not settings: they are committed in wrangler.jsonc.
 
 on:
@@ -50,9 +50,6 @@ jobs:
       contents: read
     outputs:
       url: ${{ vars.STAGING_URL || steps.deploy.outputs.url }}
-    environment:
-      name: website-staging
-      url: ${{ vars.STAGING_URL || steps.deploy.outputs.url }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
@@ -79,8 +76,8 @@ jobs:
           NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.STAGING_NEXT_PUBLIC_TURNSTILE_SITE_KEY }}
           NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY: ${{ vars.STAGING_NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY }}
           NEXT_PUBLIC_WHATSAPP_NUMBER: ${{ vars.STAGING_NEXT_PUBLIC_WHATSAPP_NUMBER }}
-      # In the same job as the deploy on purpose: the website-staging deployment is marked
-      # successful only when these pass, and production checks for exactly that (tested-on-staging.sh).
+      # In the same job as the deploy on purpose: this job succeeds only when these pass, and
+      # production checks for exactly that (tested-on-staging.sh).
       - name: Smoke test staging
         env:
           URL: ${{ vars.STAGING_URL || steps.deploy.outputs.url }}
@@ -90,8 +87,9 @@ jobs:
 
   # The release order is migrations, then gventz-api, then the website. This stops a promotion
   # pull request for a website that the production API isn't ready for (the pinned contract,
-  # read with GVENTZ_API_READ_TOKEN, and the API's public /openapi.json). The production-migration check needs production
-  # database secrets, so it runs only in production-gates, before the approval.
+  # read with GVENTZ_API_READ_TOKEN, and the API's public
+  # /openapi.json). The production-migration check needs production database secrets, so it runs
+  # only in production-gates, before the production deploy.
   promotion-gates:
     if: github.ref == 'refs/heads/staging'
     needs: staging
@@ -109,8 +107,8 @@ jobs:
           GVENTZ_API_READ_TOKEN: ${{ secrets.GVENTZ_API_READ_TOKEN }}
         run: bash .github/scripts/release-gates.sh api-contract
 
-  # Opens the pull request staging → main, or refreshes its description. Merging it needs a
-  # review (ruleset on main), and the production deploy then needs an environment approval.
+  # Opens the pull request staging → main, or refreshes its description. Merging it deploys
+  # production, so that merge is the release decision.
   promotion-pr:
     if: github.ref == 'refs/heads/staging'
     needs: [staging, promotion-gates]
@@ -154,10 +152,9 @@ jobs:
 
           After the merge, production checks again that its API serves the contract and that the
           production database has every migration this commit needs. If one is missing, it stops
-          before the approval: run Actions → Database migrations (target production) and re-run.
+          before deploying: run Actions → Database migrations (target production) and re-run.
 
-          Merging starts the production deploy, which waits for approval in the
-          \`website-production\` environment. Commits on main that staging lacks: $behind (must be 0).
+          **Merging deploys to production.** Commits on main that staging lacks: $behind (must be 0).
 
           _Opened by the Deploy workflow; updated on every staging deploy._
           MD
@@ -179,7 +176,7 @@ jobs:
     timeout-minutes: 10
     permissions:
       contents: read
-      deployments: read
+      actions: read
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
@@ -212,11 +209,6 @@ jobs:
     timeout-minutes: 25
     permissions:
       contents: read
-    # The approval gate: website-production has a required reviewer and no secrets. Don't turn on
-    # "Prevent self-review": the person who merges the release PR is often the approver.
-    environment:
-      name: website-production
-      url: ${{ vars.PRODUCTION_URL || steps.deploy.outputs.url }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
