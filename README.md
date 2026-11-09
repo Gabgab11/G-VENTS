@@ -47,7 +47,7 @@ feature branch ──PR──▶ staging ──PR──▶ main
    preview URL        staging site      production site
                       staging database  production database
 ```
-- **CI** (`.github/workflows/ci.yml`) runs lint, typecheck, tests, build and the migration checks on every pull request.
+- **CI** (`.github/workflows/ci.yml`) runs lint, typecheck, tests, the Next.js + Cloudflare Worker build and the migration checks on every pull request, and for every push to `staging`/`main` through `deploy.yml`.
 - **Vercel** deploys every branch through its Git integration:
   - `main` → Production, with the production Supabase keys, at `gventz.com` (`www.gventz.com` redirects to it).
   - `staging` → a Preview with the staging Supabase keys, at `staging.gventz.com` (the domain is assigned to the `staging` branch in Vercel → Settings → Domains).
@@ -56,7 +56,14 @@ feature branch ──PR──▶ staging ──PR──▶ main
   - merging into `staging` applies new migrations to `gvents-staging` automatically;
   - production is migrated only by hand: Actions → Database migrations → Run workflow from `staging`, target `production`, confirm with "apply to production". The automatic release waits for this, so the database is always ready before the new code goes live.
 
-### Automatic release (`.github/workflows/promote.yml`)
+> **Moving to Cloudflare Workers.** `.github/workflows/deploy.yml` deploys `staging` to Cloudflare,
+> opens the `staging` → `main` pull request after the release gates pass, and deploys `main` when that
+> pull request is merged (no approval step). It replaces the automatic fast-forward below
+> (`promote.yml`, removed). Setup, the reasoning (Workers + OpenNext, not Pages) and the DNS move off
+> Vercel: [docs/deploy-cloudflare.md](docs/deploy-cloudflare.md). Until the cutover, Vercel keeps
+> serving `gventz.com` from `main` as described here.
+
+### Automatic release (previously `.github/workflows/promote.yml`, now removed)
 When Vercel finishes deploying `staging`, the pipeline checks that:
 1. the staging deployment succeeded,
 2. CI passed for that exact commit,

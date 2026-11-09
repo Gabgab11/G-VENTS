@@ -1,0 +1,68 @@
+// The website on Cloudflare Workers, built by OpenNext (`npm run cf:build`, see open-next.config.ts).
+// Deployed only by .github/workflows/deploy.yml. Two environments, never a top-level deploy:
+//   --env staging     -> Worker gventz-web-staging, API https://api-staging.gventz.com
+//   --env production  -> Worker gventz-web,         API https://api.gventz.com
+// `vars` here are the single source of truth for each environment's public settings: the deploy
+// workflow also exports them into the build (scripts/cloudflare/wrangler-vars.mjs), because
+// Next.js inlines NEXT_PUBLIC_* at build time. Changing an API URL is therefore a reviewed commit.
+// Secrets (BFF_SHARED_SECRET, REVALIDATE_SECRET, MAINTENANCE_BYPASS) are never here: they come from
+// the GitHub environment's secrets and are uploaded with each deployment (--secrets-file).
+// Bindings are not inherited by environments in Wrangler, so each environment lists all of them.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "gventz-web",
+  // "Johnabayomi6040@gmail.com's Account". Pinned so a wrangler session logged into another
+  // account can't deploy or create resources there. An identifier, not a secret.
+  "account_id": "cae583a64c8e68a3fa05d93e36cb3f89",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-10-20",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
+  "observability": { "enabled": true },
+  "upload_source_maps": true,
+  // Durable Object classes exported by the OpenNext worker (ISR queue and tag cache).
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["DOQueueHandler", "DOShardedTagCache"] }],
+
+  "env": {
+    "staging": {
+      "name": "gventz-web-staging",
+      // Custom domain staging.gventz.com is added at DNS cutover (docs/deploy-cloudflare.md, phase 4).
+      // Until then the deployment is reached on its workers.dev address only.
+      "workers_dev": true,
+      "preview_urls": false,
+      "vars": {
+        "APP_ENV": "staging",
+        "API_URL": "https://api-staging.gventz.com",
+        "NEXT_PUBLIC_SITE_URL": "https://staging.gventz.com"
+      },
+      "r2_buckets": [{ "binding": "NEXT_INC_CACHE_R2_BUCKET", "bucket_name": "gventz-web-cache-staging" }],
+      "durable_objects": {
+        "bindings": [
+          { "name": "NEXT_CACHE_DO_QUEUE", "class_name": "DOQueueHandler" },
+          { "name": "NEXT_TAG_CACHE_DO_SHARDED", "class_name": "DOShardedTagCache" }
+        ]
+      },
+      "services": [{ "binding": "WORKER_SELF_REFERENCE", "service": "gventz-web-staging" }]
+    },
+    "production": {
+      "name": "gventz-web",
+      // Custom domains gventz.com and www.gventz.com are added at DNS cutover; then set
+      // workers_dev to false so production is reachable only on its own domain.
+      "workers_dev": true,
+      "preview_urls": false,
+      "vars": {
+        "APP_ENV": "production",
+        "API_URL": "https://api.gventz.com",
+        "NEXT_PUBLIC_SITE_URL": "https://gventz.com"
+      },
+      "r2_buckets": [{ "binding": "NEXT_INC_CACHE_R2_BUCKET", "bucket_name": "gventz-web-cache-production" }],
+      "durable_objects": {
+        "bindings": [
+          { "name": "NEXT_CACHE_DO_QUEUE", "class_name": "DOQueueHandler" },
+          { "name": "NEXT_TAG_CACHE_DO_SHARDED", "class_name": "DOShardedTagCache" }
+        ]
+      },
+      "services": [{ "binding": "WORKER_SELF_REFERENCE", "service": "gventz-web" }]
+    }
+  }
+}

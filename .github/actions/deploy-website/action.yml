@@ -1,0 +1,78 @@
+name: Build and deploy the website to Cloudflare Workers
+description: >
+  Builds the site with OpenNext for one wrangler.jsonc environment and deploys it.
+  Used only by deploy.yml. Reads no secrets itself: the calling step maps one environment's
+  repository secrets and variables (STAGING_* or PRODUCTION_*, plus the shared CLOUDFLARE_*)
+  through `env:` to the unprefixed names used here: CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID,
+  the public NEXT_PUBLIC_* settings, MAINTENANCE_MODE, and the Worker secrets BFF_SHARED_SECRET,
+  REVALIDATE_SECRET and optional MAINTENANCE_BYPASS.
+
+inputs:
+  environment:
+    description: wrangler.jsonc environment (staging or production)
+    required: true
+
+outputs:
+  url:
+    description: The workers.dev (or custom domain) address of the new deployment
+    value: ${{ steps.deploy.outputs.url }}
+
+runs:
+  using: composite
+  steps:
+    # Public settings come from wrangler.jsonc, the same values the Worker runs with, because
+    # Next.js inlines NEXT_PUBLIC_* into the browser bundle at build time.
+    - name: Settings for ${{ inputs.environment }}
+      shell: bash
+      env:
+        TARGET: ${{ inputs.environment }}
+      run: |
+        [[ "$TARGET" =~ ^(staging|production)$ ]] || { echo "::error::Unknown environment '$TARGET'."; exit 1; }
+        node scripts/cloudflare/wrangler-vars.mjs "$TARGET" | tee -a "$GITHUB_ENV"
+        missing=()
+        for name in CLOUDFLARE_API_TOKEN CLOUDFLARE_ACCOUNT_ID NEXT_PUBLIC_SUPABASE_URL NEXT_PUBLIC_SUPABASE_ANON_KEY BFF_SHARED_SECRET REVALIDATE_SECRET; do
+          [ -n "${!name:-}" ] || missing+=("$name")
+        done
+        # The environment variable would override wrangler.jsonc's account_id; they must agree.
+        pinned=$(node --input-type=module -e 'import { readFileSync } from "node:fs"; import { stripJsonc } from "./scripts/cloudflare/wrangler-vars.mjs"; console.log(JSON.parse(stripJsonc(readFileSync("wrangler.jsonc", "utf8"))).account_id ?? "")')
+        if [ -n "${CLOUDFLARE_ACCOUNT_ID:-}" ] && [ "$CLOUDFLARE_ACCOUNT_ID" != "$pinned" ]; then
+          echo "::error::CLOUDFLARE_ACCOUNT_ID doesn't match account_id in wrangler.jsonc."; exit 1
+        fi
+        if [ ${#missing[@]} -gt 0 ]; then
+          echo "::error::Not set for $TARGET: ${missing[*]} (repository secrets/variables, prefixed ${TARGET^^}_ except CLOUDFLARE_*; docs/deploy-cloudflare.md §2)."; exit 1
+        fi
+
+    - name: Build (Next.js + OpenNext)
+      shell: bash
+      run: npm run cf:build
+
+    # Pages pre-rendered at build time go into this environment's R2 cache before the new
+    # version goes live, so the first requests don't render them again.
+    - name: Fill the page cache
+      shell: bash
+      env:
+        TARGET: ${{ inputs.environment }}
+      run: npx opennextjs-cloudflare populateCache remote --env "$TARGET"
+
+    - name: Deploy
+      id: deploy
+      shell: bash
+      env:
+        TARGET: ${{ inputs.environment }}
+        OPEN_NEXT_DEPLOY: "true" # tells wrangler not to hand the deploy back to OpenNext
+        WRANGLER_OUTPUT_FILE_PATH: ${{ runner.temp }}/wrangler-output.ndjson
+      run: |
+        # Secrets go to Cloudflare with this version (never on the command line or in the log);
+        # the file lives in the runner's temp directory and is deleted straight after.
+        secrets="$RUNNER_TEMP/worker-secrets.json"
+        trap 'rm -f "$secrets"' EXIT
+        (umask 077; jq -n 'env | with_entries(select(.key | IN("BFF_SHARED_SECRET","REVALIDATE_SECRET","MAINTENANCE_BYPASS")) | select(.value != ""))' > "$secrets")
+        npx wrangler deploy --env "$TARGET" \
+          --secrets-file "$secrets" \
+          --var "MAINTENANCE_MODE:${MAINTENANCE_MODE:-0}" \
+          --tag "${GITHUB_SHA:0:12}" \
+          --message "${GITHUB_REPOSITORY}@${GITHUB_SHA:0:12} run ${GITHUB_RUN_ID}"
+        url=$(jq -r 'select(.type == "deploy") | .targets[]?' "$WRANGLER_OUTPUT_FILE_PATH" | grep -E '^https://' | head -1)
+        [ -n "$url" ] || { echo "::error::wrangler did not report a deployment URL."; exit 1; }
+        echo "url=$url" >> "$GITHUB_OUTPUT"
+        echo "### Deployed \`${GITHUB_SHA:0:7}\` to $TARGET: $url" >> "$GITHUB_STEP_SUMMARY"

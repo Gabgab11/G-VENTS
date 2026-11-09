@@ -5,7 +5,8 @@ import { headers } from "next/headers";
 import createClient, { type Middleware } from "openapi-fetch";
 import { serverEnv } from "@/lib/env";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { apiHeaders, clientIpFrom } from "./headers";
+import { onCloudflare } from "@/lib/platform";
+import { apiHeaders, clientIpFor } from "./headers";
 import { ApiError, toProblem } from "./problem";
 import type { paths } from "./schema";
 
@@ -42,7 +43,7 @@ async function requestHeaders(anonymous: boolean): Promise<Record<string, string
   return apiHeaders({
     accessToken,
     bffKey: env.bffSharedSecret,
-    clientIp: clientIpFrom(incoming.get("x-forwarded-for"), incoming.get("x-real-ip")),
+    clientIp: clientIpFor((name) => incoming.get(name), onCloudflare()),
     requestId: incoming.get("x-request-id") ?? randomUUID(),
   });
 }

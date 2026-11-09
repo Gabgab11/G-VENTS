@@ -17,7 +17,9 @@
     "db:types": "supabase gen types typescript --linked --schema public > src/lib/supabase/database.types.ts",
     "db:types:local": "supabase gen types typescript --local --schema public > src/lib/supabase/database.types.ts",
     "api:types": "openapi-typescript ${API_OPENAPI_URL:-../gventz-api/openapi.json} -o src/lib/api/schema.d.ts",
-    "api:types:pinned": "bash .github/scripts/fetch-api-contract.sh \"$(tr -d '[:space:]' < api-contract.ref)\" .api-contract.json && API_OPENAPI_URL=.api-contract.json npm run -s api:types"
+    "api:types:pinned": "bash .github/scripts/fetch-api-contract.sh \"$(tr -d '[:space:]' < api-contract.ref)\" .api-contract.json && API_OPENAPI_URL=.api-contract.json npm run -s api:types",
+    "cf:build": "opennextjs-cloudflare build",
+    "cf:preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview --env staging"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
@@ -31,6 +33,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@opennextjs/cloudflare": "1.20.15",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -38,7 +41,8 @@
     "eslint-config-next": "15.5.28",
     "openapi-typescript": "7.13.0",
     "typescript": "^5",
-    "vitest": "^3"
+    "vitest": "^3",
+    "wrangler": "4.156.0"
   },
   "overrides": {
     "next": {

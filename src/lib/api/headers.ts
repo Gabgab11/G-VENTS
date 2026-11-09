@@ -1,5 +1,5 @@
 // Headers every server-side call to gventz-api carries (the API's ClientContextResolver): the
-// shared BFF key and the visitor's real IP, so per-IP limits see visitors rather than Vercel.
+// shared BFF key and the visitor's real IP, so per-IP limits see visitors rather than the hosting network.
 
 import { isIP } from "node:net";
 
@@ -11,6 +11,20 @@ export const REQUEST_ID_HEADER = "x-request-id";
 export function clientIpFrom(forwardedFor: string | null, realIp: string | null = null): string | null {
   const first = forwardedFor?.split(",")[0]?.trim() || realIp?.trim() || "";
   return isIP(first) ? first : null;
+}
+
+/**
+ * The visitor's IP for the request being served. Vercel overwrites `x-forwarded-for`, so its first
+ * entry is the visitor. Cloudflare only appends to a client-sent `x-forwarded-for`, so there the
+ * first entry is whatever the visitor typed; Cloudflare's own `cf-connecting-ip` is the only
+ * trustworthy source, and nothing else is used (the API's per-IP limits depend on it).
+ */
+export function clientIpFor(get: (name: string) => string | null, cloudflare: boolean): string | null {
+  if (cloudflare) {
+    const ip = get("cf-connecting-ip")?.trim() ?? "";
+    return isIP(ip) ? ip : null;
+  }
+  return clientIpFrom(get("x-forwarded-for"), get("x-real-ip"));
 }
 
 export function apiHeaders(opts: {
