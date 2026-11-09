@@ -37,7 +37,8 @@ const isProductionSecret = (name) => name.startsWith("PRODUCTION_") || name.star
 // Variables a staging job may read although they're named PRODUCTION_*: public, read-only data.
 const PUBLIC_PRODUCTION_VARS = new Set(["PRODUCTION_API_URL"]);
 // Secrets a job without a branch condition (ci, notify) may read.
-const SHARED_JOB_SECRETS = new Set(["SLACK_WEBHOOK_URL"]);
+// Read-only, not deploy secrets: CI passes the gventz-api read token to ci.yml; notify posts to Slack.
+const SHARED_JOB_SECRETS = new Set(["SLACK_WEBHOOK_URL", "GVENTZ_API_READ_TOKEN"]);
 
 const deploy = jobs(read(".github/workflows/deploy.yml"));
 
@@ -73,6 +74,11 @@ test("production jobs never read staging settings", () => {
       assert.ok(!ref.startsWith("STAGING_"), `${name} reads ${ref}`);
     }
   }
+});
+
+test("deploy.yml passes ci.yml its secrets explicitly, never with inherit", () => {
+  assert.doesNotMatch(read(".github/workflows/deploy.yml"), /secrets:\s*inherit/);
+  assert.match(deploy.ci, /GVENTZ_API_READ_TOKEN: \$\{\{ secrets\.GVENTZ_API_READ_TOKEN \}\}/);
 });
 
 test("jobs without a branch condition read no deploy secrets", () => {

@@ -5,6 +5,10 @@ name: CI
 on:
   pull_request:
   workflow_call:
+    # A called workflow gets no secrets unless the caller passes them (deploy.yml does).
+    secrets:
+      GVENTZ_API_READ_TOKEN:
+        required: true
 
 permissions:
   contents: read
