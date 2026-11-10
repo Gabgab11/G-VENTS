@@ -47,9 +47,10 @@
     },
     "production": {
       "name": "gventz-web",
-      // Custom domains gventz.com and www.gventz.com are added at DNS cutover; then set
-      // workers_dev to false so production is reachable only on its own domain.
-      "workers_dev": true,
+      // Custom domains gventz.com and www.gventz.com (www redirects to the apex in a Cloudflare
+      // redirect rule) are attached in the dashboard, not here, like staging. workers_dev is off so
+      // production is reachable only on its own domain; smoke tests use PRODUCTION_URL.
+      "workers_dev": false,
       "preview_urls": false,
       "vars": {
         "APP_ENV": "production",
