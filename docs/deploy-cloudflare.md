@@ -1,12 +1,13 @@
 # Deploying the website to Cloudflare
 
-Status: **prepared, not live.** The pipeline, Worker config and runbook are in the repo. Nothing has
-been created in Cloudflare, GitHub settings or DNS yet; the checklist in [Setup](#setup-one-time)
-lists every outside step, and who does it.
+Status: **live since 2026-11-10.** `gventz.com`, `www.gventz.com` (301 to the apex) and
+`staging.gventz.com` are served by the Workers `gventz-web` and `gventz-web-staging`; DNS is on
+Cloudflare. Vercel hosts only the API (`api.gventz.com`, `api-staging.gventz.com`). The website's
+Vercel project `g-vents` has no custom domains and no Git integration. Phases 0 to 5 below are
+done; they are kept as the record of how, and for the rollback notes.
 
 - Pipeline: `.github/workflows/deploy.yml` (+ `.github/actions/deploy-website`, `.github/scripts/`)
 - Worker config: `wrangler.jsonc`, `open-next.config.ts`
-- Today's production is still Vercel (`gventz.com`). This document also covers moving DNS off Vercel.
 
 ## 1. Why Workers (OpenNext) and not Cloudflare Pages
 
@@ -188,9 +189,8 @@ Security properties:
 `promote.yml` is **removed**. It fast-forwarded `main` by itself; now `main` only moves when someone
 merges the staging → main pull request. Its checks live on in `.github/scripts/release-gates.sh`.
 
-> **Transition caveat.** Until Vercel's Git integration is disconnected (phase 5), Vercel still
-> deploys `main` to its own production as soon as the PR merges, without the release gates. The gates
-> before the PR still protect both.
+> **Transition caveat (resolved 2026-11-10).** Until Vercel's Git integration was disconnected
+> (phase 5), Vercel also deployed `main` to its own production on every merge.
 
 ### Rollback
 
@@ -368,9 +368,20 @@ is the TTL of the record you changed.
     sign-in works (add the new origins to Supabase Auth redirect URLs first), ticket QR links and
     emails use `https://gventz.com`, and `/api/revalidate` from the API succeeds.
 
-**Phase 5: retire Vercel for the website (after a week without issues)**
+**Phase 5: retire Vercel for the website (done 2026-11-10)**
 16. Disconnect the `g-vents` project's Git integration (stops the parallel Vercel production builds;
     see the transition caveat), then remove its domains. Keep the project until rollback isn't needed.
+    Done, and the wildcard `*` and `_domainconnect` records were deleted from Cloudflare DNS.
+
+> **Warning: removing a domain from a project is not deleting it from the team.** In Vercel,
+> remove `gventz.com`/`www`/`staging` under **Project → Settings → Domains** only. Deleting
+> `gventz.com` under **Team → Domains** also detaches `api.gventz.com` and `api-staging.gventz.com`
+> from the API projects and wipes Vercel's DNS records for the zone. Both APIs then answer
+> `404 DEPLOYMENT_NOT_FOUND` until the domains are re-added. This happened on 2026-11-10: fixed by
+> adding `api.gventz.com` to `gventz-api` and `api-staging.gventz.com` to `gventz-api-staging`
+> (Project → Domains → Add, the full hostname). Adding them put `gventz.com` back in the team,
+> verified, with no TXT record needed. Never add the bare `gventz.com` to an API project.
+
 17. **Keep `gventz.com` in the Vercel team.** The API projects use `api.gventz.com` and
     `api-staging.gventz.com`, and keeping the apex domain in the team keeps those subdomains
     verified. Only the website's domains come off the `g-vents` project. Vercel DNS records no
@@ -388,6 +399,9 @@ is the TTL of the record you changed.
   from step 10 (staging: `CNAME staging.gventz.com → cname.vercel-dns-016.com`, DNS only), and
   unset `STAGING_URL`. Production: the four A records in step 13, then unset `PRODUCTION_URL` and
   set `workers_dev: true` again if the Worker must be reachable without its domain. Takes effect in seconds to minutes (Cloudflare-served TTL).
-- Whole DNS (phase 3): at Namecheap, put back `ns1.vercel-dns.com` and `ns2.vercel-dns.com`.
-  Vercel DNS still has every record until step 17, so the old answers come back as resolvers
-  pick up the change (up to 48 h). **Don't delete anything at Vercel before phase 5.**
+- Website back to Vercel (after phase 5): reconnect the `g-vents` Git integration, deploy `main`,
+  add its domains back to the project, then do the website-only steps above.
+- Whole DNS (phase 3): **no longer possible as written.** Vercel DNS has no records for `gventz.com`
+  since 2026-11-10 (see the warning in phase 5), so switching the nameservers back would take every
+  host offline. Moving DNS away from Cloudflare now means recreating every record at the new
+  provider first. The last full export is the Cloudflare zone itself (DNS → Export).
