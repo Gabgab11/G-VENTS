@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { pageFonts } from "@/app/fonts";
-import { createSupabaseBrowserClient } from "@/lib/supabase/client";
+import { sendEmailCode, startGoogleSignIn, verifyEmailCode } from "@/app/auth/actions";
+import type { AuthMode } from "@/lib/email-code";
 import { safeNextPath } from "@/lib/redirect";
 import BackLink from "@/components/BackLink";
 import OtpInput from "@/components/OtpInput";
@@ -12,11 +13,10 @@ import { env } from "@/lib/env";
 import ColorModeToggle from "@/components/ColorModeToggle";
 import SignInArt from "./SignInArt";
 
-export type AuthMode = "signin" | "signup";
-
 // Log in and sign up share one screen (no passwords: Google or a 6-digit email code). Log in only
 // sends codes to existing accounts, so a typo or a new visitor is pointed to sign up instead of
-// silently creating an account; sign up creates it. Google does both.
+// silently creating an account; sign up creates it. Google does both. Every Supabase call runs in a
+// server action (src/app/auth/actions.ts): the browser never talks to Supabase.
 export default function AuthScreen({ mode }: { mode: AuthMode }) {
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
@@ -47,14 +47,13 @@ export default function AuthScreen({ mode }: { mode: AuthMode }) {
   async function continueWithGoogle() {
     setError(null);
     setBusy(true);
-    const supabase = createSupabaseBrowserClient();
-    const callback = new URL("/auth/callback", window.location.origin);
-    callback.searchParams.set("next", nextPath());
-    const { error } = await supabase.auth.signInWithOAuth({ provider: "google", options: { redirectTo: callback.toString() } });
-    if (error) {
-      setBusy(false);
-      setError("Google sign-in isn't available right now. Use your email instead.");
+    const result = await startGoogleSignIn(nextPath()).catch(() => ({ error: "Google sign-in isn't available right now. Use your email instead." }));
+    if ("url" in result) {
+      window.location.href = result.url;
+      return;
     }
+    setBusy(false);
+    setError(result.error);
   }
 
   async function sendCode(e: React.FormEvent) {
@@ -63,18 +62,16 @@ export default function AuthScreen({ mode }: { mode: AuthMode }) {
     setNoAccount(false);
     if (siteKey && !captchaToken) return setError("Please wait a moment while we check you're not a robot, then try again.");
     setBusy(true);
-    const supabase = createSupabaseBrowserClient();
-    const { error } = await supabase.auth.signInWithOtp({
-      email: email.trim(),
-      options: { shouldCreateUser: mode === "signup", ...(siteKey && captchaToken ? { captchaToken } : {}) },
-    });
+    const result = await sendEmailCode({ email, mode, captchaToken: siteKey ? captchaToken : null }).catch(
+      () => ({ ok: false, reason: "failed", message: "We couldn't send a code right now. Try again in a moment." }) as const,
+    );
     setBusy(false);
     // Each token works once: get a fresh one for the next request.
     captcha.current?.reset();
-    if (error) {
-      // Log in for an address with no account: Supabase refuses with "Signups not allowed for otp".
-      if (mode === "signin" && (error.code === "otp_disabled" || /signups? not allowed/i.test(error.message))) return setNoAccount(true);
-      return setError(error.message);
+    setCaptchaToken(null);
+    if (!result.ok) {
+      if (result.reason === "no_account") return setNoAccount(true);
+      return setError(result.message);
     }
     setSent(true);
   }
@@ -82,10 +79,11 @@ export default function AuthScreen({ mode }: { mode: AuthMode }) {
   async function verifyCode(code: string) {
     setError(null);
     setBusy(true);
-    const supabase = createSupabaseBrowserClient();
-    const { error } = await supabase.auth.verifyOtp({ email: email.trim(), token: code, type: "email" });
+    const result = await verifyEmailCode({ email, code }).catch(
+      () => ({ ok: false, message: "We couldn't check the code right now. Try again in a moment." }) as const,
+    );
     setBusy(false);
-    if (error) return setError("That code is wrong or has expired. Try again or request a new one.");
+    if (!result.ok) return setError(result.message);
     window.location.href = nextPath();
   }
 

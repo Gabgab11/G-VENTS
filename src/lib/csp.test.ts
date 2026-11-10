@@ -2,9 +2,10 @@ import { describe, expect, it } from "vitest";
 import { contentSecurityPolicy, securityHeaders } from "./csp";
 
 describe("security headers", () => {
-  it("limits connections and images to the site and the Supabase project", () => {
+  it("limits connections to the site and images to the site and the Supabase project", () => {
     const csp = contentSecurityPolicy("https://abcd.supabase.co/");
-    expect(csp).toContain("connect-src 'self' https://abcd.supabase.co");
+    // The browser never calls Supabase: sign-in runs in server actions.
+    expect(csp).toContain("connect-src 'self';");
     expect(csp).toContain("img-src 'self' data: blob: https://abcd.supabase.co");
     expect(csp).toContain("frame-ancestors 'none'");
     expect(csp).toContain("object-src 'none'");

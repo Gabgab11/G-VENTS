@@ -15,6 +15,13 @@ additional_redirect_urls = ["http://localhost:3000/auth/callback"]
 subject = "Your G-ventZ sign-in code"
 content_path = "./supabase/templates/sign-in-code.html"
 
+# A new account's first code comes from the "Confirm signup" template, not "Magic link". It must
+# carry {{ .Token }} too, or sign-up emails a link and the code screen waits forever. Production:
+# set both templates in the Supabase dashboard (Authentication > Emails).
+[auth.email.template.confirmation]
+subject = "Your G-ventZ sign-up code"
+content_path = "./supabase/templates/sign-up-code.html"
+
 # Bot protection on sign-in code requests (FR-1.7). Off locally; to try it, set enabled = true
 # with Cloudflare's always-pass test keys (secret 1x0000000000000000000000000000000AA, site key
 # 1x00000000000000000000AA in NEXT_PUBLIC_TURNSTILE_SITE_KEY). Production: Supabase dashboard.
