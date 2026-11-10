@@ -1,6 +1,6 @@
 # G-vents
 
-Events for everyone. Next.js on Vercel; the backend is gventz-api (NestJS on Render). Supabase holds the data and storage, and handles sign-in.
+Events for everyone. Next.js on Cloudflare Workers (OpenNext); the backend is gventz-api (NestJS on Vercel). Supabase holds the data and storage, and handles sign-in.
 
 ## Local setup
 1. `npm install`
@@ -33,7 +33,7 @@ npm run build
 Schema changes are migrations in `supabase/migrations/`. See `supabase/README.md` for how to apply them. Apply to staging first, then production.
 
 ## Working on the code
-- Work on a branch and open a pull request into `staging`. When staging has been checked, open a pull request from `staging` into `main`. Nothing is pushed to `staging` or `main` directly.
+- Work on a branch and open a pull request into `staging`. After a staging deploy passes, the pipeline opens the pull request from `staging` into `main`; merging it releases to production. Nothing is pushed to `staging` or `main` directly.
 - Every screen reads and writes through gventz-api. Supabase is used for sign-in only (`src/lib/supabase/` keeps the auth helpers).
 - Dashboard actions return to their tab with a message code; API errors travel as `?err=api.<code>` and are shown from a fixed table (`src/lib/api/messages.ts`), so links can't inject text.
 - `/api/revalidate` accepts HMAC-signed page refreshes from the API (`REVALIDATE_SECRET`, same value as on the API).
@@ -43,42 +43,25 @@ Schema changes are migrations in `supabase/migrations/`. See `supabase/README.md
 
 ## Deploying
 ```
-feature branch ──PR──▶ staging ──PR──▶ main
-   preview URL        staging site      production site
-                      staging database  production database
+feature branch ──PR──▶ staging ──release PR (opened by the pipeline)──▶ main
+   CI only            staging.gventz.com                                gventz.com
+                      staging database                                  production database
 ```
 - **CI** (`.github/workflows/ci.yml`) runs lint, typecheck, tests, the Next.js + Cloudflare Worker build and the migration checks on every pull request, and for every push to `staging`/`main` through `deploy.yml`.
-- **Vercel** deploys every branch through its Git integration:
-  - `main` → Production, with the production Supabase keys, at `gventz.com` (`www.gventz.com` redirects to it).
-  - `staging` → a Preview with the staging Supabase keys, at `staging.gventz.com` (the domain is assigned to the `staging` branch in Vercel → Settings → Domains).
-  - any other branch or pull request → its own preview URL with the staging keys.
+- **Website** (`.github/workflows/deploy.yml`, Cloudflare Workers, details in [docs/deploy-cloudflare.md](docs/deploy-cloudflare.md)):
+  - merging into `staging` runs CI, deploys the Worker `gventz-web-staging` at `staging.gventz.com` and smoke-tests it;
+  - the release gates then check that production has every migration and that `api.gventz.com` serves the contract in `api-contract.ref`, and the workflow opens (or updates) the pull request `staging` → `main`;
+  - **merging that pull request deploys production**: the gates run again, the job confirms staging ran exactly this code, deploys `gventz-web` at `gventz.com` (`www` redirects to it) and smoke-tests it. There is no approval step; the merge is the release decision.
+- **API:** gventz-api on Vercel, `api.gventz.com` and `api-staging.gventz.com`. It is released separately and always before a website change that needs it.
 - **Database migrations** (`.github/workflows/migrate.yml`):
   - merging into `staging` applies new migrations to `gvents-staging` automatically;
-  - production is migrated only by hand: Actions → Database migrations → Run workflow from `staging`, target `production`, confirm with "apply to production". The automatic release waits for this, so the database is always ready before the new code goes live.
+  - production is migrated only by hand: Actions → Database migrations → Run workflow from `staging`, target `production`, confirm with "apply to production". The production release waits for this, so the database is always ready before the new code goes live.
 
-> **Moving to Cloudflare Workers.** `.github/workflows/deploy.yml` deploys `staging` to Cloudflare,
-> opens the `staging` → `main` pull request after the release gates pass, and deploys `main` when that
-> pull request is merged (no approval step). It replaces the automatic fast-forward below
-> (`promote.yml`, removed). Setup, the reasoning (Workers + OpenNext, not Pages) and the DNS move off
-> Vercel: [docs/deploy-cloudflare.md](docs/deploy-cloudflare.md). Until the cutover, Vercel keeps
-> serving `gventz.com` from `main` as described here.
+Release order: migrations, then the API, then the website.
 
-### Automatic release (previously `.github/workflows/promote.yml`, now removed)
-When Vercel finishes deploying `staging`, the pipeline checks that:
-1. the staging deployment succeeded,
-2. CI passed for that exact commit,
-3. smoke tests pass on `staging.gventz.com`,
-4. production has every migration the commit needs,
-5. the production API serves the gventz-api contract the commit is built against (`api-contract.ref`): no operation the website uses is missing, and none needs a parameter or body field the website doesn't send. Set the repository variable `PRODUCTION_API_URL` (the same value as Vercel's Production `API_URL`).
-
-It then fast-forwards `main` to that commit, and Vercel deploys production from exactly the code that was tested. It also smoke-tests production afterwards.
-
-If any step fails, nothing reaches production. The pipeline opens (or comments on) a GitHub issue labelled `deploy-failure`, which GitHub emails to everyone watching the repo, and posts to Slack when `SLACK_WEBHOOK_URL` is set.
-
-It stops instead of promoting when:
+If a gate fails, nothing reaches production: the workflow opens (or comments on) a GitHub issue labelled `deploy-failure`, and posts to Slack when `SLACK_WEBHOOK_URL` is set. It stops when:
 - `main` has commits that `staging` doesn't: merge `main` into `staging` first.
 - production is missing a migration: run Database migrations for production, then re-run the workflow.
-- the production API is behind the website: release gventz-api first (push its `vX.Y.Z` tag), then re-run the workflow. The release order is always migrations, then the API, then the website.
-- the release changes `.github/workflows/`: GitHub doesn't let the pipeline push those, so open a pull request from `staging` into `main`.
+- the production API is behind the website: release gventz-api first, then re-run the workflow.
 
-Environment variables per Vercel environment are listed in `.env.example`. `NEXT_PUBLIC_SITE_URL` must be the public address of each environment (production domain for Production, the staging domain for the `staging` branch).
+Public settings per environment (`API_URL`, `NEXT_PUBLIC_SITE_URL`) live in `wrangler.jsonc`; secrets and the Supabase keys are repository secrets and variables (`STAGING_*` / `PRODUCTION_*`), listed in [docs/deploy-cloudflare.md](docs/deploy-cloudflare.md). For local development see `.env.example`.
