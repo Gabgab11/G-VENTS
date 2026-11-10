@@ -56,10 +56,15 @@ jobs:
             fi
           fi
 
-      - uses: actions/checkout@v4
-      - uses: supabase/setup-cli@v1
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - uses: supabase/setup-cli@1dedf2c611547ede7232d26866dd3c56ab903bbb # v1.7.3
         with:
           version: 2.121.0
+      # config.toml points at supabase/signing_keys.json (gitignored, local Supabase Auth only) and
+      # the CLI won't load the config without it. A throwaway key; db push never sends it anywhere.
+      - run: node supabase/scripts/gen-signing-key.mjs
 
       - name: Link the ${{ env.TARGET }} project
         env:

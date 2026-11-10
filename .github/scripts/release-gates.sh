@@ -27,6 +27,9 @@ case "${1:-}" in
       echo "::error::Missing Supabase production secrets; can't check production migrations."; exit 1
     fi
     export SUPABASE_DB_PASSWORD="$SUPABASE_PROD_DB_PASSWORD"
+    # config.toml points at supabase/signing_keys.json (gitignored, local Supabase Auth only) and
+    # the CLI won't load the config without it. A throwaway key; db push never sends it anywhere.
+    node supabase/scripts/gen-signing-key.mjs >/dev/null
     supabase link --project-ref "$SUPABASE_PROD_REF" --password "$SUPABASE_PROD_DB_PASSWORD" >/dev/null
     out=$(supabase db push --linked --dry-run 2>&1) || { echo "$out"; echo "::error::Couldn't check production migrations."; exit 1; }
     echo "$out"
