@@ -48,5 +48,10 @@ export function securityHeaders(supabaseUrl: string | undefined, turnstile = fal
     // The camera is for the door scanner on this site; motion sensors for the home page tilt game.
     { key: "Permissions-Policy", value: "accelerometer=(self), gyroscope=(self), magnetometer=(self), camera=(self), microphone=(), geolocation=(), payment=()" },
     { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+    // Browsers that have seen the site over https never use plain http for it again. Vercel added this
+    // header itself; Cloudflare doesn't, so the site sends it. Two years, like Vercel. No
+    // includeSubDomains or preload: those cover hosts this app doesn't serve and are hard to undo.
+    // Only over https, so http://localhost isn't pinned.
+    ...(https ? [{ key: "Strict-Transport-Security", value: "max-age=63072000" }] : []),
   ];
 }
