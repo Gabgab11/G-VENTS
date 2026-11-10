@@ -26,8 +26,9 @@
   "env": {
     "staging": {
       "name": "gventz-web-staging",
-      // Custom domain staging.gventz.com is added at DNS cutover (docs/deploy-cloudflare.md, phase 4).
-      // Until then the deployment is reached on its workers.dev address only.
+      // Custom domain staging.gventz.com is attached in the dashboard, not here (docs/deploy-cloudflare.md,
+      // phase 4), so the deploy token needs no Workers Routes permission. workers.dev stays on as a
+      // fallback until staging is behind Cloudflare Access.
       "workers_dev": true,
       "preview_urls": false,
       "vars": {

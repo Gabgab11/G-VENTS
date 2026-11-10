@@ -345,12 +345,15 @@ is the TTL of the record you changed.
     the `vercel-dns-016.com` target, and `/health/ready` is 200) and Vercel shows them as valid.
 
 **Phase 4: move the website to the Worker (per hostname, staging first)**
-12. Staging: Workers → `gventz-web-staging` → Settings → Domains & Routes → add custom domain
-    `staging.gventz.com`. Cloudflare replaces the DNS-only record with a proxied one and issues the
-    certificate. Put a Cloudflare Access application on `staging.gventz.com` and on the staging
+12. Staging (**done 2026-11-10**): Workers → `gventz-web-staging` → Settings → Domains & Routes →
+    add custom domain `staging.gventz.com`. Cloudflare refuses while a DNS record exists for the
+    hostname (`100117 … externally managed DNS records`), so first delete the DNS-only
+    `CNAME staging → cname.vercel-dns-016.com`, then add the domain; Cloudflare creates the proxied
+    record and issues the certificate within a minute. Optional, not done yet: put a Cloudflare Access application on `staging.gventz.com` and on the staging
     `workers.dev` hostname. Create a service token and save it as the repository secrets
     `STAGING_CF_ACCESS_CLIENT_ID` / `STAGING_CF_ACCESS_CLIENT_SECRET`. Set the repository variable
-    `STAGING_URL=https://staging.gventz.com`.
+    `STAGING_URL=https://staging.gventz.com` (done). Same pattern for production in step 13: the
+    apex and `www` have Vercel A records that must be deleted first.
 13. Production, after a staging release has gone through the full flow: add custom domains
     `gventz.com` and `www.gventz.com` to `gventz-web`. Add a redirect rule: `www.gventz.com/*` →
     `https://gventz.com/${1}` with 308. Set the repository variable `PRODUCTION_URL=https://gventz.com`.
@@ -377,7 +380,8 @@ is the TTL of the record you changed.
 
 **Rollback**
 - Website only (phase 4): remove the Worker custom domain and recreate the DNS-only Vercel record
-  from step 10. Takes effect in seconds to minutes (Cloudflare-served TTL).
+  from step 10 (staging: `CNAME staging.gventz.com → cname.vercel-dns-016.com`, DNS only), and
+  unset `STAGING_URL`. Takes effect in seconds to minutes (Cloudflare-served TTL).
 - Whole DNS (phase 3): at Namecheap, put back `ns1.vercel-dns.com` and `ns2.vercel-dns.com`.
   Vercel DNS still has every record until step 17, so the old answers come back as resolvers
   pick up the change (up to 48 h). **Don't delete anything at Vercel before phase 5.**
