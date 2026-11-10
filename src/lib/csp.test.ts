@@ -23,6 +23,12 @@ describe("security headers", () => {
     expect(contentSecurityPolicy(undefined, false, false)).not.toContain("upgrade-insecure-requests");
   });
 
+  it("pins browsers to https (HSTS) only when the site is served over https", () => {
+    const hsts = (https: boolean) => securityHeaders(undefined, false, https).find((h) => h.key === "Strict-Transport-Security");
+    expect(hsts(true)?.value).toBe("max-age=63072000");
+    expect(hsts(false)).toBeUndefined();
+  });
+
   it("works without a Supabase URL", () => {
     expect(contentSecurityPolicy(undefined)).toContain("connect-src 'self';");
     expect(contentSecurityPolicy("not a url")).toContain("connect-src 'self';");

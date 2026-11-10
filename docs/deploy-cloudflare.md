@@ -354,11 +354,16 @@ is the TTL of the record you changed.
     `STAGING_CF_ACCESS_CLIENT_ID` / `STAGING_CF_ACCESS_CLIENT_SECRET`. Set the repository variable
     `STAGING_URL=https://staging.gventz.com` (done). Same pattern for production in step 13: the
     apex and `www` have Vercel A records that must be deleted first.
-13. Production, after a staging release has gone through the full flow: add custom domains
-    `gventz.com` and `www.gventz.com` to `gventz-web`. Add a redirect rule: `www.gventz.com/*` →
-    `https://gventz.com/${1}` with 308. Set the repository variable `PRODUCTION_URL=https://gventz.com`.
-14. Commit: `workers_dev: false` for production in `wrangler.jsonc`, optionally also the custom
-    domains as `routes` (then the token needs Zone → Workers Routes: Edit).
+13. Production (**done 2026-11-10**): delete the DNS-only Vercel A records of `gventz.com`
+    (`216.150.1.65`, `216.150.16.1`) and `www` (`216.150.1.193`, `216.150.16.129`), then add both as
+    custom domains of `gventz-web`. Redirect rule (Rules → Redirect Rules): hostname equals
+    `www.gventz.com` → `concat("https://gventz.com", http.request.uri.path)`, query string kept
+    (a full-URL match like `https://www.gventz.com/*` never matches). Repository variable
+    `PRODUCTION_URL=https://gventz.com` (done).
+    **SSL/TLS → Edge Certificates → Always Use HTTPS: on.** Vercel redirected http to https and sent
+    HSTS by itself; Cloudflare does neither by default. The app now sends HSTS (`src/lib/csp.ts`).
+14. Commit: `workers_dev: false` for production in `wrangler.jsonc` (done). The custom domains stay
+    out of `routes`, so the deploy token needs no Zone → Workers Routes: Edit.
 15. Verify: `curl -sI https://gventz.com | grep -i server` shows `cloudflare`. Smoke paths are 200,
     sign-in works (add the new origins to Supabase Auth redirect URLs first), ticket QR links and
     emails use `https://gventz.com`, and `/api/revalidate` from the API succeeds.
@@ -381,7 +386,8 @@ is the TTL of the record you changed.
 **Rollback**
 - Website only (phase 4): remove the Worker custom domain and recreate the DNS-only Vercel record
   from step 10 (staging: `CNAME staging.gventz.com → cname.vercel-dns-016.com`, DNS only), and
-  unset `STAGING_URL`. Takes effect in seconds to minutes (Cloudflare-served TTL).
+  unset `STAGING_URL`. Production: the four A records in step 13, then unset `PRODUCTION_URL` and
+  set `workers_dev: true` again if the Worker must be reachable without its domain. Takes effect in seconds to minutes (Cloudflare-served TTL).
 - Whole DNS (phase 3): at Namecheap, put back `ns1.vercel-dns.com` and `ns2.vercel-dns.com`.
   Vercel DNS still has every record until step 17, so the old answers come back as resolvers
   pick up the change (up to 48 h). **Don't delete anything at Vercel before phase 5.**
