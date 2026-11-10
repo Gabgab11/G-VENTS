@@ -72,7 +72,9 @@ runs:
           --var "MAINTENANCE_MODE:${MAINTENANCE_MODE:-0}" \
           --tag "${GITHUB_SHA:0:12}" \
           --message "${GITHUB_REPOSITORY}@${GITHUB_SHA:0:12} run ${GITHUB_RUN_ID}"
-        url=$(jq -r 'select(.type == "deploy") | .targets[]?' "$WRANGLER_OUTPUT_FILE_PATH" | grep -E '^https://' | head -1)
+        # `|| true`: grep exits 1 when there's no https target (production), which -e/pipefail
+        # would turn into a failed deploy after the Worker was already live.
+        url=$(jq -r 'select(.type == "deploy") | .targets[]?' "$WRANGLER_OUTPUT_FILE_PATH" | grep -E '^https://' | head -1 || true)
         # No URL when workers_dev is off and the custom domains aren't in wrangler.jsonc (production):
         # the workflow then uses the repository variable for that environment, and the smoke test
         # refuses to run without an https origin, so a missing address still fails the release.
