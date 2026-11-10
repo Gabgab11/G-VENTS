@@ -1,13 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { Manrope } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import "./home-ball.css";
 import { COLOR_MODE_SCRIPT } from "@/lib/color-mode";
 import ServiceWorker from "@/components/ServiceWorker";
 
-const manrope = Manrope({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+// Self-hosted from a pinned package, like the fonts in ./fonts.ts (no Google request at build time).
+const manrope = localFont({
+  src: "../../node_modules/@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2",
+  weight: "200 800",
   display: "swap",
 });
 
