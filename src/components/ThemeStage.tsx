@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { getTheme } from "@/lib/themes";
+import { getTheme, isThemeKey } from "@/lib/themes";
 
 type P = { x: number; y: number; vx: number; vy: number; r: number; ph: number; c: string };
 
@@ -53,6 +53,8 @@ export default function ThemeStage({ theme }: { theme: string }) {
 
   // 1) Recolour the whole page (CSS variables on <html>).
   useEffect(() => {
+    // Minimal is the plain look: it follows the visitor's light/dark/system choice instead of forcing dark.
+    if (theme === "minimal" || !isThemeKey(theme)) return;
     const style = document.documentElement.style;
     const vars: Record<string, string> = {
       "--bg": t.bg, "--surface": t.surface, "--surface-hi": t.surfaceHi,
@@ -60,7 +62,7 @@ export default function ThemeStage({ theme }: { theme: string }) {
     };
     Object.entries(vars).forEach(([k, v]) => style.setProperty(k, v));
     return () => Object.keys(vars).forEach((k) => style.removeProperty(k));
-  }, [t]);
+  }, [t, theme]);
 
   // 2) Motion layer for this style.
   useEffect(() => {

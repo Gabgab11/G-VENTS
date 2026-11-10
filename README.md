@@ -1,11 +1,19 @@
 # G-vents
 
-Events from everywhere. Next.js on Vercel, Supabase for data, login, and storage.
+Events for everyone. Next.js on Vercel; the backend is gventz-api (NestJS on Render). Supabase holds the data and storage, and handles sign-in.
 
 ## Local setup
 1. `npm install`
-2. Copy `.env.example` to `.env.local` and fill in the staging values (project `gvents-staging`).
+2. Copy `.env.example` to `.env.local` and fill in the staging values (project `gvents-staging`), or use a local stack (below).
 3. `npm run dev`, then open http://localhost:3000
+
+The website reaches the backend only from the server (`src/lib/api/server.ts`): set `API_URL` and `BFF_SHARED_SECRET` (the same value as on the API).
+
+**Fully local** (website + gventz-api + local Supabase):
+1. `node supabase/scripts/gen-signing-key.mjs` once (local ES256 signing key; the API accepts only asymmetric tokens), then `npx supabase start`.
+2. Run gventz-api on port 4000 against the local database (see its README), with `SUPABASE_URL=http://127.0.0.1:54321`.
+3. In `.env.local`: `NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321`, the local publishable key from `npx supabase status`, `API_URL=http://localhost:4000`.
+4. Sign-in codes arrive in Mailpit: http://127.0.0.1:54324.
 
 ## Checks
 CI runs these on every pull request. Run them locally before pushing:
@@ -26,7 +34,12 @@ Schema changes are migrations in `supabase/migrations/`. See `supabase/README.md
 
 ## Working on the code
 - Work on a branch and open a pull request into `staging`. When staging has been checked, open a pull request from `staging` into `main`. Nothing is pushed to `staging` or `main` directly.
-- Permission checks live in the database (row-level security and functions). The app also checks access up front, using `requireEventRole` in `src/lib/auth.ts`, so users get a clear answer.
+- Every screen reads and writes through gventz-api. Supabase is used for sign-in only (`src/lib/supabase/` keeps the auth helpers).
+- Dashboard actions return to their tab with a message code; API errors travel as `?err=api.<code>` and are shown from a fixed table (`src/lib/api/messages.ts`), so links can't inject text.
+- `/api/revalidate` accepts HMAC-signed page refreshes from the API (`REVALIDATE_SECRET`, same value as on the API).
+- Security headers live in `src/lib/csp.ts` (applied in `next.config.ts`).
+- API types: `src/lib/api/schema.d.ts` is generated from the gventz-api contract pinned in `api-contract.ref` (a commit SHA, or a `vX.Y.Z` release tag once the API is released). To move to a newer API, change the ref and run `npm run api:types:pinned`; CI fails if the committed types don't match the pinned contract. `npm run api:types` still generates from a local `../gventz-api/openapi.json` while you work on both repos.
+- Errors from the API carry messages written for users (`apiMessage` in `src/lib/api/problem.ts`); anything unexpected shows a generic message and is logged.
 
 ## Deploying
 ```
@@ -34,7 +47,7 @@ feature branch ──PR──▶ staging ──PR──▶ main
    preview URL        staging site      production site
                       staging database  production database
 ```
-- **CI** (`.github/workflows/ci.yml`) runs lint, typecheck, tests, build and the migration checks on every pull request.
+- **CI** (`.github/workflows/ci.yml`) runs lint, typecheck, tests, the Next.js + Cloudflare Worker build and the migration checks on every pull request, and for every push to `staging`/`main` through `deploy.yml`.
 - **Vercel** deploys every branch through its Git integration:
   - `main` → Production, with the production Supabase keys, at `gventz.com` (`www.gventz.com` redirects to it).
   - `staging` → a Preview with the staging Supabase keys, at `staging.gventz.com` (the domain is assigned to the `staging` branch in Vercel → Settings → Domains).
@@ -43,12 +56,20 @@ feature branch ──PR──▶ staging ──PR──▶ main
   - merging into `staging` applies new migrations to `gvents-staging` automatically;
   - production is migrated only by hand: Actions → Database migrations → Run workflow from `staging`, target `production`, confirm with "apply to production". The automatic release waits for this, so the database is always ready before the new code goes live.
 
-### Automatic release (`.github/workflows/promote.yml`)
+> **Moving to Cloudflare Workers.** `.github/workflows/deploy.yml` deploys `staging` to Cloudflare,
+> opens the `staging` → `main` pull request after the release gates pass, and deploys `main` when that
+> pull request is merged (no approval step). It replaces the automatic fast-forward below
+> (`promote.yml`, removed). Setup, the reasoning (Workers + OpenNext, not Pages) and the DNS move off
+> Vercel: [docs/deploy-cloudflare.md](docs/deploy-cloudflare.md). Until the cutover, Vercel keeps
+> serving `gventz.com` from `main` as described here.
+
+### Automatic release (previously `.github/workflows/promote.yml`, now removed)
 When Vercel finishes deploying `staging`, the pipeline checks that:
 1. the staging deployment succeeded,
 2. CI passed for that exact commit,
 3. smoke tests pass on `staging.gventz.com`,
-4. production has every migration the commit needs.
+4. production has every migration the commit needs,
+5. the production API serves the gventz-api contract the commit is built against (`api-contract.ref`): no operation the website uses is missing, and none needs a parameter or body field the website doesn't send. Set the repository variable `PRODUCTION_API_URL` (the same value as Vercel's Production `API_URL`).
 
 It then fast-forwards `main` to that commit, and Vercel deploys production from exactly the code that was tested. It also smoke-tests production afterwards.
 
@@ -57,6 +78,7 @@ If any step fails, nothing reaches production. The pipeline opens (or comments o
 It stops instead of promoting when:
 - `main` has commits that `staging` doesn't: merge `main` into `staging` first.
 - production is missing a migration: run Database migrations for production, then re-run the workflow.
+- the production API is behind the website: release gventz-api first (push its `vX.Y.Z` tag), then re-run the workflow. The release order is always migrations, then the API, then the website.
 - the release changes `.github/workflows/`: GitHub doesn't let the pipeline push those, so open a pull request from `staging` into `main`.
 
 Environment variables per Vercel environment are listed in `.env.example`. `NEXT_PUBLIC_SITE_URL` must be the public address of each environment (production domain for Production, the staging domain for the `staging` branch).

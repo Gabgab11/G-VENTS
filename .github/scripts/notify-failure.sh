@@ -2,14 +2,14 @@
 # Tells people a release step failed: opens a GitHub issue labelled
 # `deploy-failure` (or comments on the one already open), which GitHub emails
 # to everyone watching the repo, and posts to Slack when SLACK_WEBHOOK_URL is set.
-# Needs GH_TOKEN, SHA and STAGE (staging | production) in the environment.
+# Needs GH_TOKEN, SHA, STAGE (staging | production) and PRODUCTION_URL in the environment.
 set -uo pipefail
 
 run_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
 short="${SHA:0:7}"
 if [ "$STAGE" = "production" ]; then
   title="Production deployment failed"
-  what="The production deployment of \`$short\` failed or did not pass its smoke tests. Check $PRODUCTION_URL now; roll back in Vercel → Deployments → Instant Rollback if needed."
+  what="The production deployment of \`$short\` failed or did not pass its smoke tests. Check $PRODUCTION_URL now. The previous version stays live when the deploy itself failed; if the new version is live but broken, roll back with \`npx wrangler rollback --env production\` (docs/deploy-cloudflare.md, Rollback)."
 else
   title="Staging release blocked"
   what="Commit \`$short\` on \`staging\` was **not** promoted to production. Production is unchanged."

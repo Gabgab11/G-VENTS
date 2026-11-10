@@ -1,22 +1,12 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { adminConfigured } from "@/lib/supabase/admin";
-import { getTicket, isTicketCode, siteOrigin, ticketUrl } from "@/lib/ticket";
-import { ticketEmail, QR_CID } from "@/lib/email/ticket-email";
-import { qrPng } from "@/lib/qr-png";
-import { sendEmail } from "@/lib/email/send";
-import {
-  EMAIL_LIMIT_PER_HOUR,
-  emailsSentRecently,
-  recordEmailDelivery,
-  registeredEmail,
-} from "@/lib/ticket-delivery";
+import { api, data } from "@/lib/api/server";
+import { ApiError } from "@/lib/api/problem";
+import { isTicketCode } from "@/lib/ticket";
 
-// "Email my ticket" on the ticket page. The address is never taken from the form:
-// it is read from the registration, so the link can't be used to send mail to anyone else.
-// Retrying sends the same ticket again. No new ticket is created.
+// "Email my ticket" on the ticket page, through gventz-api. The API sends it only to the address
+// the ticket was registered with (never one from the form), at most 5 times an hour per ticket.
 export async function sendTicketByEmail(formData: FormData) {
   const code = String(formData.get("code") ?? "").toLowerCase();
   if (!isTicketCode(code)) redirect("/");
@@ -27,27 +17,16 @@ export async function sendTicketByEmail(formData: FormData) {
 
   if (formData.get("confirm") !== "yes") back("confirm");
 
-  const supabase = await createSupabaseServerClient();
-  const ticket = await getTicket(supabase, code);
-  if (!ticket || ticket.status !== "confirmed" || ticket.event.status === "cancelled") back("unavailable");
-  if (!adminConfigured()) back("unavailable");
-
-  if ((await emailsSentRecently(code)) >= EMAIL_LIMIT_PER_HOUR) back("limit");
-
-  const to = await registeredEmail(code);
-  if (!to) back("unavailable");
-
-  const link = ticketUrl(await siteOrigin(), ticket.code);
-  const { subject, html, text } = ticketEmail(ticket, link);
-  const qr = qrPng(link, 10).toString("base64");
-
-  const sent = await sendEmail({
-    to,
-    subject,
-    html,
-    text,
-    images: [{ filename: "ticket-qr.png", contentBase64: qr, contentId: QR_CID }],
-  });
-  await recordEmailDelivery(code, to, sent, "The email service did not accept the message.");
-  back(sent ? "sent" : "failed");
+  let state = "sent";
+  try {
+    data(await (await api({ anonymous: true })).POST("/v1/tickets/{code}/email", { params: { path: { code } } }));
+  } catch (error) {
+    if (error instanceof ApiError && error.code === "ticket.email_limit") state = "limit";
+    else if (error instanceof ApiError && (error.code === "ticket.email_unavailable" || error.status === 404)) state = "unavailable";
+    else {
+      console.error("[ticket] email my ticket:", error);
+      state = "failed";
+    }
+  }
+  back(state);
 }

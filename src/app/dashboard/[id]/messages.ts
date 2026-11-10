@@ -1,3 +1,5 @@
+import { apiMessageFor } from "@/lib/api/messages";
+
 // Status messages shown after a dashboard action. The URL carries only the code
 // (?ok=registration_opened), so a crafted link can't display arbitrary text.
 export const MESSAGES = {
@@ -9,8 +11,13 @@ export const MESSAGES = {
   question_added: "Question added",
   question_removed: "Question removed",
   checked_in: "Checked in",
-  promoted: "A guest from the waiting list is now confirmed",
-  announcement_saved: "Saved. Sending starts once email delivery is connected.",
+  promoted: "The next waiting group now has tickets. We've emailed them.",
+  approved: "Approved. Their tickets are on the way by email.",
+  declined: "Declined. We've let them know.",
+  venue_saved: "Venue saved",
+  already_used: "That ticket was already checked in",
+  announcement_saved: "Saved as a draft. Send it when you're ready.",
+  announcement_sending: "Sending now. Guests get it over the next few minutes.",
   details_saved: "Event details saved",
   flyer_uploaded: "Flyer uploaded",
   flyer_removed: "Flyer removed. The event shows its colour style again",
@@ -28,6 +35,7 @@ export const MESSAGES = {
   announcement_missing: "Add a subject and a message",
   announcement_segment: "Choose who to send it to",
   title_length: "Event name must be 3 to 140 characters",
+  venue_country: "Choose a country from the list, or switch on Online event",
   flyer_missing: "Choose an image first",
   flyer_type: "Use a JPG, PNG, or WebP image",
   flyer_size: "The image is larger than 5 MB. Please resize it and try again",
@@ -44,6 +52,9 @@ export const MESSAGES = {
 
 export type MessageCode = keyof typeof MESSAGES;
 
+/** A known code, or an API error code carried as `api.<code>` (see src/lib/api/messages.ts). */
 export function messageFor(code: string | undefined): string | null {
-  return code && Object.hasOwn(MESSAGES, code) ? MESSAGES[code as MessageCode] : null;
+  if (!code) return null;
+  if (code.startsWith("api.")) return apiMessageFor(code.slice(4)) ?? MESSAGES.failed;
+  return Object.hasOwn(MESSAGES, code) ? MESSAGES[code as MessageCode] : null;
 }

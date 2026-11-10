@@ -3,8 +3,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Combobox from "@/components/Combobox";
 import { orderedCountries, regionsFor } from "@/lib/locations";
+import { placeDetails, searchPlaces, type Suggestion } from "@/app/events/places-actions";
 
-type Suggestion = { placeId: string; main: string; secondary: string };
 type Place = { placeId: string; address: string; city: string; lat: number | null; lng: number | null };
 
 const MIN_CHARS = 3;
@@ -136,7 +136,6 @@ function VenueSearch({
   const [problem, setProblem] = useState("");
   const [available, setAvailable] = useState(enabled);
   const session = useRef(newSession());
-  const searchAbort = useRef<AbortController | null>(null);
   const lastQuery = useRef("");
 
   // Debounced search while the host types. Stale requests are cancelled.
@@ -147,18 +146,15 @@ function VenueSearch({
       return;
     }
     const timer = setTimeout(async () => {
-      searchAbort.current?.abort();
-      const controller = new AbortController();
-      searchAbort.current = controller;
       lastQuery.current = q;
       setLoading("search");
       try {
-        const params = new URLSearchParams({ q, country: countryCode, region, session: session.current });
-        const res = await fetch(`/api/places/autocomplete?${params}`, { signal: controller.signal });
-        const data = (await res.json().catch(() => ({}))) as { suggestions?: Suggestion[]; error?: string };
-        if (!res.ok) {
+        const data = await searchPlaces(q, countryCode, region, session.current);
+        // A newer search started while this one ran: drop these results.
+        if (lastQuery.current !== q) return;
+        if (data.error) {
           if (data.error === "not_configured") setAvailable(false);
-          else setProblem(problemText(data.error ?? ""));
+          else setProblem(problemText(data.error));
           setSuggestions([]);
         } else {
           setProblem("");
@@ -167,16 +163,14 @@ function VenueSearch({
           setActive(-1);
           setOpen(true);
         }
-      } catch (error) {
-        if ((error as Error).name !== "AbortError") setProblem(problemText(""));
+      } catch {
+        if (lastQuery.current === q) setProblem(problemText(""));
       } finally {
-        if (searchAbort.current === controller) setLoading("");
+        if (lastQuery.current === q) setLoading("");
       }
     }, DEBOUNCE_MS);
     return () => clearTimeout(timer);
   }, [venue, place, available, countryCode, region]);
-
-  useEffect(() => () => searchAbort.current?.abort(), []);
 
   async function pick(s: Suggestion) {
     setOpen(false);
@@ -185,10 +179,8 @@ function VenueSearch({
     setLoading("details");
     onPick(s.main, { placeId: s.placeId, address: s.secondary ? `${s.main}, ${s.secondary}` : s.main, city: "", lat: null, lng: null });
     try {
-      const params = new URLSearchParams({ id: s.placeId, session: session.current });
-      const res = await fetch(`/api/places/details?${params}`);
-      const data = (await res.json().catch(() => ({}))) as { place?: Place & { name: string }; error?: string };
-      if (res.ok && data.place) {
+      const data = await placeDetails(s.placeId, session.current);
+      if (data.place) {
         const p = data.place;
         onPick(p.name || s.main, { placeId: p.placeId, address: p.address, city: p.city, lat: p.lat, lng: p.lng });
         setProblem("");

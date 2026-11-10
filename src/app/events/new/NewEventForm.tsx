@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState, type FormEvent } from "react";
+import { useActionState, useEffect, useMemo, useState, type FormEvent } from "react";
 import { createEvent, type CreateEventState } from "@/app/events/actions";
 import { CATEGORIES } from "@/lib/categories";
 import { THEMES, themeBackground } from "@/lib/themes";
@@ -28,6 +28,13 @@ export default function NewEventForm({
   const [tiers, setTiers] = useState<Tier[]>([{ id: 1, name: "General admission", price: "0", qty: "" }]);
   const [visibility, setVisibility] = useState<"public" | "private">("public");
   const [isFree, setIsFree] = useState(true);
+  const [online, setOnline] = useState(false);
+  // "" = let the API take the zone from the venue (coordinates, or a country with one zone).
+  const [timeZone, setTimeZone] = useState("");
+  const [browserZone, setBrowserZone] = useState("Africa/Lagos");
+  const zones = useMemo(() => Intl.supportedValuesOf("timeZone"), []);
+  useEffect(() => setBrowserZone(Intl.DateTimeFormat().resolvedOptions().timeZone || "Africa/Lagos"), []);
+
   const [start, setStart] = useState({ date: "", time: "" });
   const [end, setEnd] = useState({ date: "", time: "" });
   const [attempted, setAttempted] = useState(false);
@@ -91,11 +98,27 @@ export default function NewEventForm({
                   invalid={attempted} onChange={setEnd} /></div>
             </div>
             {attempted && timesMissing && <p className="error">Add both a start and an end date and time.</p>}
-            <p className="muted small">Times are in Lagos time (GMT+1).</p>
+            <label className="field"><span>Time zone</span>
+              <select className="input" name="time_zone" value={online && !timeZone ? browserZone : timeZone} onChange={(e) => setTimeZone(e.target.value)}>
+                {!online && <option value="">From the venue</option>}
+                {zones.map((z) => <option key={z} value={z}>{z.replace(/_/g, " ")}</option>)}
+              </select></label>
+            <p className="muted small">
+              {online || timeZone
+                ? "Times are in the time zone above. Guests see them in the event's time zone."
+                : "Times are in the venue's local time. For countries with several time zones, pick the venue from the search or choose a zone."}
+            </p>
           </div>
 
           <div className="panel">
-            <LocationFields detectedCountry={detectedCountry} placesEnabled={placesEnabled} />
+            <div className="option">
+              <div>
+                <div className="option-title">Online event</div>
+                <div className="muted small">No venue; guests get the details from you.</div>
+              </div>
+              <label className="switch"><input type="checkbox" name="is_online" checked={online} onChange={(e) => setOnline(e.target.checked)} /><span /></label>
+            </div>
+            {!online && <LocationFields detectedCountry={detectedCountry} placesEnabled={placesEnabled} />}
           </div>
 
           <div className="panel">
@@ -132,6 +155,10 @@ export default function NewEventForm({
               </div>
             ))}
             <button type="button" className="btn-ghost" onClick={() => setTiers((x) => [...x, { id: nextId++, name: "", price: "0", qty: "" }])}>+ Add ticket type</button>
+            <label className="field"><span>Max tickets per person</span>
+              <select className="input" name="per_buyer_limit" defaultValue="10">
+                {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => <option key={n} value={n}>{n}</option>)}
+              </select></label>
           </div>
 
           <div className="panel">
