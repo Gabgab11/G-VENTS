@@ -3,7 +3,8 @@
 // Scripts: 'self' plus inline, because Next.js writes inline bootstrap scripts and the home page is
 // static (rendered once, refreshed every minute), so a per-request nonce can't be in its HTML.
 // Every other source of script is refused, and so are plugins, framing and foreign base URLs.
-// Connections and images are limited to this site and the Supabase project (sign-in, flyers).
+// Connections go to this site only: sign-in and every API call run on the server, so the browser
+// never talks to Supabase. Images may also come from the Supabase project (flyers).
 // With bot protection on (FR-1.7), Cloudflare Turnstile's script and its challenge frame are allowed too.
 // Frames: Google Maps for the venue map on event pages.
 
@@ -27,7 +28,7 @@ export function contentSecurityPolicy(supabaseUrl: string | undefined, turnstile
     "style-src 'self' 'unsafe-inline'",
     `img-src 'self' data: blob:${extra}`,
     "font-src 'self' data:",
-    `connect-src 'self'${extra}`,
+    "connect-src 'self'",
     "media-src 'self' blob:",
     "worker-src 'self' blob:",
     "frame-ancestors 'none'",
