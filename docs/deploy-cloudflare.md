@@ -78,6 +78,8 @@ Names only below; values never go in the repo. "Exists" is as of 2026-11-07.
 | secret | `PRODUCTION_REVALIDATE_SECRET` | no | same, production API | `production` |
 | secret | `STAGING_MAINTENANCE_BYPASS` | no | optional; staff cookie value during maintenance (≥ 16 chars) | `staging` |
 | secret | `PRODUCTION_MAINTENANCE_BYPASS` | no | optional; same for production | `production` |
+| secret | `STAGING_SUPABASE_SECRET_KEY` | no | recommended; Worker secret, a staging Supabase **secret** key (`sb_secret_…`) used only for sign-in, so Auth rate limits see each visitor's IP (`sb-forwarded-for`). Needs IP Address Forwarding on in Authentication → Rate Limits. Empty: the publishable key, all visitors share one IP bucket | `staging` |
+| secret | `PRODUCTION_SUPABASE_SECRET_KEY` | no | same, production project | `production` |
 | secret | `STAGING_CF_ACCESS_CLIENT_ID` | no | optional; Cloudflare Access service token for smoke-testing staging behind Access | `staging` |
 | secret | `STAGING_CF_ACCESS_CLIENT_SECRET` | no | optional; pair of the above | `staging` |
 | secret | `GVENTZ_API_READ_TOKEN` | **yes** | fine-grained token, Contents: read on `aristokratos/gventz-api` only (that repo is private); downloads the pinned `openapi.json`. Expires; renew it before then | ci.yml `verify`; deploy.yml `promotion-gates`, `production-gates` |
