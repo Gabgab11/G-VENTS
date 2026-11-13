@@ -5,7 +5,7 @@ description: >
   repository secrets and variables (STAGING_* or PRODUCTION_*, plus the shared CLOUDFLARE_*)
   through `env:` to the unprefixed names used here: CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID,
   the public NEXT_PUBLIC_* settings, MAINTENANCE_MODE, and the Worker secrets BFF_SHARED_SECRET,
-  REVALIDATE_SECRET and optional MAINTENANCE_BYPASS.
+  REVALIDATE_SECRET and optional MAINTENANCE_BYPASS and SUPABASE_SECRET_KEY.
 
 inputs:
   environment:
@@ -38,6 +38,8 @@ runs:
         if [ -n "${CLOUDFLARE_ACCOUNT_ID:-}" ] && [ "$CLOUDFLARE_ACCOUNT_ID" != "$pinned" ]; then
           echo "::error::CLOUDFLARE_ACCOUNT_ID doesn't match account_id in wrangler.jsonc."; exit 1
         fi
+        # Optional: without it sign-in still works, but Supabase rate-limits every visitor as the Worker's IP.
+        [ -n "${SUPABASE_SECRET_KEY:-}" ] || echo "::warning::SUPABASE_SECRET_KEY not set for $TARGET: Supabase Auth limits all visitors as one IP (docs/deploy-cloudflare.md §2)."
         if [ ${#missing[@]} -gt 0 ]; then
           echo "::error::Not set for $TARGET: ${missing[*]} (repository secrets/variables, prefixed ${TARGET^^}_ except CLOUDFLARE_*; docs/deploy-cloudflare.md §2)."; exit 1
         fi
@@ -66,7 +68,7 @@ runs:
         # the file lives in the runner's temp directory and is deleted straight after.
         secrets="$RUNNER_TEMP/worker-secrets.json"
         trap 'rm -f "$secrets"' EXIT
-        (umask 077; jq -n 'env | with_entries(select(.key | IN("BFF_SHARED_SECRET","REVALIDATE_SECRET","MAINTENANCE_BYPASS")) | select(.value != ""))' > "$secrets")
+        (umask 077; jq -n 'env | with_entries(select(.key | IN("BFF_SHARED_SECRET","REVALIDATE_SECRET","MAINTENANCE_BYPASS","SUPABASE_SECRET_KEY")) | select(.value != ""))' > "$secrets")
         npx wrangler deploy --env "$TARGET" \
           --secrets-file "$secrets" \
           --var "MAINTENANCE_MODE:${MAINTENANCE_MODE:-0}" \

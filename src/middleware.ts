@@ -1,6 +1,8 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
-import { env } from "@/lib/env";
+import { env, supabaseSecretKey } from "@/lib/env";
+import { onCloudflare } from "@/lib/platform";
+import { authCookieOptions, forwardedIp, supabaseKeyAndHeaders } from "@/lib/supabase/options";
 
 // Refreshes the signed-in session cookie so users stay logged in.
 // Visitors without a Supabase session cookie have nothing to refresh, so they skip the auth round trip.
@@ -48,7 +50,16 @@ export async function middleware(request: NextRequest) {
 
   let response = NextResponse.next({ request });
 
-  const supabase = createServerClient(env.supabaseUrl, env.supabaseAnonKey, {
+  // Same key, forwarded IP and cookie flags as src/lib/supabase/server.ts: session refreshes are
+  // rate-limited per IP too.
+  const { key, headers } = supabaseKeyAndHeaders({
+    secretKey: supabaseSecretKey(),
+    publishableKey: env.supabaseAnonKey,
+    ip: forwardedIp((name) => request.headers.get(name), onCloudflare()),
+  });
+  const supabase = createServerClient(env.supabaseUrl, key, {
+    cookieOptions: authCookieOptions(env.siteUrl),
+    global: { headers },
     cookies: {
       getAll() {
         return request.cookies.getAll();
