@@ -1,14 +1,27 @@
+import "server-only";
+
 import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
-import { env } from "@/lib/env";
+import { cookies, headers } from "next/headers";
+import { env, supabaseSecretKey } from "@/lib/env";
+import { onCloudflare } from "@/lib/platform";
+import { authCookieOptions, forwardedIp, supabaseKeyAndHeaders } from "./options";
 import type { Database } from "./database.types";
 
-// Server client for Server Components, Route Handlers, and Server Actions.
-// Reads the signed-in user from cookies, so RLS applies to the real user.
+// Server client for Server Components, Route Handlers, and Server Actions. Supabase is used for
+// sign-in only (data comes from gventz-api), so only `auth` is handed out: with the secret key a
+// data query would skip RLS, and this makes one impossible to write by accident.
 export async function createSupabaseServerClient() {
   const cookieStore = await cookies();
+  const incoming = await headers();
+  const { key, headers: extra } = supabaseKeyAndHeaders({
+    secretKey: supabaseSecretKey(),
+    publishableKey: env.supabaseAnonKey,
+    ip: forwardedIp((name) => incoming.get(name), onCloudflare()),
+  });
 
-  return createServerClient<Database>(env.supabaseUrl, env.supabaseAnonKey, {
+  const client = createServerClient<Database>(env.supabaseUrl, key, {
+    cookieOptions: authCookieOptions(env.siteUrl),
+    global: { headers: extra },
     cookies: {
       getAll() {
         return cookieStore.getAll();
@@ -24,6 +37,7 @@ export async function createSupabaseServerClient() {
       },
     },
   });
+  return { auth: client.auth };
 }
 
 export type SupabaseServerClient = Awaited<ReturnType<typeof createSupabaseServerClient>>;

@@ -25,6 +25,15 @@ export const env = {
 };
 
 /**
+ * Supabase secret API key (sb_secret_…), server-only. With it, Supabase Auth rate-limits by the
+ * visitor's IP instead of the Worker's (src/lib/supabase/options.ts). Optional: empty means the
+ * publishable key, as before. Never NEXT_PUBLIC_: it would end up in the browser bundle.
+ */
+export function supabaseSecretKey(): string {
+  return process.env.SUPABASE_SECRET_KEY ?? "";
+}
+
+/**
  * Server-only settings for the gventz-api backend (U6a). Never NEXT_PUBLIC_: the browser doesn't
  * call the API. Read on first use, like `env`, so builds work without secrets.
  */
