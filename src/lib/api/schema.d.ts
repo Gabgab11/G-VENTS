@@ -23,7 +23,7 @@ export interface paths {
         head?: never;
         /**
          * Update my profile
-         * @description Changes only the fields sent: name, country, dashboard theme.
+         * @description Changes only the fields sent: name, country, dashboard theme, language (en, es, fr, de, zh-Hans, pt, ar; null clears it).
          */
         patch: operations["MeController_updateMe_v1"];
         trace?: never;
@@ -1539,6 +1539,11 @@ export interface components {
             /** @enum {string} */
             dashboardTheme: "minimal" | "sunset" | "ocean" | "forest" | "night" | "ember" | "blush" | "mint" | "lavender" | "christmas";
             /**
+             * @description The language chosen for the website and emails; null until chosen (Change 3)
+             * @enum {string|null}
+             */
+            language: "en" | "es" | "fr" | "de" | "zh-Hans" | "pt" | "ar" | null;
+            /**
              * @description aal2 when two-step sign-in was used for this session
              * @enum {string}
              */
@@ -1554,6 +1559,11 @@ export interface components {
             country?: string | null;
             /** @enum {string} */
             dashboardTheme?: "minimal" | "sunset" | "ocean" | "forest" | "night" | "ember" | "blush" | "mint" | "lavender" | "christmas";
+            /**
+             * @description One of en, es, fr, de, zh-Hans, pt, ar; null clears it
+             * @enum {string|null}
+             */
+            language?: "en" | "es" | "fr" | "de" | "zh-Hans" | "pt" | "ar" | null;
         };
         PlaceInputDto: {
             /** @example ChIJ5yQ8wTH1OxARr3hxS7yEvr0 */
