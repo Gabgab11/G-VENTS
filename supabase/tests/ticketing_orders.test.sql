@@ -22,19 +22,26 @@ insert into public.events (id, owner_id, title, slug, category, starts_at, statu
 insert into public.ticket_tiers (id, event_id, name) values
   ('44444444-4444-4444-4444-444444444444', '33333333-3333-3333-3333-333333333333', 'Free');
 
--- The current app's register_guest, as a signed-in guest.
+-- A single ticket, as the old app's register_guest stored it (the function is closed to users
+-- now; the row shape still exists in the data).
+set local role gventz_api;
+insert into public.registrations (event_id, tier_id, user_id, attendee_name, attendee_email, status)
+values ('33333333-3333-3333-3333-333333333333', '44444444-4444-4444-4444-444444444444',
+        '22222222-2222-2222-2222-222222222222', 'Guest Person', 'guest@example.com', 'confirmed');
+select throws_ok(
+  $$insert into public.orders (event_id, buyer_id, status, ticket_count, currency)
+    values ('33333333-3333-3333-3333-333333333333', '22222222-2222-2222-2222-222222222222', 'completed', 0, 'NGN')$$,
+  '23514', null, 'an order has at least one ticket');
+reset role;
 set local role authenticated;
 select set_config('request.jwt.claims', '{"sub":"22222222-2222-2222-2222-222222222222","role":"authenticated"}', true);
-select lives_ok(
-  $$select public.register_guest('33333333-3333-3333-3333-333333333333', '44444444-4444-4444-4444-444444444444', 'Guest Person', '', '{}')$$,
-  'register_guest still works');
 select throws_ok(
   $$select public.register_guest('33333333-3333-3333-3333-333333333333', '44444444-4444-4444-4444-444444444444', 'Guest Person', '', '{}')$$,
-  'You are already registered for this event', 'register_guest still refuses a second registration');
+  '42501', null, 'register_guest is closed to signed-in users');
 reset role;
 
 select is((select active_count from public.events where id = '33333333-3333-3333-3333-333333333333'), 1,
-  'a ticket from register_guest is counted');
+  'a single ticket is counted');
 
 -- The API: one order with three tickets.
 set local role gventz_api;
