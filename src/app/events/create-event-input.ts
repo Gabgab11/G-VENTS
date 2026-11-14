@@ -48,6 +48,7 @@ export function createEventBody(formData: FormData): CreateEventBody | { error: 
 
   const names = formData.getAll("tier_name").map(String);
   const quantities = formData.getAll("tier_qty").map(String);
+  const prices = formData.getAll("tier_price").map(String);
   const ticketTypes: CreateEventBody["ticketTypes"] = [];
   for (let i = 0; i < names.length; i++) {
     const name = names[i]!.trim().slice(0, 80);
@@ -55,7 +56,9 @@ export function createEventBody(formData: FormData): CreateEventBody | { error: 
     const raw = (quantities[i] ?? "").trim();
     const quantity = raw === "" ? null : Number(raw);
     if (quantity !== null && (!Number.isInteger(quantity) || quantity <= 0)) return { error: `The quantity for "${name}" must be a whole number above 0.` };
-    // Paid tickets arrive with payments (U7); until then every ticket is free.
+    // Paid tickets need payments (Change 2, D64): a price is refused, never quietly saved as free.
+    const price = (prices[i] ?? "0").trim();
+    if (price !== "" && Number(price) !== 0) return { error: "Paid tickets aren't available yet. Make every ticket free for now." };
     ticketTypes.push({ name, priceMinor: 0, ...(quantity !== null ? { quantity } : {}) });
   }
   if (ticketTypes.length === 0) return { error: "Add at least one ticket." };

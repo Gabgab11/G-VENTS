@@ -89,3 +89,17 @@ describe("isGoogleMapsUrl", () => {
     for (const bad of ["http://maps.app.goo.gl/x1", "https://www.google.com/search?q=x", "https://google.com.evil.com/maps", "https://maps.app.goo.gl.evil.com/x", "https://share.google/", "https://share.google.evil.com/x", "javascript:alert(1)", ""]) expect(isGoogleMapsUrl(bad), bad).toBe(false);
   });
 });
+
+describe("paid tickets while payments are off (D64)", () => {
+  it("refuses a price instead of saving the ticket as free", () => {
+    const paid = base.map(([k, v]) => [k, v] as [string, string]);
+    paid.splice(paid.findIndex(([k]) => k === "tier_qty") + 1, 0, ["tier_price", "5000"]);
+    expect(createEventBody(form(paid))).toEqual({ error: "Paid tickets aren't available yet. Make every ticket free for now." });
+  });
+  it("accepts free tickets with a 0 price", () => {
+    const free = [...base, ["tier_price", "0"], ["tier_price", "0"]] as [string, string][];
+    const body = createEventBody(form(free));
+    expect("error" in body).toBe(false);
+    if (!("error" in body)) expect(body.ticketTypes.every((t) => t.priceMinor === 0)).toBe(true);
+  });
+});

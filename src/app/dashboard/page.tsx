@@ -14,9 +14,11 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
   const { deleted, page: rawPage } = await searchParams;
   const page = Math.max(1, Math.floor(Number(rawPage) || 1));
 
-  const [theme, list] = await Promise.all([
+  const [theme, list, me] = await Promise.all([
     getDashboardTheme(),
     (await api()).GET("/v1/me/events", { params: { query: { page, pageSize: 50 } } }).then(data),
+    // Only to show staff the way into the admin dashboard; the API guards /v1/admin itself.
+    (await api()).GET("/v1/me").then(data).catch(() => null),
   ]);
 
   const rows: DashEvent[] = list.items.map((e) => ({
@@ -42,9 +44,12 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
           <div className="eyebrow">Organizer</div>
           <h1>Your events</h1>
         </div>
-        <Link href="/events/new" className="btn-white">+ Create event</Link>
+        <div className="row-gap">
+          {me?.isStaff && <Link href="/admin" className="btn-ghost">G-ventZ admin</Link>}
+          <Link href="/events/new" className="btn-white">+ Create event</Link>
+        </div>
       </div>
-      <p className="muted">Manage registrations, guests, and announcements. Private events open only by link.</p>
+      <p className="muted">Manage registrations, guests, and announcements. Private events open only by link. <Link href="/account/security" className="gold">Two-step sign-in</Link></p>
 
       {deleted === "1" && <p className="ok" role="status">Event deleted.</p>}
 

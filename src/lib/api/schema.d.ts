@@ -736,6 +736,230 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/admin/overview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Platform overview
+         * @description Events and hosts are all-time totals. Tickets issued (confirmed, free and paid), check-ins, money per currency (paid, completed orders) and the series cover [from, to). Defaults to the last 30 days by day.
+         */
+        get: operations["AdminController_overview_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/hosts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Hosts
+         * @description Event owners, newest first. `q` matches name or email. Cursor pagination.
+         */
+        get: operations["AdminController_hosts_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/hosts/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * One host
+         * @description The host with their events.
+         */
+        get: operations["AdminController_host_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/hosts/{id}/suspend": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Suspend a host
+         * @description They can't create, publish or edit events, and their events take no new registrations. Audited.
+         */
+        post: operations["AdminController_suspend_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/hosts/{id}/unsuspend": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Lift a suspension
+         * @description Audited.
+         */
+        post: operations["AdminController_unsuspend_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/events": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Every event
+         * @description Newest created first. `q` matches title, link, owner name or email. Cursor pagination.
+         */
+        get: operations["AdminController_events_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/events/{id}/unpublish": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Unpublish an event
+         * @description Back to draft (hidden). Only published events. Audited with the staff member as actor.
+         */
+        post: operations["AdminController_unpublish_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/events/{id}/cancel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Cancel an event
+         * @description As the host's cancel: closes registration. Audited with the staff member as actor.
+         */
+        post: operations["AdminController_cancel_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/orders": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Orders
+         * @description Newest first. `q` matches the start of an order id, buyer email or event title. Cursor pagination.
+         */
+        get: operations["AdminController_orders_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/settings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Platform settings
+         * @description Payment switches (with whether each provider is configured), fee rates, settlement delay and the staff list.
+         */
+        get: operations["AdminController_getSettings_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Change platform settings
+         * @description Switches, fees and the delay; only fields sent change. Switching on a provider whose keys aren't configured is refused (409 settings.provider_not_configured). Audited with before and after.
+         */
+        patch: operations["AdminController_updateSettings_v1"];
+        trace?: never;
+    };
+    "/v1/payments/availability": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Can hosts sell paid tickets?
+         * @description True when at least one payment provider is switched on by G-ventZ and configured on the server (D64).
+         */
+        get: operations["PaymentsAvailabilityController_availability_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/health/live": {
         parameters: {
             query?: never;
@@ -1534,6 +1758,331 @@ export interface components {
         };
         PlaceDetailsResponse: {
             place: components["schemas"]["PlaceResponse"];
+        };
+        OverviewEventsDto: {
+            total: number;
+            published: number;
+            /** @description Published and not yet started */
+            upcoming: number;
+        };
+        OverviewHostsDto: {
+            /** @description Distinct event owners */
+            total: number;
+            suspended: number;
+        };
+        OverviewMoneyDto: {
+            /** @example NGN */
+            currency: string;
+            /** @description Paid, completed orders; minor units */
+            grossMinor: number;
+            /** @description G-ventZ fees; minor units (0 until paid checkout, M5) */
+            feesMinor: number;
+            /** @description Payment provider charges; minor units (0 until M5) */
+            providerChargesMinor: number;
+            /** @description Refunds; minor units (0 until M5) */
+            refundsMinor: number;
+            /** @description gross - fees - provider charges - refunds; minor units */
+            netMinor: number;
+        };
+        MoneyDto: {
+            /**
+             * @description ISO 4217
+             * @example NGN
+             */
+            currency: string;
+            /**
+             * @description Integer minor units (kobo, cents)
+             * @example 250000
+             */
+            amountMinor: number;
+        };
+        OverviewPointDto: {
+            /**
+             * Format: date-time
+             * @description Start of the day, ISO week (Monday) or month, UTC
+             */
+            start: string;
+            /** @description Confirmed tickets created in the bucket */
+            ticketsIssued: number;
+            /** @description Check-ins in the bucket */
+            checkIns: number;
+            /** @description Orders created in the bucket, any kind or status */
+            ordersPlaced: number;
+            /** @description Events created in the bucket */
+            eventsCreated: number;
+            /** @description Hosts whose first event was created in the bucket */
+            newHosts: number;
+            /** @description Gross per currency from paid, completed orders created in the bucket */
+            revenue: components["schemas"]["MoneyDto"][];
+        };
+        CategoryBreakdownDto: {
+            /** @example Music */
+            category: string;
+            /** @description Tickets issued in the period for events in this category */
+            tickets: number;
+            /** @description Events in this category created in the period */
+            events: number;
+        };
+        TopEventDto: {
+            /** Format: uuid */
+            id: string;
+            title: string;
+            slug: string;
+            /** @description Tickets issued in the period */
+            tickets: number;
+            /** @description Of those tickets, how many have checked in */
+            checkedIn: number;
+        };
+        StatusCountDto: {
+            /** @enum {string} */
+            status: "completed" | "pending_approval" | "waitlisted" | "declined" | "cancelled" | "awaiting_payment" | "expired";
+            count: number;
+        };
+        TicketsByKindDto: {
+            free: number;
+            paid: number;
+        };
+        CityBreakdownDto: {
+            /** @description The venue's city; 'Online' for online events, 'Unknown' when a venue has no city */
+            city: string;
+            country: string | null;
+            /** @description Tickets issued in the period */
+            tickets: number;
+        };
+        CheckInRateDto: {
+            /** @description Confirmed tickets for events that started in the period */
+            tickets: number;
+            /** @description Of those, checked in */
+            checkedIn: number;
+        };
+        OverviewBreakdownsDto: {
+            /** @description Most tickets first */
+            byCategory: components["schemas"]["CategoryBreakdownDto"][];
+            /** @description Top 10 by tickets issued in the period */
+            topEvents: components["schemas"]["TopEventDto"][];
+            /** @description Orders created in the period, by status */
+            ordersByStatus: components["schemas"]["StatusCountDto"][];
+            /** @description Tickets issued in the period, free or paid */
+            ticketsByKind: components["schemas"]["TicketsByKindDto"];
+            /** @description Top 10 cities by tickets issued in the period */
+            byCity: components["schemas"]["CityBreakdownDto"][];
+            /** @description For events that started in the period */
+            checkInRate: components["schemas"]["CheckInRateDto"];
+        };
+        AdminOverviewDto: {
+            /** Format: date-time */
+            from: string;
+            /** Format: date-time */
+            to: string;
+            /** @enum {string} */
+            interval: "day" | "week" | "month";
+            /** @description All time */
+            events: components["schemas"]["OverviewEventsDto"];
+            /** @description All time */
+            hosts: components["schemas"]["OverviewHostsDto"];
+            /** @description Confirmed tickets (free and paid) created in the period */
+            ticketsIssued: number;
+            /** @description Check-ins in the period */
+            checkIns: number;
+            /** @description Per currency, in the period */
+            money: components["schemas"]["OverviewMoneyDto"][];
+            /** @description Per interval, every bucket in the period */
+            series: components["schemas"]["OverviewPointDto"][];
+            /** @description All for the period */
+            breakdowns: components["schemas"]["OverviewBreakdownsDto"];
+        };
+        AdminHostDto: {
+            /** Format: uuid */
+            id: string;
+            name: string | null;
+            email: string | null;
+            /** Format: date-time */
+            joinedAt: string;
+            eventsCount: number;
+            /** @description Confirmed tickets across their events */
+            ticketsIssued: number;
+            /** @description Paid, completed orders, per currency */
+            gross: components["schemas"]["MoneyDto"][];
+            /** Format: date-time */
+            suspendedAt: string | null;
+            suspendedReason: string | null;
+        };
+        AdminHostsPageDto: {
+            items: components["schemas"]["AdminHostDto"][];
+            nextCursor: string | null;
+        };
+        AdminHostEventDto: {
+            /** Format: uuid */
+            id: string;
+            title: string;
+            slug: string;
+            /** @enum {string} */
+            status: "draft" | "published" | "cancelled";
+            /** Format: date-time */
+            startsAt: string;
+        };
+        AdminHostDetailDto: {
+            /** Format: uuid */
+            id: string;
+            name: string | null;
+            email: string | null;
+            /** Format: date-time */
+            joinedAt: string;
+            eventsCount: number;
+            /** @description Confirmed tickets across their events */
+            ticketsIssued: number;
+            /** @description Paid, completed orders, per currency */
+            gross: components["schemas"]["MoneyDto"][];
+            /** Format: date-time */
+            suspendedAt: string | null;
+            suspendedReason: string | null;
+            /** @description Newest start first, at most 200 */
+            events: components["schemas"]["AdminHostEventDto"][];
+        };
+        ReasonDto: {
+            /** @description Why; kept in the audit log */
+            reason: string;
+        };
+        AdminEventOwnerDto: {
+            /** Format: uuid */
+            id: string;
+            name: string | null;
+            email: string | null;
+        };
+        AdminEventDto: {
+            /** Format: uuid */
+            id: string;
+            title: string;
+            slug: string;
+            owner: components["schemas"]["AdminEventOwnerDto"];
+            /** @enum {string} */
+            status: "draft" | "published" | "cancelled";
+            /** @enum {string} */
+            visibility: "public" | "private";
+            /** Format: date-time */
+            startsAt: string;
+            /** @description The ticket types' currency */
+            currency: string | null;
+            ticketsIssued: number;
+            checkedIn: number;
+            gross: components["schemas"]["MoneyDto"][];
+        };
+        AdminEventsPageDto: {
+            items: components["schemas"]["AdminEventDto"][];
+            nextCursor: string | null;
+        };
+        OptionalReasonDto: {
+            /** @description Why; kept in the audit log */
+            reason?: string;
+        };
+        AdminOrderEventDto: {
+            /** Format: uuid */
+            id: string;
+            title: string;
+        };
+        AdminOrderDto: {
+            /** Format: uuid */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            event: components["schemas"]["AdminOrderEventDto"];
+            buyerEmail: string | null;
+            /** @enum {string} */
+            kind: "free" | "paid";
+            /** @enum {string} */
+            status: "completed" | "pending_approval" | "waitlisted" | "declined" | "cancelled" | "awaiting_payment" | "expired";
+            /** @description Tickets in the order */
+            tickets: number;
+            /** @description Integer minor units */
+            amountMinor: number;
+            /** @example NGN */
+            currency: string;
+        };
+        AdminOrdersPageDto: {
+            items: components["schemas"]["AdminOrderDto"][];
+            nextCursor: string | null;
+        };
+        FeeRateDto: {
+            /**
+             * @description Percentage in basis points (150 = 1.5%)
+             * @example 150
+             */
+            percentBps: number;
+            /**
+             * @description Fixed amount in minor units
+             * @example 10000
+             */
+            fixedMinor: number;
+        };
+        ProviderStateDto: {
+            /** @description Switched on by staff */
+            enabled: boolean;
+            /** @description The provider's secret key is set on the server */
+            configured: boolean;
+        };
+        PaymentsStateDto: {
+            paystack: components["schemas"]["ProviderStateDto"];
+            interswitch: components["schemas"]["ProviderStateDto"];
+            stripe: components["schemas"]["ProviderStateDto"];
+        };
+        StaffMemberDto: {
+            email: string;
+            note: string | null;
+            /** Format: date-time */
+            addedAt: string;
+        };
+        AdminSettingsDto: {
+            payments: components["schemas"]["PaymentsStateDto"];
+            /**
+             * @description Fee rate per ISO 4217 currency
+             * @example {
+             *       "NGN": {
+             *         "percentBps": 150,
+             *         "fixedMinor": 10000
+             *       }
+             *     }
+             */
+            fees: {
+                [key: string]: components["schemas"]["FeeRateDto"];
+            };
+            /** @description Standard G-ventZ fee for every currency without its own rate in `fees`; null = none */
+            defaultFee: components["schemas"]["FeeRateDto"] | null;
+            settlementDelayWorkingDays: number;
+            /** @description G-ventZ staff (changed by migration only) */
+            staff: components["schemas"]["StaffMemberDto"][];
+        };
+        ProviderSwitchDto: {
+            enabled: boolean;
+        };
+        PaymentsPatchDto: {
+            paystack?: components["schemas"]["ProviderSwitchDto"];
+            interswitch?: components["schemas"]["ProviderSwitchDto"];
+            stripe?: components["schemas"]["ProviderSwitchDto"];
+        };
+        UpdateSettingsDto: {
+            /** @description Switch providers on or off. Switching on a provider whose keys aren't set is refused (settings.provider_not_configured). */
+            payments?: components["schemas"]["PaymentsPatchDto"];
+            /**
+             * @description Fee rate per ISO 4217 currency; only currencies sent change, and null removes one.
+             * @example {
+             *       "NGN": {
+             *         "percentBps": 150,
+             *         "fixedMinor": 10000
+             *       },
+             *       "USD": null
+             *     }
+             */
+            fees?: {
+                [key: string]: components["schemas"]["FeeRateDto"] | null;
+            };
+            /** @description Standard fee for every currency without its own rate; null clears it. */
+            defaultFee?: components["schemas"]["FeeRateDto"] | null;
+            settlementDelayWorkingDays?: number;
+        };
+        PaymentsAvailabilityDto: {
+            /** @description Hosts can sell paid tickets: at least one provider is switched on and configured */
+            paidTickets: boolean;
+            providers: ("paystack" | "interswitch" | "stripe")[];
         };
     };
     responses: never;
@@ -3153,6 +3702,506 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    AdminController_overview_v1: {
+        parameters: {
+            query?: {
+                /** @description Start of the period (inclusive). Default: 30 days before `to`. */
+                from?: string;
+                /** @description End of the period (exclusive). Default: now. */
+                to?: string;
+                interval?: "day" | "week" | "month";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminOverviewDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.mfa_required: staff must confirm with their authenticator app (aal2) */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description route.not_found for anyone who is not G-ventZ staff */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AdminController_hosts_v1: {
+        parameters: {
+            query?: {
+                /** @description Search text */
+                q?: string;
+                cursor?: string;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminHostsPageDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.mfa_required: staff must confirm with their authenticator app (aal2) */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description route.not_found for anyone who is not G-ventZ staff */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AdminController_host_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminHostDetailDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.mfa_required: staff must confirm with their authenticator app (aal2) */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description route.not_found for anyone who is not G-ventZ staff */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AdminController_suspend_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReasonDto"];
+            };
+        };
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.mfa_required: staff must confirm with their authenticator app (aal2) */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description route.not_found for anyone who is not G-ventZ staff */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AdminController_unsuspend_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.mfa_required: staff must confirm with their authenticator app (aal2) */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description route.not_found for anyone who is not G-ventZ staff */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AdminController_events_v1: {
+        parameters: {
+            query?: {
+                /** @description Search text */
+                q?: string;
+                cursor?: string;
+                limit?: number;
+                status?: "draft" | "published" | "cancelled";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminEventsPageDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.mfa_required: staff must confirm with their authenticator app (aal2) */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description route.not_found for anyone who is not G-ventZ staff */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AdminController_unpublish_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OptionalReasonDto"];
+            };
+        };
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.mfa_required: staff must confirm with their authenticator app (aal2) */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description route.not_found for anyone who is not G-ventZ staff */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AdminController_cancel_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReasonDto"];
+            };
+        };
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.mfa_required: staff must confirm with their authenticator app (aal2) */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description route.not_found for anyone who is not G-ventZ staff */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AdminController_orders_v1: {
+        parameters: {
+            query?: {
+                /** @description Search text */
+                q?: string;
+                cursor?: string;
+                limit?: number;
+                status?: "completed" | "pending_approval" | "waitlisted" | "declined" | "cancelled" | "awaiting_payment" | "expired";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminOrdersPageDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.mfa_required: staff must confirm with their authenticator app (aal2) */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description route.not_found for anyone who is not G-ventZ staff */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AdminController_getSettings_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminSettingsDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.mfa_required: staff must confirm with their authenticator app (aal2) */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description route.not_found for anyone who is not G-ventZ staff */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AdminController_updateSettings_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateSettingsDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminSettingsDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.mfa_required: staff must confirm with their authenticator app (aal2) */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description route.not_found for anyone who is not G-ventZ staff */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PaymentsAvailabilityController_availability_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaymentsAvailabilityDto"];
+                };
             };
         };
     };

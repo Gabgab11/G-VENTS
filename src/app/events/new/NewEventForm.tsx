@@ -21,10 +21,12 @@ export default function NewEventForm({
   defaultTheme,
   detectedCountry,
   placesEnabled,
+  paidAvailable = false,
 }: {
   defaultTheme: string;
   detectedCountry: string | null;
   placesEnabled: boolean;
+  paidAvailable?: boolean;
 }) {
   const [state, formAction, pending] = useActionState<CreateEventState, FormData>(createEvent, undefined);
   const [title, setTitle] = useState("");
@@ -191,8 +193,11 @@ export default function NewEventForm({
             <div className="panel-label">Tickets</div>
             <div className="ticket-type">
               <button type="button" className={isFree ? "on" : ""} onClick={() => { setIsFree(true); setTiers((t) => t.map((x) => ({ ...x, price: "0" }))); }}>Free</button>
-              <button type="button" className={!isFree ? "on" : ""} onClick={() => setIsFree(false)}>Paid</button>
+              {/* Payments are off until G-ventZ has live keys (Change 2, D64): Paid shows but can't be chosen. */}
+              <button type="button" className={!isFree ? "on" : ""} onClick={() => setIsFree(false)} disabled={!paidAvailable}
+                aria-describedby={paidAvailable ? undefined : "paid-soon"}>Paid{!paidAvailable && <span className="soon-tag"> Coming soon</span>}</button>
             </div>
+            {!paidAvailable && <p className="muted small" id="paid-soon">Paid tickets are coming soon. For now, every ticket is free.</p>}
             {tiers.map((t) => (
               <div className="tier-card" key={t.id}>
                 <div className="row2">

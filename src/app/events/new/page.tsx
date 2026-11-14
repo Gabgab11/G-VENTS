@@ -20,6 +20,8 @@ export default async function NewEventPage() {
       defaultTheme={defaultTheme}
       detectedCountry={detectedCountry}
       placesEnabled
+      // Paid checkout arrives with Paystack (M5); until then Paid stays "Coming soon" (D64).
+      paidAvailable={false}
     />
   );
 }
