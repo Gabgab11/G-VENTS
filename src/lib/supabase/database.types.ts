@@ -31,6 +31,26 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"disputes": {
+                  Row: {
+                    "amount_minor": number,"currency": string,"id": string,"opened_at": string,"order_id": string,"provider_dispute_id": string,"resolved_at": string | null,"status": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "amount_minor": number,"currency": string,"id"?: string,"opened_at"?: string,"order_id": string,"provider_dispute_id": string,"resolved_at"?: string | null,"status"?: string
+                  }
+                  Update: {
+                    "amount_minor"?: number,"currency"?: string,"id"?: string,"opened_at"?: string,"order_id"?: string,"provider_dispute_id"?: string,"resolved_at"?: string | null,"status"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "disputes_order_id_fkey"
+      columns: ["order_id"]
+isOneToOne: false
+      referencedRelation: "orders"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"email_campaign_recipients": {
                   Row: {
                     "campaign_id": string,"email": string,"id": number,"name": string | null,"sent_at": string | null,"status": string,"token": string
@@ -157,14 +177,14 @@ isOneToOne: false
                   ]
                 },"events": {
                   Row: {
-                    "active_count": number,"address": string | null,"capacity": number | null,"category": string,"city": string | null,"country": string | null,"country_code": string | null,"cover_theme": string,"cover_url": string | null,"created_at": string,"description": string | null,"ends_at": string | null,"fee_choice": string,"id": string,"is_online": boolean,"lat": number | null,"lng": number | null,"maps_url": string | null,"notify_registration": boolean,"owner_id": string,"per_buyer_limit": number,"place_id": string | null,"refund_policy": string | null,"region": string | null,"registration_open": boolean,"require_approval": boolean,"show_attendee_count": boolean,"slug": string,"starts_at": string,"status": string,"timezone": string,"title": string,"updated_at": string,"venue_name": string | null,"visibility": string
+                    "active_count": number,"address": string | null,"capacity": number | null,"category": string,"city": string | null,"country": string | null,"country_code": string | null,"cover_theme": string,"cover_url": string | null,"created_at": string,"description": string | null,"ends_at": string | null,"fee_choice": string,"id": string,"is_online": boolean,"lat": number | null,"lng": number | null,"maps_url": string | null,"notify_registration": boolean,"owner_id": string,"payment_country": string | null,"per_buyer_limit": number,"place_id": string | null,"refund_policy": string | null,"region": string | null,"registration_open": boolean,"require_approval": boolean,"show_attendee_count": boolean,"slug": string,"starts_at": string,"status": string,"timezone": string,"title": string,"updated_at": string,"venue_name": string | null,"visibility": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "active_count"?: number,"address"?: string | null,"capacity"?: number | null,"category": string,"city"?: string | null,"country"?: string | null,"country_code"?: string | null,"cover_theme"?: string,"cover_url"?: string | null,"created_at"?: string,"description"?: string | null,"ends_at"?: string | null,"fee_choice"?: string,"id"?: string,"is_online"?: boolean,"lat"?: number | null,"lng"?: number | null,"maps_url"?: string | null,"notify_registration"?: boolean,"owner_id": string,"per_buyer_limit"?: number,"place_id"?: string | null,"refund_policy"?: string | null,"region"?: string | null,"registration_open"?: boolean,"require_approval"?: boolean,"show_attendee_count"?: boolean,"slug": string,"starts_at": string,"status"?: string,"timezone"?: string,"title": string,"updated_at"?: string,"venue_name"?: string | null,"visibility"?: string
+                    "active_count"?: number,"address"?: string | null,"capacity"?: number | null,"category": string,"city"?: string | null,"country"?: string | null,"country_code"?: string | null,"cover_theme"?: string,"cover_url"?: string | null,"created_at"?: string,"description"?: string | null,"ends_at"?: string | null,"fee_choice"?: string,"id"?: string,"is_online"?: boolean,"lat"?: number | null,"lng"?: number | null,"maps_url"?: string | null,"notify_registration"?: boolean,"owner_id": string,"payment_country"?: string | null,"per_buyer_limit"?: number,"place_id"?: string | null,"refund_policy"?: string | null,"region"?: string | null,"registration_open"?: boolean,"require_approval"?: boolean,"show_attendee_count"?: boolean,"slug": string,"starts_at": string,"status"?: string,"timezone"?: string,"title": string,"updated_at"?: string,"venue_name"?: string | null,"visibility"?: string
                   }
                   Update: {
-                    "active_count"?: number,"address"?: string | null,"capacity"?: number | null,"category"?: string,"city"?: string | null,"country"?: string | null,"country_code"?: string | null,"cover_theme"?: string,"cover_url"?: string | null,"created_at"?: string,"description"?: string | null,"ends_at"?: string | null,"fee_choice"?: string,"id"?: string,"is_online"?: boolean,"lat"?: number | null,"lng"?: number | null,"maps_url"?: string | null,"notify_registration"?: boolean,"owner_id"?: string,"per_buyer_limit"?: number,"place_id"?: string | null,"refund_policy"?: string | null,"region"?: string | null,"registration_open"?: boolean,"require_approval"?: boolean,"show_attendee_count"?: boolean,"slug"?: string,"starts_at"?: string,"status"?: string,"timezone"?: string,"title"?: string,"updated_at"?: string,"venue_name"?: string | null,"visibility"?: string
+                    "active_count"?: number,"address"?: string | null,"capacity"?: number | null,"category"?: string,"city"?: string | null,"country"?: string | null,"country_code"?: string | null,"cover_theme"?: string,"cover_url"?: string | null,"created_at"?: string,"description"?: string | null,"ends_at"?: string | null,"fee_choice"?: string,"id"?: string,"is_online"?: boolean,"lat"?: number | null,"lng"?: number | null,"maps_url"?: string | null,"notify_registration"?: boolean,"owner_id"?: string,"payment_country"?: string | null,"per_buyer_limit"?: number,"place_id"?: string | null,"refund_policy"?: string | null,"region"?: string | null,"registration_open"?: boolean,"require_approval"?: boolean,"show_attendee_count"?: boolean,"slug"?: string,"starts_at"?: string,"status"?: string,"timezone"?: string,"title"?: string,"updated_at"?: string,"venue_name"?: string | null,"visibility"?: string
                   }
                   Relationships: [
                     {
@@ -175,16 +195,80 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
-                },"orders": {
+                },"host_applications": {
                   Row: {
-                    "amount_minor": number,"answers": NonNullable<Json>,"buyer_id": string | null,"created_at": string,"currency": string,"decided_at": string | null,"decided_by": string | null,"decision_note": string | null,"event_id": string,"id": string,"kind": string,"status": string,"ticket_count": number,"updated_at": string
+                    "account_number": string,"bank_code": string,"bank_name": string | null,"created_at": string,"decided_at": string | null,"decided_by": string | null,"document_path": string,"host_id": string,"id": string,"legal_name": string,"payout_country": string,"phone": string,"reason": string | null,"resolved_account_name": string | null,"status": string,"updated_at": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "amount_minor"?: number,"answers"?: NonNullable<Json>,"buyer_id"?: string | null,"created_at"?: string,"currency": string,"decided_at"?: string | null,"decided_by"?: string | null,"decision_note"?: string | null,"event_id": string,"id"?: string,"kind"?: string,"status": string,"ticket_count": number,"updated_at"?: string
+                    "account_number": string,"bank_code": string,"bank_name"?: string | null,"created_at"?: string,"decided_at"?: string | null,"decided_by"?: string | null,"document_path": string,"host_id": string,"id"?: string,"legal_name": string,"payout_country": string,"phone": string,"reason"?: string | null,"resolved_account_name"?: string | null,"status"?: string,"updated_at"?: string
                   }
                   Update: {
-                    "amount_minor"?: number,"answers"?: NonNullable<Json>,"buyer_id"?: string | null,"created_at"?: string,"currency"?: string,"decided_at"?: string | null,"decided_by"?: string | null,"decision_note"?: string | null,"event_id"?: string,"id"?: string,"kind"?: string,"status"?: string,"ticket_count"?: number,"updated_at"?: string
+                    "account_number"?: string,"bank_code"?: string,"bank_name"?: string | null,"created_at"?: string,"decided_at"?: string | null,"decided_by"?: string | null,"document_path"?: string,"host_id"?: string,"id"?: string,"legal_name"?: string,"payout_country"?: string,"phone"?: string,"reason"?: string | null,"resolved_account_name"?: string | null,"status"?: string,"updated_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "host_applications_decided_by_fkey"
+      columns: ["decided_by"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "host_applications_host_id_fkey"
+      columns: ["host_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"ledger_entries": {
+                  Row: {
+                    "account": string,"amount_minor": number,"created_at": string,"currency": string,"dispute_id": string | null,"host_id": string | null,"id": number,"kind": string,"order_id": string | null,"reference": string | null,"refund_id": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "account": string,"amount_minor": number,"created_at"?: string,"currency": string,"dispute_id"?: string | null,"host_id"?: string | null,"id"?: never,"kind": string,"order_id"?: string | null,"reference"?: string | null,"refund_id"?: string | null
+                  }
+                  Update: {
+                    "account"?: string,"amount_minor"?: number,"created_at"?: string,"currency"?: string,"dispute_id"?: string | null,"host_id"?: string | null,"id"?: never,"kind"?: string,"order_id"?: string | null,"reference"?: string | null,"refund_id"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "ledger_entries_dispute_id_fkey"
+      columns: ["dispute_id"]
+isOneToOne: false
+      referencedRelation: "disputes"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "ledger_entries_host_id_fkey"
+      columns: ["host_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "ledger_entries_order_id_fkey"
+      columns: ["order_id"]
+isOneToOne: false
+      referencedRelation: "orders"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "ledger_entries_refund_id_fkey"
+      columns: ["refund_id"]
+isOneToOne: false
+      referencedRelation: "refunds"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"orders": {
+                  Row: {
+                    "amount_minor": number,"answers": NonNullable<Json>,"buyer_id": string | null,"country": string | null,"created_at": string,"currency": string,"decided_at": string | null,"decided_by": string | null,"decision_note": string | null,"event_id": string,"hold_expires_at": string | null,"id": string,"kind": string,"non_refundable_accepted_at": string | null,"quote": Json | null,"reference": string | null,"status": string,"ticket_count": number,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "amount_minor"?: number,"answers"?: NonNullable<Json>,"buyer_id"?: string | null,"country"?: string | null,"created_at"?: string,"currency": string,"decided_at"?: string | null,"decided_by"?: string | null,"decision_note"?: string | null,"event_id": string,"hold_expires_at"?: string | null,"id"?: string,"kind"?: string,"non_refundable_accepted_at"?: string | null,"quote"?: Json | null,"reference"?: string | null,"status": string,"ticket_count": number,"updated_at"?: string
+                  }
+                  Update: {
+                    "amount_minor"?: number,"answers"?: NonNullable<Json>,"buyer_id"?: string | null,"country"?: string | null,"created_at"?: string,"currency"?: string,"decided_at"?: string | null,"decided_by"?: string | null,"decision_note"?: string | null,"event_id"?: string,"hold_expires_at"?: string | null,"id"?: string,"kind"?: string,"non_refundable_accepted_at"?: string | null,"quote"?: Json | null,"reference"?: string | null,"status"?: string,"ticket_count"?: number,"updated_at"?: string
                   }
                   Relationships: [
                     {
@@ -221,6 +305,52 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"payments": {
+                  Row: {
+                    "access_code": string | null,"amount_minor": number,"authorization_url": string | null,"channel": string | null,"country": string,"created_at": string,"currency": string,"id": string,"order_id": string,"provider": string,"provider_charge_minor": number | null,"provider_transaction_id": string | null,"reference": string,"status": string,"updated_at": string,"verified_at": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "access_code"?: string | null,"amount_minor": number,"authorization_url"?: string | null,"channel"?: string | null,"country": string,"created_at"?: string,"currency": string,"id"?: string,"order_id": string,"provider"?: string,"provider_charge_minor"?: number | null,"provider_transaction_id"?: string | null,"reference": string,"status"?: string,"updated_at"?: string,"verified_at"?: string | null
+                  }
+                  Update: {
+                    "access_code"?: string | null,"amount_minor"?: number,"authorization_url"?: string | null,"channel"?: string | null,"country"?: string,"created_at"?: string,"currency"?: string,"id"?: string,"order_id"?: string,"provider"?: string,"provider_charge_minor"?: number | null,"provider_transaction_id"?: string | null,"reference"?: string,"status"?: string,"updated_at"?: string,"verified_at"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "payments_order_id_fkey"
+      columns: ["order_id"]
+isOneToOne: false
+      referencedRelation: "orders"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"payout_accounts": {
+                  Row: {
+                    "account_name": string | null,"account_number": string,"activated_at": string | null,"application_id": string | null,"bank_code": string,"bank_name": string | null,"business_name": string,"country": string,"created_at": string,"currency": string,"host_id": string,"id": string,"last_error": string | null,"provider": string,"replaced_at": string | null,"status": string,"subaccount_code": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "account_name"?: string | null,"account_number": string,"activated_at"?: string | null,"application_id"?: string | null,"bank_code": string,"bank_name"?: string | null,"business_name": string,"country": string,"created_at"?: string,"currency": string,"host_id": string,"id"?: string,"last_error"?: string | null,"provider"?: string,"replaced_at"?: string | null,"status"?: string,"subaccount_code"?: string | null
+                  }
+                  Update: {
+                    "account_name"?: string | null,"account_number"?: string,"activated_at"?: string | null,"application_id"?: string | null,"bank_code"?: string,"bank_name"?: string | null,"business_name"?: string,"country"?: string,"created_at"?: string,"currency"?: string,"host_id"?: string,"id"?: string,"last_error"?: string | null,"provider"?: string,"replaced_at"?: string | null,"status"?: string,"subaccount_code"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "payout_accounts_application_id_fkey"
+      columns: ["application_id"]
+isOneToOne: false
+      referencedRelation: "host_applications"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "payout_accounts_host_id_fkey"
+      columns: ["host_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"places_usage": {
                   Row: {
                     "day": string,"day_count": number,"minute_count": number,"minute_start": string,"user_id": string
@@ -234,6 +364,26 @@ isOneToOne: false
                   }
                   Relationships: [
                     
+                  ]
+                },"platform_settings": {
+                  Row: {
+                    "key": string,"updated_at": string,"updated_by": string | null,"value": NonNullable<Json>
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "key": string,"updated_at"?: string,"updated_by"?: string | null,"value": NonNullable<Json>
+                  }
+                  Update: {
+                    "key"?: string,"updated_at"?: string,"updated_by"?: string | null,"value"?: NonNullable<Json>
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "platform_settings_updated_by_fkey"
+      columns: ["updated_by"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
                   ]
                 },"platform_staff": {
                   Row: {
@@ -249,19 +399,85 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
-                },"profiles": {
+                },"platform_staff_invites": {
                   Row: {
-                    "country": string | null,"created_at": string,"dashboard_theme": string,"email": string | null,"full_name": string | null,"id": string
+                    "accepted_at": string | null,"created_at": string,"email": string,"expires_at": string,"id": string,"invited_by": string | null,"revoked_at": string | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "country"?: string | null,"created_at"?: string,"dashboard_theme"?: string,"email"?: string | null,"full_name"?: string | null,"id": string
+                    "accepted_at"?: string | null,"created_at"?: string,"email": string,"expires_at": string,"id"?: string,"invited_by"?: string | null,"revoked_at"?: string | null
                   }
                   Update: {
-                    "country"?: string | null,"created_at"?: string,"dashboard_theme"?: string,"email"?: string | null,"full_name"?: string | null,"id"?: string
+                    "accepted_at"?: string | null,"created_at"?: string,"email"?: string,"expires_at"?: string,"id"?: string,"invited_by"?: string | null,"revoked_at"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "platform_staff_invites_invited_by_fkey"
+      columns: ["invited_by"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"profiles": {
+                  Row: {
+                    "country": string | null,"created_at": string,"dashboard_theme": string,"email": string | null,"full_name": string | null,"id": string,"suspended_at": string | null,"suspended_reason": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "country"?: string | null,"created_at"?: string,"dashboard_theme"?: string,"email"?: string | null,"full_name"?: string | null,"id": string,"suspended_at"?: string | null,"suspended_reason"?: string | null
+                  }
+                  Update: {
+                    "country"?: string | null,"created_at"?: string,"dashboard_theme"?: string,"email"?: string | null,"full_name"?: string | null,"id"?: string,"suspended_at"?: string | null,"suspended_reason"?: string | null
                   }
                   Relationships: [
                     
+                  ]
+                },"reconciliation_runs": {
+                  Row: {
+                    "country": string,"created_at": string,"day": string,"differences": NonNullable<Json>,"id": string,"matched": number,"provider": string,"status": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "country": string,"created_at"?: string,"day": string,"differences"?: NonNullable<Json>,"id"?: string,"matched"?: number,"provider": string,"status": string
+                  }
+                  Update: {
+                    "country"?: string,"created_at"?: string,"day"?: string,"differences"?: NonNullable<Json>,"id"?: string,"matched"?: number,"provider"?: string,"status"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"refunds": {
+                  Row: {
+                    "amount_minor": number,"attempts": number,"created_at": string,"currency": string,"host_debt_minor": number,"id": string,"last_error": string | null,"next_attempt_at": string | null,"order_id": string,"payment_id": string | null,"provider_refund_id": string | null,"reason": string,"requested_by": string | null,"status": string,"ticket_ids": (string)[],"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "amount_minor": number,"attempts"?: number,"created_at"?: string,"currency": string,"host_debt_minor"?: number,"id"?: string,"last_error"?: string | null,"next_attempt_at"?: string | null,"order_id": string,"payment_id"?: string | null,"provider_refund_id"?: string | null,"reason": string,"requested_by"?: string | null,"status"?: string,"ticket_ids"?: (string)[],"updated_at"?: string
+                  }
+                  Update: {
+                    "amount_minor"?: number,"attempts"?: number,"created_at"?: string,"currency"?: string,"host_debt_minor"?: number,"id"?: string,"last_error"?: string | null,"next_attempt_at"?: string | null,"order_id"?: string,"payment_id"?: string | null,"provider_refund_id"?: string | null,"reason"?: string,"requested_by"?: string | null,"status"?: string,"ticket_ids"?: (string)[],"updated_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "refunds_order_id_fkey"
+      columns: ["order_id"]
+isOneToOne: false
+      referencedRelation: "orders"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "refunds_payment_id_fkey"
+      columns: ["payment_id"]
+isOneToOne: false
+      referencedRelation: "payments"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "refunds_requested_by_fkey"
+      columns: ["requested_by"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
                   ]
                 },"registrations": {
                   Row: {
@@ -340,6 +556,46 @@ isOneToOne: false
       referencedRelation: "events"
       referencedColumns: ["id"]
     }
+                  ]
+                },"waitlist_offers": {
+                  Row: {
+                    "event_id": string,"expires_at": string,"id": string,"offered_at": string,"order_id": string,"status": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "event_id": string,"expires_at": string,"id"?: string,"offered_at"?: string,"order_id": string,"status"?: string
+                  }
+                  Update: {
+                    "event_id"?: string,"expires_at"?: string,"id"?: string,"offered_at"?: string,"order_id"?: string,"status"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "waitlist_offers_event_id_fkey"
+      columns: ["event_id"]
+isOneToOne: false
+      referencedRelation: "events"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "waitlist_offers_order_id_fkey"
+      columns: ["order_id"]
+isOneToOne: false
+      referencedRelation: "orders"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"webhook_inbox": {
+                  Row: {
+                    "attempts": number,"country": string,"event_id": string,"id": string,"outcome": string | null,"payload": NonNullable<Json>,"processed_at": string | null,"provider": string,"received_at": string,"type": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "attempts"?: number,"country": string,"event_id": string,"id"?: string,"outcome"?: string | null,"payload": NonNullable<Json>,"processed_at"?: string | null,"provider": string,"received_at"?: string,"type": string
+                  }
+                  Update: {
+                    "attempts"?: number,"country"?: string,"event_id"?: string,"id"?: string,"outcome"?: string | null,"payload"?: NonNullable<Json>,"processed_at"?: string | null,"provider"?: string,"received_at"?: string,"type"?: string
+                  }
+                  Relationships: [
+                    
                   ]
                 }
           }

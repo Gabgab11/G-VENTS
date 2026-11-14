@@ -4,8 +4,8 @@ create extension if not exists pgtap with schema extensions;
 select plan(5);
 
 select has_table('public', 'platform_staff', 'the platform staff table exists');
-select table_privs_are('public', 'platform_staff', 'gventz_api', array['SELECT'],
-  'the API can only read the staff list');
+select table_privs_are('public', 'platform_staff', 'gventz_api', array['SELECT', 'INSERT', 'DELETE'],
+  'the API can read the staff list and add or remove staff, never edit a row');
 select throws_ok($$insert into public.platform_staff (email) values ('Upper@Example.com')$$,
   '23514', null, 'staff emails must be lowercase');
 
