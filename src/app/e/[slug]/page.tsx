@@ -6,6 +6,8 @@ import { themeBackground } from "@/lib/themes";
 import { eventDateParts } from "@/lib/dates";
 import { getEventPage } from "@/lib/event-page";
 import OrderForm from "./OrderForm";
+import PaidOrderForm from "./PaidOrderForm";
+import { formatMinor } from "@/lib/money";
 import ThemeStage from "@/components/ThemeStage";
 import VenueMap, { directionsUrl } from "@/components/VenueMap";
 import SiteHeader from "@/components/SiteHeader";
@@ -27,9 +29,15 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
   const back = encodeURIComponent(`/e/${event.slug}`);
   const signInHref = `/sign-in?next=${back}`;
   const signUpHref = `/sign-up?next=${back}`;
-  // Paid tickets arrive with payments (U7); until then they're shown but not offered.
+  // Free and paid tickets are separate orders (M5, CK1): one form each, never mixed. Paid types are
+  // offered only while the API says paid sales are open (Paystack on, the host can sell).
   const freeTypes = event.ticketTypes.filter((t) => t.priceMinor === 0);
-  const canOrder = event.status === "published" && event.registrationOpen && freeTypes.length > 0;
+  const paidTypes = event.ticketTypes.filter((t) => t.priceMinor > 0);
+  const open = event.status === "published" && event.registrationOpen;
+  const canOrderFree = open && freeTypes.length > 0;
+  const canOrderPaid = open && paidTypes.length > 0 && event.paidSalesOpen;
+  const canOrder = canOrderFree || canOrderPaid;
+  const bothKinds = canOrderFree && canOrderPaid;
   const loc = event.location;
   const venue = loc.kind === "venue";
   const placeTitle = venue ? loc.venueName || loc.address || loc.city || "Venue" : "Online";
@@ -51,7 +59,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
 
       <div className="ev-grid">
         <aside className="ev-side">
-          <div className="ev-cover" style={{ background: themeBackground(event.coverTheme) }}>
+          <div className={`ev-cover ${event.coverUrl ? "ev-cover-flyer" : ""}`} style={{ background: themeBackground(event.coverTheme) }}>
             {/* eslint-disable-next-line @next/next/no-img-element -- flyers come from Supabase Storage at arbitrary sizes */}
             {event.coverUrl ? <img src={event.coverUrl} alt={`Flyer for ${event.title}`} /> : <span className="ev-cover-title">{event.title}</span>}
           </div>
@@ -111,8 +119,11 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
             <div className="ev-card-body">
               {event.status === "cancelled" && <p className="muted">This event was cancelled, so tickets are no longer available.</p>}
               {event.status === "published" && !event.registrationOpen && <p className="muted">Registration for this event is closed.</p>}
-              {event.status === "published" && event.registrationOpen && freeTypes.length === 0 && (
+              {open && !canOrder && (
                 <p className="muted">Tickets for this event aren&apos;t on sale yet. Check back soon.</p>
+              )}
+              {open && canOrderFree && paidTypes.length > 0 && !event.paidSalesOpen && !event.canManage && (
+                <p className="muted small">Paid tickets can&apos;t be bought right now. Check back soon.</p>
               )}
               {/* Hosts and their team see what's on sale and how it's going, not a ticket form for themselves. */}
               {event.canManage && (
@@ -122,7 +133,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
                       <li key={t.id}>
                         <span className="ev-host-name">{t.name}</span>
                         <span className="muted small">
-                          {t.priceMinor === 0 ? "Free" : "Paid"} · {t.sold} taken{t.quantity !== null ? ` of ${t.quantity}` : ""}
+                          {t.priceMinor === 0 ? "Free" : formatMinor(t.priceMinor, t.currency)} · {t.sold} taken{t.quantity !== null ? ` of ${t.quantity}` : ""}
                         </span>
                       </li>
                     ))}
@@ -141,18 +152,39 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
                   <p className="muted small">Already have an account? <Link href={signInHref} className="gold">Sign in</Link></p>
                 </div>
               )}
-              {!event.canManage && canOrder && signedIn && (
-                <OrderForm
-                  eventId={event.id}
-                  ticketTypes={freeTypes}
-                  questions={event.questions}
-                  perBuyerLimit={event.perBuyerLimit}
-                  userEmail={me?.email ?? session.user.email ?? ""}
-                  defaultName={me?.fullName ?? ""}
-                  requireApproval={event.requireApproval}
-                />
+              {!event.canManage && signedIn && bothKinds && (
+                <p className="muted small">Free and paid tickets are separate orders. Get one kind, then come back for the other.</p>
               )}
-              {!event.canManage && event.requireApproval && canOrder && <p className="muted small">The host approves each request before tickets are issued.</p>}
+              {!event.canManage && canOrderFree && signedIn && (
+                <section className="pay-kind" aria-labelledby={bothKinds ? "free-title" : undefined}>
+                  {bothKinds && <h3 className="pay-kind-title" id="free-title">Free tickets</h3>}
+                  <OrderForm
+                    eventId={event.id}
+                    ticketTypes={freeTypes}
+                    questions={event.questions}
+                    perBuyerLimit={event.perBuyerLimit}
+                    userEmail={me?.email ?? session.user.email ?? ""}
+                    defaultName={me?.fullName ?? ""}
+                    requireApproval={event.requireApproval}
+                  />
+                </section>
+              )}
+              {!event.canManage && canOrderPaid && signedIn && (
+                <section className="pay-kind" aria-labelledby={bothKinds ? "paid-title" : undefined}>
+                  {bothKinds && <h3 className="pay-kind-title" id="paid-title">Paid tickets</h3>}
+                  <PaidOrderForm
+                    eventId={event.id}
+                    ticketTypes={paidTypes}
+                    questions={event.questions}
+                    perBuyerLimit={event.perBuyerLimit}
+                    userEmail={me?.email ?? session.user.email ?? ""}
+                    defaultName={me?.fullName ?? ""}
+                    refundPolicy={event.refundPolicy}
+                    feeChoice={event.feeChoice}
+                  />
+                </section>
+              )}
+              {!event.canManage && event.requireApproval && canOrderFree && <p className="muted small">The host approves each request before tickets are issued.</p>}
             </div>
           </section>
 

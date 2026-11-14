@@ -5,7 +5,10 @@ import { api, data } from "@/lib/api/server";
 import { apiMessage } from "@/lib/api/problem";
 import { requireUser } from "@/lib/auth";
 import { flyerFrom, uploadFlyer } from "@/lib/flyer";
-import { createEventBody } from "./create-event-input";
+import { getAvailability } from "@/lib/payments";
+import { sellReasonText } from "@/lib/payment-text";
+import type { components } from "@/lib/api/schema";
+import { createEventBody, hasPaidPrice, type PaidSetup } from "./create-event-input";
 
 export type CreateEventState = { error?: string } | undefined;
 
@@ -22,7 +25,14 @@ const FLYER_PROBLEMS = {
 // image fails, the event is kept and the host lands on its settings to try the image again.
 export async function createEvent(_prev: CreateEventState, formData: FormData): Promise<CreateEventState> {
   await requireUser("/events/new");
-  const body = createEventBody(formData);
+  // Paid ticket types (M5): only when the API says this host can sell now, in their payout currency.
+  let paid: PaidSetup = null;
+  if (hasPaidPrice(formData)) {
+    const me = (await getAvailability())?.me;
+    if (!me?.canSellPaid || !me.currency) return { error: sellReasonText(me?.reason).text };
+    paid = { currency: me.currency };
+  }
+  const body = createEventBody(formData, paid);
   if ("error" in body) return { error: body.error };
   const flyer = flyerFrom(formData);
   if (flyer && "problem" in flyer) return { error: FLYER_PROBLEMS[flyer.problem] };
@@ -44,4 +54,16 @@ export async function createEvent(_prev: CreateEventState, formData: FormData): 
     }
   }
   redirect(body.publish ? `/e/${created.slug}` : "/dashboard");
+}
+
+export type FeePreview = components["schemas"]["HostFeePreviewDto"];
+
+/** The live example next to a paid price (M5 TicketTypeEditor): what the guest pays and the host receives. */
+export async function previewFee(priceMinor: number, feeChoice: "host_absorbs" | "guest_pays"): Promise<FeePreview | { error: string }> {
+  if (!Number.isSafeInteger(priceMinor) || priceMinor <= 0) return { error: "Enter a price." };
+  try {
+    return data(await (await api()).POST("/v1/payments/fee-preview", { body: { priceMinor, feeChoice: feeChoice === "guest_pays" ? "guest_pays" : "host_absorbs" } }));
+  } catch (error) {
+    return { error: apiMessage(error, "The fee example isn't available right now.") };
+  }
 }

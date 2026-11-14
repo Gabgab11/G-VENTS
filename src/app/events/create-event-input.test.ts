@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createEventBody, locationInput } from "./create-event-input";
+import { createEventBody, hasPaidPrice, locationInput } from "./create-event-input";
 import { MAPS_URL_HINT, isGoogleMapsUrl } from "@/lib/maps-url";
 
 function form(entries: [string, string][]): FormData {
@@ -42,6 +42,7 @@ describe("createEventBody", () => {
       coverTheme: "ocean",
       perBuyerLimit: 4,
       publish: true,
+      feeChoice: "host_absorbs",
     });
   });
 
@@ -87,5 +88,51 @@ describe("isGoogleMapsUrl", () => {
   it("matches the API's rule", () => {
     for (const ok of ["https://share.google/lNKLSEZsLPTwPHfPZ", "https://maps.app.goo.gl/x1", "https://goo.gl/maps/x1", "https://www.google.com/maps/place/X", "https://google.com.ng/maps?q=1,2", "https://maps.google.co.uk/?q=x"]) expect(isGoogleMapsUrl(ok), ok).toBe(true);
     for (const bad of ["http://maps.app.goo.gl/x1", "https://www.google.com/search?q=x", "https://google.com.evil.com/maps", "https://maps.app.goo.gl.evil.com/x", "https://share.google/", "https://share.google.evil.com/x", "javascript:alert(1)", ""]) expect(isGoogleMapsUrl(bad), bad).toBe(false);
+  });
+});
+
+describe("paid tickets while payments are off (D64)", () => {
+  it("refuses a price instead of saving the ticket as free", () => {
+    const paid = base.map(([k, v]) => [k, v] as [string, string]);
+    paid.splice(paid.findIndex(([k]) => k === "tier_qty") + 1, 0, ["tier_price", "5000"]);
+    expect(createEventBody(form(paid))).toEqual({ error: "Paid tickets aren't available yet. Make every ticket free for now." });
+  });
+  it("accepts free tickets with a 0 price", () => {
+    const free = [...base, ["tier_price", "0"], ["tier_price", "0"]] as [string, string][];
+    const body = createEventBody(form(free));
+    expect("error" in body).toBe(false);
+    if (!("error" in body)) expect(body.ticketTypes.every((t) => t.priceMinor === 0)).toBe(true);
+  });
+});
+
+describe("paid tickets when the host can sell (M5)", () => {
+  const priced = (price: string, extra: [string, string][] = []) => {
+    const f = base.map(([k, v]) => [k, v] as [string, string]);
+    f.splice(f.findIndex(([k]) => k === "tier_qty") + 1, 0, ["tier_price", price]);
+    f.push(["tier_price", "0"], ...extra);
+    return form(f);
+  };
+
+  it("spots a paid price, and only a non-zero one", () => {
+    expect(hasPaidPrice(priced("5,000"))).toBe(true);
+    expect(hasPaidPrice(priced("0"))).toBe(false);
+    expect(hasPaidPrice(priced(""))).toBe(false);
+  });
+
+  it("sends whole units as minor units in the payout currency, free tiers stay free", () => {
+    const body = createEventBody(priced("5,000", [["fee_choice", "guest_pays"]]), { currency: "NGN" });
+    if ("error" in body) throw new Error(body.error);
+    expect(body.ticketTypes).toEqual([{ name: "Regular", priceMinor: 500000, currency: "NGN" }, { name: "VIP", priceMinor: 0, quantity: 50 }]);
+    expect(body.feeChoice).toBe("guest_pays");
+  });
+
+  it("refuses decimals and words", () => {
+    expect(createEventBody(priced("49.99"), { currency: "GHS" })).toEqual({ error: 'The price for "Regular" must be a whole number of GHS, like 5000.' });
+    expect(createEventBody(priced("ten"), { currency: "NGN" })).toMatchObject({ error: expect.stringContaining("whole number") });
+  });
+
+  it("defaults the fee choice to host_absorbs", () => {
+    const body = createEventBody(priced("2500"), { currency: "KES" });
+    expect("error" in body ? body : [body.feeChoice, body.ticketTypes[0]]).toEqual(["host_absorbs", { name: "Regular", priceMinor: 250000, currency: "KES" }]);
   });
 });

@@ -11,6 +11,13 @@ const STATUS: Record<string, { title: string; body: string }> = {
   waitlisted: { title: "You're on the waiting list", body: "The event is full right now. If places free up, the host can move your group in." },
   declined: { title: "Not accepted this time", body: "The host couldn't accept this request." },
   cancelled: { title: "Cancelled", body: "These tickets can no longer be used." },
+  // Paid orders (M5)
+  awaiting_payment: { title: "Waiting for payment", body: "Your tickets are held while you pay with Paystack." },
+  expired: { title: "Hold ran out", body: "The payment wasn't completed in time, so these tickets went back on sale." },
+  failed: { title: "Payment failed", body: "The payment didn't go through. Nothing was charged." },
+  refunded: { title: "Refunded", body: "This order was refunded. The tickets no longer work." },
+  partially_refunded: { title: "Partly refunded", body: "Some tickets were refunded; the others still work." },
+  disputed: { title: "Payment disputed", body: "The payment is disputed with the bank. Your tickets still work for now." },
 };
 
 /**

@@ -11,6 +11,23 @@ import AnnouncementsTab from "./AnnouncementsTab";
 import SettingsTab from "./SettingsTab";
 import { messageFor } from "./messages";
 import SiteHeader from "@/components/SiteHeader";
+import { api, data } from "@/lib/api/server";
+import type { components } from "@/lib/api/schema";
+import { DisputeBanner } from "./SalesPanel";
+
+type Sales = components["schemas"]["EventSalesDto"];
+
+/** Paid sales from the ledger (M5), for roles that may see them; null otherwise or if unavailable. */
+async function loadSales(event: Awaited<ReturnType<typeof requireEvent>>): Promise<Sales | null> {
+  const paid = event.paymentCountry !== null || event.ticketTypes.some((t) => t.priceMinor > 0);
+  if (!paid || !can(event, "sales.view")) return null;
+  try {
+    return data(await (await api()).GET("/v1/events/{id}/sales", { params: { path: { id: event.id } } }));
+  } catch (error) {
+    console.error(`[dashboard] sales: ${(error as Error).message}`);
+    return null;
+  }
+}
 
 const TABS = [
   { key: "overview", label: "Overview" },
@@ -36,6 +53,7 @@ export default async function ManageEventPage({
 
   const [event, theme] = await Promise.all([requireEvent(id), getDashboardTheme()]);
 
+  const sales = await loadSales(event);
   const url = `${env.siteUrl}/e/${event.slug}`;
   const ok = messageFor(sp.ok);
   const err = messageFor(sp.err);
@@ -51,6 +69,8 @@ export default async function ManageEventPage({
         <p><Link href={`/dashboard/${id}/scan`} className="btn-grad">Scan tickets at the door</Link></p>
       )}
 
+      {sales && <DisputeBanner disputes={sales.disputes} />}
+
       <nav className="tabs" aria-label="Event sections">
         {TABS.map((t) => (
           <Link key={t.key} href={`/dashboard/${id}?tab=${t.key}`} className={tab === t.key ? "on" : ""}
@@ -63,7 +83,7 @@ export default async function ManageEventPage({
       {ok && <p className="ok" role="status">{ok}</p>}
       {err && <p className="error" role="alert">{err}</p>}
 
-      {tab === "overview" && <OverviewTab event={event} url={url} />}
+      {tab === "overview" && <OverviewTab event={event} url={url} sales={sales} />}
       {tab === "guests" && <GuestsTab event={event} query={sp} />}
       {tab === "registration" && <RegistrationTab event={event} url={url} />}
       {tab === "announcements" && <AnnouncementsTab event={event} />}

@@ -4,7 +4,7 @@
 -- as gventz_api. Run by `supabase test db`; rolled back.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(9);
+select plan(15);
 
 -- Every table and sequence, now and in future migrations.
 select is(
@@ -21,26 +21,36 @@ select is(
   null, 'no sequence in public is open to anon or authenticated');
 
 -- Every callable function. A new function needs `revoke execute ... from public` (PUBLIC can
--- execute new functions by default). Only can_manage_event_folder stays, for the storage
--- policies on event covers.
+-- execute new functions by default).
 select is(
   (select array_agg(p.proname::text order by p.proname) from pg_proc p
     where p.pronamespace = 'public'::regnamespace and p.prokind in ('f', 'p')
-      and p.prorettype <> 'trigger'::regtype and p.proname <> 'can_manage_event_folder'
+      and p.prorettype <> 'trigger'::regtype
       and (has_function_privilege('anon', p.oid, 'execute') or has_function_privilege('authenticated', p.oid, 'execute'))),
   null, 'no function in public can be called by anon or authenticated');
 
--- The old app's functions and policies are dropped. Only the helpers that the events trigger and
--- the storage policies use remain, and every remaining table policy is for gventz_api.
+-- The old app's functions and policies are dropped (20261114000200, 20261114000600). Only the
+-- helper the events trigger uses remains, every remaining table policy is for gventz_api, and
+-- the event-covers bucket has no policies: the API uses it with the secret key and flyers are read
+-- through public URLs.
 select is(
   (select array_agg(p.proname::text order by p.proname) from pg_proc p
     where p.pronamespace = 'public'::regnamespace and p.prokind in ('f', 'p')
       and p.prorettype <> 'trigger'::regtype),
-  array['can_manage_event_folder', 'has_event_role'], 'only the storage and trigger helpers remain');
+  array['email_confirmed', 'has_event_role'], 'only the trigger helper and the API''s email check remain');
+select ok(has_function_privilege('gventz_api', 'public.email_confirmed(uuid, text)', 'execute'),
+  'the API role can ask whether an account''s email is confirmed');
 select is(
   (select array_agg(tablename || '.' || policyname order by tablename, policyname) from pg_policies
     where schemaname = 'public' and roles <> array['gventz_api']::name[]),
   null, 'every table policy in public is for gventz_api only');
+select is(
+  (select array_agg(policyname::text order by policyname) from pg_policies
+    where schemaname = 'storage' and tablename = 'objects'
+      and coalesce(qual, '') || coalesce(with_check, '') like '%event-covers%'),
+  null, 'no storage policy opens the event-covers bucket to visitors or signed-in users');
+select is((select public from storage.buckets where id = 'event-covers'), true,
+  'event-covers stays a public bucket, so flyer URLs keep working');
 
 insert into auth.users (id, email, aud, role) values
   ('11111111-1111-1111-1111-111111111111', 'host@example.com', 'authenticated', 'authenticated');
@@ -63,6 +73,15 @@ select throws_ok(
   '42501', null, 'the owner cannot edit their event outside the API');
 
 -- The API is unaffected.
+reset role;
+select ok(not public.email_confirmed('11111111-1111-1111-1111-111111111111', 'host@example.com'),
+  'an account that has not confirmed its email does not match');
+update auth.users set email_confirmed_at = now() where id = '11111111-1111-1111-1111-111111111111';
+set local role gventz_api;
+select ok(public.email_confirmed('11111111-1111-1111-1111-111111111111', ' Host@Example.com'),
+  'a confirmed account matches its email in any case');
+select ok(not public.email_confirmed('11111111-1111-1111-1111-111111111111', 'other@example.com'),
+  'another email never matches the account');
 reset role;
 set local role gventz_api;
 select is((select count(*)::int from public.events where id = '33333333-3333-3333-3333-333333333333'), 1,

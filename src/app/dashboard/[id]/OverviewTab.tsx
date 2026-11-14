@@ -1,8 +1,10 @@
 import { can, type EventDashboard } from "@/lib/auth";
 import CopyLink from "./CopyLink";
 import { setRegistrationOpen, setCapacity } from "./actions";
+import type { components } from "@/lib/api/schema";
+import { SalesPanel } from "./SalesPanel";
 
-export default function OverviewTab({ event, url }: { event: EventDashboard; url: string }) {
+export default function OverviewTab({ event, url, sales }: { event: EventDashboard; url: string; sales: components["schemas"]["EventSalesDto"] | null }) {
   const id = event.id;
   const { counts } = event;
   const edit = can(event, "event.edit");
@@ -15,6 +17,8 @@ export default function OverviewTab({ event, url }: { event: EventDashboard; url
         <div className="stat"><b>{counts.checkedIn}</b><span>Checked in</span></div>
         <div className="stat"><b>{event.capacity ?? "∞"}</b><span>Capacity</span></div>
       </div>
+
+      {sales && <SalesPanel sales={sales} feeChoice={event.feeChoice} />}
 
       <section className="panel">
         <div className="panel-label">Share your event</div>

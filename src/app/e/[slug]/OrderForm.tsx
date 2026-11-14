@@ -3,6 +3,7 @@
 import { useActionState, useState } from "react";
 import type { PageQuestion, PageTicketType } from "@/lib/event-page";
 import { placeOrder, type OrderState } from "./actions";
+import GuestDetails from "./GuestDetails";
 
 type Props = {
   eventId: string;
@@ -52,39 +53,7 @@ export default function OrderForm({ eventId, ticketTypes, questions, perBuyerLim
         <p className="muted small">Up to {perBuyerLimit} {perBuyerLimit === 1 ? "ticket" : "tickets"} per person.</p>
       </fieldset>
 
-      <label className="field"><span>Your full name</span>
-        <input className="input" name="buyer_name" defaultValue={defaultName} minLength={2} maxLength={120} autoComplete="name" required={!defaultName} /></label>
-      <label className="field"><span>Email</span>
-        <input className="input" type="email" value={userEmail} readOnly aria-describedby="email-note" />
-        <small id="email-note" className="muted">All your tickets are sent to your account email.</small></label>
-
-      {total > 1 && (
-        <fieldset className="form" style={{ gap: 8, border: 0 }}>
-          <legend className="muted small">Names for the other tickets (optional; you can forward each ticket)</legend>
-          {Array.from({ length: total - 1 }, (_, i) => (
-            <label className="field" key={i}><span>Ticket {i + 2}</span>
-              <input className="input" name={`guest_${i + 2}`} maxLength={120} placeholder="Guest name" /></label>
-          ))}
-        </fieldset>
-      )}
-
-      {questions.map((q) => (
-        <label className="field" key={q.id}>
-          {q.kind !== "terms" && <span>{q.label}{q.required ? " *" : ""}</span>}
-          {q.kind === "options" ? (
-            <select className="input" name={`q_${q.id}`} required={q.required} defaultValue="">
-              <option value="" disabled>Choose</option>
-              {q.options.map((o) => <option key={o}>{o}</option>)}
-            </select>
-          ) : q.kind === "terms" ? (
-            <span className="check"><input type="checkbox" name={`q_${q.id}`} required={q.required} /> <span>{q.label}{q.required ? " *" : ""}</span></span>
-          ) : (
-            <input className="input" name={`q_${q.id}`} maxLength={1000}
-              type={q.kind === "phone" ? "tel" : q.kind === "website" ? "url" : "text"}
-              required={q.required} placeholder={q.kind === "social" ? "@handle or profile link" : ""} />
-          )}
-        </label>
-      ))}
+      <GuestDetails idPrefix="free" total={total} questions={questions} userEmail={userEmail} defaultName={defaultName} />
 
       {state?.error && <p className="error" role="alert">{state.error}</p>}
 

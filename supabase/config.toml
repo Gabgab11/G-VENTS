@@ -10,6 +10,28 @@ signing_keys_path = "./signing_keys.json"
 site_url = "http://localhost:3000"
 additional_redirect_urls = ["http://localhost:3000/auth/callback"]
 
+# Two-step sign-in with an authenticator app (D54): required for G-ventZ staff (admin dashboard),
+# optional for everyone else. Hosted projects have TOTP on by default; set it here for local runs.
+[auth.mfa]
+max_enrolled_factors = 10
+
+[auth.mfa.totp]
+enroll_enabled = true
+verify_enabled = true
+
+# Passkeys (WebAuthn) as the second step, for staff and anyone who wants them. Hosted projects:
+# turn on WebAuthn under Authentication > Multi-Factor in the Supabase dashboard.
+[auth.mfa.web_authn]
+enroll_enabled = true
+verify_enabled = true
+
+# Who passkeys belong to: this site's domain and page origin. Hosted projects: set the same under
+# Authentication (gventz.com and https://gventz.com; staging.gventz.com for staging).
+[auth.webauthn]
+rp_display_name = "G-ventZ"
+rp_id = "localhost"
+rp_origins = ["http://localhost:3000"]
+
 # Local emails carry the 6-digit code the sign-in page asks for (production uses the same template, O17).
 [auth.email.template.magic_link]
 subject = "Your G-ventZ sign-in code"
