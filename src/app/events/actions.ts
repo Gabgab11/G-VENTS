@@ -13,6 +13,7 @@ const FLYER_PROBLEMS = {
   flyer_missing: "Choose an image first.",
   flyer_type: "Use a JPG, PNG, or WebP image for the event image.",
   flyer_size: "The event image is larger than 5 MB. Please resize it and try again.",
+  flyer_unreadable: "We couldn't read that image. Please choose it again.",
 } as const;
 
 // Creates the event through gventz-api (U6a). The API derives the time zone from the venue where
@@ -36,6 +37,7 @@ export async function createEvent(_prev: CreateEventState, formData: FormData): 
   if (flyer) {
     try {
       await uploadFlyer(created.id, flyer.file, flyer.contentType);
+      console.info(`[create event] image attached to ${created.id} (${flyer.contentType}, ${flyer.file.size} bytes)`);
     } catch (error) {
       console.error(`[create event] image upload failed: ${(error as Error).message}`);
       redirect(`/dashboard/${created.id}?tab=settings&err=flyer_after_create`);
