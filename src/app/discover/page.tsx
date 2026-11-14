@@ -34,13 +34,15 @@ function heroSlides(events: EventCard[]): HeroSlide[] {
   }));
 }
 
+/** Category rows, busiest first; none when one category holds every event (it would repeat "Happening soon"). */
 function byCategory(events: EventCard[]): [Category, EventCard[]][] {
   const groups = new Map<Category, EventCard[]>();
   for (const e of events) if (isCategory(e.category)) groups.set(e.category, [...(groups.get(e.category) ?? []), e]);
   return CATEGORIES.filter((c) => groups.has(c))
     .map((c) => [c, groups.get(c)!] as [Category, EventCard[]])
     .sort((a, b) => b[1].length - a[1].length)
-    .slice(0, CATEGORY_ROWS);
+    .slice(0, CATEGORY_ROWS)
+    .filter((row, _, rows) => rows.length > 1 || row[1].length < events.length);
 }
 
 export default async function DiscoverPage({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
