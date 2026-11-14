@@ -4,7 +4,7 @@
 -- as gventz_api. Run by `supabase test db`; rolled back.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(11);
+select plan(15);
 
 -- Every table and sequence, now and in future migrations.
 select is(
@@ -37,7 +37,9 @@ select is(
   (select array_agg(p.proname::text order by p.proname) from pg_proc p
     where p.pronamespace = 'public'::regnamespace and p.prokind in ('f', 'p')
       and p.prorettype <> 'trigger'::regtype),
-  array['has_event_role'], 'only the trigger helper remains');
+  array['email_confirmed', 'has_event_role'], 'only the trigger helper and the API''s email check remain');
+select ok(has_function_privilege('gventz_api', 'public.email_confirmed(uuid, text)', 'execute'),
+  'the API role can ask whether an account''s email is confirmed');
 select is(
   (select array_agg(tablename || '.' || policyname order by tablename, policyname) from pg_policies
     where schemaname = 'public' and roles <> array['gventz_api']::name[]),
@@ -71,6 +73,15 @@ select throws_ok(
   '42501', null, 'the owner cannot edit their event outside the API');
 
 -- The API is unaffected.
+reset role;
+select ok(not public.email_confirmed('11111111-1111-1111-1111-111111111111', 'host@example.com'),
+  'an account that has not confirmed its email does not match');
+update auth.users set email_confirmed_at = now() where id = '11111111-1111-1111-1111-111111111111';
+set local role gventz_api;
+select ok(public.email_confirmed('11111111-1111-1111-1111-111111111111', ' Host@Example.com'),
+  'a confirmed account matches its email in any case');
+select ok(not public.email_confirmed('11111111-1111-1111-1111-111111111111', 'other@example.com'),
+  'another email never matches the account');
 reset role;
 set local role gventz_api;
 select is((select count(*)::int from public.events where id = '33333333-3333-3333-3333-333333333333'), 1,
