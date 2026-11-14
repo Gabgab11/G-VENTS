@@ -10,6 +10,7 @@ import WhatsAppDelivery from "./WhatsAppDelivery";
 import EmailDelivery from "./EmailDelivery";
 import { TICKET_CSS } from "./ticket-css";
 import { pageFonts } from "@/app/fonts";
+import SiteHeader from "@/components/SiteHeader";
 
 // Tickets are private to whoever holds the link.
 export const metadata: Metadata = {
@@ -78,10 +79,7 @@ export default async function TicketPage({
     <main className={`tk ${pageFonts}`}>
       <style dangerouslySetInnerHTML={{ __html: TICKET_CSS }} />
 
-      <header className="tk-top">
-        <Link href="/" className="tk-logo">G-vent<b>Z</b></Link>
-        <span className="tk-small">Your ticket</span>
-      </header>
+      <SiteHeader back="/my-tickets" />
 
       {checkInNote && (
         <div className={`tk-note ${checkInNote.tone}`} role={checkInNote.tone === "ok" ? "status" : "alert"}><b>{checkInNote.title}</b>{checkInNote.body}</div>

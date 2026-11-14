@@ -6,10 +6,10 @@ import { createEvent, type CreateEventState } from "@/app/events/actions";
 import { CATEGORIES } from "@/lib/categories";
 import { THEMES, themeBackground } from "@/lib/themes";
 import ThemeStage from "@/components/ThemeStage";
-import BackLink from "@/components/BackLink";
 import MirrorBall from "@/components/MirrorBall";
 import LocationFields from "./LocationFields";
 import DateTimeWheel from "./DateTimeWheel";
+import SiteHeader from "@/components/SiteHeader";
 
 type Tier = { id: number; name: string; price: string; qty: string };
 
@@ -97,7 +97,7 @@ export default function NewEventForm({
     <main className="wrap stage-content">
       <ThemeStage theme={theme} />
       <MirrorBall />
-      <div className="back-row"><BackLink fallback="/dashboard" label="← Dashboard" /></div>
+      <SiteHeader back="/dashboard" current="/events/new" />
       <header className="create-head">
         <h1>Create an event</h1>
         <p className="muted">Add the details, then share one link so guests can register.</p>

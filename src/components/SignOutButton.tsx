@@ -6,7 +6,7 @@ import { signOut } from "@/app/auth/actions";
 export default function SignOutButton() {
   return (
     <form action={signOut} onSubmit={() => navigator.serviceWorker?.controller?.postMessage("clear-tickets")}>
-      <button type="submit" className="back-link">Sign out</button>
+      <button type="submit" className="site-account">Sign out</button>
     </form>
   );
 }

@@ -5,24 +5,26 @@ export const TICKET_CSS = `
 .tk {
   --ink: #121212; --muted: #6b6a66; --line: #ebe9e2; --soft: #f6f5f1; --page: #f6f5f1;
   --coral: #ff5a3c; --sun: #ffc23d; --mint: #7ee0b6;
+  /* The ticket is always light, so the shared header takes the same colours here. */
+  --text: var(--ink); --surface: #fff; --line-hi: #c9c5ba;
   --display: var(--font-display), "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
   --body: var(--font-body), "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   min-height: 100vh; background: var(--page); color: var(--ink); font-family: var(--body);
-  padding: 22px 16px 64px;
+  padding: 8px var(--page-gutter) 64px;
 }
 .tk a { color: inherit; }
-.tk-top { max-width: 860px; margin: 0 auto 22px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.tk-top { max-width: none; margin: 0 auto 22px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 .tk-logo { font-family: var(--display); font-weight: 800; font-size: 22px; letter-spacing: -0.4px; text-decoration: none; }
 .tk-logo b { color: var(--coral); }
 .tk-small { font-size: 13px; color: var(--muted); }
 
-.tk-note { max-width: 860px; margin: 0 auto 16px; padding: 14px 18px; border-radius: 14px; background: #fff; border: 1px solid var(--line); font-size: 15px; line-height: 1.5; }
+.tk-note { max-width: none; margin: 0 auto 16px; padding: 14px 18px; border-radius: 14px; background: #fff; border: 1px solid var(--line); font-size: 15px; line-height: 1.5; }
 .tk-note b { display: block; font-family: var(--display); font-size: 18px; margin-bottom: 2px; }
 .tk-note.warn { background: #fff4f1; border-color: #ffd2c7; }
 .tk-note.ok { background: #effbf5; border-color: #c4efda; }
 
 /* The ticket */
-.tk-ticket { max-width: 860px; margin: 0 auto; display: grid; grid-template-columns: 1fr; background: #fff; border-radius: 26px; box-shadow: 0 1px 0 var(--line), 0 24px 60px rgba(18,18,18,.08); overflow: hidden; position: relative; }
+.tk-ticket { max-width: none; margin: 0 auto; display: grid; grid-template-columns: 1fr; background: #fff; border-radius: 26px; box-shadow: 0 1px 0 var(--line), 0 24px 60px rgba(18,18,18,.08); overflow: hidden; position: relative; }
 .tk-main { display: flex; flex-direction: column; }
 .tk-band { background: var(--sun); padding: 22px 26px 26px; position: relative; }
 .tk-band-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
@@ -61,8 +63,8 @@ export const TICKET_CSS = `
 }
 
 /* Actions under the ticket */
-.tk-actions { max-width: 860px; margin: 22px auto 0; display: flex; gap: 10px; flex-wrap: wrap; }
-.tk-wa { max-width: 860px; margin: 18px auto 0; padding: 18px; border-radius: 18px; background: #fff; border: 1px solid var(--line); }
+.tk-actions { max-width: none; margin: 22px auto 0; display: flex; gap: 10px; flex-wrap: wrap; }
+.tk-wa { max-width: none; margin: 18px auto 0; padding: 18px; border-radius: 18px; background: #fff; border: 1px solid var(--line); }
 .tk-wa p { margin: 0 0 12px; font-size: 15px; line-height: 1.45; }
 .tk-wa-label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
 .tk-wa-row { display: flex; gap: 10px; flex-wrap: wrap; }
@@ -75,9 +77,9 @@ export const TICKET_CSS = `
 .tk-btn { appearance: none; border: 0; cursor: pointer; font: inherit; font-weight: 600; font-size: 15px; padding: 14px 22px; border-radius: 14px; background: var(--ink); color: #fff; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
 .tk-ghost { background: #fff; color: var(--ink); border: 1px solid var(--line); }
 .tk-go { background: #15925f; }
-.tk-staff { max-width: 860px; margin: 18px auto 0; padding: 18px; border-radius: 18px; background: #fff; border: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; }
+.tk-staff { max-width: none; margin: 18px auto 0; padding: 18px; border-radius: 18px; background: #fff; border: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; }
 .tk-staff p { margin: 0; font-size: 15px; line-height: 1.45; }
-.tk-foot { max-width: 860px; margin: 26px auto 0; font-size: 13px; color: var(--muted); line-height: 1.6; }
+.tk-foot { max-width: none; margin: 26px auto 0; font-size: 13px; color: var(--muted); line-height: 1.6; }
 
 @media print {
   @page { margin: 12mm; }

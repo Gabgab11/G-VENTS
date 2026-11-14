@@ -4,6 +4,7 @@ import "./globals.css";
 import "./home-ball.css";
 import { COLOR_MODE_SCRIPT } from "@/lib/color-mode";
 import ServiceWorker from "@/components/ServiceWorker";
+import { display } from "./fonts";
 
 // Self-hosted from a pinned package, like the fonts in ./fonts.ts (no Google request at build time).
 const manrope = localFont({
@@ -34,7 +35,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     // suppressHydrationWarning: the colour-mode script sets data-theme on <html> before React loads.
-    <html lang="en" className={manrope.className} suppressHydrationWarning>
+    <html lang="en" className={`${manrope.className} ${display.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: COLOR_MODE_SCRIPT }} />
       </head>

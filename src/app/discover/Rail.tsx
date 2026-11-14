@@ -1,10 +1,11 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 
 // A titled row of cards that scrolls sideways: swipe or trackpad, or the arrow buttons, which
 // move one screenful and switch off at either end.
-export default function Rail({ title, id, children }: { title: string; id: string; children: ReactNode }) {
+export default function Rail({ title, id, more, children }: { title: string; id: string; more?: { href: string; label: string }; children: ReactNode }) {
   const track = useRef<HTMLDivElement>(null);
   const [ends, setEnds] = useState({ start: true, end: true });
 
@@ -34,6 +35,8 @@ export default function Rail({ title, id, children }: { title: string; id: strin
     <section className="dc-rail" aria-labelledby={id}>
       <div className="dc-rail-head">
         <h2 id={id}>{title}</h2>
+        <div className="dc-rail-side">
+        {more && <Link href={more.href} className="dc-link">{more.label}</Link>}
         {!(ends.start && ends.end) && (
           <div className="dc-rail-arrows">
             <button type="button" aria-label={`Previous: ${title}`} onClick={() => move(-1)} disabled={ends.start}>
@@ -44,6 +47,7 @@ export default function Rail({ title, id, children }: { title: string; id: strin
             </button>
           </div>
         )}
+        </div>
       </div>
       <div className="dc-rail-track" ref={track} onScroll={measure}>
         {children}

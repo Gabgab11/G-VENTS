@@ -6,8 +6,8 @@ import { ApiError } from "@/lib/api/problem";
 import { requireUser } from "@/lib/auth";
 import { isUuid } from "@/lib/forms";
 import { siteOrigin } from "@/lib/ticket";
-import BackLink from "@/components/BackLink";
 import OrderCard from "@/components/OrderCard";
+import SiteHeader from "@/components/SiteHeader";
 
 export const metadata: Metadata = { title: "Your tickets · G-ventZ", robots: { index: false, follow: false } };
 
@@ -27,7 +27,7 @@ export default async function OrderPage({ params }: { params: Promise<{ orderId:
 
   return (
     <main className="tickets-page">
-      <BackLink fallback={order.event ? `/e/${order.event.slug}` : "/my-tickets"} label="← Back" />
+      <SiteHeader back={order.event ? `/e/${order.event.slug}` : "/my-tickets"} />
       <h1>{order.status === "completed" ? "You're in" : "Your tickets"}</h1>
       <OrderCard order={order} origin={await siteOrigin()} showQr />
       <p className="muted small">
