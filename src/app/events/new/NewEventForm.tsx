@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useMemo, useState, type FormEvent } from "react";
+import { useActionState, useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { createEvent, type CreateEventState } from "@/app/events/actions";
 import { CATEGORIES } from "@/lib/categories";
 import { THEMES, themeBackground } from "@/lib/themes";
@@ -11,6 +11,9 @@ import LocationFields from "./LocationFields";
 import DateTimeWheel from "./DateTimeWheel";
 
 type Tier = { id: number; name: string; price: string; qty: string };
+
+const IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
+const IMAGE_MAX = 5 * 1024 * 1024;
 let nextId = 2;
 
 export default function NewEventForm({
@@ -32,6 +35,31 @@ export default function NewEventForm({
   // "" = let the API take the zone from the venue (coordinates, or a country with one zone).
   const [timeZone, setTimeZone] = useState("");
   const [browserZone, setBrowserZone] = useState("Africa/Lagos");
+  const [image, setImage] = useState<{ url: string; name: string } | null>(null);
+  const [imageError, setImageError] = useState("");
+  const imageInput = useRef<HTMLInputElement>(null);
+  useEffect(() => () => { if (image) URL.revokeObjectURL(image.url); }, [image]);
+
+  function chooseImage(file: File | undefined) {
+    setImageError("");
+    if (!file) { setImage(null); return; }
+    let problem = "";
+    if (!IMAGE_TYPES.includes(file.type)) problem = "Use a JPG, PNG, or WebP image.";
+    else if (file.size > IMAGE_MAX) problem = "That image is larger than 5 MB. Please resize it and try again.";
+    if (problem) {
+      setImageError(problem);
+      if (imageInput.current) imageInput.current.value = "";
+      setImage(null);
+      return;
+    }
+    setImage({ url: URL.createObjectURL(file), name: file.name });
+  }
+
+  function removeImage() {
+    if (imageInput.current) imageInput.current.value = "";
+    setImage(null);
+    setImageError("");
+  }
   const zones = useMemo(() => Intl.supportedValuesOf("timeZone"), []);
   useEffect(() => setBrowserZone(Intl.DateTimeFormat().resolvedOptions().timeZone || "Africa/Lagos"), []);
 
@@ -64,8 +92,24 @@ export default function NewEventForm({
       <form action={formAction} className="create-grid" onSubmit={onSubmit} noValidate>
         {/* LEFT: cover and design */}
         <aside className="create-cover">
-          <div className="cover-preview" style={{ background: themeBackground(theme) }}>
+          <div className={`cover-preview ${image ? "has-image" : ""}`} style={{ background: themeBackground(theme) }}>
+            {/* eslint-disable-next-line @next/next/no-img-element -- a local preview (blob: URL) of the chosen file */}
+            {image && <img className="cover-image" src={image.url} alt="" />}
             <div className="cover-title">{title || "Your event"}</div>
+          </div>
+
+          <div className="panel">
+            <div className="panel-label">Event image</div>
+            <p className="muted small">Shown on the event page and in Discover. JPG, PNG, or WebP, up to 5 MB. Tall or square works best.</p>
+            <input ref={imageInput} id="event-image" className="sr-only" type="file" name="flyer"
+              accept={IMAGE_TYPES.join(",")} onChange={(e) => chooseImage(e.target.files?.[0])} />
+            <div className="image-pick">
+              <label htmlFor="event-image" className="btn-ghost">{image ? "Change image" : "Add an image"}</label>
+              {image && <button type="button" className="link-btn" onClick={removeImage}>Remove</button>}
+            </div>
+            {image && <p className="muted small image-name">{image.name}</p>}
+            {imageError && <p className="error" role="alert">{imageError}</p>}
+            {!image && <p className="muted small">No image? The cover style below is used instead.</p>}
           </div>
 
           <div className="panel">

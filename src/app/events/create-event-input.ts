@@ -2,6 +2,7 @@ import type { components } from "@/lib/api/schema";
 import { isCategory } from "@/lib/categories";
 import { checkbox, field } from "@/lib/forms";
 import { isThemeKey } from "@/lib/themes";
+import { MAPS_URL_HINT, MAPS_URL_MAX, isGoogleMapsUrl } from "@/lib/maps-url";
 
 export type CreateEventBody = components["schemas"]["CreateEventDto"];
 
@@ -101,6 +102,8 @@ export function locationInput(formData: FormData): CreateEventBody["location"] |
   const region = field(formData, "region", 120);
   const city = place ? field(formData, "city", 120) : "";
   const address = place ? field(formData, "address", 300) : "";
+  const mapsUrl = field(formData, "maps_url", MAPS_URL_MAX + 1);
+  if (mapsUrl && !isGoogleMapsUrl(mapsUrl)) return { error: MAPS_URL_HINT };
   return {
     kind: "venue",
     venueName,
@@ -109,5 +112,6 @@ export function locationInput(formData: FormData): CreateEventBody["location"] |
     ...(city ? { city } : {}),
     ...(address ? { address } : {}),
     ...(place ? { place } : {}),
+    ...(mapsUrl ? { mapsUrl } : {}),
   };
 }

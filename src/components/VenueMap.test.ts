@@ -15,5 +15,6 @@ describe("venue map", () => {
     expect(mapEmbedUrl(typed, "")).toContain("q=Eko%20Hotel%2C%20Plot%201415%20Adetokunbo%20Ademola%2C%20Lagos%2C%20Lagos%2C%20Nigeria");
     expect(mapEmbedUrl({ kind: "online" } as never, "k1")).toBeNull();
     expect(directionsUrl({ kind: "online" } as never)).toBeNull();
+    expect(directionsUrl({ ...venue, mapsUrl: "https://maps.app.goo.gl/AbC123" })).toBe("https://maps.app.goo.gl/AbC123");
   });
 });

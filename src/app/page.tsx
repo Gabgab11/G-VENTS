@@ -5,28 +5,41 @@ import AccountLink from "./AccountLink";
 import HeroCards from "./HeroCards";
 import HeroTilt from "./HeroTilt";
 import { pageFonts } from "@/app/fonts";
+import ColorModeToggle from "@/components/ColorModeToggle";
+import SocialLinks from "@/components/SocialLinks";
+import FooterWordmark from "./FooterWordmark";
 
 const CSS = `
 
 .hp {
-  --ink: #121212; --muted: #6b6a66; --line: #ebe9e2; --soft: #f6f5f1;
+  --ink: #121212; --muted: #6b6a66; --line: #ebe9e2; --soft: #f6f5f1; --page: #fff; --primary:#121212; --primary-text:#fff;
   --coral: #ff5a3c; --sun: #ffc23d; --mint: #7ee0b6; --sky: #8ec5ff; --rose: #ffb3c7;
   --display: var(--font-display), "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
   --body: var(--font-body), "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  background: #fff; color: var(--ink); font-family: var(--body);
+  background: var(--page); color: var(--ink); font-family: var(--body);
   min-height: 100vh; overflow-x: hidden; -webkit-font-smoothing: antialiased;
 }
+.hp :focus-visible { outline-color: var(--coral); }
+:root[data-theme="dark"] .hp, :root .hp[data-color-mode="dark"] { --ink:#f4f1eb; --muted:#aaa69f; --line:#343330; --soft:#242321; --page:#151513; --primary:#ffc23d; --primary-text:#17130b; }
+:root[data-theme="light"] .hp, :root .hp[data-color-mode="light"] { --ink:#121212; --muted:#6b6a66; --line:#ebe9e2; --soft:#f6f5f1; --page:#fff; --primary:#121212; --primary-text:#fff; }
+:root .hp[data-color-mode="dark"] { --ink:#f4f1eb; --muted:#aaa69f; --line:#343330; --soft:#242321; --page:#151513; --primary:#ffc23d; --primary-text:#17130b; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .hp:not([data-color-mode]) { --ink:#f4f1eb; --muted:#aaa69f; --line:#343330; --soft:#242321; --page:#151513; --primary:#ffc23d; --primary-text:#17130b; }
+}
 .hp a { color: inherit; text-decoration: none; }
-.hp .hp-btn, .hp .hp-c4, .hp .hp-c5 { color: #fff; }
-.hp-wrap { max-width: 1200px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 64px); }
+.hp .hp-btn { color:var(--primary-text); background:var(--primary); }
+.hp .hp-c4, .hp .hp-c5 { color: #fff; }
+.hp-wrap { max-width: 1600px; margin: 0 auto; padding: 0 clamp(24px, 7vw, 120px); }
 
-.hp-top { display: flex; justify-content: space-between; align-items: center; padding: 22px clamp(20px, 5vw, 64px); max-width: 1200px; margin: 0 auto; }
+.hp-top { display: flex; justify-content: space-between; align-items: center; padding: 18px clamp(16px, 1.6vw, 28px); width:100%; max-width:none; margin:0; }
+.hp-top-actions { display:flex; align-items:center; gap:10px; }
+.hp-top-actions, .hp-top-actions .cm, .hp-top-actions button, .hp-top-actions a { position:relative; z-index:5; pointer-events:auto; }
 .hp-logo { font-family: var(--display); font-weight: 800; font-size: 22px; letter-spacing: -0.4px; }
 .hp-logo b { color: var(--coral); }
 .hp-signin { font-size: 14px; font-weight: 600; border: 1px solid var(--line); padding: 9px 16px; border-radius: 999px; }
 
 /* padding-block, not padding: the side padding comes from .hp-wrap and must survive on phones */
-.hp-hero { padding-block: clamp(36px, 7vw, 96px) 30px; }
+.hp-hero { padding-block: clamp(52px, 9vh, 130px) 30px; }
 .hp-pill { display: inline-block; font-size: 13px; font-weight: 600; background: var(--soft); border: 1px solid var(--line); padding: 7px 14px; border-radius: 999px; color: var(--muted); }
 .hp-hero h1 { font-family: var(--display); font-weight: 800; font-size: clamp(52px, 9.5vw, 120px); line-height: 0.95; letter-spacing: -3px; margin: 22px 0 0; }
 .hp-hl { background: var(--sun); padding: 0 0.12em; border-radius: 0.15em; }
@@ -133,12 +146,37 @@ const CSS = `
   .hp-hero .hp-actions a { text-align: center; }
 }
 
-.hp-closing { text-align: center; padding: 100px 20px 110px; }
+.hp-closing { text-align: center; padding: clamp(100px,14vh,200px) 20px clamp(110px,16vh,220px); }
 .hp-closing h2 { font-family: var(--display); font-weight: 800; font-size: clamp(40px, 7vw, 80px); line-height: 0.98; letter-spacing: -2.5px; margin: 0 0 28px; }
 
 .hp-foot { border-top: 1px solid var(--line); padding: 24px clamp(20px, 5vw, 64px); color: var(--muted); font-size: 13px; max-width: 1200px; margin: 0 auto; }
 .hp-foot-row { display: flex; gap: 22px; flex-wrap: wrap; margin-bottom: 10px; }
 .hp-foot-legal { display: flex; gap: 18px; flex-wrap: wrap; opacity: 0.8; }
+.hp-footer { max-width:none; margin:0; padding:clamp(28px,4vw,56px) clamp(20px,5vw,64px) 0; border:0; background:#100d0c; color:#f8f5ef; }
+.hp-footer-inner { width:100%; max-width:none; margin:0 auto; padding:0; }
+.hp-footer-main { display:grid; grid-template-columns:minmax(300px,1.7fr) repeat(3,minmax(130px,1fr)) minmax(170px,1fr); gap:clamp(24px,4vw,68px); padding-bottom:54px; }
+.hp-footer-brand p { max-width:390px; margin:0 0 24px; color:#d1ceca; font-family:var(--display); font-size:clamp(21px,2.2vw,30px); font-weight:700; line-height:1.3; }
+.hp-footer-brand .hp-logo { display:inline-block; margin-bottom:18px; color:#fff; font-size:28px; }
+.hp-footer-title { margin-bottom:20px; color:var(--sun); font-size:15px; font-weight:700; }
+.hp-footer-links { display:grid; gap:14px; color:#f8f5ef; font-size:15px; }
+.hp-footer-contact-label { margin:0 0 8px; color:#aaa69f; font-size:13px; }
+.hp-footer-contact-group + .hp-footer-contact-group { margin-top:20px; }
+.hp-footer-links a:hover,.hp-foot-legal a:hover { color:var(--coral); }
+.hp-footer-bottom { display:flex; justify-content:space-between; align-items:center; gap:16px; padding:20px 0; border-top:1px solid #37312f; color:#aaa69f; }
+.hp-footer-bottom .hp-foot-legal { gap:20px; }
+.hp-footer-bottom p { color:#aaa69f; margin:0; }
+.hp-footer-meta { display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
+.hp-footer .socials { display:flex; gap:8px; margin:0; padding:0; list-style:none; }
+.hp-footer .socials a, .hp-footer .socials-soon { display:grid; place-items:center; width:36px; height:36px; border:1px solid #37312f; border-radius:999px; color:#f8f5ef; }
+.hp-footer .socials a:hover { color:var(--coral); border-color:var(--coral); }
+.hp-footer .socials-soon { opacity:.45; cursor:default; }
+/* Big wordmark across the top of the footer, bold cream with the coral Z, fading out only at the very bottom.
+   Letters rise into place one by one, driven by the scroll position (FooterWordmark.tsx). */
+.hp-footer-wordmark { overflow:hidden; white-space:nowrap; margin:0 calc(-1 * clamp(20px,5vw,64px)) clamp(8px,2vw,28px); padding:.06em clamp(12px,2vw,32px) 0; color:#f8f5ef; font-family:var(--display); font-size:clamp(140px,32vw,980px); font-weight:800; letter-spacing:-.07em; line-height:.8; text-align:right; -webkit-mask-image:linear-gradient(to bottom,#000 78%,transparent 100%); mask-image:linear-gradient(to bottom,#000 78%,transparent 100%); user-select:none; pointer-events:none; }
+.hp-footer-wordmark span { display:inline-block; transform-origin:50% 100%; will-change:transform; transition:transform .5s cubic-bezier(.2,.8,.3,1); }
+.hp-footer-wordmark .wm-z { color:var(--coral); }
+@media(max-width:900px) { .hp-footer-main { grid-template-columns:repeat(4,minmax(0,1fr)); gap:30px 22px; } .hp-footer-brand { grid-column:1/-1; } .hp-footer-wordmark { font-size:33vw; } }
+@media(max-width:640px) { .hp-top { padding-inline:16px; } .hp-top-actions { gap:8px; } .hp-wrap { padding-inline:22px; } .hp-footer { padding:38px 20px 0; } .hp-footer-main { grid-template-columns:1fr 1fr; gap:28px 18px; } .hp-footer-brand { grid-column:1/-1; } .hp-footer-bottom { align-items:flex-start; flex-direction:column; } .hp-footer-wordmark { font-size:34vw; margin-inline:-20px; } }
 
 @media (max-width: 820px) {
   .hp-grid { grid-template-columns: 1fr 1fr; }
@@ -183,7 +221,7 @@ export default async function HomePage() {
       <HeroCards />
       <header className="hp-top">
         <Link href="/" className="hp-logo">G-vent<b>Z</b></Link>
-        <AccountLink />
+        <div className="hp-top-actions"><ColorModeToggle /><AccountLink /></div>
       </header>
 
       <section className="hp-wrap hp-hero">
@@ -244,17 +282,23 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <footer className="hp-foot">
-        <div className="hp-foot-row">
-          <Link href="/discover">Discover</Link>
-          <Link href="/pricing">Pricing</Link>
-          <Link href="/help">Help</Link>
-        </div>
-        <div className="hp-foot-legal">
-          <Link href="/terms">Terms</Link>
-          <Link href="/privacy">Privacy</Link>
-          <Link href="/refunds">Refunds</Link>
-          <span>© G-ventZ</span>
+      <footer className="hp-foot hp-footer">
+        <div className="hp-footer-inner">
+          <FooterWordmark />
+          <div className="hp-footer-main">
+            <div className="hp-footer-brand">
+              <Link href="/" className="hp-logo">G-vent<b>Z</b></Link>
+              <p>Good gatherings start here. Create an event, share one link, and bring everyone together.</p>
+            </div>
+            <div><p className="hp-footer-title">Discover</p><nav className="hp-footer-links" aria-label="Discover"><Link href="/discover">All events</Link><Link href="/pricing">Pricing</Link><Link href="/events/new">Create event</Link></nav></div>
+            <div><p className="hp-footer-title">For hosts</p><nav className="hp-footer-links" aria-label="For hosts"><Link href="/events/new">Host an event</Link><Link href="/help">Help centre</Link><Link href="/refunds">Refunds</Link></nav></div>
+            <div><p className="hp-footer-title">Company</p><nav className="hp-footer-links" aria-label="Company"><Link href="/help">About G-ventZ</Link><Link href="/help">Contact</Link></nav></div>
+            <div><p className="hp-footer-title">Contact</p><div className="hp-footer-contact-group"><p className="hp-footer-contact-label">Support</p><Link href="/help">Visit help centre</Link></div><div className="hp-footer-contact-group"><p className="hp-footer-contact-label">For event hosts</p><Link href="/events/new">Get started</Link></div></div>
+          </div>
+          <div className="hp-footer-bottom">
+            <div className="hp-footer-meta"><p>© {new Date().getFullYear()} G-ventZ</p><SocialLinks /></div>
+            <nav className="hp-foot-legal" aria-label="Legal"><Link href="/terms">Terms</Link><Link href="/privacy">Privacy</Link></nav>
+          </div>
         </div>
       </footer>
     </main>

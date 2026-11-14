@@ -5,7 +5,7 @@ import LocationFields from "@/app/events/new/LocationFields";
 import { updateVenue } from "./actions";
 
 // Replaces the venue as a whole (the API keeps nothing from the old one unless sent again).
-export default function VenueForm({ eventId, current, detectedCountry }: { eventId: string; current: string; detectedCountry: string | null }) {
+export default function VenueForm({ eventId, current, mapsUrl, detectedCountry }: { eventId: string; current: string; mapsUrl: string | null; detectedCountry: string | null }) {
   const [online, setOnline] = useState(current === "Online");
   return (
     <form action={updateVenue} className="form">
@@ -18,7 +18,7 @@ export default function VenueForm({ eventId, current, detectedCountry }: { event
         </div>
         <label className="switch"><input type="checkbox" name="is_online" checked={online} onChange={(e) => setOnline(e.target.checked)} /><span /></label>
       </div>
-      {!online && <LocationFields detectedCountry={detectedCountry} placesEnabled />}
+      {!online && <LocationFields detectedCountry={detectedCountry} placesEnabled defaultMapsUrl={mapsUrl ?? ""} />}
       <button className="btn-white" type="submit">Save venue</button>
     </form>
   );

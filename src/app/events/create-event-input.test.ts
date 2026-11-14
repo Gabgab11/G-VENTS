@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { createEventBody } from "./create-event-input";
+import { createEventBody, locationInput } from "./create-event-input";
+import { MAPS_URL_HINT, isGoogleMapsUrl } from "@/lib/maps-url";
 
 function form(entries: [string, string][]): FormData {
   const fd = new FormData();
@@ -67,5 +68,24 @@ describe("createEventBody", () => {
     expect(createEventBody(form(base.filter(([k]) => k !== "country_code")))).toEqual({ error: "Choose a country from the list." });
     expect(createEventBody(form([...base.filter(([k]) => k !== "tier_qty"), ["tier_qty", "0"]]))).toMatchObject({ error: expect.stringContaining("whole number") });
     expect(createEventBody(form([...base, ["per_buyer_limit", "11"]]))).toEqual({ error: "Choose a limit from 1 to 10 tickets per person." });
+  });
+});
+
+describe("venue Google Maps link (LO6)", () => {
+  const venue: [string, string][] = [["country_code", "NG"], ["venue", "Eko Hotel"]];
+  it("sends a Google Maps link with the venue, and nothing when empty", () => {
+    expect(locationInput(form([...venue, ["maps_url", " https://maps.app.goo.gl/AbC123 "]]))).toMatchObject({ kind: "venue", mapsUrl: "https://maps.app.goo.gl/AbC123" });
+    expect(locationInput(form([...venue, ["maps_url", ""]]))).not.toHaveProperty("mapsUrl");
+  });
+  it("refuses links that aren't Google Maps, and drops the link for online events", () => {
+    expect(locationInput(form([...venue, ["maps_url", "https://evil.example/maps"]]))).toEqual({ error: MAPS_URL_HINT });
+    expect(locationInput(form([["is_online", "on"], ["maps_url", "https://maps.app.goo.gl/AbC123"]]))).toEqual({ kind: "online" });
+  });
+});
+
+describe("isGoogleMapsUrl", () => {
+  it("matches the API's rule", () => {
+    for (const ok of ["https://maps.app.goo.gl/x1", "https://goo.gl/maps/x1", "https://www.google.com/maps/place/X", "https://google.com.ng/maps?q=1,2", "https://maps.google.co.uk/?q=x"]) expect(isGoogleMapsUrl(ok), ok).toBe(true);
+    for (const bad of ["http://maps.app.goo.gl/x1", "https://www.google.com/search?q=x", "https://google.com.evil.com/maps", "https://maps.app.goo.gl.evil.com/x", "javascript:alert(1)", ""]) expect(isGoogleMapsUrl(bad), bad).toBe(false);
   });
 });
