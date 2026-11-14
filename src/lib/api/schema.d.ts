@@ -1065,12 +1065,396 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Can hosts sell paid tickets?
-         * @description True when at least one payment provider is switched on by G-ventZ and configured on the server (D64).
+         * Can paid tickets be sold?
+         * @description paidTickets: at least one Paystack country is switched on by G-ventZ and configured (D64). `me` (signed-in callers only): whether you can create paid ticket types now, in which currency, or why not.
          */
-        get: operations["PaymentsAvailabilityController_availability_v1"];
+        get: operations["PaymentsController_availability_v1"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/payments/banks": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Banks in a payout country
+         * @description Paystack's bank list for the country (cached).
+         */
+        get: operations["PaymentsController_banks_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/payments/resolve-account": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Check a bank account
+         * @description Paystack's account-name check for NG and GH. KE and ZA have none on Paystack: verified false, and the host confirms the details. 422 payout.account_unresolved when the bank says no such account. Rate-limited.
+         */
+        post: operations["PaymentsController_resolve_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/payments/fee-preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Fee example for one ticket
+         * @description For the create form: what a guest pays and what you receive, in your payout country's currency.
+         */
+        post: operations["PaymentsController_feePreview_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/me/host-application": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * My application to sell paid tickets
+         * @description Always 200; status 'none' before applying. Includes the payout account and anything owed.
+         */
+        get: operations["HostApplicationController_mine_v1"];
+        put?: never;
+        /**
+         * Apply to sell paid tickets
+         * @description Once; again only after a decline. The bank account is checked with Paystack. Staff are told; you are emailed when they decide.
+         */
+        post: operations["HostApplicationController_apply_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/me/host-application/document-upload-url": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Upload URL for your ID or business document
+         * @description JPG, PNG or PDF, at most 10 MB, to private storage. PUT the file to uploadUrl, then apply with documentPath = path.
+         */
+        post: operations["HostApplicationController_uploadUrl_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/me/payout-account": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Change my payout bank account
+         * @description Two-step sign-in. Same payout country. Paid sales pause until G-ventZ confirms the new account. Audited; you are emailed.
+         */
+        put: operations["HostApplicationController_changePayout_v1"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/host-applications": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Host applications
+         * @description Newest first. Cursor pagination.
+         */
+        get: operations["AdminPaymentsController_list_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/host-applications/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * One application
+         * @description With a link to the document valid for 5 minutes, and what the host owes.
+         */
+        get: operations["AdminPaymentsController_one_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/host-applications/{id}/approve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Approve
+         * @description Creates the host's Paystack subaccount; if Paystack refuses, the account stays pending and you can retry. Host emailed. Audited.
+         */
+        post: operations["AdminPaymentsController_approve_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/host-applications/{id}/decline": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Decline
+         * @description With a reason the host sees. Host emailed. Audited.
+         */
+        post: operations["AdminPaymentsController_decline_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/host-applications/{id}/revoke": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Revoke an approval
+         * @description No new paid tickets or orders; existing ones stay. Host emailed. Audited.
+         */
+        post: operations["AdminPaymentsController_revoke_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/host-applications/{id}/retry-payout-account": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create the pending payout account
+         * @description Creates the Paystack subaccount for a pending payout account: after Paystack refused at approval, or to confirm the host's changed bank details (HA4). Audited.
+         */
+        post: operations["AdminPaymentsController_retry_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/orders/{id}/payment": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Payment detail of an order
+         * @description Reference, quote, payments, refunds, disputes and webhooks received. Read-only.
+         */
+        get: operations["AdminPaymentsController_orderPayment_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/events/{id}/quote": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Price a paid order
+         * @description Prices, G-ventZ fees, VAT and the total, before paying. Paid ticket types only.
+         */
+        post: operations["CheckoutController_quote_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/events/{id}/paid-orders": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Buy paid tickets
+         * @description Holds the tickets for 10 minutes and opens Paystack checkout. Paid ticket types only (free ones are a separate order). nonRefundableAccepted must be true. When sold out and joinWaitlist is true, the order joins the waiting list instead (status waitlisted, no payment).
+         */
+        post: operations["CheckoutController_place_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/me/orders/{orderId}/pay": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Pay for my order
+         * @description Reopens checkout for an order still held (awaiting_payment), or holds the place and opens checkout for a waiting-list offer (24 hours). 409 order.not_payable otherwise.
+         */
+        post: operations["MyOrderPaymentController_pay_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/events/{id}/sales": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Sales summary
+         * @description Per currency from the ledger: gross, fees, VAT, Paystack charges, refunds, net; open disputes. Owner, admin and finance.
+         */
+        get: operations["EventSalesController_sales_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/events/{id}/tickets/{ticketId}/refund": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Refund a ticket
+         * @description Two-step sign-in; owner, admin or finance. The guest gets back the ticket's share of what they paid; the ticket is voided at once and its place goes back on sale. G-ventZ fees, VAT and Paystack charges are not returned; your share becomes an amount you owe, recovered from your next sales. Audited.
+         */
+        post: operations["EventSalesController_refund_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/webhooks/paystack/{country}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Paystack webhook
+         * @description One URL per Paystack country account (NG, GH, KE, ZA). x-paystack-signature must be the HMAC-SHA512 of the raw body with that country's secret key. Stored, then processed once per event.
+         */
+        post: operations["PaystackWebhookController_receive_v1"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1189,12 +1573,12 @@ export interface components {
             /** @example General */
             name: string;
             /**
-             * @description Integer minor units; must be 0 until payments arrive
+             * @description Integer minor units. Above 0 only when you can sell paid tickets (GET /v1/payments/availability: me.canSellPaid); 403 event.paid_not_allowed otherwise
              * @example 0
              */
             priceMinor?: number;
             /**
-             * @description Defaults to the venue country currency, or USD online
+             * @description Free: defaults to the venue country currency, or USD online. Paid: must be your payout country's currency (the default), else event.currency_not_payout
              * @example NGN
              */
             currency?: string;
@@ -1244,6 +1628,12 @@ export interface components {
             perBuyerLimit?: number;
             /** @description Create it published straight away */
             publish?: boolean;
+            /**
+             * @description Paid tickets (M5): host_absorbs = guests pay the price and fees come out of your share; guest_pays = fees are added on top so you receive the full price
+             * @default host_absorbs
+             * @enum {string}
+             */
+            feeChoice: "host_absorbs" | "guest_pays";
         };
         EventCreatedDto: {
             /** Format: uuid */
@@ -1368,6 +1758,18 @@ export interface components {
             hostName: string | null;
             ticketTypes: components["schemas"]["TicketTypeViewDto"][];
             questions: components["schemas"]["QuestionViewDto"][];
+            /**
+             * @description Who pays the fees on paid tickets
+             * @enum {string}
+             */
+            feeChoice: "host_absorbs" | "guest_pays";
+            /**
+             * @description Paystack country of the paid ticket types; null for free events
+             * @enum {string|null}
+             */
+            paymentCountry: "NG" | "GH" | "KE" | "ZA" | null;
+            /** @description Paid ticket types can be bought now (Paystack on for the country and the host can sell) */
+            paidSalesOpen: boolean;
             /** @enum {string} */
             role: "owner" | "admin" | "editor" | "checkin" | "finance" | "viewer";
             /** @description What the caller may do on this event */
@@ -1461,6 +1863,18 @@ export interface components {
             hostName: string | null;
             ticketTypes: components["schemas"]["TicketTypeViewDto"][];
             questions: components["schemas"]["QuestionViewDto"][];
+            /**
+             * @description Who pays the fees on paid tickets
+             * @enum {string}
+             */
+            feeChoice: "host_absorbs" | "guest_pays";
+            /**
+             * @description Paystack country of the paid ticket types; null for free events
+             * @enum {string|null}
+             */
+            paymentCountry: "NG" | "GH" | "KE" | "ZA" | null;
+            /** @description Paid ticket types can be bought now (Paystack on for the country and the host can sell) */
+            paidSalesOpen: boolean;
         };
         HostEventDto: {
             /** Format: uuid */
@@ -1734,6 +2148,17 @@ export interface components {
             answers: components["schemas"]["GuestAnswerResponse"][];
             /** Format: uuid */
             orderId: string | null;
+            /** @description Bought in a paid order (M5) */
+            paid: boolean;
+            /** @description What the guest would get back if refunded now (paid, confirmed tickets) */
+            refundableMinor: number | null;
+            /**
+             * @description Latest refund of this ticket
+             * @enum {string|null}
+             */
+            refundStatus: "queued" | "processing" | "refunded" | "failed" | null;
+            /** @description The ticket's order has an open chargeback */
+            disputed: boolean;
         };
         GuestCountsResponse: {
             confirmed: number;
@@ -1818,6 +2243,68 @@ export interface components {
             /** Format: date-time */
             checkedInAt: string | null;
         };
+        FeeQuoteLineDto: {
+            /** Format: uuid */
+            ticketTypeId: string;
+            name: string;
+            quantity: number;
+            /** @description Ticket price, minor units */
+            unitPriceMinor: number;
+            /** @description G-ventZ fee per ticket, minor units */
+            unitFeeMinor: number;
+            /** @description VAT on that fee per ticket, minor units */
+            unitVatMinor: number;
+        };
+        FeeQuoteDto: {
+            /** @example NGN */
+            currency: string;
+            /** @enum {string} */
+            feeChoice: "host_absorbs" | "guest_pays";
+            lines: components["schemas"]["FeeQuoteLineDto"][];
+            /** @description Sum of ticket prices */
+            pricesMinor: number;
+            /** @description G-ventZ fees */
+            feesMinor: number;
+            /** @description VAT on the G-ventZ fees */
+            vatMinor: number;
+            /** @description What the guest pays on top of the prices (0 when the host absorbs fees) */
+            serviceFeeMinor: number;
+            /** @description What the guest pays */
+            totalMinor: number;
+        };
+        OrderRefundDto: {
+            /** Format: uuid */
+            id: string;
+            amountMinor: number;
+            currency: string;
+            /** @enum {string} */
+            status: "queued" | "processing" | "refunded" | "failed";
+            /** @enum {string} */
+            reason: "host" | "cancellation" | "late_payment";
+            ticketIds: string[];
+            /** Format: date-time */
+            createdAt: string;
+        };
+        OrderPaymentDto: {
+            /** @enum {string} */
+            status: "awaiting_payment" | "completed" | "expired" | "failed" | "refunded" | "partially_refunded" | "disputed" | "waitlisted";
+            reference: string | null;
+            /** Format: date-time */
+            holdExpiresAt: string | null;
+            /**
+             * Format: date-time
+             * @description A waiting-list offer: pay before then (24 hours)
+             */
+            offerExpiresAt: string | null;
+            /** Format: date-time */
+            paidAt: string | null;
+            quote: components["schemas"]["FeeQuoteDto"] | null;
+            refundedMinor: number;
+            refunds: components["schemas"]["OrderRefundDto"][];
+            disputed: boolean;
+            /** @description POST /v1/me/orders/{id}/pay can (re)open checkout now */
+            canPay: boolean;
+        };
         MyOrderResponse: {
             /**
              * Format: uuid
@@ -1827,11 +2314,13 @@ export interface components {
             /** @enum {string} */
             kind: "order" | "ticket";
             /** @enum {string} */
-            status: "completed" | "pending_approval" | "waitlisted" | "declined" | "cancelled";
+            status: "completed" | "pending_approval" | "waitlisted" | "declined" | "cancelled" | "awaiting_payment" | "expired" | "failed" | "partially_refunded" | "refunded" | "disputed";
             /** Format: date-time */
             createdAt: string;
             event: components["schemas"]["TicketEventResponse"] | null;
             tickets: components["schemas"]["MyTicketResponse"][];
+            /** @description Paid orders only (M5): payment status, quote, hold, refunds */
+            payment: components["schemas"]["OrderPaymentDto"] | null;
         };
         MyOrdersPageResponse: {
             items: components["schemas"]["MyOrderResponse"][];
@@ -2038,6 +2527,40 @@ export interface components {
             /** Format: date-time */
             startsAt: string;
         };
+        AdminHostApplicationRefDto: {
+            /** Format: uuid */
+            id: string;
+            /** @enum {string} */
+            status: "submitted" | "approved" | "declined" | "revoked";
+            /** @enum {string} */
+            payoutCountry: "NG" | "GH" | "KE" | "ZA";
+            /** Format: date-time */
+            submittedAt: string;
+        };
+        AdminPayoutAccountDto: {
+            /** Format: uuid */
+            id: string;
+            /** @enum {string} */
+            status: "pending" | "active" | "replaced";
+            /** @enum {string} */
+            country: "NG" | "GH" | "KE" | "ZA";
+            currency: string;
+            bankCode: string;
+            bankName: string | null;
+            accountNumberLast4: string;
+            accountName: string | null;
+            /** @description Paystack subaccount code */
+            subaccountCode: string | null;
+            /** Format: date-time */
+            activatedAt: string | null;
+        };
+        AdminDebtDto: {
+            currency: string;
+            /** @description Owed now: refunds and lost disputes, less recoveries (minor units) */
+            owedMinor: number;
+            /** @description Recovered from sales so far (minor units) */
+            recoveredMinor: number;
+        };
         AdminHostDetailDto: {
             /** Format: uuid */
             id: string;
@@ -2055,6 +2578,12 @@ export interface components {
             suspendedReason: string | null;
             /** @description Newest start first, at most 200 */
             events: components["schemas"]["AdminHostEventDto"][];
+            /** @description Latest application to sell paid tickets (M5) */
+            application: components["schemas"]["AdminHostApplicationRefDto"] | null;
+            /** @description Current payout account (M5) */
+            payoutAccount: components["schemas"]["AdminPayoutAccountDto"] | null;
+            /** @description Per currency, from the ledger (M5) */
+            debts: components["schemas"]["AdminDebtDto"][];
         };
         ReasonDto: {
             /** @description Why; kept in the audit log */
@@ -2100,6 +2629,8 @@ export interface components {
         AdminOrderDto: {
             /** Format: uuid */
             id: string;
+            /** @description Paystack reference (paid orders) */
+            reference: string | null;
             /** Format: date-time */
             createdAt: string;
             event: components["schemas"]["AdminOrderEventDto"];
@@ -2131,6 +2662,13 @@ export interface components {
              */
             fixedMinor: number;
         };
+        VatRateDto: {
+            /**
+             * @description VAT on the G-ventZ fee, basis points (750 = 7.5%)
+             * @example 750
+             */
+            rateBps: number;
+        };
         ProviderStateDto: {
             /** @description Switched on by staff */
             enabled: boolean;
@@ -2141,6 +2679,20 @@ export interface components {
             paystack: components["schemas"]["ProviderStateDto"];
             interswitch: components["schemas"]["ProviderStateDto"];
             stripe: components["schemas"]["ProviderStateDto"];
+        };
+        CountrySwitchDto: {
+            /** @description Paystack switched on for this country */
+            enabled: boolean;
+            /** @description This country's Paystack secret key is set on the server */
+            configured: boolean;
+            /** @example NGN */
+            currency: string;
+        };
+        PaystackCountriesDto: {
+            NG: components["schemas"]["CountrySwitchDto"];
+            GH: components["schemas"]["CountrySwitchDto"];
+            KE: components["schemas"]["CountrySwitchDto"];
+            ZA: components["schemas"]["CountrySwitchDto"];
         };
         StaffMemberDto: {
             email: string;
@@ -2169,7 +2721,21 @@ export interface components {
             expiresAt: string;
         };
         AdminSettingsDto: {
+            /** @description paystack.enabled is true when any Paystack country is on; paystack.configured when any country has keys */
             payments: components["schemas"]["PaymentsStateDto"];
+            /** @description Paystack per country (each its own Paystack account) */
+            paystackCountries: components["schemas"]["PaystackCountriesDto"];
+            /**
+             * @description VAT on the G-ventZ fee per ISO 4217 currency; missing = 0%
+             * @example {
+             *       "NGN": {
+             *         "rateBps": 750
+             *       }
+             *     }
+             */
+            vat: {
+                [key: string]: components["schemas"]["VatRateDto"];
+            };
             /**
              * @description Fee rate per ISO 4217 currency
              * @example {
@@ -2193,12 +2759,31 @@ export interface components {
         ProviderSwitchDto: {
             enabled: boolean;
         };
+        CountryPatchDto: {
+            NG?: components["schemas"]["ProviderSwitchDto"];
+            GH?: components["schemas"]["ProviderSwitchDto"];
+            KE?: components["schemas"]["ProviderSwitchDto"];
+            ZA?: components["schemas"]["ProviderSwitchDto"];
+        };
         PaymentsPatchDto: {
             paystack?: components["schemas"]["ProviderSwitchDto"];
             interswitch?: components["schemas"]["ProviderSwitchDto"];
             stripe?: components["schemas"]["ProviderSwitchDto"];
         };
         UpdateSettingsDto: {
+            /** @description Paystack per country. Switching on a country whose keys aren't set is refused (settings.provider_not_configured, details.country). */
+            paystackCountries?: components["schemas"]["CountryPatchDto"];
+            /**
+             * @description VAT rate per ISO 4217 currency; only currencies sent change, null removes one (0%).
+             * @example {
+             *       "NGN": {
+             *         "rateBps": 750
+             *       }
+             *     }
+             */
+            vat?: {
+                [key: string]: components["schemas"]["VatRateDto"] | null;
+            };
             /** @description Switch providers on or off. Switching on a provider whose keys aren't set is refused (settings.provider_not_configured). */
             payments?: components["schemas"]["PaymentsPatchDto"];
             /**
@@ -2241,10 +2826,387 @@ export interface components {
             /** Format: date-time */
             expiresAt: string;
         };
+        CallerPaidSalesDto: {
+            canSellPaid: boolean;
+            /** @enum {string|null} */
+            country: "NG" | "GH" | "KE" | "ZA" | null;
+            currency: string | null;
+            /** @enum {string|null} */
+            reason: "payments_off" | "not_applied" | "application_submitted" | "application_declined" | "approval_revoked" | "payout_account_pending" | "country_off" | "owes_money" | "suspended" | null;
+        };
         PaymentsAvailabilityDto: {
-            /** @description Hosts can sell paid tickets: at least one provider is switched on and configured */
+            /** @description Hosts can sell paid tickets: at least one provider (country) is switched on and configured */
             paidTickets: boolean;
             providers: ("paystack" | "interswitch" | "stripe")[];
+            /**
+             * @description Paystack countries switched on and configured
+             * @example [
+             *       "NG"
+             *     ]
+             */
+            countries: string[];
+            /** @description Null for anonymous callers */
+            me: components["schemas"]["CallerPaidSalesDto"] | null;
+        };
+        BankDto: {
+            /** @example 058 */
+            code: string;
+            /** @example Guaranty Trust Bank */
+            name: string;
+        };
+        BanksDto: {
+            /** @enum {string} */
+            country: "NG" | "GH" | "KE" | "ZA";
+            banks: components["schemas"]["BankDto"][];
+        };
+        ResolveAccountDto: {
+            /** @enum {string} */
+            country: "NG" | "GH" | "KE" | "ZA";
+            /** @example 058 */
+            bankCode: string;
+            /** @example 0123456789 */
+            accountNumber: string;
+        };
+        ResolvedAccountDto: {
+            /** @description False where Paystack has no account-name check for the country (KE, ZA): ask the host to confirm the details */
+            verified: boolean;
+            accountName: string | null;
+            accountNumber: string;
+            bankCode: string;
+        };
+        FeePreviewRequestDto: {
+            /**
+             * @description One ticket price, minor units
+             * @example 500000
+             */
+            priceMinor: number;
+            /**
+             * @default host_absorbs
+             * @enum {string}
+             */
+            feeChoice: "host_absorbs" | "guest_pays";
+        };
+        HostFeePreviewDto: {
+            currency: string;
+            /** @enum {string} */
+            feeChoice: "host_absorbs" | "guest_pays";
+            priceMinor: number;
+            feeMinor: number;
+            vatMinor: number;
+            /** @description Paystack's charge (estimate from its published local-card rates) */
+            providerChargeMinor: number;
+            guestPaysMinor: number;
+            /** @description What the host receives for one ticket (before any debt recovery) */
+            hostReceivesMinor: number;
+        };
+        PayoutAccountDto: {
+            /** Format: uuid */
+            id: string;
+            /**
+             * @description pending: the Paystack subaccount is not created yet (staff confirm or retry)
+             * @enum {string}
+             */
+            status: "pending" | "active" | "replaced";
+            /** @enum {string} */
+            country: "NG" | "GH" | "KE" | "ZA";
+            /** @example NGN */
+            currency: string;
+            bankCode: string;
+            bankName: string | null;
+            /** @example 6789 */
+            accountNumberLast4: string;
+            accountName: string | null;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            activatedAt: string | null;
+        };
+        MoneyOwedDto: {
+            /** @example NGN */
+            currency: string;
+            /** @description Integer minor units the host owes G-ventZ (refunds and lost disputes, less recoveries) */
+            owedMinor: number;
+        };
+        MyHostApplicationDto: {
+            /** @enum {string} */
+            status: "none" | "submitted" | "approved" | "declined" | "revoked";
+            /** Format: uuid */
+            id: string | null;
+            legalName: string | null;
+            phone: string | null;
+            /** @enum {string|null} */
+            payoutCountry: "NG" | "GH" | "KE" | "ZA" | null;
+            /** @description The payout country's currency: the only one this host sells in */
+            currency: string | null;
+            bankCode: string | null;
+            bankName: string | null;
+            accountNumberLast4: string | null;
+            resolvedAccountName: string | null;
+            /** Format: date-time */
+            submittedAt: string | null;
+            /** Format: date-time */
+            decidedAt: string | null;
+            /** @description Why it was declined or revoked */
+            decisionReason: string | null;
+            payoutAccount: components["schemas"]["PayoutAccountDto"] | null;
+            /** @description Only currencies with something owed */
+            debts: components["schemas"]["MoneyOwedDto"][];
+            /** @description Can create paid ticket types and publish paid events now */
+            canSellPaid: boolean;
+            /** @enum {string|null} */
+            reason: "payments_off" | "not_applied" | "application_submitted" | "application_declined" | "approval_revoked" | "payout_account_pending" | "country_off" | "owes_money" | "suspended" | null;
+        };
+        HostApplicationInputDto: {
+            /** @example Ada Obi Events Ltd */
+            legalName: string;
+            /** @example +2348012345678 */
+            phone: string;
+            /** @enum {string} */
+            payoutCountry: "NG" | "GH" | "KE" | "ZA";
+            /**
+             * @description From GET /v1/payments/banks
+             * @example 058
+             */
+            bankCode: string;
+            /** @example Guaranty Trust Bank */
+            bankName?: string;
+            /** @example 0123456789 */
+            accountNumber: string;
+            /** @description The path from POST /v1/me/host-application/document-upload-url, after the file was uploaded */
+            documentPath: string;
+        };
+        DocumentUploadRequestDto: {
+            /** @enum {string} */
+            contentType: "image/jpeg" | "image/png" | "application/pdf";
+            /** @description File size in bytes; at most 10 MB */
+            sizeBytes: number;
+        };
+        DocumentUploadDto: {
+            /** @description PUT the file here (Supabase signed upload URL) */
+            uploadUrl: string;
+            /** @description Send this as documentPath when applying */
+            path: string;
+            /** Format: date-time */
+            expiresAt: string;
+            /** @example 10485760 */
+            maxBytes: number;
+        };
+        PayoutAccountChangeDto: {
+            /** @example 058 */
+            bankCode: string;
+            bankName?: string;
+            /** @example 0123456789 */
+            accountNumber: string;
+        };
+        AdminPersonDto: {
+            /** Format: uuid */
+            id: string;
+            name: string | null;
+            email: string | null;
+        };
+        AdminHostApplicationDto: {
+            /** Format: uuid */
+            id: string;
+            host: components["schemas"]["AdminPersonDto"];
+            legalName: string;
+            phone: string;
+            /** @enum {string} */
+            payoutCountry: "NG" | "GH" | "KE" | "ZA";
+            currency: string;
+            bankCode: string;
+            bankName: string | null;
+            accountNumber: string;
+            resolvedAccountName: string | null;
+            /** @enum {string} */
+            status: "submitted" | "approved" | "declined" | "revoked";
+            decisionReason: string | null;
+            /** Format: date-time */
+            submittedAt: string;
+            /** Format: date-time */
+            decidedAt: string | null;
+            decidedBy: components["schemas"]["AdminPersonDto"] | null;
+            /** @description The uploaded document exists in storage */
+            documentAvailable: boolean;
+            payoutAccount: components["schemas"]["PayoutAccountDto"] | null;
+            /** @description Paystack's last refusal when creating the subaccount */
+            payoutAccountError: string | null;
+        };
+        AdminHostApplicationsPageDto: {
+            items: components["schemas"]["AdminHostApplicationDto"][];
+            nextCursor: string | null;
+        };
+        AdminHostApplicationDetailDto: {
+            /** Format: uuid */
+            id: string;
+            host: components["schemas"]["AdminPersonDto"];
+            legalName: string;
+            phone: string;
+            /** @enum {string} */
+            payoutCountry: "NG" | "GH" | "KE" | "ZA";
+            currency: string;
+            bankCode: string;
+            bankName: string | null;
+            accountNumber: string;
+            resolvedAccountName: string | null;
+            /** @enum {string} */
+            status: "submitted" | "approved" | "declined" | "revoked";
+            decisionReason: string | null;
+            /** Format: date-time */
+            submittedAt: string;
+            /** Format: date-time */
+            decidedAt: string | null;
+            decidedBy: components["schemas"]["AdminPersonDto"] | null;
+            /** @description The uploaded document exists in storage */
+            documentAvailable: boolean;
+            payoutAccount: components["schemas"]["PayoutAccountDto"] | null;
+            /** @description Paystack's last refusal when creating the subaccount */
+            payoutAccountError: string | null;
+            /** @description Signed link to the document, valid 5 minutes */
+            documentUrl: string | null;
+            /** Format: date-time */
+            documentUrlExpiresAt: string | null;
+            debts: components["schemas"]["MoneyOwedDto"][];
+        };
+        DecisionReasonDto: {
+            reason: string;
+        };
+        AdminPaymentDto: {
+            reference: string;
+            /** @enum {string} */
+            status: "pending" | "success" | "failed" | "late_refunded";
+            amountMinor: number;
+            currency: string;
+            providerChargeMinor: number | null;
+            channel: string | null;
+            /** Format: date-time */
+            verifiedAt: string | null;
+            /** Format: date-time */
+            createdAt: string;
+        };
+        EventDisputeDto: {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            orderId: string;
+            amountMinor: number;
+            currency: string;
+            /** @enum {string} */
+            status: "open" | "won" | "lost";
+            /** Format: date-time */
+            openedAt: string;
+            /** Format: date-time */
+            resolvedAt: string | null;
+        };
+        AdminWebhookDto: {
+            type: string;
+            /** Format: date-time */
+            receivedAt: string;
+            /** Format: date-time */
+            processedAt: string | null;
+            outcome: string | null;
+        };
+        AdminOrderPaymentDetailDto: {
+            /** Format: uuid */
+            orderId: string;
+            status: string;
+            /** @enum {string} */
+            kind: "free" | "paid";
+            reference: string | null;
+            country: string | null;
+            quote: components["schemas"]["FeeQuoteDto"] | null;
+            /** Format: date-time */
+            holdExpiresAt: string | null;
+            /** Format: date-time */
+            nonRefundableAcceptedAt: string | null;
+            payments: components["schemas"]["AdminPaymentDto"][];
+            refunds: components["schemas"]["OrderRefundDto"][];
+            disputes: components["schemas"]["EventDisputeDto"][];
+            webhooks: components["schemas"]["AdminWebhookDto"][];
+        };
+        PaidLineDto: {
+            /** Format: uuid */
+            ticketTypeId: string;
+            /** @example 2 */
+            quantity: number;
+        };
+        QuoteRequestDto: {
+            /** @description Paid ticket types only, 1-10 tickets in total */
+            lines: components["schemas"]["PaidLineDto"][];
+        };
+        PaidOrderDto: {
+            /** @description Paid ticket types only, 1-10 tickets in total */
+            lines: components["schemas"]["PaidLineDto"][];
+            /** @description The guest ticked "I understand tickets are non-refundable, except if the event is cancelled" (CK3). Must be true. */
+            nonRefundableAccepted: boolean;
+            /** @description guestNames[i] names ticket i+1; blank for none. */
+            guestNames?: string[];
+            /** @description Answers keyed by question id; once per order. */
+            answers?: {
+                [key: string]: string;
+            };
+            /** @example Ada Obi */
+            buyerName?: string;
+            /** @description When a ticket type is sold out, join its waiting list instead of failing (WL1) */
+            joinWaitlist?: boolean;
+        };
+        PaidOrderPlacedDto: {
+            /** Format: uuid */
+            orderId: string;
+            /** @enum {string} */
+            status: "awaiting_payment" | "waitlisted";
+            /** @description Paystack reference */
+            reference: string | null;
+            /** @description Paystack's hosted checkout page; send the guest here */
+            authorizationUrl: string | null;
+            /** @description Paystack access code (for the inline popup) */
+            accessCode: string | null;
+            /**
+             * Format: date-time
+             * @description The tickets are held until then (10 minutes)
+             */
+            holdExpiresAt: string | null;
+            quote: components["schemas"]["FeeQuoteDto"];
+        };
+        SalesCurrencyDto: {
+            currency: string;
+            ticketsSold: number;
+            ordersPaid: number;
+            /** @description What guests paid */
+            grossMinor: number;
+            feesMinor: number;
+            vatMinor: number;
+            providerChargesMinor: number;
+            /** @description Refunded to guests */
+            refundsMinor: number;
+            /** @description Host share of refunds and lost disputes now owed */
+            debtMinor: number;
+            /** @description Owed amounts recovered from this event's sales */
+            debtRecoveredMinor: number;
+            /** @description What the host received: gross - fees - VAT - Paystack charges - recoveries */
+            netMinor: number;
+        };
+        EventSalesDto: {
+            /** @description From the ledger, per currency */
+            currencies: components["schemas"]["SalesCurrencyDto"][];
+            disputes: components["schemas"]["EventDisputeDto"][];
+            /** @description Refunds still being processed */
+            refundsPending: number;
+            /** @description Refunds that failed after retries (G-ventZ is alerted) */
+            refundsFailed: number;
+        };
+        TicketRefundDto: {
+            /** Format: uuid */
+            refundId: string;
+            /** Format: uuid */
+            ticketId: string;
+            /** @description What the guest gets back */
+            amountMinor: number;
+            currency: string;
+            /** @enum {string} */
+            status: "queued" | "processing" | "refunded" | "failed";
+        };
+        WebhookAckDto: {
+            received: boolean;
         };
     };
     responses: never;
@@ -4590,7 +5552,7 @@ export interface operations {
             };
         };
     };
-    PaymentsAvailabilityController_availability_v1: {
+    PaymentsController_availability_v1: {
         parameters: {
             query?: never;
             header?: never;
@@ -4606,6 +5568,747 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["PaymentsAvailabilityDto"];
                 };
+            };
+        };
+    };
+    PaymentsController_banks_v1: {
+        parameters: {
+            query: {
+                country: "NG" | "GH" | "KE" | "ZA";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BanksDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PaymentsController_resolve_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ResolveAccountDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResolvedAccountDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description rate_limit.exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PaymentsController_feePreview_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FeePreviewRequestDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HostFeePreviewDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    HostApplicationController_mine_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MyHostApplicationDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    HostApplicationController_apply_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HostApplicationInputDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MyHostApplicationDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description host_application.exists */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    HostApplicationController_uploadUrl_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DocumentUploadRequestDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DocumentUploadDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    HostApplicationController_changePayout_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PayoutAccountChangeDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MyHostApplicationDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.mfa_required: confirm with your authenticator app (aal2). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AdminPaymentsController_list_v1: {
+        parameters: {
+            query?: {
+                /** @description payout_pending: approved, payout account not created yet */
+                status?: "submitted" | "approved" | "declined" | "revoked" | "payout_pending";
+                /** @description Legal name, host name or email */
+                q?: string;
+                cursor?: string;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminHostApplicationsPageDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.mfa_required: staff must confirm with their authenticator app (aal2) */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description route.not_found for anyone who is not G-ventZ staff */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AdminPaymentsController_one_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminHostApplicationDetailDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.mfa_required: staff must confirm with their authenticator app (aal2) */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description route.not_found for anyone who is not G-ventZ staff */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AdminPaymentsController_approve_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminHostApplicationDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.mfa_required: staff must confirm with their authenticator app (aal2) */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description route.not_found for anyone who is not G-ventZ staff */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AdminPaymentsController_decline_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DecisionReasonDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminHostApplicationDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.mfa_required: staff must confirm with their authenticator app (aal2) */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description route.not_found for anyone who is not G-ventZ staff */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AdminPaymentsController_revoke_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DecisionReasonDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminHostApplicationDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.mfa_required: staff must confirm with their authenticator app (aal2) */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description route.not_found for anyone who is not G-ventZ staff */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AdminPaymentsController_retry_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminHostApplicationDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.mfa_required: staff must confirm with their authenticator app (aal2) */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description route.not_found for anyone who is not G-ventZ staff */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AdminPaymentsController_orderPayment_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminOrderPaymentDetailDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.mfa_required: staff must confirm with their authenticator app (aal2) */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description route.not_found for anyone who is not G-ventZ staff */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    CheckoutController_quote_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["QuoteRequestDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FeeQuoteDto"];
+                };
+            };
+        };
+    };
+    CheckoutController_place_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PaidOrderDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaidOrderPlacedDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    MyOrderPaymentController_pay_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                orderId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaidOrderPlacedDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    EventSalesController_sales_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EventSalesDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.forbidden: needs sales.view */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.not_found (also when you have no role on the event) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    EventSalesController_refund_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                ticketId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TicketRefundDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /**
+             * @description event.forbidden: needs orders.refund
+             *
+             *     auth.mfa_required: confirm with your authenticator app (aal2).
+             */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.not_found (also when you have no role on the event) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description refund.not_refundable */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PaystackWebhookController_receive_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                country: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WebhookAckDto"];
+                };
+            };
+            /** @description webhook.signature_invalid */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };

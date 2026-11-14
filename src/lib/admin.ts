@@ -3,6 +3,9 @@ import "server-only";
 import { notFound, redirect } from "next/navigation";
 import { api } from "@/lib/api/server";
 import { ApiError } from "@/lib/api/problem";
+import { formatMinor } from "@/lib/money";
+
+export { formatMinor };
 
 // G-ventZ admin dashboard (Change 2, FR-21). The API is the gatekeeper: non-staff get 404 (the
 // pages say "not found" too, so the admin area isn't revealed), staff without two-step sign-in get
@@ -23,17 +26,6 @@ export async function adminCall<T>(work: () => Promise<T>, returnTo: string): Pr
       if (error.status === 401) redirect(`/sign-in?next=${encodeURIComponent(returnTo)}`);
     }
     throw error;
-  }
-}
-
-/** Integer minor units → "₦2,500.00", using the currency's own number of decimals. */
-export function formatMinor(amountMinor: number, currency: string): string {
-  try {
-    const fmt = new Intl.NumberFormat("en-NG", { style: "currency", currency });
-    const digits = fmt.resolvedOptions().maximumFractionDigits ?? 2;
-    return fmt.format(amountMinor / 10 ** digits);
-  } catch {
-    return `${currency} ${(amountMinor / 100).toFixed(2)}`;
   }
 }
 
