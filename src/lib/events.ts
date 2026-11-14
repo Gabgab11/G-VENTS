@@ -9,8 +9,10 @@ export type EventCard = {
   slug: string;
   category: string;
   starts_at: string;
+  ends_at: string | null;
   timezone: string;
   venue_name: string | null;
+  is_online: boolean;
   city: string | null;
   country: string | null;
   cover_theme: string | null;
@@ -34,8 +36,10 @@ export async function getFeaturedEvents(limit = 6, category?: Category): Promise
     slug: e.slug,
     category: e.category,
     starts_at: e.startsAt,
+    ends_at: e.endsAt,
     timezone: e.timeZone,
     venue_name: e.venueName,
+    is_online: e.isOnline,
     city: e.city,
     country: e.country,
     cover_theme: e.coverTheme,
