@@ -17,7 +17,7 @@ select lives_ok(
       foreach l in array array['en', 'es', 'fr', 'de', 'zh-Hans', 'pt', 'ar'] loop
         update public.profiles set language = l where id = '22222222-2222-2222-2222-222222222222';
       end loop;
-    end $t$$$,
+    end $t$ $$,
   'gventz_api can save each of the seven languages');
 select throws_ok(
   $$update public.profiles set language = 'EN' where id = '22222222-2222-2222-2222-222222222222'$$,
