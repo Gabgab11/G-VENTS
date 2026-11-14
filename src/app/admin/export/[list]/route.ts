@@ -7,7 +7,8 @@ import { formatMoneyList, toCsv } from "@/lib/admin";
 export const dynamic = "force-dynamic";
 
 const MAX_ROWS = 10_000;
-const PAGE = 200;
+// The API caps every list at 50 a page (CursorRequest.MAX_LIMIT); more is refused with a 400.
+const PAGE = 50;
 
 type Fetcher = (cursor: string | undefined) => Promise<{ rows: unknown[][]; next: string | null }>;
 
