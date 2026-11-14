@@ -112,3 +112,33 @@ export async function removeFee(formData: FormData) {
   if (!/^[A-Z]{3}$/.test(currency)) back("/admin/settings", "err=Unknown%20currency");
   await run("/admin/settings", async () => (await api()).PATCH("/v1/admin/settings", { body: { fees: { [currency]: null } } }), `${currency} now uses the standard fee`);
 }
+
+// Platform staff (FR-21.7): invite, withdraw an invite, remove a member, accept an invite.
+
+export async function inviteStaff(formData: FormData) {
+  const email = text(formData, "email", 254).toLowerCase();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) back("/admin/settings", "err=Enter%20a%20valid%20email%20address");
+  await run("/admin/settings", async () => (await api()).POST("/v1/admin/staff/invites", { body: { email } }), `Invitation sent to ${email}`);
+}
+
+export async function revokeInvite(formData: FormData) {
+  const id = text(formData, "invite_id");
+  if (!isUuid(id)) back("/admin/settings", "err=Unknown%20invitation");
+  await run("/admin/settings", async () => (await api()).DELETE("/v1/admin/staff/invites/{id}", { params: { path: { id } } }), "Invitation withdrawn");
+}
+
+export async function removeStaff(formData: FormData) {
+  const email = text(formData, "email", 254).toLowerCase();
+  if (formData.get("confirm") !== "yes") back("/admin/settings", "err=Tick%20the%20box%20to%20confirm%20the%20removal");
+  await run("/admin/settings", async () => (await api()).DELETE("/v1/admin/staff/{email}", { params: { path: { email } } }), `${email} is no longer staff`);
+}
+
+export async function acceptStaffInvite() {
+  try {
+    await (await api()).POST("/v1/me/staff-invite/accept");
+  } catch (error) {
+    redirect(`/admin/invite?err=${encodeURIComponent(apiMessage(error, "That invitation couldn't be accepted."))}`);
+  }
+  // Staff need two-step sign-in before the dashboard opens; the security page sends them on.
+  redirect("/account/security?next=/admin");
+}

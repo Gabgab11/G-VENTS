@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 
 vi.mock("server-only", () => ({}));
 vi.mock("next/navigation", () => ({ notFound: vi.fn(), redirect: vi.fn() }));
+vi.mock("@/lib/api/server", () => ({ api: vi.fn() }));
 
 const { csvCell, formatMinor, formatMoneyList, toCsv } = await import("./admin");
 

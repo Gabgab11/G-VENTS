@@ -13,6 +13,8 @@ const TABS = [
 
 export default function AdminNav() {
   const path = usePathname();
+  // The invitation page is for people who aren't staff yet: no sections to show.
+  if (path === "/admin/invite") return null;
   return (
     <nav className="ad-tabs" aria-label="Admin sections">
       {TABS.map((t) => {

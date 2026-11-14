@@ -1,6 +1,7 @@
 import "server-only";
 
 import { notFound, redirect } from "next/navigation";
+import { api } from "@/lib/api/server";
 import { ApiError } from "@/lib/api/problem";
 
 // G-ventZ admin dashboard (Change 2, FR-21). The API is the gatekeeper: non-staff get 404 (the
@@ -12,7 +13,12 @@ export async function adminCall<T>(work: () => Promise<T>, returnTo: string): Pr
     return await work();
   } catch (error) {
     if (error instanceof ApiError) {
-      if (error.status === 404) notFound();
+      if (error.status === 404) {
+        // Not staff (yet): someone with an open invitation is sent to accept it instead of "not found".
+        const invited = await hasStaffInvite();
+        if (invited) redirect("/admin/invite");
+        notFound();
+      }
       if (error.code === "auth.mfa_required") redirect(`/account/security?next=${encodeURIComponent(returnTo)}`);
       if (error.status === 401) redirect(`/sign-in?next=${encodeURIComponent(returnTo)}`);
     }
@@ -57,4 +63,13 @@ export function csvCell(value: unknown): string {
 
 export function toCsv(header: string[], rows: unknown[][]): string {
   return [header, ...rows].map((r) => r.map(csvCell).join(",")).join("\r\n") + "\r\n";
+}
+
+async function hasStaffInvite(): Promise<boolean> {
+  try {
+    const res = await (await api()).GET("/v1/me/staff-invite");
+    return !!res.data;
+  } catch {
+    return false;
+  }
 }

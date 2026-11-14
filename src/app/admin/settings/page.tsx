@@ -1,6 +1,7 @@
 import { api, data } from "@/lib/api/server";
 import { adminCall, formatDate, formatMinor } from "@/lib/admin";
-import { clearDefaultFee, removeFee, setDefaultFee, setFee, setProvider, setSettlementDelay } from "../actions";
+import { requireUser } from "@/lib/auth";
+import { clearDefaultFee, inviteStaff, removeFee, removeStaff, revokeInvite, setDefaultFee, setFee, setProvider, setSettlementDelay } from "../actions";
 import Notice from "../Notice";
 
 const PROVIDERS = [
@@ -11,6 +12,8 @@ const PROVIDERS = [
 
 export default async function AdminSettings({ searchParams }: { searchParams: Promise<{ ok?: string; err?: string }> }) {
   const sp = await searchParams;
+  const { user } = await requireUser("/admin/settings");
+  const myEmail = (user.email ?? "").toLowerCase();
   const s = await adminCall(async () => data(await (await api()).GET("/v1/admin/settings")), "/admin/settings");
   const fees = Object.entries(s.fees).sort(([a], [b]) => a.localeCompare(b));
 
@@ -109,11 +112,47 @@ export default async function AdminSettings({ searchParams }: { searchParams: Pr
       <section className="panel stack" aria-labelledby="ad-staff-title">
         <div className="ad-panel-head">
           <h2 id="ad-staff-title" className="ad-h2">Platform staff</h2>
-          <span className="muted small">Changed by a database migration only. Everyone here needs two-step sign-in.</span>
+          <span className="muted small">Everyone here can see and manage the whole platform, and needs two-step sign-in.</span>
         </div>
         <ul className="ad-staff">
-          {s.staff.map((m) => <li key={m.email}><b>{m.email}</b>{m.note ? <span className="muted"> · {m.note}</span> : null}<span className="muted small"> · since {formatDate(m.addedAt)}</span></li>)}
+          {s.staff.map((m) => {
+            const me = m.email.toLowerCase() === myEmail;
+            return (
+              <li key={m.email} className="ad-staff-row">
+                <span><b>{m.email}</b>{me && <span className="ad-pill">You</span>}{m.note ? <span className="muted"> · {m.note}</span> : null}<span className="muted small"> · since {formatDate(m.addedAt)}</span></span>
+                {!me && s.staff.length > 1 && (
+                  <details className="ad-actions">
+                    <summary>Remove</summary>
+                    <form action={removeStaff} className="ad-actions-body stack">
+                      <input type="hidden" name="email" value={m.email} />
+                      <label className="ad-check"><input type="checkbox" name="confirm" value="yes" required /> Remove {m.email} from staff</label>
+                      <button type="submit" className="btn-ghost ad-danger">Remove</button>
+                    </form>
+                  </details>
+                )}
+              </li>
+            );
+          })}
         </ul>
+
+        <div className="ad-fee-block">
+          <div className="panel-label">Invite someone</div>
+          <p className="muted small">They get an email, sign in with exactly this address, accept, and set up two-step sign-in. Invitations expire after 7 days.</p>
+          <form action={inviteStaff} className="ad-inline-form">
+            <label className="field"><span>Email</span><input className="input" name="email" type="email" autoComplete="off" placeholder="name@example.com" required /></label>
+            <button type="submit" className="btn-white">Send invitation</button>
+          </form>
+          {s.invites.length > 0 && (
+            <ul className="ad-staff">
+              {s.invites.map((i) => (
+                <li key={i.id} className="ad-staff-row">
+                  <span><b>{i.email}</b> <span className="ad-pill pending_approval">Invited</span><span className="muted small"> · by {i.invitedBy?.name || i.invitedBy?.email || "staff"} · expires {formatDate(i.expiresAt, true)}</span></span>
+                  <form action={revokeInvite}><input type="hidden" name="invite_id" value={i.id} /><button type="submit" className="link-btn">Withdraw</button></form>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </section>
     </div>
   );
