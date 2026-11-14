@@ -579,7 +579,10 @@ isOneToOne: false
             [_ in never]: never
           }
           Functions: {
-            "has_event_role":
+            "email_confirmed":
+{ Args: { "p_email": string,"p_user": string }; Returns: boolean
+                           },
+"has_event_role":
 { Args: { "p_event": string,"p_roles": (string)[] }; Returns: boolean
                            }
           }
