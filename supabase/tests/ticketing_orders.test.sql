@@ -2,7 +2,7 @@
 -- Run by `supabase test db`. Each test runs inside a transaction that is rolled back.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(16);
+select plan(15);
 
 select is((select relrowsecurity from pg_class where oid = 'public.orders'::regclass), true,
   'row-level security is on for orders');
@@ -22,8 +22,8 @@ insert into public.events (id, owner_id, title, slug, category, starts_at, statu
 insert into public.ticket_tiers (id, event_id, name) values
   ('44444444-4444-4444-4444-444444444444', '33333333-3333-3333-3333-333333333333', 'Free');
 
--- A single ticket, as the old app's register_guest stored it (the function is closed to users
--- now; the row shape still exists in the data).
+-- A single ticket, as the old app stored it (its register_guest function is gone; the row shape
+-- still exists in the data).
 set local role gventz_api;
 insert into public.registrations (event_id, tier_id, user_id, attendee_name, attendee_email, status)
 values ('33333333-3333-3333-3333-333333333333', '44444444-4444-4444-4444-444444444444',
@@ -32,12 +32,6 @@ select throws_ok(
   $$insert into public.orders (event_id, buyer_id, status, ticket_count, currency)
     values ('33333333-3333-3333-3333-333333333333', '22222222-2222-2222-2222-222222222222', 'completed', 0, 'NGN')$$,
   '23514', null, 'an order has at least one ticket');
-reset role;
-set local role authenticated;
-select set_config('request.jwt.claims', '{"sub":"22222222-2222-2222-2222-222222222222","role":"authenticated"}', true);
-select throws_ok(
-  $$select public.register_guest('33333333-3333-3333-3333-333333333333', '44444444-4444-4444-4444-444444444444', 'Guest Person', '', '{}')$$,
-  '42501', null, 'register_guest is closed to signed-in users');
 reset role;
 
 select is((select active_count from public.events where id = '33333333-3333-3333-3333-333333333333'), 1,
