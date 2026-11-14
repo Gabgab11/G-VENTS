@@ -1,13 +1,16 @@
 import Link from "next/link";
 import { getFeaturedEvents } from "@/lib/events";
-import { formatEventDate } from "@/lib/dates";
 import AccountLink from "./AccountLink";
 import HeroCards from "./HeroCards";
 import HeroTilt from "./HeroTilt";
+import HeroHover from "./HeroHover";
 import { pageFonts } from "@/app/fonts";
 import ColorModeToggle from "@/components/ColorModeToggle";
 import SocialLinks from "@/components/SocialLinks";
 import FooterWordmark from "./FooterWordmark";
+import "./discover/discover.css";
+import Rail from "./discover/Rail";
+import EventTile from "./discover/EventTile";
 
 const CSS = `
 
@@ -69,7 +72,10 @@ const CSS = `
   transform: rotate(var(--tilt)); pointer-events: auto;
   animation: hp-drop var(--dur) ease-in-out var(--delay) both;
 }
-.hp-card { display: block; border-radius: 14px; pointer-events: none; user-select: none; }
+.hp-card { display: block; border-radius: 14px; pointer-events: none; user-select: none; transform-origin: 50% 100%; transition: transform .45s cubic-bezier(.2,.8,.3,1.25); }
+/* Mouse effect (HeroHover.tsx): a card near the pointer leans towards it and its shadow deepens. */
+.hp-card svg { transition: filter .45s ease; }
+.hp-card.hp-near svg { filter: drop-shadow(0 22px 22px rgba(60,44,20,.32)); }
 .hp-card svg { display: block; width: 100%; height: auto; overflow: visible; filter: drop-shadow(0 10px 12px rgba(60,44,20,.2)); }
 @keyframes hp-drop {
   0%   { transform: translate(var(--sway), -115vh) rotate(calc(var(--tilt) + var(--spin))); }
@@ -219,6 +225,7 @@ export default async function HomePage() {
 
       <div className="hp-stage">
       <HeroCards />
+      <HeroHover />
       <header className="hp-top">
         <Link href="/" className="hp-logo">G-vent<b>Z</b></Link>
         <div className="hp-top-actions"><ColorModeToggle /><AccountLink /></div>
@@ -245,28 +252,11 @@ export default async function HomePage() {
       </div>
 
       <section className="hp-wrap hp-section">
-        <div className="hp-head">
-          <h2>Happening soon</h2>
-          <p>Public events you can register for right now.</p>
-        </div>
-
+        {/* Same cards and row as Discover: the event's flyer (or colour style), name, place and date. */}
         {events.length > 0 ? (
-          <div className="hp-grid">
-            {events.map((e, i) => (
-              <Link
-                key={e.id}
-                href={`/e/${e.slug}`}
-                className={`hp-tile hp-c${i % 6} ${i === 0 ? "hp-wide" : "hp-sq"}`}
-                style={{ animationDelay: `${i * 120}ms` }}
-              >
-                <div className="hp-tag">{[e.city, e.country].filter(Boolean).join(" · ")}</div>
-                <div>
-                  <div className="hp-when">{formatEventDate(e.starts_at, e.timezone)}</div>
-                  <h3>{e.title}</h3>
-                </div>
-              </Link>
-            ))}
-          </div>
+          <Rail title="Happening soon" id="hp-soon" more={{ href: "/discover", label: "See all events" }}>
+            {events.map((e) => <EventTile key={e.id} event={e} />)}
+          </Rail>
         ) : (
           <p className="hp-empty">
             No public events yet. <Link href={createHref}>Be the first to create one.</Link>

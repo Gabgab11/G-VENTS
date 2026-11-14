@@ -594,3 +594,23 @@ input, select, textarea, button { max-width: 100%; min-width: 0; }
 .ev-host-name { font-weight: 700; }
 .ev-host-actions { display: flex; flex-wrap: wrap; gap: 10px; }
 .ev-host-actions .ev-cta { flex: 1 1 200px; text-align: center; }
+
+/* Shared header (SiteHeader.tsx): back arrow, logo home, main links, colour switch, account. */
+.site-top { display: flex; align-items: center; gap: 14px 22px; padding: 16px 0 22px; }
+.site-top .back-link { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--text); font-size: 18px; line-height: 1; cursor: pointer; }
+.site-top .back-link:hover { border-color: var(--line-hi); }
+.site-logo { font-family: var(--font-display), "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif; font-weight: 800; font-size: 22px; letter-spacing: -0.4px; color: var(--text); text-decoration: none; }
+.site-logo b { color: #ff5a3c; }
+.site-nav { display: flex; gap: 4px; margin-right: auto; }
+.site-nav a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 15px; padding: 8px 12px; border-radius: 999px; }
+.site-nav a:hover { color: var(--text); background: var(--surface); }
+.site-nav a[aria-current="page"] { color: var(--text); }
+.site-actions { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+.site-actions > * { white-space: nowrap; flex: none; }
+.site-account { background: transparent; cursor: pointer; font-family: inherit; color: var(--text); text-decoration: none; font-size: 14px; font-weight: 600; border: 1px solid var(--line); padding: 9px 16px; border-radius: 999px; white-space: nowrap; }
+.site-account:hover { border-color: var(--line-hi); }
+@media (max-width: 720px) {
+  .site-top { flex-wrap: wrap; }
+  .site-nav { order: 3; width: 100%; margin: 0 -12px; overflow-x: auto; }
+}
+@media print { .site-top { display: none; } }

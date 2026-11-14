@@ -3,19 +3,22 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-// The home page is cached and shared by every visitor, so whether to show
-// "Sign in" or "Dashboard" is decided in the browser. A Supabase session cookie
-// (sb-<project>-auth-token) means the visitor has signed in; an expired one just
-// sends them through sign-in from the dashboard. Reading the cookie keeps the
-// Supabase client out of the home page bundle.
-export default function AccountLink() {
+// "Sign in" or "Dashboard". Pages like the home page are cached and shared by every visitor, so
+// this is decided in the browser. The session cookie is httpOnly (the browser's JavaScript can't
+// read it), so the answer comes from /api/session.
+export default function AccountLink({ className = "hp-signin" }: { className?: string }) {
   const [signedIn, setSignedIn] = useState(false);
 
   useEffect(() => {
-    setSignedIn(/(?:^|;\s*)sb-[^=]+-auth-token(?:\.\d+)?=/.test(document.cookie));
+    let live = true;
+    fetch("/api/session", { cache: "no-store", credentials: "same-origin" })
+      .then((r) => (r.ok ? r.json() : { signedIn: false }))
+      .then((d: { signedIn?: boolean }) => { if (live) setSignedIn(d.signedIn === true); })
+      .catch(() => {});
+    return () => { live = false; };
   }, []);
 
   return signedIn
-    ? <Link href="/dashboard" className="hp-signin">Dashboard</Link>
-    : <Link href="/sign-in" className="hp-signin">Sign in</Link>;
+    ? <Link href="/dashboard" className={className}>Dashboard</Link>
+    : <Link href="/sign-in" className={className}>Sign in</Link>;
 }

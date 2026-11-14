@@ -9,17 +9,9 @@
   overflow-x: clip;
 }
 
-/* Header */
-.dc-top { display: flex; align-items: center; gap: 24px; padding: 16px var(--dc-gutter); }
-.dc-logo { font-family: var(--display); font-weight: 800; font-size: 22px; letter-spacing: -0.4px; color: var(--text); text-decoration: none; }
-.dc-logo b { color: var(--coral); }
-.dc-nav { display: flex; gap: 6px; margin-right: auto; }
-.dc-nav a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 15px; padding: 8px 12px; border-radius: 999px; }
-.dc-nav a:hover { color: var(--text); background: var(--surface); }
-.dc-nav a[aria-current="page"] { color: var(--text); }
-.dc-top-actions { display: flex; align-items: center; gap: 10px; }
-.dc-top-actions .hp-signin { color: var(--text); text-decoration: none; font-size: 14px; font-weight: 600; border: 1px solid var(--line); padding: 9px 16px; border-radius: 999px; }
-.dc-top-actions .hp-signin:hover { border-color: var(--line-hi); }
+/* Header: the shared SiteHeader, inside the page gutter */
+.dc-head { padding: 0 var(--dc-gutter); }
+.dc-head .site-top { padding-bottom: 16px; }
 
 /* Hero */
 .dc-hero { position: relative; isolation: isolate; height: clamp(440px, 72vh, 780px); overflow: hidden; background: #17141f; color: #fff; }
@@ -73,6 +65,7 @@
 /* Rows */
 .dc-rail { display: grid; gap: 22px; }
 .dc-rail-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.dc-rail-side { display: flex; align-items: center; gap: 18px; }
 .dc-rail-arrows { display: flex; gap: 10px; }
 .dc-rail-arrows button { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 999px; border: 1px solid var(--line-hi); background: var(--surface); color: var(--text); cursor: pointer; }
 .dc-rail-arrows button:disabled { opacity: .35; cursor: default; }
@@ -97,9 +90,6 @@
   .dc-rail-track { grid-auto-columns: min(46vw, 340px); }
 }
 @media (max-width: 640px) {
-  .dc-top { flex-wrap: wrap; gap: 10px 16px; }
-  .dc-nav { order: 3; width: 100%; margin: 0 -12px; overflow-x: auto; }
-  .dc-top-actions { margin-left: auto; }
   .dc-hero { height: clamp(460px, 78vh, 620px); }
   .dc-dots { left: var(--dc-gutter); right: auto; bottom: 22px; }
   .dc-rail-arrows { display: none; }

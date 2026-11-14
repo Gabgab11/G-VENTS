@@ -1,9 +1,7 @@
 import Link from "next/link";
-import ColorModeToggle from "@/components/ColorModeToggle";
 import { can, requireEvent } from "@/lib/auth";
 import { env } from "@/lib/env";
 import ThemeStage from "@/components/ThemeStage";
-import BackLink from "@/components/BackLink";
 import ThemePanel from "../ThemePanel";
 import { getDashboardTheme } from "../getTheme";
 import OverviewTab from "./OverviewTab";
@@ -12,6 +10,7 @@ import RegistrationTab from "./RegistrationTab";
 import AnnouncementsTab from "./AnnouncementsTab";
 import SettingsTab from "./SettingsTab";
 import { messageFor } from "./messages";
+import SiteHeader from "@/components/SiteHeader";
 
 const TABS = [
   { key: "overview", label: "Overview" },
@@ -45,7 +44,7 @@ export default async function ManageEventPage({
   return (
     <main className="wrap page wide stage-content">
       <ThemeStage theme={theme} />
-      <div className="back-row spread"><BackLink fallback="/dashboard" label="← All events" /><ColorModeToggle /></div>
+      <SiteHeader back="/dashboard" />
       <h1>{event.title}</h1>
       <p className="muted small">{statusLabel} · {event.visibility === "private" ? "Private" : "Public"} · You are {event.role}</p>
       {event.status === "published" && can(event, "guests.checkIn") && (

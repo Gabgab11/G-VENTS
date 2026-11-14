@@ -1,5 +1,4 @@
 import Link from "next/link";
-import ColorModeToggle from "@/components/ColorModeToggle";
 import { notFound } from "next/navigation";
 import { api, data } from "@/lib/api/server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
@@ -7,9 +6,9 @@ import { themeBackground } from "@/lib/themes";
 import { eventDateParts } from "@/lib/dates";
 import { getEventPage } from "@/lib/event-page";
 import OrderForm from "./OrderForm";
-import BackLink from "@/components/BackLink";
 import ThemeStage from "@/components/ThemeStage";
 import VenueMap, { directionsUrl } from "@/components/VenueMap";
+import SiteHeader from "@/components/SiteHeader";
 
 // The public event page from gventz-api (U6a), laid out like Luma: the cover and host on the left;
 // the date, place and tickets on the right; then the description and the venue map. The API decides
@@ -40,7 +39,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
   return (
     <main className="ev stage-content">
       <ThemeStage theme={event.coverTheme ?? "minimal"} />
-      <div className="ev-top"><BackLink fallback="/discover" label="← Back" /><ColorModeToggle /></div>
+      <SiteHeader back="/discover" />
 
       {(event.status !== "published" || event.canManage) && (
         <div className="ev-notices">

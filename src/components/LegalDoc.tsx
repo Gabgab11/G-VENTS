@@ -1,5 +1,5 @@
 import Link from "next/link";
-import BackLink from "@/components/BackLink";
+import SiteHeader from "@/components/SiteHeader";
 
 export type LegalSection = { title: string; paragraphs?: string[]; bullets?: string[]; after?: string[] };
 
@@ -9,7 +9,7 @@ export default function LegalDoc({
 }: { title: string; effective: string; intro?: string; sections: LegalSection[] }) {
   return (
     <main className="wrap page legal">
-      <div className="back-row"><BackLink fallback="/" label="← Back" /></div>
+      <SiteHeader />
       <h1>{title}</h1>
       <p className="meta">Effective date: {effective}</p>
       {intro && <p>{intro}</p>}

@@ -1,7 +1,6 @@
 import Link from "next/link";
 import "./discover.css";
-import ColorModeToggle from "@/components/ColorModeToggle";
-import AccountLink from "@/app/AccountLink";
+import SiteHeader from "@/components/SiteHeader";
 import { getFeaturedEvents, type EventCard } from "@/lib/events";
 import { CATEGORIES, isCategory, type Category } from "@/lib/categories";
 import { startsThisWeekend } from "@/lib/dates";
@@ -54,15 +53,7 @@ export default async function DiscoverPage({ searchParams }: { searchParams: Pro
 
   return (
     <main className={`dc ${pageFonts}`}>
-      <header className="dc-top">
-        <Link href="/" className="dc-logo">G-vent<b>Z</b></Link>
-        <nav className="dc-nav" aria-label="Main">
-          <Link href="/discover" aria-current="page">Discover</Link>
-          <Link href="/pricing">Pricing</Link>
-          <Link href="/events/new">Create event</Link>
-        </nav>
-        <div className="dc-top-actions"><ColorModeToggle /><AccountLink /></div>
-      </header>
+      <div className="dc-head"><SiteHeader current="/discover" /></div>
 
       {slides.length > 0 ? (
         <HeroCarousel slides={slides} />
