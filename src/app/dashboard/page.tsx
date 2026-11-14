@@ -5,6 +5,7 @@ import ThemeStage from "@/components/ThemeStage";
 import EventRow, { type DashEvent } from "./EventRow";
 import ThemePanel from "./ThemePanel";
 import SignOutButton from "@/components/SignOutButton";
+import AccountLink from "@/app/AccountLink";
 import { getDashboardTheme } from "./getTheme";
 import SellPaidCard from "./SellPaidCard";
 import { getAvailability, getMyHostApplication } from "@/lib/payments";
@@ -43,7 +44,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
   return (
     <main className="wrap page wide stage-content">
       <ThemeStage theme={theme} />
-      <SiteHeader actions={<SignOutButton />} />
+      <SiteHeader actions={<><AccountLink className="site-account" /><SignOutButton /></>} />
       <div className="spread">
         <div>
           <div className="eyebrow">Organizer</div>
