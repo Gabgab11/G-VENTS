@@ -1,4 +1,4 @@
--- Payment integrity (20261114000600, security review B1 and B2): payment records outlive their
+-- Payment integrity (20261114000700, security review B1 and B2): payment records outlive their
 -- event, the ledger is append-only, and refunds never exceed the payment. Rolled back.
 begin;
 create extension if not exists pgtap with schema extensions;
