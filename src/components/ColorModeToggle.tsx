@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { applyColorMode, COLOR_MODES, savedColorMode, type ColorMode } from "@/lib/color-mode";
+import { useEffect, useState } from "react";
+import { applyColorMode, savedColorMode, type ColorMode } from "@/lib/color-mode";
 
 const LABEL: Record<ColorMode, string> = { light: "Light", dark: "Dark", system: "System" };
 
@@ -12,58 +12,49 @@ function Icon({ mode }: { mode: ColorMode }) {
   return <svg {...common}><rect x="3" y="4" width="18" height="12" rx="2" /><path d="M8 20h8M12 16v4" /></svg>;
 }
 
-// Light / dark / system switch, collapsed to the current mode until tapped. The saved choice is
-// applied before paint by COLOR_MODE_SCRIPT, so this only reflects and changes it.
+// Light / dark / system switch. System follows the device preference unless a mode is saved.
 export default function ColorModeToggle({ className = "" }: { className?: string }) {
   const [mode, setMode] = useState<ColorMode>("system");
-  const [open, setOpen] = useState(false);
-  const root = useRef<HTMLDivElement>(null);
   useEffect(() => setMode(savedColorMode()), []);
-
+  const [systemDark, setSystemDark] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   useEffect(() => {
-    if (!open) return;
-    const outside = (e: PointerEvent) => {
-      if (root.current && !root.current.contains(e.target as Node)) setOpen(false);
-    };
-    const escape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
-    };
-    document.addEventListener("pointerdown", outside);
-    document.addEventListener("keydown", escape);
-    return () => {
-      document.removeEventListener("pointerdown", outside);
-      document.removeEventListener("keydown", escape);
-    };
-  }, [open]);
-
-  if (!open) {
-    return (
-      <div ref={root} className={`cm ${className}`}>
-        <button type="button" className="cm-current" aria-label={`Colour mode: ${LABEL[mode]}. Change`} aria-expanded={false} title={`${LABEL[mode]} mode`} onClick={() => setOpen(true)}>
-          <Icon mode={mode} />
-        </button>
-      </div>
-    );
-  }
+    const preference = window.matchMedia("(prefers-color-scheme: dark)");
+    const sync = () => setSystemDark(preference.matches);
+    sync();
+    preference.addEventListener("change", sync);
+    return () => preference.removeEventListener("change", sync);
+  }, []);
   return (
-    <div ref={root} className={`cm open ${className}`} role="radiogroup" aria-label="Colour mode">
-      {COLOR_MODES.map((m) => (
+    <div
+      className={`cm ${expanded ? "cm-expanded" : "cm-collapsed"} ${className}`}
+      role="group"
+      aria-label="Colour mode"
+      onMouseEnter={() => setExpanded(true)}
+      onMouseLeave={() => setExpanded(false)}
+      onFocus={() => setExpanded(true)}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setExpanded(false);
+      }}
+    >
+      {(!expanded ? [mode] : ["light", "dark", "system"] as const).map((nextMode) => (
         <button
-          key={m}
+          key={nextMode}
           type="button"
-          role="radio"
-          aria-checked={mode === m}
-          aria-label={LABEL[m]}
-          title={LABEL[m]}
-          className={mode === m ? "on" : ""}
-          autoFocus={mode === m}
+          className={mode === nextMode ? "on" : ""}
+          aria-label={`${LABEL[nextMode]} mode${nextMode === "system" ? (systemDark ? ", currently dark" : ", currently light") : ""}`}
+          aria-pressed={mode === nextMode}
+          title={`${LABEL[nextMode]} mode`}
           onClick={() => {
-            applyColorMode(m);
-            setMode(m);
-            setOpen(false);
+            applyColorMode(nextMode);
+            setMode(nextMode);
+            document.querySelectorAll<HTMLElement>(".hp").forEach((page) => {
+              if (nextMode === "system") delete page.dataset.colorMode;
+              else page.dataset.colorMode = nextMode;
+            });
           }}
         >
-          <Icon mode={m} />
+          <Icon mode={nextMode} />
         </button>
       ))}
     </div>

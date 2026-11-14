@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Combobox from "@/components/Combobox";
 import { orderedCountries, regionsFor } from "@/lib/locations";
 import { placeDetails, searchPlaces, type Suggestion } from "@/app/events/places-actions";
+import { MAPS_URL_HINT, MAPS_URL_MAX } from "@/lib/maps-url";
 
 type Place = { placeId: string; address: string; city: string; lat: number | null; lng: number | null };
 
@@ -30,9 +31,11 @@ function problemText(code: string): string {
 export default function LocationFields({
   detectedCountry,
   placesEnabled,
+  defaultMapsUrl = "",
 }: {
   detectedCountry: string | null;
   placesEnabled: boolean;
+  defaultMapsUrl?: string;
 }) {
   const countries = useMemo(() => orderedCountries(detectedCountry), [detectedCountry]);
   const [countryCode, setCountryCode] = useState(countries[0].code);
@@ -100,6 +103,12 @@ export default function LocationFields({
         onType={(text) => { setVenue(text); setPlace(null); }}
         onPick={(name, picked) => { setVenue(name); setPlace(picked); }}
       />
+
+      <label className="field"><span>Google Maps link (optional)</span>
+        <input className="input" type="url" name="maps_url" inputMode="url" maxLength={MAPS_URL_MAX} defaultValue={defaultMapsUrl}
+          placeholder="https://maps.app.goo.gl/…" pattern="https://.*" title={MAPS_URL_HINT} />
+        <span className="muted small">In Google Maps, open the venue, tap Share and copy the link. Guests use it for directions.</span>
+      </label>
 
       <input type="hidden" name="country" value={country?.name ?? ""} />
       <input type="hidden" name="place_id" value={place?.placeId ?? ""} />

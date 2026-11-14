@@ -9,6 +9,8 @@ import { requireEvent } from "@/lib/auth";
 import { checkbox, field, isUuid } from "@/lib/forms";
 import { isThemeKey } from "@/lib/themes";
 import { locationInput } from "@/app/events/create-event-input";
+import { MAPS_URL_HINT } from "@/lib/maps-url";
+import { flyerFrom, uploadFlyer as sendFlyer } from "@/lib/flyer";
 import type { MessageCode } from "./messages";
 
 // Dashboard actions through gventz-api (U6b). The API checks the caller's role and every rule;
@@ -17,7 +19,6 @@ import type { MessageCode } from "./messages";
 
 const KINDS = ["text", "options", "social", "company", "terms", "phone", "website"] as const;
 const SEGMENTS = ["all", "paid", "checked_in", "not_checked_in", "waitlist"] as const;
-const FLYER_MAX = 5 * 1024 * 1024;
 
 type Tab = "overview" | "guests" | "registration" | "announcements" | "settings";
 
@@ -153,28 +154,29 @@ export async function updateEventDetails(formData: FormData) {
 export async function updateVenue(formData: FormData) {
   const id = await eventIdFrom(formData);
   const location = locationInput(formData);
-  if ("error" in location) fail(id, "settings", "venue_country");
+  if ("error" in location) fail(id, "settings", location.error === MAPS_URL_HINT ? "venue_maps_url" : "venue_country");
   await call(id, "settings", async () => (await api()).PUT("/v1/events/{id}/location", { params: { path: { id } }, body: location }));
   done(id, "settings", "venue_saved");
 }
 
-// The file comes to this action as before; it goes on to Supabase Storage through a signed URL
-// from the API, which then checks the real file type and size before using it (U5).
+// The file goes on to Supabase Storage through a signed URL from the API (src/lib/flyer.ts, U5).
 export async function uploadFlyer(formData: FormData) {
   const id = await eventIdFrom(formData);
-  const file = formData.get("flyer");
-  if (!(file instanceof File) || file.size === 0) fail(id, "settings", "flyer_missing");
-  if (file.size > FLYER_MAX) fail(id, "settings", "flyer_size");
-  const contentType = ["image/jpeg", "image/png", "image/webp"].includes(file.type) ? (file.type as "image/jpeg" | "image/png" | "image/webp") : null;
-  if (!contentType) fail(id, "settings", "flyer_type");
-
-  const upload = await call(id, "settings", async () => data(await (await api()).POST("/v1/events/{id}/flyer/upload-url", { params: { path: { id } }, body: { contentType } })));
-  const put = await fetch(upload.uploadUrl, { method: "PUT", body: Buffer.from(await file.arrayBuffer()), headers: { "content-type": contentType } }).catch(() => null);
-  if (!put?.ok) {
-    console.error(`[dashboard] flyer upload to storage failed: ${put?.status ?? "network"}`);
-    fail(id, "settings");
-  }
-  await call(id, "settings", async () => (await api()).POST("/v1/events/{id}/flyer", { params: { path: { id } }, body: { path: upload.path } }));
+  const flyer = flyerFrom(formData);
+  if (!flyer) fail(id, "settings", "flyer_missing");
+  if ("problem" in flyer) fail(id, "settings", flyer.problem);
+  // API errors go through call() for their message; a failed storage upload is logged here.
+  let stored = true;
+  await call(id, "settings", async () => {
+    try {
+      await sendFlyer(id, flyer.file, flyer.contentType);
+    } catch (error) {
+      if (error instanceof ApiError) throw error;
+      console.error(`[dashboard] ${(error as Error).message}`);
+      stored = false;
+    }
+  });
+  if (!stored) fail(id, "settings");
   done(id, "settings", "flyer_uploaded");
 }
 

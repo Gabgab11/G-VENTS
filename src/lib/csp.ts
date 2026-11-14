@@ -7,13 +7,15 @@
 // never talks to Supabase. Images may also come from the Supabase project (flyers).
 // With bot protection on (FR-1.7), Cloudflare Turnstile's script and its challenge frame are allowed too.
 // Frames: Google Maps for the venue map on event pages.
+// `next dev` evaluates its bundles with eval(), so the dev server alone also allows 'unsafe-eval';
+// without it React never starts and nothing on the page responds. Production builds never get it.
 
 export const TURNSTILE_ORIGIN = "https://challenges.cloudflare.com";
 export const GOOGLE_MAPS_ORIGIN = "https://www.google.com";
 
 // upgrade-insecure-requests only where the site is served over https: on http://localhost it makes
 // browsers (Safari) fetch the CSS and scripts over https, which fails and leaves the page unstyled.
-export function contentSecurityPolicy(supabaseUrl: string | undefined, turnstile = false, https = true): string {
+export function contentSecurityPolicy(supabaseUrl: string | undefined, turnstile = false, https = true, dev = false): string {
   let supabase = "";
   try {
     supabase = supabaseUrl ? new URL(supabaseUrl).origin : "";
@@ -22,9 +24,10 @@ export function contentSecurityPolicy(supabaseUrl: string | undefined, turnstile
   }
   const extra = supabase ? ` ${supabase}` : "";
   const challenge = turnstile ? ` ${TURNSTILE_ORIGIN}` : "";
+  const evalInDev = dev ? " 'unsafe-eval'" : "";
   return [
     "default-src 'self'",
-    `script-src 'self' 'unsafe-inline'${challenge}`,
+    `script-src 'self' 'unsafe-inline'${evalInDev}${challenge}`,
     "style-src 'self' 'unsafe-inline'",
     `img-src 'self' data: blob:${extra}`,
     "font-src 'self' data:",
@@ -40,9 +43,9 @@ export function contentSecurityPolicy(supabaseUrl: string | undefined, turnstile
   ].join("; ");
 }
 
-export function securityHeaders(supabaseUrl: string | undefined, turnstile = false, https = true): { key: string; value: string }[] {
+export function securityHeaders(supabaseUrl: string | undefined, turnstile = false, https = true, dev = false): { key: string; value: string }[] {
   return [
-    { key: "Content-Security-Policy", value: contentSecurityPolicy(supabaseUrl, turnstile, https) },
+    { key: "Content-Security-Policy", value: contentSecurityPolicy(supabaseUrl, turnstile, https, dev) },
     { key: "X-Frame-Options", value: "DENY" },
     { key: "X-Content-Type-Options", value: "nosniff" },
     { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
