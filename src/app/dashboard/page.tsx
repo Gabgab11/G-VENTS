@@ -1,5 +1,4 @@
 import Link from "next/link";
-import ColorModeToggle from "@/components/ColorModeToggle";
 import { api, data } from "@/lib/api/server";
 import { requireUser } from "@/lib/auth";
 import ThemeStage from "@/components/ThemeStage";
@@ -7,6 +6,7 @@ import EventRow, { type DashEvent } from "./EventRow";
 import ThemePanel from "./ThemePanel";
 import SignOutButton from "@/components/SignOutButton";
 import { getDashboardTheme } from "./getTheme";
+import SiteHeader from "@/components/SiteHeader";
 
 // The organizer's events from gventz-api: owned, or where they hold an accepted role.
 export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ deleted?: string; page?: string }> }) {
@@ -36,10 +36,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
   return (
     <main className="wrap page wide stage-content">
       <ThemeStage theme={theme} />
-      <div className="back-row spread">
-        <Link href="/" className="back-link">← Home</Link>
-        <div className="row-gap"><ColorModeToggle /><SignOutButton /></div>
-      </div>
+      <SiteHeader actions={<SignOutButton />} />
       <div className="spread">
         <div>
           <div className="eyebrow">Organizer</div>

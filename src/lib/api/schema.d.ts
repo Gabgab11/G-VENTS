@@ -838,6 +838,11 @@ export interface components {
             address?: string;
             /** @description Only for venues chosen from the place search */
             place?: components["schemas"]["PlaceInputDto"];
+            /**
+             * @description Google Maps link for directions (google.com/maps, maps.google.*, maps.app.goo.gl, goo.gl/maps); https only
+             * @example https://maps.app.goo.gl/AbCdEf123
+             */
+            mapsUrl?: string;
         };
         TicketTypeInputDto: {
             /** @example General */
@@ -945,6 +950,8 @@ export interface components {
             country?: string | null;
             countryCode?: string | null;
             place?: components["schemas"]["PlaceDto"] | null;
+            /** @description Google Maps link the host added */
+            mapsUrl?: string | null;
         };
         TicketTypeViewDto: {
             /** Format: uuid */

@@ -5,6 +5,7 @@ import { useState } from "react";
 import {
   CURRENCY_CODES, CURRENCY_INFO, PRICES, EXAMPLE_TICKET, EXAMPLE_QUANTITY, money, type CurrencyCode,
 } from "@/lib/currency";
+import SiteHeader from "@/components/SiteHeader";
 
 const PLANS = [
   {
@@ -91,9 +92,7 @@ export default function PricingPlans() {
 
   return (
     <main className="wrap page wide pricing">
-      <div className="back-row">
-        <Link href="/" className="back-link">← Home</Link>
-      </div>
+      <SiteHeader current="/pricing" />
 
       <header className="pr-hero">
         <div className="pr-eyebrow">Pricing</div>

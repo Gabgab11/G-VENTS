@@ -83,7 +83,7 @@ export default async function SettingsTab({ event: e }: { event: EventDashboard 
       {edit && (
         <section className="panel">
           <div className="panel-label">Venue</div>
-          <VenueForm eventId={id} current={whereText(e.location)} detectedCountry={detectedCountry} />
+          <VenueForm eventId={id} current={whereText(e.location)} mapsUrl={e.location.kind === "venue" ? (e.location.mapsUrl ?? null) : null} detectedCountry={detectedCountry} />
         </section>
       )}
 

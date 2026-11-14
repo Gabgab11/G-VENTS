@@ -5,10 +5,18 @@
  * - Never touches API calls, sign-in, server actions or other sites.
  * Signing out sends "clear-tickets", which drops the saved ticket pages from this device.
  */
-const VERSION = "v1";
+const VERSION = "v2"; // bump to clear every device's caches on the next visit
 const STATIC = `gventz-static-${VERSION}`;
 const PAGES = `gventz-pages-${VERSION}`;
 const OFFLINE = "/offline";
+// App code files get new names with every release, so the static cache would grow forever: keep
+// only the most recent files (oldest dropped first).
+const STATIC_MAX = 160;
+
+async function trim(cache) {
+  const keys = await cache.keys();
+  for (const req of keys.slice(0, Math.max(0, keys.length - STATIC_MAX))) await cache.delete(req);
+}
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(PAGES).then((c) => c.addAll([OFFLINE, "/icons/icon-192.png"])).then(() => self.skipWaiting()));
@@ -45,7 +53,7 @@ self.addEventListener("fetch", (event) => {
         const hit = await c.match(req);
         if (hit) return hit;
         const res = await fetch(req);
-        if (res.ok) c.put(req, res.clone());
+        if (res.ok) c.put(req, res.clone()).then(() => trim(c));
         return res;
       }),
     );

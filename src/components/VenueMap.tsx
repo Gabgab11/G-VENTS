@@ -2,7 +2,8 @@ import type { EventPage } from "@/lib/event-page";
 
 // The venue map on the event page. With NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY (a browser key limited to
 // the Maps Embed API and this site's domains) it uses the official embed, centred on the Google
-// place; without it, Google's plain embed by coordinates or address. Directions open Google Maps.
+// place; without it, Google's plain embed by coordinates or address. Directions open the host's
+// Google Maps link when there is one, otherwise Google Maps directions to the venue.
 
 type Location = EventPage["location"];
 
@@ -24,7 +25,9 @@ export function mapEmbedUrl(location: Location, key: string): string | null {
   return `https://www.google.com/maps?q=${encodeURIComponent(target.query)}&z=15&output=embed`;
 }
 
+/** The host's own Google Maps link when they added one (LO6), otherwise directions to the venue. */
 export function directionsUrl(location: Location): string | null {
+  if (location.kind === "venue" && location.mapsUrl) return location.mapsUrl;
   const target = mapTarget(location);
   if (!target) return null;
   const place = target.placeId ? `&destination_place_id=${encodeURIComponent(target.placeId)}` : "";

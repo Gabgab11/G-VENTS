@@ -30,6 +30,11 @@ describe("security headers", () => {
     expect(hsts(false)).toBeUndefined();
   });
 
+  it("allows eval only for the dev server", () => {
+    expect(contentSecurityPolicy(undefined)).not.toContain("unsafe-eval");
+    expect(contentSecurityPolicy(undefined, false, false, true)).toContain("script-src 'self' 'unsafe-inline' 'unsafe-eval';");
+  });
+
   it("works without a Supabase URL", () => {
     expect(contentSecurityPolicy(undefined)).toContain("connect-src 'self';");
     expect(contentSecurityPolicy("not a url")).toContain("connect-src 'self';");
