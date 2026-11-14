@@ -40,6 +40,7 @@ export const MESSAGES = {
   flyer_missing: "Choose an image first",
   flyer_type: "Use a JPG, PNG, or WebP image",
   flyer_size: "The image is larger than 5 MB. Please resize it and try again",
+  flyer_unreadable: "We couldn't read that image. Please choose it again",
   flyer_after_create: "Your event was saved, but the image didn't upload. Please add it again below",
   cancel_confirm: "Tick the box to confirm you want to cancel",
   cancel_forbidden: "Only the event owner or an admin can cancel this event",

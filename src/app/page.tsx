@@ -29,7 +29,7 @@ const CSS = `
 .hp a { color: inherit; text-decoration: none; }
 .hp .hp-btn { color:var(--primary-text); background:var(--primary); }
 .hp .hp-c4, .hp .hp-c5 { color: #fff; }
-.hp-wrap { max-width: 1600px; margin: 0 auto; padding: 0 clamp(24px, 7vw, 120px); }
+.hp-wrap { max-width: none; margin: 0 auto; padding: 0 clamp(24px, 5vw, 96px); }
 
 .hp-top { display: flex; justify-content: space-between; align-items: center; padding: 18px clamp(16px, 1.6vw, 28px); width:100%; max-width:none; margin:0; }
 .hp-top-actions { display:flex; align-items:center; gap:10px; }

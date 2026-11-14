@@ -41,7 +41,9 @@
 }
 
 /* ---------- Legal pages (mobile first) ---------- */
-.legal { max-width: 720px; }
+.legal { max-width: none; }
+/* Long reading text keeps a comfortable line length inside the full-width page. */
+.legal > * { max-width: 80ch; }
 .legal h1 { font-size: 34px; line-height: 1.1; }
 .legal h2 { font-size: 20px; font-weight: 800; margin: 26px 0 8px; line-height: 1.25; }
 .legal p, .legal li { font-size: 16px; line-height: 1.65; color: var(--text); }

@@ -46,7 +46,9 @@ html, body {
 a { color: inherit; text-decoration: none; }
 :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 8px; }
 
-.wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+/* Every page fills the screen: content spans the full width with a side gutter that grows with it. */
+:root { --page-gutter: clamp(18px, 4vw, 72px); }
+.wrap { max-width: none; margin: 0 auto; padding: 0 var(--page-gutter); }
 
 .topbar { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; }
 .wordmark { font-weight: 800; font-size: 22px; letter-spacing: -0.02em; color: var(--text); }
@@ -108,7 +110,7 @@ footer { border-top: 1px solid var(--line); padding: 28px 20px 40px; }
 }
 
 /* Forms and pages */
-.page { padding-top: 32px; padding-bottom: 60px; display: grid; gap: 14px; max-width: 640px; }
+.page { padding-top: 32px; padding-bottom: 60px; display: grid; gap: 14px; max-width: none; }
 .page h1 { font-size: 34px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; }
 .page h2 { font-size: 20px; font-weight: 800; margin: 14px 0 4px; }
 .form { display: grid; gap: 14px; }
@@ -264,7 +266,7 @@ textarea.input { resize: vertical; }
 .check input { width: 18px; height: 18px; accent-color: var(--gold); }
 
 /* ---------- Organizer dashboard look ---------- */
-.page.wide { max-width: 960px; }
+.page.wide { max-width: none; }
 .eyebrow { font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
 .page h1 { font-size: 38px; }
 .dash-row, .panel, .stat, .guest-row { border-radius: 22px; box-shadow: 0 6px 24px rgba(0,0,0,.06); }
@@ -329,7 +331,7 @@ input, select, textarea, button { max-width: 100%; min-width: 0; }
 .input[type="date"], .input[type="time"] { min-width: 0; -webkit-appearance: none; appearance: none; }
 .row2 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 .page h1, .page h2, .title-input, .ext-title { overflow-wrap: anywhere; }
-.wrap { padding-left: 18px; padding-right: 18px; box-sizing: border-box; }
+.wrap { padding-left: var(--page-gutter); padding-right: var(--page-gutter); box-sizing: border-box; }
 
 @media (max-width: 600px) {
   .page h1 { font-size: 28px; line-height: 1.15; }
@@ -417,7 +419,7 @@ input, select, textarea, button { max-width: 100%; min-width: 0; }
 .scanner-manual { display: flex; gap: 8px; }
 
 /* ---------- Event page (Luma-style layout) ---------- */
-.ev { max-width: 1040px; margin: 0 auto; padding: 24px 20px 72px; }
+.ev { max-width: none; margin: 0 auto; padding: 24px var(--page-gutter) 72px; }
 .ev-top { margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; }
 .ev-notices { display: grid; gap: 8px; margin-bottom: 18px; }
 .ev-notice { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; font-size: 14px; color: var(--muted); }
@@ -483,7 +485,7 @@ input, select, textarea, button { max-width: 100%; min-width: 0; }
 .oc-qr { width: 150px; height: 150px; background: #fff; border-radius: 12px; padding: 8px; }
 .oc-qr svg { width: 100%; height: 100%; display: block; }
 .oc-ticket-text { display: grid; gap: 2px; }
-.tickets-page { max-width: 760px; margin: 0 auto; padding: 32px 20px 72px; display: grid; gap: 16px; }
+.tickets-page { max-width: none; margin: 0 auto; padding: 32px var(--page-gutter) 72px; display: grid; gap: 16px; }
 .tickets-page h1 { margin: 0; font-size: 36px; letter-spacing: -0.03em; }
 /* fit-content: inside grid pages the switch would otherwise stretch full width */
 .tickets-page .seg { width: fit-content; }

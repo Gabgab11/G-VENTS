@@ -105,3 +105,31 @@ export function eventDateParts(startsAt: string, endsAt: string | null, timeZone
     timeLine: `${range} · ${zone}`,
   };
 }
+
+/** The calendar day (days since 1970-01-01) and weekday (0 = Sunday) of an instant in a time zone. */
+function localDay(date: Date, timeZone: string): { day: number; weekday: number } {
+  let parts: Intl.DateTimeFormatPart[];
+  try {
+    parts = new Intl.DateTimeFormat("en-US", { timeZone, year: "numeric", month: "numeric", day: "numeric", weekday: "short" }).formatToParts(date);
+  } catch {
+    parts = new Intl.DateTimeFormat("en-US", { timeZone: DEFAULT_TIMEZONE, year: "numeric", month: "numeric", day: "numeric", weekday: "short" }).formatToParts(date);
+  }
+  const get = (type: string) => parts.find((p) => p.type === type)?.value ?? "";
+  const day = Date.UTC(Number(get("year")), Number(get("month")) - 1, Number(get("day"))) / 86_400_000;
+  const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(get("weekday"));
+  return { day, weekday };
+}
+
+/**
+ * Whether an event starts this weekend (Friday to Sunday) in its own time zone and hasn't started
+ * yet. From Monday to Thursday "this weekend" is the coming one; from Friday to Sunday, the current one.
+ */
+export function startsThisWeekend(startsAt: string, timeZone: string | null | undefined, now: Date = new Date()): boolean {
+  const start = new Date(startsAt);
+  if (Number.isNaN(start.getTime()) || start < now) return false;
+  const tz = timeZone || DEFAULT_TIMEZONE;
+  const today = localDay(now, tz);
+  const friday = today.weekday >= 5 || today.weekday === 0 ? today.day - ((today.weekday + 2) % 7) : today.day + (5 - today.weekday);
+  const event = localDay(start, tz).day;
+  return event >= friday && event <= friday + 2;
+}
