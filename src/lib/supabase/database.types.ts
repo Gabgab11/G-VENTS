@@ -579,10 +579,7 @@ isOneToOne: false
             [_ in never]: never
           }
           Functions: {
-            "can_manage_event_folder":
-{ Args: { "p_name": string }; Returns: boolean
-                           },
-"has_event_role":
+            "has_event_role":
 { Args: { "p_event": string,"p_roles": (string)[] }; Returns: boolean
                            }
           }
