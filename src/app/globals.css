@@ -539,7 +539,7 @@ input, select, textarea, button { max-width: 100%; min-width: 0; }
   /* Phones: just the form, full screen (the picture panel is for wide screens). */
   .si { grid-template-columns: 1fr; padding: 0; gap: 0; min-height: 100dvh; }
   .si-art { display: none; }
-  .si-panel { min-height: 100dvh; padding: calc(14px + env(safe-area-inset-top, 0px)) 20px calc(18px + env(safe-area-inset-bottom, 0px)); }
+  .si-panel { min-height: 100dvh; padding: 14px 20px calc(18px + env(safe-area-inset-bottom, 0px)); }
   .si-body { padding: 28px 0; max-width: 480px; }
   .si-title { font-size: 34px; }
 }
@@ -614,3 +614,17 @@ input, select, textarea, button { max-width: 100%; min-width: 0; }
   .site-nav { order: 3; width: 100%; margin: 0 -12px; overflow-x: auto; }
 }
 @media print { .site-top { display: none; } }
+
+/* Installed on an iPhone (PWA), pages are drawn under the status bar and the notch (status bar
+   "black-translucent", viewport-fit=cover). Every page starts below it, keeps clear of the notch in
+   landscape, and the strip behind the status bar stays dark so its white text (clock, battery) is
+   readable in light mode too. In a normal browser tab these insets are 0, so nothing changes. */
+body {
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+}
+body::before {
+  content: ""; position: fixed; z-index: 1000; top: 0; left: 0; right: 0;
+  height: env(safe-area-inset-top, 0px); background: #141414; pointer-events: none;
+}

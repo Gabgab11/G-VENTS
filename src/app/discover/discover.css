@@ -49,6 +49,10 @@
 .dc-empty { color: var(--muted); font-size: 17px; }
 .dc-empty a { color: var(--gold); font-weight: 700; }
 
+/* Grid children grow to fit their content unless told otherwise, which made each sideways row as
+   wide as all its cards: nothing to scroll, and the page clipped the rest. They may shrink instead. */
+.dc-body > *, .dc-rail > *, .dc-body section { min-width: 0; }
+
 /* Category tiles */
 .dc-cats { display: flex; gap: clamp(14px, 1.8vw, 28px); overflow-x: auto; padding: 22px 12px 12px; margin: 0 -12px; scroll-snap-type: x proximity; scrollbar-width: none; }
 .dc-cats::-webkit-scrollbar { display: none; }

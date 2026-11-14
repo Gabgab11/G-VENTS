@@ -5,19 +5,19 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from "react"
 
 // A titled row of cards that scrolls sideways: swipe or trackpad, or the arrow buttons, which
 // move one screenful and switch off at either end.
-export default function Rail({ title, id, more, children }: { title: string; id: string; more?: { href: string; label: string }; children: ReactNode }) {
-  const track = useRef<HTMLDivElement>(null);
+export default function Rail({ title, id, more, track = "dc-rail-track", children }: { title: string; id: string; more?: { href: string; label: string }; track?: string; children: ReactNode }) {
+  const trackRef = useRef<HTMLDivElement>(null);
   const [ends, setEnds] = useState({ start: true, end: true });
 
   const measure = useCallback(() => {
-    const el = track.current;
+    const el = trackRef.current;
     if (!el) return;
     setEnds({ start: el.scrollLeft <= 4, end: el.scrollLeft + el.clientWidth >= el.scrollWidth - 4 });
   }, []);
 
   useEffect(() => {
     measure();
-    const el = track.current;
+    const el = trackRef.current;
     if (!el) return;
     const resize = new ResizeObserver(measure);
     resize.observe(el);
@@ -25,7 +25,7 @@ export default function Rail({ title, id, more, children }: { title: string; id:
   }, [measure]);
 
   function move(direction: 1 | -1) {
-    const el = track.current;
+    const el = trackRef.current;
     if (!el) return;
     const smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     el.scrollBy({ left: direction * el.clientWidth * 0.9, behavior: smooth ? "smooth" : "auto" });
@@ -49,7 +49,7 @@ export default function Rail({ title, id, more, children }: { title: string; id:
         )}
         </div>
       </div>
-      <div className="dc-rail-track" ref={track} onScroll={measure}>
+      <div className={track} ref={trackRef} onScroll={measure}>
         {children}
       </div>
     </section>

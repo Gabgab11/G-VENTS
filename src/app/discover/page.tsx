@@ -69,10 +69,9 @@ export default async function DiscoverPage({ searchParams }: { searchParams: Pro
       )}
 
       <div className="dc-body">
-        <section aria-labelledby="dc-cats-title">
-          <h2 id="dc-cats-title" className="dc-h2">Event categories</h2>
+        <Rail title="Event categories" id="dc-cats-title" track="dc-cats">
           <CategoryTiles active={category} />
-        </section>
+        </Rail>
 
         {category ? (
           <section aria-labelledby="dc-cat-events">
