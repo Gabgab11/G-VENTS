@@ -37,7 +37,7 @@ const CSS = `
 .hp-top { display: flex; justify-content: space-between; align-items: center; padding: 18px clamp(16px, 1.6vw, 28px); width:100%; max-width:none; margin:0; }
 .hp-top-actions { display:flex; align-items:center; gap:10px; }
 .hp-top-actions, .hp-top-actions .cm, .hp-top-actions button, .hp-top-actions a { position:relative; z-index:5; pointer-events:auto; }
-.hp-logo { font-family: var(--display); font-weight: 800; font-size: 22px; letter-spacing: -0.4px; }
+.hp-logo { font-family: var(--display); font-weight: 800; font-size: 22px; letter-spacing: -0.4px; white-space: nowrap; }
 .hp-logo b { color: var(--coral); }
 .hp-signin { font-size: 14px; font-weight: 600; border: 1px solid var(--line); padding: 9px 16px; border-radius: 999px; }
 
@@ -64,6 +64,7 @@ const CSS = `
 .hp-drop { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
 /* Text sits above the falling cards; the hero's empty strip lets clicks through to the resting cards. */
 .hp-stage .hp-top, .hp-stage .hp-hero { position: relative; z-index: 1; }
+.hp-stage .hp-top { z-index: 3; } /* above the hero, so the Account menu opens over it */
 .hp-stage .hp-hero { pointer-events: none; }
 .hp-stage .hp-hero > * { pointer-events: auto; }
 .hp-fall {
@@ -178,7 +179,8 @@ const CSS = `
 .hp-footer .socials-soon { opacity:.45; cursor:default; }
 /* Big wordmark across the top of the footer, bold cream with the coral Z, fading out only at the very bottom.
    Letters rise into place one by one, driven by the scroll position (FooterWordmark.tsx). */
-.hp-footer-wordmark { overflow:hidden; white-space:nowrap; margin:0 calc(-1 * clamp(20px,5vw,64px)) clamp(8px,2vw,28px); padding:.06em clamp(12px,2vw,32px) 0; color:#f8f5ef; font-family:var(--display); font-size:clamp(140px,32vw,980px); font-weight:800; letter-spacing:-.07em; line-height:.8; text-align:right; -webkit-mask-image:linear-gradient(to bottom,#000 78%,transparent 100%); mask-image:linear-gradient(to bottom,#000 78%,transparent 100%); user-select:none; pointer-events:none; }
+.hp-footer-wordmark { overflow:hidden; white-space:nowrap; margin:0 calc(-1 * clamp(20px,5vw,64px)) clamp(8px,2vw,28px); padding:.06em clamp(12px,2vw,32px) 0; color:#f8f5ef; font-family:var(--display); font-size:clamp(140px,32vw,980px); font-weight:800; letter-spacing:-.07em; line-height:.8; text-align:left; -webkit-mask-image:linear-gradient(to bottom,#000 78%,transparent 100%); mask-image:linear-gradient(to bottom,#000 78%,transparent 100%); user-select:none; pointer-events:none; }
+.hp-footer-wordmark .wm-fit { display:inline-block; transform:none; transition:none; will-change:auto; }
 .hp-footer-wordmark span { display:inline-block; transform-origin:50% 100%; will-change:transform; transition:transform .5s cubic-bezier(.2,.8,.3,1); }
 .hp-footer-wordmark .wm-z { color:var(--coral); }
 @media(max-width:900px) { .hp-footer-main { grid-template-columns:repeat(4,minmax(0,1fr)); gap:30px 22px; } .hp-footer-brand { grid-column:1/-1; } .hp-footer-wordmark { font-size:33vw; } }

@@ -14,11 +14,34 @@ const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
 // reduced motion, the wordmark simply shows.
 export default function FooterWordmark() {
   const ref = useRef<HTMLDivElement>(null);
+  const fitRef = useRef<HTMLSpanElement>(null);
+
+  // Edge to edge: the G starts at the left edge and the Z ends at the right, at any width. The
+  // font size is scaled so the word exactly fills the footer (the CSS size is only the first guess).
+  useEffect(() => {
+    const el = ref.current;
+    const word = fitRef.current;
+    if (!el || !word) return;
+    let frame = 0;
+    const fit = () => {
+      frame = 0;
+      el.style.fontSize = "";
+      const style = getComputedStyle(el);
+      const room = el.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+      const width = word.getBoundingClientRect().width;
+      if (room > 0 && width > 0) el.style.fontSize = `${(parseFloat(style.fontSize) * room) / width}px`;
+    };
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(fit); };
+    fit();
+    document.fonts?.ready.then(schedule).catch(() => {});
+    window.addEventListener("resize", schedule);
+    return () => { cancelAnimationFrame(frame); window.removeEventListener("resize", schedule); };
+  }, []);
 
   useEffect(() => {
     const el = ref.current;
     if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const letters = Array.from(el.querySelectorAll<HTMLElement>("span"));
+    const letters = Array.from(el.querySelectorAll<HTMLElement>(".wm-fit > span"));
     const window_ = 1 - STAGGER * (letters.length - 1);
     let frame = 0;
 
@@ -53,9 +76,11 @@ export default function FooterWordmark() {
 
   return (
     <div ref={ref} className="hp-footer-wordmark" aria-hidden="true">
-      {LETTERS.map((letter, i) => (
-        <span key={i} className={letter === "Z" ? "wm-z" : undefined}>{letter}</span>
-      ))}
+      <span ref={fitRef} className="wm-fit">
+        {LETTERS.map((letter, i) => (
+          <span key={i} className={letter === "Z" ? "wm-z" : undefined}>{letter}</span>
+        ))}
+      </span>
     </div>
   );
 }
