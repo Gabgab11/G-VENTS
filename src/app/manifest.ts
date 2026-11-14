@@ -10,7 +10,8 @@ export default function manifest(): MetadataRoute.Manifest {
     start_url: "/?source=pwa",
     scope: "/",
     display: "standalone",
-    orientation: "portrait",
+    // Any orientation: phones stay portrait by habit, tablets at the door often run landscape.
+    orientation: "any",
     background_color: "#141414",
     theme_color: "#141414",
     categories: ["events", "entertainment", "lifestyle"],

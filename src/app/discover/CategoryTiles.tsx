@@ -48,13 +48,14 @@ function Tile({ name, label, href, color, on }: { name: Category | "All"; label:
   );
 }
 
+// The tiles only: the page puts them in a sideways row with arrows (Rail, track "dc-cats").
 export default function CategoryTiles({ active }: { active?: Category }) {
   return (
-    <nav className="dc-cats" aria-label="Event categories">
+    <>
       <Tile name="All" label="All events" href="/discover" color="#ffc23d" on={!active} />
       {CATEGORIES.map((c) => (
         <Tile key={c} name={c} label={c} href={`/discover?category=${encodeURIComponent(c)}`} color={CATEGORY_COLORS[c]} on={active === c} />
       ))}
-    </nav>
+    </>
   );
 }
