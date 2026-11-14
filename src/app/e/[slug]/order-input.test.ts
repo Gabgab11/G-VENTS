@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { placeOrderBody } from "./order-input";
+import { isCheckoutUrl, paidOrderBody, placeOrderBody } from "./order-input";
 
 const A = "0190a000-0000-7000-8000-00000000000a";
 const B = "0190a000-0000-7000-8000-00000000000b";
@@ -31,5 +31,27 @@ describe("placeOrderBody", () => {
     expect(placeOrderBody(form([[`qty_${A}`, "0"]]))).toEqual({ error: "Choose at least one ticket." });
     expect(placeOrderBody(form([[`qty_${A}`, "6"], [`qty_${B}`, "5"]]))).toEqual({ error: "Choose between 1 and 10 tickets." });
     expect(placeOrderBody(form([["qty_not-a-uuid", "3"]]))).toEqual({ error: "Choose at least one ticket." });
+  });
+});
+
+describe("paidOrderBody (M5)", () => {
+  it("needs the non-refundable tick, then sends it with the lines", () => {
+    expect(paidOrderBody(form([[`qty_${A}`, "2"]]))).toEqual({ error: expect.stringContaining("non-refundable") });
+    expect(paidOrderBody(form([[`qty_${A}`, "2"], ["non_refundable", "on"]]))).toEqual({ lines: [{ ticketTypeId: A, quantity: 2 }], nonRefundableAccepted: true });
+  });
+  it("joins the waiting list only when asked", () => {
+    expect(paidOrderBody(form([[`qty_${A}`, "1"], ["non_refundable", "on"], ["join_waitlist", "true"]]))).toMatchObject({ joinWaitlist: true });
+    expect(paidOrderBody(form([[`qty_${A}`, "1"], ["non_refundable", "on"], ["join_waitlist", "false"]]))).not.toHaveProperty("joinWaitlist");
+  });
+  it("keeps the free-order checks", () => {
+    expect(paidOrderBody(form([["non_refundable", "on"]]))).toEqual({ error: "Choose at least one ticket." });
+  });
+});
+
+describe("isCheckoutUrl", () => {
+  it("follows https checkout links and the local fake only", () => {
+    expect(isCheckoutUrl("https://checkout.paystack.com/abc123")).toBe(true);
+    expect(isCheckoutUrl("http://localhost:4000/fake-checkout/x")).toBe(true);
+    for (const bad of ["http://evil.example/x", "javascript:alert(1)", "/orders/1", "", null]) expect(isCheckoutUrl(bad), String(bad)).toBe(false);
   });
 });

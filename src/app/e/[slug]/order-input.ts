@@ -38,3 +38,33 @@ export function placeOrderBody(formData: FormData): PlaceOrderBody | { error: st
     ...(buyerName ? { buyerName } : {}),
   };
 }
+
+export type PaidOrderBody = components["schemas"]["PaidOrderDto"];
+
+/**
+ * The paid order form → PaidOrderDto (M5, CK1–CK3): the same lines, names and answers as a free
+ * order, plus the guest's tick on "non-refundable, except if the event is cancelled", and whether
+ * to join the waiting list when a chosen ticket type is sold out (WL1).
+ */
+export function paidOrderBody(formData: FormData): PaidOrderBody | { error: string } {
+  const base = placeOrderBody(formData);
+  if ("error" in base) return base;
+  if (formData.get("non_refundable") !== "on") {
+    return { error: 'Tick "I understand tickets are non-refundable, except if the event is cancelled" to continue.' };
+  }
+  return { ...base, nonRefundableAccepted: true, ...(formData.get("join_waitlist") === "true" ? { joinWaitlist: true } : {}) };
+}
+
+/**
+ * Paystack's hosted checkout only (CK4): https, or http on this machine for the local fake. Anything
+ * else is not followed; the guest lands on their order page, which can open checkout again.
+ */
+export function isCheckoutUrl(raw: string | null | undefined): raw is string {
+  if (!raw) return false;
+  try {
+    const url = new URL(raw);
+    return url.protocol === "https:" || (url.protocol === "http:" && (url.hostname === "localhost" || url.hostname === "127.0.0.1"));
+  } catch {
+    return false;
+  }
+}

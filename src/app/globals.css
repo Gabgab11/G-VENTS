@@ -195,6 +195,8 @@ textarea.input { resize: vertical; }
 .ticket-type { display: inline-flex; background: var(--surface-hi); border-radius: 999px; padding: 4px; width: fit-content; }
 .ticket-type button, .seg button { padding: 9px 16px; border-radius: 999px; background: transparent; border: 0; color: var(--muted); font: inherit; font-weight: 700; font-size: 14px; cursor: pointer; }
 .ticket-type button.on, .seg button.on { background: var(--text); color: var(--bg); }
+.ticket-type button:disabled { cursor: not-allowed; opacity: .6; }
+.soon-tag { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--gold); }
 .seg { display: inline-flex; background: var(--surface-hi); border-radius: 999px; padding: 4px; }
 .option { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--line); }
 .option:last-of-type { border-bottom: 0; }
@@ -419,15 +421,21 @@ input, select, textarea, button { max-width: 100%; min-width: 0; }
 .scanner-manual { display: flex; gap: 8px; }
 
 /* ---------- Event page (Luma-style layout) ---------- */
-.ev { max-width: none; margin: 0 auto; padding: 24px var(--page-gutter) 72px; }
+.ev { max-width: none; margin: 0 auto; padding: 24px clamp(18px, 7vw, 180px) 72px; }
 .ev-top { margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; }
 .ev-notices { display: grid; gap: 8px; margin-bottom: 18px; }
 .ev-notice { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; font-size: 14px; color: var(--muted); }
 .ev-notice-warn { border-color: #7a2e22; color: #ffb4a6; }
-.ev-grid { display: grid; grid-template-columns: 330px minmax(0, 1fr); gap: 44px; align-items: start; }
+/* Flyer column: big but bounded (about 500px), so wide screens get space, not a giant poster. */
+.ev-grid { display: grid; grid-template-columns: minmax(300px, 500px) minmax(0, 1fr); gap: clamp(40px, 5vw, 96px); align-items: start; }
 .ev-side { display: grid; gap: 22px; position: sticky; top: 24px; }
 .ev-cover { position: relative; aspect-ratio: 1 / 1; border-radius: 18px; overflow: hidden; display: flex; align-items: flex-end; padding: 20px; box-shadow: 0 18px 50px rgba(0,0,0,.35); }
 .ev-cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+/* With a flyer: the whole poster at its own shape, filling the column (never cropped). */
+.ev-cover-flyer { aspect-ratio: auto; padding: 0; display: flex; justify-content: center; background: none !important; box-shadow: none; border-radius: 0; overflow: visible; }
+.ev-cover-flyer img { position: static; display: block; width: 100%; height: auto; border-radius: 18px; box-shadow: 0 24px 60px rgba(0,0,0,.4); }
+/* A tall poster can be taller than the screen, so the side column scrolls with the page then. */
+.ev-side:has(.ev-cover-flyer) { position: static; }
 .ev-cover-title { color: #fff; font-size: 26px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; text-shadow: 0 2px 14px rgba(0,0,0,.3); word-break: break-word; }
 .ev-side-block { display: grid; gap: 10px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
 .ev-label { font-size: 13px; font-weight: 600; color: var(--muted); }
@@ -465,6 +473,7 @@ input, select, textarea, button { max-width: 100%; min-width: 0; }
   .ev-main { order: 1; }
   .ev-side-block, .ev-tags { order: 2; }
   .ev-cover { max-width: 420px; width: 100%; margin: 0 auto; }
+  .ev-cover-flyer { max-width: none; }
   .ev-title { font-size: 34px; }
 }
 
@@ -627,4 +636,74 @@ body {
 body::before {
   content: ""; position: fixed; z-index: 1000; top: 0; left: 0; right: 0;
   height: env(safe-area-inset-top, 0px); background: #141414; pointer-events: none;
+}
+
+/* Two-step sign-in (account/security) */
+.ok-note { padding: 12px 16px; border-radius: 14px; background: rgba(126,224,182,.14); border: 1px solid rgba(126,224,182,.45); color: var(--text); }
+.mfa-steps { margin: 0; padding-left: 20px; display: grid; gap: 6px; color: var(--text-soft); }
+.mfa-qr { width: 180px; height: 180px; padding: 10px; border-radius: 14px; background: #fff; }
+.mfa-secret { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; word-break: break-all; }
+.mfa-code { font-size: 22px; letter-spacing: .3em; max-width: 220px; }
+.sec-methods { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.sec-methods li { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; }
+
+/* ---------- Paid tickets (M5 Paystack) ---------- */
+.pay-pill { display: inline-block; align-self: flex-start; justify-self: start; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: var(--surface-hi); color: var(--text); border: 1px solid var(--line); white-space: nowrap; }
+.pay-pill.ok, .pay-pill.approved, .pay-pill.refunded { border-color: rgba(63,184,168,.6); color: #3fb8a8; }
+.pay-pill.submitted, .pay-pill.queued, .pay-pill.processing { border-color: rgba(242,163,58,.6); color: var(--gold); }
+.pay-pill.declined, .pay-pill.revoked, .pay-pill.failed { border-color: rgba(240,96,79,.6); color: #f0604f; }
+.pay-facts { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 0; font-size: 14px; }
+.pay-facts dt { color: var(--muted); }
+.pay-facts dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.pay-owed { border-left: 3px solid #f0604f; padding: 4px 0 4px 12px; display: grid; gap: 4px; }
+.pay-resolved { display: grid; gap: 8px; padding: 12px 14px; border-radius: 12px; background: var(--surface-hi); }
+.pay-resolved p { margin: 0; }
+.pay-details summary, .pay-refund summary { cursor: pointer; font-weight: 700; color: var(--gold); }
+.pay-details summary:focus-visible, .pay-refund summary:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: 6px; }
+.pay-details[open] summary { margin-bottom: 12px; }
+.pay-card-warn { border-color: rgba(240,96,79,.55); }
+.fee-choice { display: grid; gap: 8px; }
+.fee-choice .seg { flex-wrap: wrap; }
+.fee-example { margin: 0; color: var(--text-soft); overflow-wrap: anywhere; }
+.pay-kind { display: grid; gap: 10px; }
+.pay-kind + .pay-kind { border-top: 1px solid var(--line); padding-top: 16px; }
+.pay-kind-title { margin: 0; font-size: 15px; font-weight: 800; }
+.pay-breakdown { display: grid; gap: 6px; padding: 12px 14px; border-radius: 12px; background: var(--surface-hi); font-size: 14px; }
+.pay-breakdown p { margin: 0; }
+.pay-line { display: flex; justify-content: space-between; gap: 12px; font-variant-numeric: tabular-nums; }
+.pay-line > span:first-child { min-width: 0; overflow-wrap: anywhere; }
+.pay-line > span:last-child { white-space: nowrap; }
+.pay-total { font-weight: 800; }
+.pay-line.pay-total { border-top: 1px solid var(--line); padding-top: 8px; margin-top: 2px; }
+.pay-terms { display: grid; gap: 8px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; }
+.pay-terms p { margin: 0; }
+.pay-terms .check { align-items: flex-start; }
+.pay-terms .check input { margin-top: 1px; flex: none; }
+.pay-status-title { margin: 0; font-size: 20px; font-weight: 800; }
+.pay-status.pay-completed { border-color: rgba(63,184,168,.55); }
+.pay-status.pay-expired, .pay-status.pay-failed, .pay-status.pay-disputed { border-color: rgba(240,96,79,.55); }
+.pay-ref { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; color: var(--muted); overflow-wrap: anywhere; }
+.pay-hold { margin: 0; color: var(--gold); font-variant-numeric: tabular-nums; }
+.pay-cta { justify-self: start; }
+.pay-refunds { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.pay-refunds li { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 14px; }
+.pay-ledger { display: grid; grid-template-columns: 1fr auto; gap: 6px 16px; margin: 0; font-size: 14px; font-variant-numeric: tabular-nums; }
+.pay-ledger dt { color: var(--muted); }
+.pay-ledger dd { margin: 0; text-align: right; white-space: nowrap; }
+.pay-ledger .pay-total { color: var(--text); border-top: 1px solid var(--line); padding-top: 6px; }
+.pay-money { font-size: 20px !important; overflow-wrap: anywhere; }
+.pay-banner { display: grid; gap: 6px; padding: 14px 16px; border-radius: 16px; border: 1px solid rgba(240,96,79,.55); background: rgba(240,96,79,.08); }
+.pay-banner p { margin: 0; }
+.pay-refund { justify-self: end; }
+.pay-refund-body { margin-top: 10px; max-width: 320px; text-align: left; }
+.pay-refund-body p { margin: 0; }
+.oc-awaiting_payment { background: rgba(242, 163, 58, .14); color: var(--gold); }
+.oc-expired, .oc-failed, .oc-refunded, .oc-disputed { background: rgba(255, 90, 60, .12); color: #ff9a87; }
+.oc-partially_refunded { background: rgba(110, 168, 255, .14); color: #8ec5ff; }
+@media (max-width: 520px) {
+  .pay-facts { grid-template-columns: 1fr; gap: 2px; }
+  .pay-facts dd { margin-bottom: 8px; }
+  .guest-row { flex-direction: column; }
+  .guest-side { justify-items: start; }
+  .pay-refund { justify-self: start; }
 }

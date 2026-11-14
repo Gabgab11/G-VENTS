@@ -239,3 +239,28 @@ export async function promoteFromWaitlist(formData: FormData) {
   await call(id, "guests", async () => (await api()).POST("/v1/events/{id}/waitlist/promote", { params: { path: { id } } }));
   done(id, "guests", "promoted");
 }
+
+// ---- Paid tickets (M5) ----
+
+/**
+ * RF4: the host refunds one paid ticket at their discretion (owner, admin or finance; two-step
+ * sign-in). The ticket stops working at once; the guest gets their share back by Paystack.
+ */
+export async function refundTicket(formData: FormData) {
+  const id = await eventIdFrom(formData);
+  const ticketId = field(formData, "ticket_id");
+  if (!isUuid(ticketId)) fail(id, "guests");
+  if (formData.get("confirm") !== "yes") fail(id, "guests", "refund_confirm");
+  // auth.mfa_required sends the host to confirm it's you; redirected after call(), whose catch would swallow it.
+  let mfaNeeded = false;
+  await call(id, "guests", async () => {
+    try {
+      await (await api()).POST("/v1/events/{id}/tickets/{ticketId}/refund", { params: { path: { id, ticketId } } });
+    } catch (error) {
+      if (error instanceof ApiError && error.code === "auth.mfa_required") mfaNeeded = true;
+      else throw error;
+    }
+  });
+  if (mfaNeeded) redirect(`/account/security?next=${encodeURIComponent(`/dashboard/${id}?tab=guests`)}`);
+  done(id, "guests", "refund_queued");
+}

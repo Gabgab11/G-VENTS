@@ -10,6 +10,10 @@ import MirrorBall from "@/components/MirrorBall";
 import LocationFields from "./LocationFields";
 import DateTimeWheel from "./DateTimeWheel";
 import SiteHeader from "@/components/SiteHeader";
+import Link from "next/link";
+import { currencySymbol } from "@/lib/money";
+import { FEE_CHOICES, sellReasonText, type FeeChoice } from "@/lib/payment-text";
+import FeeExample from "./FeeExample";
 
 type Tier = { id: number; name: string; price: string; qty: string };
 
@@ -21,11 +25,18 @@ export default function NewEventForm({
   defaultTheme,
   detectedCountry,
   placesEnabled,
+  paid = { canSell: false, currency: null, reason: "payments_off" },
 }: {
   defaultTheme: string;
   detectedCountry: string | null;
   placesEnabled: boolean;
+  /** Paid tickets (M5): allowed now, in the payout country's currency; otherwise why not. */
+  paid?: { canSell: boolean; currency: string | null; reason: string | null };
 }) {
+  const paidAvailable = paid.canSell && !!paid.currency;
+  const paidCurrency = paid.currency ?? "NGN";
+  const notPaid = sellReasonText(paid.reason);
+  const [feeChoice, setFeeChoice] = useState<FeeChoice>("host_absorbs");
   const [state, formAction, pending] = useActionState<CreateEventState, FormData>(createEvent, undefined);
   const [title, setTitle] = useState("");
   const [theme, setTheme] = useState(defaultTheme);
@@ -189,10 +200,34 @@ export default function NewEventForm({
 
           <div className="panel">
             <div className="panel-label">Tickets</div>
-            <div className="ticket-type">
-              <button type="button" className={isFree ? "on" : ""} onClick={() => { setIsFree(true); setTiers((t) => t.map((x) => ({ ...x, price: "0" }))); }}>Free</button>
-              <button type="button" className={!isFree ? "on" : ""} onClick={() => setIsFree(false)}>Paid</button>
+            <div className="ticket-type" role="group" aria-label="Ticket kind">
+              <button type="button" className={isFree ? "on" : ""} aria-pressed={isFree} onClick={() => { setIsFree(true); setTiers((t) => t.map((x) => ({ ...x, price: "0" }))); }}>Free</button>
+              {/* Paid needs Paystack on for the host's payout country, approval, and nothing owed (M5). */}
+              <button type="button" className={!isFree ? "on" : ""} aria-pressed={!isFree} disabled={!paidAvailable}
+                onClick={() => { setIsFree(false); setTiers((t) => t.map((x) => ({ ...x, price: x.price === "0" ? "" : x.price }))); }}
+                aria-describedby={paidAvailable ? undefined : "paid-why"}>Paid{!paidAvailable && paid.reason === "payments_off" && <span className="soon-tag"> Coming soon</span>}</button>
             </div>
+            {!paidAvailable && (
+              <p className="muted small" id="paid-why">
+                {notPaid.text}{" "}
+                {notPaid.action && <Link href="/account/payouts" className="gold">{notPaid.action}</Link>}
+              </p>
+            )}
+            {!isFree && (
+              <div className="fee-choice">
+                <p className="muted small">Prices are in {paidCurrency}, your payout country&apos;s currency, in whole {paidCurrency}. A price of 0 makes that ticket free.</p>
+                <div className="option-title" id="fee-choice-label">Who pays the fees?</div>
+                <div className="seg" role="radiogroup" aria-labelledby="fee-choice-label">
+                  {(Object.keys(FEE_CHOICES) as FeeChoice[]).map((k) => (
+                    <button key={k} type="button" role="radio" aria-checked={feeChoice === k} className={feeChoice === k ? "on" : ""} onClick={() => setFeeChoice(k)}>
+                      {FEE_CHOICES[k].label}
+                    </button>
+                  ))}
+                </div>
+                <p className="muted small">{FEE_CHOICES[feeChoice].hint}</p>
+              </div>
+            )}
+            <input type="hidden" name="fee_choice" value={feeChoice} />
             {tiers.map((t) => (
               <div className="tier-card" key={t.id}>
                 <div className="row2">
@@ -202,8 +237,11 @@ export default function NewEventForm({
                     <input className="input" name="tier_qty" inputMode="numeric" value={t.qty} onChange={(e) => updateTier(t.id, "qty", e.target.value)} /></label>
                 </div>
                 {!isFree && (
-                  <label className="field"><span>Price (₦)</span>
-                    <input className="input" name="tier_price" inputMode="numeric" value={t.price} onChange={(e) => updateTier(t.id, "price", e.target.value)} /></label>
+                  <>
+                    <label className="field"><span>Price ({currencySymbol(paidCurrency)})</span>
+                      <input className="input" name="tier_price" inputMode="numeric" placeholder="e.g. 5000" value={t.price} onChange={(e) => updateTier(t.id, "price", e.target.value)} /></label>
+                    <FeeExample price={t.price} currency={paidCurrency} feeChoice={feeChoice} />
+                  </>
                 )}
                 {isFree && <input type="hidden" name="tier_price" value="0" />}
                 {tiers.length > 1 && (
@@ -211,7 +249,7 @@ export default function NewEventForm({
                 )}
               </div>
             ))}
-            <button type="button" className="btn-ghost" onClick={() => setTiers((x) => [...x, { id: nextId++, name: "", price: "0", qty: "" }])}>+ Add ticket type</button>
+            <button type="button" className="btn-ghost" onClick={() => setTiers((x) => [...x, { id: nextId++, name: "", price: isFree ? "0" : "", qty: "" }])}>+ Add ticket type</button>
             <label className="field"><span>Max tickets per person</span>
               <select className="input" name="per_buyer_limit" defaultValue="10">
                 {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => <option key={n} value={n}>{n}</option>)}
@@ -251,6 +289,7 @@ export default function NewEventForm({
 
             <label className="field"><span>Refund policy</span>
               <textarea className="input" name="refund_policy" rows={3} placeholder="e.g. Full refund up to 7 days before the event" /></label>
+            {!isFree && <p className="muted small">Paid tickets are non-refundable except if the event is cancelled; guests see your policy next to that before they pay. You can still refund a ticket yourself from the guest list.</p>}
           </div>
 
           {mapsError && <p className="error" role="alert">{mapsError}</p>}

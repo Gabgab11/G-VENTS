@@ -3,6 +3,7 @@ import { isCategory } from "@/lib/categories";
 import { checkbox, field } from "@/lib/forms";
 import { isThemeKey } from "@/lib/themes";
 import { MAPS_URL_HINT, MAPS_URL_MAX, isGoogleMapsUrl } from "@/lib/maps-url";
+import { wholeUnitsToMinor } from "@/lib/money";
 
 export type CreateEventBody = components["schemas"]["CreateEventDto"];
 
@@ -22,11 +23,29 @@ function local(date: string, time: string): string | null {
   return DATE.test(date) && TIME.test(time) ? `${date}T${time}` : null;
 }
 
+/** The host may sell paid tickets, in this currency (their payout country's, business rules PR3). */
+export type PaidSetup = { currency: string } | null;
+
+const NOT_PAID = "Paid tickets aren't available yet. Make every ticket free for now.";
+
+/** A typed price that isn't empty or zero ("0", "0,000"): the host means a paid ticket. */
+function isPriced(raw: string): boolean {
+  const compact = raw.trim().replace(/[,\s]/g, "");
+  return compact !== "" && !/^0+$/.test(compact);
+}
+
+/** The form has at least one paid ticket type (so the action checks whether the host may sell). */
+export function hasPaidPrice(formData: FormData): boolean {
+  return formData.getAll("tier_price").some((p) => isPriced(String(p)));
+}
+
 /**
  * The create-event form → the API's CreateEventDto (U6a step 3). Checks only what the form itself
  * must get right; the API enforces every event rule and answers with a message for users.
+ * Prices are typed in whole units and sent as minor units in the host's payout currency (M5);
+ * without `paid` any price is refused, never quietly saved as free (Change 2, D64).
  */
-export function createEventBody(formData: FormData): CreateEventBody | { error: string } {
+export function createEventBody(formData: FormData, paid: PaidSetup = null): CreateEventBody | { error: string } {
   const title = field(formData, "title", 140);
   const category = field(formData, "category");
   if (title.length < 3) return { error: "Event name must be 3 to 140 characters." };
@@ -48,6 +67,7 @@ export function createEventBody(formData: FormData): CreateEventBody | { error: 
 
   const names = formData.getAll("tier_name").map(String);
   const quantities = formData.getAll("tier_qty").map(String);
+  const prices = formData.getAll("tier_price").map(String);
   const ticketTypes: CreateEventBody["ticketTypes"] = [];
   for (let i = 0; i < names.length; i++) {
     const name = names[i]!.trim().slice(0, 80);
@@ -55,8 +75,15 @@ export function createEventBody(formData: FormData): CreateEventBody | { error: 
     const raw = (quantities[i] ?? "").trim();
     const quantity = raw === "" ? null : Number(raw);
     if (quantity !== null && (!Number.isInteger(quantity) || quantity <= 0)) return { error: `The quantity for "${name}" must be a whole number above 0.` };
-    // Paid tickets arrive with payments (U7); until then every ticket is free.
-    ticketTypes.push({ name, priceMinor: 0, ...(quantity !== null ? { quantity } : {}) });
+    const price = prices[i] ?? "";
+    let priceMinor = 0;
+    if (isPriced(price)) {
+      if (!paid) return { error: NOT_PAID };
+      const minor = wholeUnitsToMinor(price, paid.currency);
+      if (minor === null) return { error: `The price for "${name}" must be a whole number of ${paid.currency}, like 5000.` };
+      priceMinor = minor;
+    }
+    ticketTypes.push({ name, priceMinor, ...(priceMinor > 0 && paid ? { currency: paid.currency } : {}), ...(quantity !== null ? { quantity } : {}) });
   }
   if (ticketTypes.length === 0) return { error: "Add at least one ticket." };
   if (ticketTypes.length > MAX_TIERS) return { error: `Add at most ${MAX_TIERS} ticket types.` };
@@ -83,6 +110,8 @@ export function createEventBody(formData: FormData): CreateEventBody | { error: 
     coverTheme: (isThemeKey(theme) ? theme : "minimal") as CreateEventBody["coverTheme"],
     perBuyerLimit: limit,
     publish: field(formData, "intent") === "publish",
+    // Who pays the fees on paid tickets (FE4/FE5); host_absorbs unless the host chose otherwise.
+    feeChoice: field(formData, "fee_choice") === "guest_pays" ? "guest_pays" : "host_absorbs",
   };
 }
 

@@ -23,6 +23,7 @@ export const MESSAGES = {
   flyer_removed: "Flyer removed. The event shows its colour style again",
   event_cancelled: "Event cancelled. Registration is closed",
   theme_saved: "Page style saved. Guests will see it on the event page",
+  refund_queued: "Refund started. The ticket no longer works, and the guest gets their money back through Paystack.",
 
   // errors
   capacity_invalid: "Capacity must be a whole number above 0",
@@ -49,6 +50,7 @@ export const MESSAGES = {
   delete_paid: "This event has paid tickets, so it can't be deleted. Cancel it instead",
   delete_failed: "The event couldn't be deleted. Please try again",
   theme_invalid: "Choose a style",
+  refund_confirm: "Tick the box to confirm the refund",
   not_saved: "Nothing was saved. You may not have permission to change this event.",
   failed: "Something went wrong. Please try again.",
 } as const;

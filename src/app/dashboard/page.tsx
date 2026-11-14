@@ -6,6 +6,8 @@ import EventRow, { type DashEvent } from "./EventRow";
 import ThemePanel from "./ThemePanel";
 import SignOutButton from "@/components/SignOutButton";
 import { getDashboardTheme } from "./getTheme";
+import SellPaidCard from "./SellPaidCard";
+import { getAvailability, getMyHostApplication } from "@/lib/payments";
 import SiteHeader from "@/components/SiteHeader";
 
 // The organizer's events from gventz-api: owned, or where they hold an accepted role.
@@ -14,9 +16,14 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
   const { deleted, page: rawPage } = await searchParams;
   const page = Math.max(1, Math.floor(Number(rawPage) || 1));
 
-  const [theme, list] = await Promise.all([
+  const [theme, list, me, hostApp, availability] = await Promise.all([
     getDashboardTheme(),
     (await api()).GET("/v1/me/events", { params: { query: { page, pageSize: 50 } } }).then(data),
+    // Only to show staff the way into the admin dashboard; the API guards /v1/admin itself.
+    (await api()).GET("/v1/me").then(data).catch(() => null),
+    // Paid tickets (M5): the host's application status; never blocks the page.
+    getMyHostApplication(),
+    getAvailability(),
   ]);
 
   const rows: DashEvent[] = list.items.map((e) => ({
@@ -42,11 +49,16 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
           <div className="eyebrow">Organizer</div>
           <h1>Your events</h1>
         </div>
-        <Link href="/events/new" className="btn-white">+ Create event</Link>
+        <div className="row-gap">
+          {me?.isStaff && <Link href="/admin" className="btn-ghost">G-ventZ admin</Link>}
+          <Link href="/events/new" className="btn-white">+ Create event</Link>
+        </div>
       </div>
-      <p className="muted">Manage registrations, guests, and announcements. Private events open only by link.</p>
+      <p className="muted">Manage registrations, guests, and announcements. Private events open only by link. <Link href="/account/security" className="gold">Two-step sign-in</Link></p>
 
       {deleted === "1" && <p className="ok" role="status">Event deleted.</p>}
+
+      <SellPaidCard app={hostApp} paidOpen={!!availability?.paidTickets} />
 
       <ThemePanel current={theme} />
 
