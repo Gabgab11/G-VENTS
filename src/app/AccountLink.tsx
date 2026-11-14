@@ -41,11 +41,13 @@ export default function AccountLink({ className = "hp-signin" }: { className?: s
   if (!session.signedIn) return <Link href="/sign-in" className={className}>Sign in</Link>;
   return (
     <>
+      {/* On phones these two move into the Account menu (globals.css), so the header fits one line. */}
       {session.isStaff && <Link href="/admin" className={`${className} account-admin`}>Admin</Link>}
-      <Link href="/dashboard" className={className}>Dashboard</Link>
+      <Link href="/dashboard" className={`${className} account-dash`}>Dashboard</Link>
       <details className="account-menu" ref={menu}>
         <summary className={className} aria-label="Account">Account</summary>
         <div className="account-menu-list">
+          <Link href="/dashboard" className="account-menu-phone">Dashboard</Link>
           {session.isStaff && <Link href="/admin">G-ventZ admin</Link>}
           <Link href="/account/security">Two-step sign-in &amp; passkeys</Link>
           <Link href="/account/payouts">Payouts</Link>

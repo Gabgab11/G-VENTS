@@ -608,7 +608,7 @@ input, select, textarea, button { max-width: 100%; min-width: 0; }
 .site-top { display: flex; align-items: center; gap: 14px 22px; padding: 16px 0 22px; }
 .site-top .back-link { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--text); font-size: 18px; line-height: 1; cursor: pointer; }
 .site-top .back-link:hover { border-color: var(--line-hi); }
-.site-logo { font-family: var(--font-display), "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif; font-weight: 800; font-size: 22px; letter-spacing: -0.4px; color: var(--text); text-decoration: none; }
+.site-logo { font-family: var(--font-display), "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif; font-weight: 800; font-size: 22px; letter-spacing: -0.4px; white-space: nowrap; color: var(--text); text-decoration: none; }
 .site-logo b { color: #ff5a3c; }
 .site-nav { display: flex; gap: 4px; margin-right: auto; }
 .site-nav a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 15px; padding: 8px 12px; border-radius: 999px; }
@@ -623,12 +623,17 @@ input, select, textarea, button { max-width: 100%; min-width: 0; }
 .account-admin:hover { border-color: var(--gold); }
 /* The account menu (headers): two-step sign-in and passkeys, payouts, admin. */
 .account-menu { position: relative; }
-.account-menu > summary { list-style: none; cursor: pointer; display: inline-block; }
+.account-menu > summary { list-style: none; cursor: pointer; display: inline-block; white-space: nowrap; }
 .account-menu > summary::-webkit-details-marker { display: none; }
 .account-menu > summary::after { content: " ▾"; font-size: 11px; color: var(--muted); }
 .account-menu-list { position: absolute; right: 0; top: calc(100% + 8px); z-index: 50; min-width: 240px; display: grid; padding: 6px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); box-shadow: 0 12px 32px rgb(0 0 0 / 0.28); }
 .account-menu-list a { color: var(--text); text-decoration: none; font-size: 14px; font-weight: 600; padding: 10px 12px; border-radius: 10px; white-space: nowrap; }
 .account-menu-list a:hover, .account-menu-list a:focus-visible { background: var(--bg); }
+.account-menu-list .account-menu-phone { display: none; }
+@media (max-width: 640px) {
+  .account-admin, .account-dash { display: none; }
+  .account-menu-list .account-menu-phone { display: block; }
+}
 @media (max-width: 720px) {
   .site-top { flex-wrap: wrap; }
   .site-nav { order: 3; width: 100%; margin: 0 -12px; overflow-x: auto; }
