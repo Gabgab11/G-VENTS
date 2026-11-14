@@ -1,11 +1,13 @@
 import { api, data } from "@/lib/api/server";
 import { adminCall, formatDate, formatMinor } from "@/lib/admin";
 import { requireUser } from "@/lib/auth";
-import { clearDefaultFee, inviteStaff, removeFee, removeStaff, revokeInvite, setDefaultFee, setFee, setProvider, setSettlementDelay } from "../actions";
+import { clearDefaultFee, inviteStaff, removeFee, removeStaff, removeVat, revokeInvite, setDefaultFee, setFee, setPaystackCountry, setProvider, setSettlementDelay, setVat } from "../actions";
+import { bpsToPercent } from "@/lib/money";
+import { PAYOUT_COUNTRIES, type PayoutCountry } from "@/lib/payment-text";
 import Notice from "../Notice";
 
+// Paystack is switched per country (M5, PR1/PR2: each country its own Paystack account and keys).
 const PROVIDERS = [
-  { key: "paystack", name: "Paystack", note: "Splits each sale to the host's subaccount." },
   { key: "interswitch", name: "Interswitch", note: "NGN only. Collected by G-ventZ, settled to hosts in batches." },
   { key: "stripe", name: "Stripe", note: "Other currencies, through Stripe Connect." },
 ] as const;
@@ -16,6 +18,8 @@ export default async function AdminSettings({ searchParams }: { searchParams: Pr
   const myEmail = (user.email ?? "").toLowerCase();
   const s = await adminCall(async () => data(await (await api()).GET("/v1/admin/settings")), "/admin/settings");
   const fees = Object.entries(s.fees).sort(([a], [b]) => a.localeCompare(b));
+  const vat = Object.entries(s.vat ?? {}).sort(([a], [b]) => a.localeCompare(b));
+  const countries = Object.keys(PAYOUT_COUNTRIES) as PayoutCountry[];
 
   return (
     <div className="stack ad-section">
@@ -26,6 +30,33 @@ export default async function AdminSettings({ searchParams }: { searchParams: Pr
           <h2 id="ad-pay-title" className="ad-h2">Payments</h2>
           <span className="muted small">Off by default. A provider can be switched on only when its live keys are set on the server.</span>
         </div>
+        <div className="panel-label">Paystack · per country</div>
+        <p className="muted small">Each country has its own Paystack account. Hosts sell in their payout country&apos;s currency, and the sale is split to their subaccount.</p>
+        <ul className="ad-switches">
+          {countries.map((c) => {
+            const st = s.paystackCountries?.[c];
+            if (!st) return null;
+            return (
+              <li key={c}>
+                <div>
+                  <b>{PAYOUT_COUNTRIES[c].name}</b> <span className="muted small">{st.currency}</span>{" "}
+                  {st.enabled ? <span className="ad-pill completed">On</span> : <span className="ad-pill">Off</span>}{" "}
+                  {!st.configured && <span className="ad-pill warn">Keys not set</span>}
+                </div>
+                <form action={setPaystackCountry}>
+                  <input type="hidden" name="country" value={c} />
+                  <input type="hidden" name="enabled" value={st.enabled ? "false" : "true"} />
+                  <button type="submit" className={st.enabled ? "btn-ghost ad-danger" : "btn-white"} disabled={!st.enabled && !st.configured}
+                    aria-label={`${st.enabled ? "Switch off" : "Switch on"} Paystack in ${PAYOUT_COUNTRIES[c].name}`}
+                    title={!st.enabled && !st.configured ? "Add this country's Paystack keys on the server first" : undefined}>
+                    {st.enabled ? "Switch off" : "Switch on"}
+                  </button>
+                </form>
+              </li>
+            );
+          })}
+        </ul>
+        <div className="panel-label">Other providers</div>
         <ul className="ad-switches">
           {PROVIDERS.map((p) => {
             const st = s.payments[p.key];
@@ -96,6 +127,31 @@ export default async function AdminSettings({ searchParams }: { searchParams: Pr
             <button type="submit" className="btn-white">Save currency rate</button>
           </form>
         </div>
+      </section>
+
+      <section className="panel stack" aria-labelledby="ad-vat-title">
+        <div className="ad-panel-head">
+          <h2 id="ad-vat-title" className="ad-h2">VAT on the G-ventZ fee</h2>
+          <span className="muted small">Per currency, charged on G-ventZ&apos;s fee only. A currency not listed has 0%.</span>
+        </div>
+        {vat.length === 0 ? <p className="muted">No VAT rates set: every currency is 0%.</p> : (
+          <div className="ad-scroll">
+            <table className="ad-table">
+              <thead><tr><th scope="col">Currency</th><th scope="col" className="num">VAT</th><th scope="col"><span className="sr-only">Remove</span></th></tr></thead>
+              <tbody>{vat.map(([cur, v]) => (
+                <tr key={cur}>
+                  <td>{cur}</td><td className="num">{bpsToPercent(v.rateBps)}%</td>
+                  <td><form action={removeVat}><input type="hidden" name="currency" value={cur} /><button type="submit" className="link-btn" aria-label={`Remove the ${cur} VAT rate`}>Remove (0%)</button></form></td>
+                </tr>
+              ))}</tbody>
+            </table>
+          </div>
+        )}
+        <form action={setVat} className="ad-inline-form">
+          <label className="field"><span>Currency</span><input className="input" name="currency" placeholder="NGN" maxLength={3} required /></label>
+          <label className="field"><span>VAT (%)</span><input className="input" name="percent" inputMode="decimal" placeholder="7.5" required /></label>
+          <button type="submit" className="btn-white">Save VAT rate</button>
+        </form>
       </section>
 
       <section className="panel stack" aria-labelledby="ad-settle-title">

@@ -5,6 +5,8 @@ import { redirect } from "next/navigation";
 import { api } from "@/lib/api/server";
 import { ApiError, apiMessage } from "@/lib/api/problem";
 import { isUuid } from "@/lib/forms";
+import { percentToBps } from "@/lib/money";
+import { PAYOUT_COUNTRIES, isPayoutCountry } from "@/lib/payment-text";
 
 // Staff actions (FR-21). The API checks staff + two-step sign-in and audits each one; these read
 // the form, call it, and come back to the page with a short message in the URL.
@@ -141,4 +143,63 @@ export async function acceptStaffInvite() {
   }
   // Staff need two-step sign-in before the dashboard opens; the security page sends them on.
   redirect("/account/security?next=/admin");
+}
+
+// ---- Paystack (M5): host applications, countries, VAT ----
+
+function applicationPath(formData: FormData): { id: string; path: string } {
+  const id = text(formData, "application_id");
+  if (!isUuid(id)) back("/admin/hosts", "err=Unknown%20application");
+  return { id, path: `/admin/hosts/applications/${id}` };
+}
+
+/** HA2/HA3: approve; the API then creates the host's Paystack subaccount (or leaves it pending). */
+export async function approveApplication(formData: FormData) {
+  const { id, path } = applicationPath(formData);
+  await run(path, async () => (await api()).POST("/v1/admin/host-applications/{id}/approve", { params: { path: { id } } }), "Approved. The host has been emailed.");
+}
+
+export async function declineApplication(formData: FormData) {
+  const { id, path } = applicationPath(formData);
+  const reason = text(formData, "reason");
+  if (reason.length < 3) back(path, "err=Give%20the%20host%20a%20reason%20(3%20to%20500%20characters)");
+  await run(path, async () => (await api()).POST("/v1/admin/host-applications/{id}/decline", { params: { path: { id } }, body: { reason } }), "Declined. The host has been emailed the reason.");
+}
+
+/** HA5: no new paid tickets or orders; what was sold stays valid. */
+export async function revokeApplication(formData: FormData) {
+  const { id, path } = applicationPath(formData);
+  const reason = text(formData, "reason");
+  if (formData.get("confirm") !== "yes") back(path, "err=Tick%20the%20box%20to%20confirm");
+  if (reason.length < 3) back(path, "err=Give%20a%20reason%20(3%20to%20500%20characters)");
+  await run(path, async () => (await api()).POST("/v1/admin/host-applications/{id}/revoke", { params: { path: { id } }, body: { reason } }), "Approval withdrawn");
+}
+
+export async function retryPayoutAccount(formData: FormData) {
+  const { id, path } = applicationPath(formData);
+  await run(path, async () => (await api()).POST("/v1/admin/host-applications/{id}/retry-payout-account", { params: { path: { id } } }), "Payout account request sent to Paystack");
+}
+
+/** PR2: Paystack on or off per country (refused by the API while that country's keys aren't set). */
+export async function setPaystackCountry(formData: FormData) {
+  const country = text(formData, "country", 2).toUpperCase();
+  if (!isPayoutCountry(country)) back("/admin/settings", "err=Unknown%20country");
+  const enabled = formData.get("enabled") === "true";
+  await run("/admin/settings", async () => (await api()).PATCH("/v1/admin/settings", { body: { paystackCountries: { [country]: { enabled } } } }),
+    `Paystack ${enabled ? "switched on" : "switched off"} for ${PAYOUT_COUNTRIES[country].name}`);
+}
+
+/** FE2: VAT on the G-ventZ fee, per currency. */
+export async function setVat(formData: FormData) {
+  const currency = text(formData, "currency", 3).toUpperCase();
+  if (!/^[A-Z]{3}$/.test(currency)) back("/admin/settings", "err=Use%20a%203-letter%20currency%20code%20(e.g.%20NGN)");
+  const rateBps = percentToBps(text(formData, "percent", 10));
+  if (rateBps === null) back("/admin/settings", "err=VAT%20must%20be%20between%200%20and%20100%25%2C%20up%20to%202%20decimals");
+  await run("/admin/settings", async () => (await api()).PATCH("/v1/admin/settings", { body: { vat: { [currency]: { rateBps } } } }), `VAT for ${currency} saved`);
+}
+
+export async function removeVat(formData: FormData) {
+  const currency = text(formData, "currency", 3).toUpperCase();
+  if (!/^[A-Z]{3}$/.test(currency)) back("/admin/settings", "err=Unknown%20currency");
+  await run("/admin/settings", async () => (await api()).PATCH("/v1/admin/settings", { body: { vat: { [currency]: null } } }), `${currency} VAT removed (0%)`);
 }

@@ -2,10 +2,12 @@ import Link from "next/link";
 import { api, data } from "@/lib/api/server";
 import { adminCall, formatDate, formatMoneyList } from "@/lib/admin";
 import Notice from "../Notice";
+import ApplicationsQueue, { QUEUES, type Queue } from "./ApplicationsQueue";
 
-export default async function AdminHosts({ searchParams }: { searchParams: Promise<{ q?: string; cursor?: string; ok?: string; err?: string }> }) {
+export default async function AdminHosts({ searchParams }: { searchParams: Promise<{ q?: string; cursor?: string; ok?: string; err?: string; apps?: string }> }) {
   const sp = await searchParams;
   const q = (sp.q ?? "").slice(0, 100);
+  const queue: Queue = QUEUES.find((x) => x === sp.apps) ?? "submitted";
   const page = await adminCall(
     async () => data(await (await api()).GET("/v1/admin/hosts", { params: { query: { ...(q ? { q } : {}), ...(sp.cursor ? { cursor: sp.cursor } : {}), limit: 50 } } })),
     "/admin/hosts",
@@ -14,6 +16,7 @@ export default async function AdminHosts({ searchParams }: { searchParams: Promi
   return (
     <div className="stack ad-section">
       <Notice ok={sp.ok} err={sp.err} />
+      <ApplicationsQueue queue={queue} />
       <div className="ad-toolbar">
         <form className="ad-search" role="search">
           <input className="input" name="q" defaultValue={q} placeholder="Search name or email" aria-label="Search hosts" />

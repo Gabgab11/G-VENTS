@@ -30,7 +30,7 @@ export default async function AdminOrders({ searchParams }: { searchParams: Prom
         </form>
         <a className="dc-link" href={`/admin/export/orders${exportQuery ? `?${exportQuery}` : ""}`}>Export CSV</a>
       </div>
-      <p className="muted small">Refunds are issued by hosts from their event dashboard; staff can see them here.</p>
+      <p className="muted small">Refunds are issued by hosts from their event dashboard. Open a paid order for its payment, refunds, disputes and webhooks.</p>
 
       {page.items.length === 0 ? <p className="muted">No orders match.</p> : (
         <div className="ad-scroll">
@@ -40,7 +40,10 @@ export default async function AdminOrders({ searchParams }: { searchParams: Prom
               {page.items.map((o) => (
                 <tr key={o.id}>
                   <td>{formatDate(o.createdAt, true)}</td>
-                  <td><code className="ad-code">{o.id.slice(0, 8)}</code></td>
+                  <td>
+                    {o.kind === "paid" ? <Link href={`/admin/orders/${o.id}`} aria-label={`Payment details for order ${o.id.slice(0, 8)}`}><code className="ad-code">{o.id.slice(0, 8)}</code></Link> : <code className="ad-code">{o.id.slice(0, 8)}</code>}
+                    {o.reference && <div className="muted small">{o.reference}</div>}
+                  </td>
                   <td>{o.event.title}</td>
                   <td>{o.buyerEmail ?? "—"}</td>
                   <td>{o.kind}</td>

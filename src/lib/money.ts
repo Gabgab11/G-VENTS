@@ -50,3 +50,18 @@ export function currencySymbol(currency: string): string {
     return currency;
   }
 }
+
+/** "7.5" → 750 basis points; up to two decimals, 0 to 100. Null otherwise. String maths, no floats. */
+export function percentToBps(input: string): number | null {
+  const m = /^(\d{1,3})(?:\.(\d{1,2}))?$/.exec(input.trim());
+  if (!m) return null;
+  const bps = Number(m[1]) * 100 + Number((m[2] ?? "").padEnd(2, "0"));
+  return bps <= 10_000 ? bps : null;
+}
+
+/** 750 → "7.5" (for showing and pre-filling a rate). */
+export function bpsToPercent(bps: number): string {
+  const whole = Math.trunc(bps / 100);
+  const frac = String(bps % 100).padStart(2, "0").replace(/0+$/, "");
+  return frac ? `${whole}.${frac}` : String(whole);
+}

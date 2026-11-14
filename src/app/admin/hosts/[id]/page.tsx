@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { api, data } from "@/lib/api/server";
-import { adminCall, formatDate, formatMoneyList } from "@/lib/admin";
+import { adminCall, formatDate, formatMinor, formatMoneyList } from "@/lib/admin";
+import { APPLICATION_STATUS, PAYOUT_COUNTRIES } from "@/lib/payment-text";
 import { isUuid } from "@/lib/forms";
 import { suspendHost, unsuspendHost } from "../../actions";
 import Notice from "../../Notice";
@@ -30,6 +31,37 @@ export default async function AdminHost({ params, searchParams }: { params: Prom
           <div className="ad-tile"><span className="ad-tile-label">Revenue</span><b className="ad-tile-value ad-tile-money">{formatMoneyList(h.gross)}</b></div>
         </div>
         {h.suspendedAt && <p className="muted">Suspended {formatDate(h.suspendedAt, true)}{h.suspendedReason ? `: ${h.suspendedReason}` : ""}</p>}
+      </section>
+
+      {/* M5 HostMoney: the paid-ticket application, payout account and money owed (RF6). */}
+      <section className="panel stack" aria-labelledby="ad-host-money">
+        <h2 id="ad-host-money" className="ad-h2">Paid tickets</h2>
+        {!h.application ? <p className="muted">Hasn&apos;t applied to sell paid tickets.</p> : (
+          <p>
+            <Link href={`/admin/hosts/applications/${h.application.id}`} className="ad-strong">Application</Link>{" "}
+            <span className={`ad-pill ${h.application.status === "approved" ? "completed" : h.application.status === "submitted" ? "warn" : "bad"}`}>{APPLICATION_STATUS[h.application.status]}</span>
+            <span className="muted small"> · {PAYOUT_COUNTRIES[h.application.payoutCountry].name} · applied {formatDate(h.application.submittedAt)}</span>
+          </p>
+        )}
+        {h.payoutAccount && (
+          <p>
+            Payout account: {h.payoutAccount.bankName ?? h.payoutAccount.bankCode} · ending {h.payoutAccount.accountNumberLast4}{h.payoutAccount.accountName ? ` · ${h.payoutAccount.accountName}` : ""}{" "}
+            <span className={`ad-pill ${h.payoutAccount.status === "active" ? "completed" : "warn"}`}>{h.payoutAccount.status}</span>
+            {h.payoutAccount.subaccountCode && <> <code className="ad-code">{h.payoutAccount.subaccountCode}</code></>}
+            {h.payoutAccount.activatedAt && <span className="muted small"> · active since {formatDate(h.payoutAccount.activatedAt)}</span>}
+          </p>
+        )}
+        {h.debts.length === 0 ? <p className="muted small">Owes nothing.</p> : (
+          <div className="ad-scroll">
+            <table className="ad-table">
+              <thead><tr><th scope="col">Currency</th><th scope="col" className="num">Owed now</th><th scope="col" className="num">Recovered from sales</th></tr></thead>
+              <tbody>{h.debts.map((d) => (
+                <tr key={d.currency}><td>{d.currency}</td><td className="num">{formatMinor(d.owedMinor, d.currency)}</td><td className="num">{formatMinor(d.recoveredMinor, d.currency)}</td></tr>
+              ))}</tbody>
+            </table>
+          </div>
+        )}
+        {h.debts.some((d) => d.owedMinor > 0) && <p className="muted small">While anything is owed, this host can&apos;t publish new paid events; it&apos;s recovered from their next Paystack sales.</p>}
       </section>
 
       <section className="panel stack" aria-labelledby="ad-host-events">

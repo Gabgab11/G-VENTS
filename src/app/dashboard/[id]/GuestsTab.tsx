@@ -2,7 +2,9 @@ import Link from "next/link";
 import { api, data } from "@/lib/api/server";
 import { can, type EventDashboard } from "@/lib/auth";
 import type { components } from "@/lib/api/schema";
-import { approveOrder, checkInGuest, declineOrder, promoteFromWaitlist } from "./actions";
+import { approveOrder, checkInGuest, declineOrder, promoteFromWaitlist, refundTicket } from "./actions";
+import { formatMinor } from "@/lib/money";
+import { REFUND_STATUS } from "@/lib/payment-text";
 
 type GuestRow = components["schemas"]["GuestRowResponse"];
 
@@ -40,6 +42,8 @@ export default async function GuestsTab({ event, query }: { event: EventDashboar
   const approve = can(event, "orders.approve");
   const promote = can(event, "waitlist.promote");
   const checkIn = can(event, "guests.checkIn");
+  const refund = can(event, "orders.refund");
+  const currencyOf = (ticketTypeId: string) => event.ticketTypes.find((t) => t.id === ticketTypeId)?.currency ?? "NGN";
   const pendingGroups = groupPending(list.items);
 
   return (
@@ -129,6 +133,11 @@ export default async function GuestsTab({ event, query }: { event: EventDashboar
               </form>
             )}
             {r.checkedInAt && <span className="muted small">Checked in</span>}
+            {r.disputed && <span className="tag tag-cancelled">Payment disputed</span>}
+            {r.refundStatus && <span className={`tag ${r.refundStatus === "failed" ? "tag-cancelled" : r.refundStatus === "refunded" ? "" : "tag-waitlisted"}`}>{REFUND_STATUS[r.refundStatus]}</span>}
+            {refund && r.paid && r.status === "confirmed" && r.refundableMinor !== null && r.refundableMinor > 0 && (!r.refundStatus || r.refundStatus === "failed") && (
+              <RefundAction eventId={id} ticketId={r.ticketId} name={r.displayName} amount={formatMinor(r.refundableMinor, currencyOf(r.ticketTypeId))} />
+            )}
           </div>
         </div>
       ))}
@@ -156,4 +165,23 @@ function groupPending(rows: GuestRow[]): PendingGroup[] {
     groups.set(r.orderId, g);
   }
   return [...groups.values()];
+}
+
+/**
+ * One paid ticket's refund (M5 RefundAction, RF4/RF5): the host confirms with the amount the guest
+ * gets back; two-step sign-in is asked for by the action when needed.
+ */
+function RefundAction({ eventId, ticketId, name, amount }: { eventId: string; ticketId: string; name: string; amount: string }) {
+  return (
+    <details className="pay-refund">
+      <summary>Refund</summary>
+      <form action={refundTicket} className="stack pay-refund-body">
+        <input type="hidden" name="event_id" value={eventId} />
+        <input type="hidden" name="ticket_id" value={ticketId} />
+        <p className="small">{name} gets <b>{amount}</b> back. The ticket stops working at once and its place goes back on sale. G-ventZ&apos;s fee and Paystack&apos;s charge aren&apos;t returned; your share is taken from your next sales.</p>
+        <label className="check"><input type="checkbox" name="confirm" value="yes" required /> <span>Refund {amount} to {name}</span></label>
+        <button className="btn-small" type="submit">Refund ticket</button>
+      </form>
+    </details>
+  );
 }

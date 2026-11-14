@@ -115,3 +115,10 @@
 .ad-fee-block { display: grid; gap: 10px; padding-top: 14px; border-top: 1px solid var(--line); }
 .ad-staff-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
 .ad-staff-row .ad-pill { margin-left: 8px; }
+
+/* Paystack (M5): application status filter */
+.ad-seg { display: inline-flex; flex-wrap: wrap; gap: 2px; background: var(--surface-hi); border-radius: 18px; padding: 4px; }
+.ad-seg a { padding: 7px 12px; border-radius: 999px; color: var(--muted); text-decoration: none; font-weight: 700; font-size: 13px; white-space: nowrap; }
+.ad-seg a.on { background: var(--text); color: var(--bg); }
+.ad-seg a:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+.ad-table th[scope="row"] { text-transform: none; letter-spacing: 0; font-size: 13px; width: 1%; }
