@@ -36,7 +36,7 @@ export const MESSAGES = {
   announcement_segment: "Choose who to send it to",
   title_length: "Event name must be 3 to 140 characters",
   venue_country: "Choose a country from the list, or switch on Online event",
-  venue_maps_url: "Paste a Google Maps link (google.com/maps or maps.app.goo.gl)",
+  venue_maps_url: "Paste a Google Maps link (google.com/maps, maps.app.goo.gl or share.google)",
   flyer_missing: "Choose an image first",
   flyer_type: "Use a JPG, PNG, or WebP image",
   flyer_size: "The image is larger than 5 MB. Please resize it and try again",

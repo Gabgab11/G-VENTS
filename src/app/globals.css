@@ -426,8 +426,8 @@ input, select, textarea, button { max-width: 100%; min-width: 0; }
 .ev-notice-warn { border-color: #7a2e22; color: #ffb4a6; }
 .ev-grid { display: grid; grid-template-columns: 330px minmax(0, 1fr); gap: 44px; align-items: start; }
 .ev-side { display: grid; gap: 22px; position: sticky; top: 24px; }
-.ev-cover { aspect-ratio: 1 / 1; border-radius: 18px; overflow: hidden; display: flex; align-items: flex-end; padding: 20px; box-shadow: 0 18px 50px rgba(0,0,0,.35); }
-.ev-cover img { width: calc(100% + 40px); height: calc(100% + 40px); margin: -20px; object-fit: cover; display: block; }
+.ev-cover { position: relative; aspect-ratio: 1 / 1; border-radius: 18px; overflow: hidden; display: flex; align-items: flex-end; padding: 20px; box-shadow: 0 18px 50px rgba(0,0,0,.35); }
+.ev-cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
 .ev-cover-title { color: #fff; font-size: 26px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; text-shadow: 0 2px 14px rgba(0,0,0,.3); word-break: break-word; }
 .ev-side-block { display: grid; gap: 10px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
 .ev-label { font-size: 13px; font-weight: 600; color: var(--muted); }
@@ -586,3 +586,11 @@ input, select, textarea, button { max-width: 100%; min-width: 0; }
 .wheel-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .wheel-done { height: 44px; padding: 0 22px; }
 @media (prefers-reduced-motion: reduce) { .wheel-col { scroll-behavior: auto; } }
+
+/* Event page: the host's view of the tickets card (no order form for the people running the event). */
+.ev-host { display: grid; gap: 14px; }
+.ev-host-types { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.ev-host-types li { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 14px; }
+.ev-host-name { font-weight: 700; }
+.ev-host-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.ev-host-actions .ev-cta { flex: 1 1 200px; text-align: center; }
