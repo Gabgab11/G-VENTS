@@ -12,7 +12,7 @@ export const metadata: Metadata = { title: "Admin · G-ventZ", robots: { index: 
 export default async function AdminLayout({ children }: { children: ReactNode }) {
   await requireUser("/admin");
   return (
-    <main className="wrap page ad">
+    <main className="wrap page ad ad-viz">
       <SiteHeader back="/dashboard" />
       <div className="ad-head">
         <div>

@@ -87,3 +87,28 @@ export async function setSettlementDelay(formData: FormData) {
   if (!Number.isInteger(days) || days < 0 || days > 30) back("/admin/settings", "err=Choose%200%20to%2030%20working%20days");
   await run("/admin/settings", async () => (await api()).PATCH("/v1/admin/settings", { body: { settlementDelayWorkingDays: days } }), "Settlement delay saved");
 }
+
+function feeFrom(formData: FormData): { percentBps: number; fixedMinor: number } {
+  const percent = Number(text(formData, "percent", 10) || "0");
+  const fixed = Number(text(formData, "fixed", 15) || "0");
+  if (!Number.isFinite(percent) || percent < 0 || percent > 100) back("/admin/settings", "err=The%20percentage%20must%20be%20between%200%20and%20100");
+  if (!Number.isFinite(fixed) || fixed < 0) back("/admin/settings", "err=The%20fixed%20amount%20can't%20be%20negative");
+  return { percentBps: Math.round(percent * 100), fixedMinor: Math.round(fixed * 100) };
+}
+
+/** The standard G-ventZ fee, used for every currency without its own rate. */
+export async function setDefaultFee(formData: FormData) {
+  const fee = feeFrom(formData);
+  await run("/admin/settings", async () => (await api()).PATCH("/v1/admin/settings", { body: { defaultFee: fee } }), "Standard fee saved");
+}
+
+export async function clearDefaultFee() {
+  await run("/admin/settings", async () => (await api()).PATCH("/v1/admin/settings", { body: { defaultFee: null } }), "Standard fee removed (currencies without their own rate now pay no fee)");
+}
+
+/** Removes a currency's own rate, so it falls back to the standard fee. */
+export async function removeFee(formData: FormData) {
+  const currency = text(formData, "currency", 3).toUpperCase();
+  if (!/^[A-Z]{3}$/.test(currency)) back("/admin/settings", "err=Unknown%20currency");
+  await run("/admin/settings", async () => (await api()).PATCH("/v1/admin/settings", { body: { fees: { [currency]: null } } }), `${currency} now uses the standard fee`);
+}

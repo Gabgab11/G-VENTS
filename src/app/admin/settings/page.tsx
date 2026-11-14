@@ -1,6 +1,6 @@
 import { api, data } from "@/lib/api/server";
 import { adminCall, formatDate, formatMinor } from "@/lib/admin";
-import { setFee, setProvider, setSettlementDelay } from "../actions";
+import { clearDefaultFee, removeFee, setDefaultFee, setFee, setProvider, setSettlementDelay } from "../actions";
 import Notice from "../Notice";
 
 const PROVIDERS = [
@@ -51,24 +51,48 @@ export default async function AdminSettings({ searchParams }: { searchParams: Pr
       <section className="panel stack" aria-labelledby="ad-fee-title">
         <div className="ad-panel-head">
           <h2 id="ad-fee-title" className="ad-h2">G-ventZ fee</h2>
-          <span className="muted small">Per paid ticket: a percentage plus a fixed amount, per currency. Free tickets carry no fee.</span>
+          <span className="muted small">Per paid ticket: a percentage plus a fixed amount. Free tickets carry no fee.</span>
         </div>
-        {fees.length === 0 ? <p className="muted">No fee rates yet (fees are zero until set).</p> : (
-          <div className="ad-scroll">
-            <table className="ad-table">
-              <thead><tr><th scope="col">Currency</th><th scope="col" className="num">Percentage</th><th scope="col" className="num">Fixed</th></tr></thead>
-              <tbody>{fees.map(([cur, f]) => (
-                <tr key={cur}><td>{cur}</td><td className="num">{(f.percentBps / 100).toFixed(2)}%</td><td className="num">{formatMinor(f.fixedMinor, cur)}</td></tr>
-              ))}</tbody>
-            </table>
-          </div>
-        )}
-        <form action={setFee} className="ad-inline-form">
-          <label className="field"><span>Currency</span><input className="input" name="currency" placeholder="NGN" maxLength={3} required /></label>
-          <label className="field"><span>Percentage (%)</span><input className="input" name="percent" inputMode="decimal" placeholder="1.5" required /></label>
-          <label className="field"><span>Fixed amount</span><input className="input" name="fixed" inputMode="decimal" placeholder="100" required /></label>
-          <button type="submit" className="btn-white">Save fee</button>
-        </form>
+        <p className="muted small">
+          Each sale uses its currency&apos;s own rate if one is set below; otherwise the standard fee; otherwise no fee.
+          Set NGN for Paystack and Interswitch, and the standard fee (or USD, GBP, EUR…) for Stripe currencies.
+        </p>
+
+        <div className="ad-fee-block">
+          <div className="panel-label">Standard fee · all currencies</div>
+          {s.defaultFee ? (
+            <p><b>{(s.defaultFee.percentBps / 100).toFixed(2)}%</b> + <b>{(s.defaultFee.fixedMinor / 100).toFixed(2)}</b> <span className="muted small">(fixed part in each currency&apos;s main unit, e.g. 1.00 = ₦1 or $1)</span></p>
+          ) : <p className="muted">Not set. Currencies without their own rate pay no fee.</p>}
+          <form action={setDefaultFee} className="ad-inline-form">
+            <label className="field"><span>Percentage (%)</span><input className="input" name="percent" inputMode="decimal" defaultValue={s.defaultFee ? (s.defaultFee.percentBps / 100).toString() : ""} placeholder="3" required /></label>
+            <label className="field"><span>Fixed amount</span><input className="input" name="fixed" inputMode="decimal" defaultValue={s.defaultFee ? (s.defaultFee.fixedMinor / 100).toString() : ""} placeholder="0.50" required /></label>
+            <button type="submit" className="btn-white">{s.defaultFee ? "Update standard fee" : "Set standard fee"}</button>
+          </form>
+          {s.defaultFee && <form action={clearDefaultFee}><button type="submit" className="link-btn">Remove standard fee</button></form>}
+        </div>
+
+        <div className="ad-fee-block">
+          <div className="panel-label">Per-currency rates · override the standard fee</div>
+          {fees.length === 0 ? <p className="muted">None yet: every currency uses the standard fee.</p> : (
+            <div className="ad-scroll">
+              <table className="ad-table">
+                <thead><tr><th scope="col">Currency</th><th scope="col" className="num">Percentage</th><th scope="col" className="num">Fixed</th><th scope="col"><span className="sr-only">Remove</span></th></tr></thead>
+                <tbody>{fees.map(([cur, f]) => (
+                  <tr key={cur}>
+                    <td>{cur}</td><td className="num">{(f.percentBps / 100).toFixed(2)}%</td><td className="num">{formatMinor(f.fixedMinor, cur)}</td>
+                    <td><form action={removeFee}><input type="hidden" name="currency" value={cur} /><button type="submit" className="link-btn" aria-label={`Remove the ${cur} rate`}>Use standard</button></form></td>
+                  </tr>
+                ))}</tbody>
+              </table>
+            </div>
+          )}
+          <form action={setFee} className="ad-inline-form">
+            <label className="field"><span>Currency</span><input className="input" name="currency" placeholder="NGN" maxLength={3} required /></label>
+            <label className="field"><span>Percentage (%)</span><input className="input" name="percent" inputMode="decimal" placeholder="1.5" required /></label>
+            <label className="field"><span>Fixed amount</span><input className="input" name="fixed" inputMode="decimal" placeholder="100" required /></label>
+            <button type="submit" className="btn-white">Save currency rate</button>
+          </form>
+        </div>
       </section>
 
       <section className="panel stack" aria-labelledby="ad-settle-title">

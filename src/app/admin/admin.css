@@ -78,3 +78,38 @@
   .ad-switches li { flex-direction: column; align-items: stretch; }
   .ad-chart { grid-template-rows: 160px auto; }
 }
+
+/* Overview layout: groups of small multiples */
+.ad-group { margin: 14px 0 0; font-size: 22px; font-weight: 800; letter-spacing: -0.01em; }
+.ad-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr)); gap: 14px; }
+.ad-chart-card .ad-chart { grid-template-rows: 150px auto; }
+.ad-chart-sub { margin: -8px 0 0; }
+.ad-chart-total { font-size: 20px; font-variant-numeric: tabular-nums; }
+
+/* Ranked bars (direct labels) */
+.ad-barlist { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.ad-barlist-text { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+.ad-barlist-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ad-barlist-label a { color: var(--text); }
+.ad-barlist-value { font-variant-numeric: tabular-nums; }
+.ad-barlist-track { display: block; height: 8px; margin-top: 6px; border-radius: 4px; background: var(--surface-hi); overflow: hidden; }
+.ad-barlist-bar { display: block; height: 100%; min-width: 2px; background: var(--gold); border-radius: 0 4px 4px 0; }
+
+/* Two-part bar: categorical slots 1 and 2 of the validated palette, a 2px surface gap between */
+.ad-viz { --s1: #2a78d6; --s2: #eb6834; }
+:root[data-theme="dark"] .ad-viz { --s1: #3987e5; --s2: #d95926; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme]) .ad-viz { --s1: #3987e5; --s2: #d95926; } }
+.ad-split { display: flex; gap: 2px; height: 28px; border-radius: 6px; overflow: hidden; background: var(--surface-hi); }
+.ad-split-part { min-width: 2px; }
+.ad-split-part.s1, .ad-swatch.s1 { background: var(--s1, #2a78d6); }
+.ad-split-part.s2, .ad-swatch.s2 { background: var(--s2, #eb6834); }
+.ad-split-empty { flex: 1; }
+.ad-legend { list-style: none; margin: 0; padding: 0; display: flex; gap: 8px 20px; flex-wrap: wrap; }
+.ad-legend li { display: flex; align-items: center; gap: 8px; }
+.ad-swatch { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+
+/* Rate */
+.ad-hero { font-size: 44px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+.ad-meter { display: block; height: 10px; border-radius: 5px; background: var(--surface-hi); overflow: hidden; }
+.ad-meter span { display: block; height: 100%; background: var(--gold); border-radius: 5px; }
+.ad-fee-block { display: grid; gap: 10px; padding-top: 14px; border-top: 1px solid var(--line); }
