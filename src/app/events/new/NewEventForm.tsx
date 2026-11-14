@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState, useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { startTransition, useActionState, useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { MAPS_URL_HINT, isGoogleMapsUrl } from "@/lib/maps-url";
 import { createEvent, type CreateEventState } from "@/app/events/actions";
 import { CATEGORIES } from "@/lib/categories";
 import { THEMES, themeBackground } from "@/lib/themes";
@@ -69,11 +70,23 @@ export default function NewEventForm({
   const timesMissing = !start.date || !start.time || !end.date || !end.time;
 
   // Start and end are required. The browser can't check the hidden wheel inputs, so check here.
+  const [mapsError, setMapsError] = useState("");
+
+  // The form is sent from here rather than by React's form action: after an action React clears
+  // every field it doesn't manage, including the chosen image, so a refused submit (say, a wrong
+  // Maps link) used to lose the image while its preview stayed on screen. Sending the FormData
+  // ourselves keeps every field as typed. The `action` stays for submits before JavaScript loads.
   function onSubmit(e: FormEvent<HTMLFormElement>) {
-    if (timesMissing) {
-      e.preventDefault();
-      setAttempted(true);
-    }
+    e.preventDefault();
+    const form = e.currentTarget;
+    const mapsUrl = (form.elements.namedItem("maps_url") as HTMLInputElement | null)?.value.trim() ?? "";
+    const badMaps = mapsUrl !== "" && !isGoogleMapsUrl(mapsUrl);
+    setMapsError(badMaps ? MAPS_URL_HINT : "");
+    if (timesMissing) setAttempted(true);
+    if (timesMissing || badMaps) return;
+    const submitter = (e.nativeEvent as SubmitEvent).submitter;
+    const data = new FormData(form, submitter instanceof HTMLButtonElement ? submitter : null);
+    startTransition(() => formAction(data));
   }
 
   function updateTier(id: number, key: keyof Omit<Tier, "id">, value: string) {
@@ -240,7 +253,8 @@ export default function NewEventForm({
               <textarea className="input" name="refund_policy" rows={3} placeholder="e.g. Full refund up to 7 days before the event" /></label>
           </div>
 
-          {state?.error && <p className="error">{state.error}</p>}
+          {mapsError && <p className="error" role="alert">{mapsError}</p>}
+          {state?.error && <p className="error" role="alert">{state.error}</p>}
 
           <div className="publish-bar">
             <button className="btn-ghost" type="submit" name="intent" value="draft" disabled={pending}>Save as draft</button>

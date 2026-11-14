@@ -108,21 +108,41 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
           </div>
 
           <section className="ev-card" aria-labelledby="tickets-title">
-            <div className="ev-card-head" id="tickets-title">{canOrder ? "Get tickets" : "Tickets"}</div>
+            <div className="ev-card-head" id="tickets-title">{event.canManage ? "Your tickets on sale" : canOrder ? "Get tickets" : "Tickets"}</div>
             <div className="ev-card-body">
               {event.status === "cancelled" && <p className="muted">This event was cancelled, so tickets are no longer available.</p>}
               {event.status === "published" && !event.registrationOpen && <p className="muted">Registration for this event is closed.</p>}
               {event.status === "published" && event.registrationOpen && freeTypes.length === 0 && (
                 <p className="muted">Tickets for this event aren&apos;t on sale yet. Check back soon.</p>
               )}
-              {canOrder && !signedIn && (
+              {/* Hosts and their team see what's on sale and how it's going, not a ticket form for themselves. */}
+              {event.canManage && (
+                <div className="ev-host">
+                  <ul className="ev-host-types">
+                    {event.ticketTypes.map((t) => (
+                      <li key={t.id}>
+                        <span className="ev-host-name">{t.name}</span>
+                        <span className="muted small">
+                          {t.priceMinor === 0 ? "Free" : "Paid"} · {t.sold} taken{t.quantity !== null ? ` of ${t.quantity}` : ""}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="muted small">Guests see the ticket form here. You&apos;re managing this event, so you don&apos;t need a ticket.</p>
+                  <div className="ev-host-actions">
+                    <Link href={`/dashboard/${event.id}?tab=guests`} className="btn-grad ev-cta">See guests</Link>
+                    <Link href={`/dashboard/${event.id}`} className="btn-ghost ev-cta">Manage event</Link>
+                  </div>
+                </div>
+              )}
+              {!event.canManage && canOrder && !signedIn && (
                 <div className="ev-signup">
                   <p>Welcome! Create a free account or sign in to get your tickets. It takes a few seconds with Google or a 6-digit email code.</p>
                   <Link href={signUpHref} className="btn-grad ev-cta">Get tickets</Link>
                   <p className="muted small">Already have an account? <Link href={signInHref} className="gold">Sign in</Link></p>
                 </div>
               )}
-              {canOrder && signedIn && (
+              {!event.canManage && canOrder && signedIn && (
                 <OrderForm
                   eventId={event.id}
                   ticketTypes={freeTypes}
@@ -133,7 +153,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
                   requireApproval={event.requireApproval}
                 />
               )}
-              {event.requireApproval && canOrder && <p className="muted small">The host approves each request before tickets are issued.</p>}
+              {!event.canManage && event.requireApproval && canOrder && <p className="muted small">The host approves each request before tickets are issued.</p>}
             </div>
           </section>
 

@@ -85,7 +85,7 @@ describe("venue Google Maps link (LO6)", () => {
 
 describe("isGoogleMapsUrl", () => {
   it("matches the API's rule", () => {
-    for (const ok of ["https://maps.app.goo.gl/x1", "https://goo.gl/maps/x1", "https://www.google.com/maps/place/X", "https://google.com.ng/maps?q=1,2", "https://maps.google.co.uk/?q=x"]) expect(isGoogleMapsUrl(ok), ok).toBe(true);
-    for (const bad of ["http://maps.app.goo.gl/x1", "https://www.google.com/search?q=x", "https://google.com.evil.com/maps", "https://maps.app.goo.gl.evil.com/x", "javascript:alert(1)", ""]) expect(isGoogleMapsUrl(bad), bad).toBe(false);
+    for (const ok of ["https://share.google/lNKLSEZsLPTwPHfPZ", "https://maps.app.goo.gl/x1", "https://goo.gl/maps/x1", "https://www.google.com/maps/place/X", "https://google.com.ng/maps?q=1,2", "https://maps.google.co.uk/?q=x"]) expect(isGoogleMapsUrl(ok), ok).toBe(true);
+    for (const bad of ["http://maps.app.goo.gl/x1", "https://www.google.com/search?q=x", "https://google.com.evil.com/maps", "https://maps.app.goo.gl.evil.com/x", "https://share.google/", "https://share.google.evil.com/x", "javascript:alert(1)", ""]) expect(isGoogleMapsUrl(bad), bad).toBe(false);
   });
 });

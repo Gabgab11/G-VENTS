@@ -4,7 +4,7 @@
 const GOOGLE_DOMAIN = /^(?:www\.)?google\.(?:[a-z]{2,3}|co\.[a-z]{2}|com\.[a-z]{2})$/;
 const MAPS_DOMAIN = /^maps\.google\.(?:[a-z]{2,3}|co\.[a-z]{2}|com\.[a-z]{2})$/;
 export const MAPS_URL_MAX = 500;
-export const MAPS_URL_HINT = "Paste a Google Maps link (google.com/maps or maps.app.goo.gl).";
+export const MAPS_URL_HINT = "Paste a Google Maps link (google.com/maps, maps.app.goo.gl or share.google).";
 
 export function isGoogleMapsUrl(raw: string): boolean {
   const value = raw.trim();
@@ -20,6 +20,7 @@ export function isGoogleMapsUrl(raw: string): boolean {
   const path = url.pathname;
   return (
     host === "maps.app.goo.gl" ||
+    (host === "share.google" && path.length > 1) ||
     (host === "goo.gl" && path.startsWith("/maps")) ||
     MAPS_DOMAIN.test(host) ||
     (GOOGLE_DOMAIN.test(host) && (path === "/maps" || path.startsWith("/maps/")))
