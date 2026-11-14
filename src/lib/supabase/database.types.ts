@@ -397,14 +397,14 @@ isOneToOne: false
                   ]
                 },"profiles": {
                   Row: {
-                    "country": string | null,"created_at": string,"dashboard_theme": string,"email": string | null,"full_name": string | null,"id": string,"suspended_at": string | null,"suspended_reason": string | null
+                    "country": string | null,"created_at": string,"dashboard_theme": string,"email": string | null,"full_name": string | null,"id": string,"language": string | null,"suspended_at": string | null,"suspended_reason": string | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "country"?: string | null,"created_at"?: string,"dashboard_theme"?: string,"email"?: string | null,"full_name"?: string | null,"id": string,"suspended_at"?: string | null,"suspended_reason"?: string | null
+                    "country"?: string | null,"created_at"?: string,"dashboard_theme"?: string,"email"?: string | null,"full_name"?: string | null,"id": string,"language"?: string | null,"suspended_at"?: string | null,"suspended_reason"?: string | null
                   }
                   Update: {
-                    "country"?: string | null,"created_at"?: string,"dashboard_theme"?: string,"email"?: string | null,"full_name"?: string | null,"id"?: string,"suspended_at"?: string | null,"suspended_reason"?: string | null
+                    "country"?: string | null,"created_at"?: string,"dashboard_theme"?: string,"email"?: string | null,"full_name"?: string | null,"id"?: string,"language"?: string | null,"suspended_at"?: string | null,"suspended_reason"?: string | null
                   }
                   Relationships: [
                     
