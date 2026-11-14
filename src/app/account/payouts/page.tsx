@@ -38,7 +38,7 @@ export default async function PayoutsPage({ searchParams }: { searchParams: Prom
       {ok && <p className="ok-note" role="status">{ok}</p>}
       {!app && <p className="error" role="alert">We couldn&apos;t load your payout details. Please refresh the page.</p>}
 
-      {app && (
+      {app && app.status !== "none" && (
         <section className="panel stack" aria-labelledby="pay-status">
           <div className="spread">
             <div id="pay-status" className="panel-label">Paid tickets</div>
@@ -48,14 +48,12 @@ export default async function PayoutsPage({ searchParams }: { searchParams: Prom
           {app.decisionReason && (app.status === "declined" || app.status === "revoked") && (
             <p><b>Reason from G-ventZ:</b> {app.decisionReason}</p>
           )}
-          {app.status !== "none" && (
-            <dl className="pay-facts">
-              {app.legalName && <><dt>Name</dt><dd>{app.legalName}</dd></>}
-              {app.payoutCountry && <><dt>Country</dt><dd>{PAYOUT_COUNTRIES[app.payoutCountry].name} · sells in {app.currency}</dd></>}
-              {app.submittedAt && <><dt>Applied</dt><dd>{fmtDate(app.submittedAt)}</dd></>}
-              {app.decidedAt && <><dt>Decided</dt><dd>{fmtDate(app.decidedAt)}</dd></>}
-            </dl>
-          )}
+          <dl className="pay-facts">
+            {app.legalName && <><dt>Name</dt><dd>{app.legalName}</dd></>}
+            {app.payoutCountry && <><dt>Country</dt><dd>{PAYOUT_COUNTRIES[app.payoutCountry].name} · sells in {app.currency}</dd></>}
+            {app.submittedAt && <><dt>Applied</dt><dd>{fmtDate(app.submittedAt)}</dd></>}
+            {app.decidedAt && <><dt>Decided</dt><dd>{fmtDate(app.decidedAt)}</dd></>}
+          </dl>
           {app.debts.length > 0 && (
             <div className="pay-owed" role="note">
               <b>You owe G-ventZ {app.debts.map((d) => formatMinor(d.owedMinor, d.currency)).join(" and ")}</b>

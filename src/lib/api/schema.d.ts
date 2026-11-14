@@ -1629,11 +1629,10 @@ export interface components {
             /** @description Create it published straight away */
             publish?: boolean;
             /**
-             * @description Paid tickets (M5): host_absorbs = guests pay the price and fees come out of your share; guest_pays = fees are added on top so you receive the full price
-             * @default host_absorbs
+             * @description Paid tickets (M5, D42). Optional; host_absorbs when absent. host_absorbs = guests pay the price and fees come out of your share; guest_pays = fees are added on top so you receive the full price
              * @enum {string}
              */
-            feeChoice: "host_absorbs" | "guest_pays";
+            feeChoice?: "host_absorbs" | "guest_pays";
         };
         EventCreatedDto: {
             /** Format: uuid */
@@ -2881,10 +2880,10 @@ export interface components {
              */
             priceMinor: number;
             /**
-             * @default host_absorbs
+             * @description Optional; host_absorbs when absent
              * @enum {string}
              */
-            feeChoice: "host_absorbs" | "guest_pays";
+            feeChoice?: "host_absorbs" | "guest_pays";
         };
         HostFeePreviewDto: {
             currency: string;
