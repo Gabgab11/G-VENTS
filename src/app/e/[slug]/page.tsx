@@ -51,7 +51,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
 
       <div className="ev-grid">
         <aside className="ev-side">
-          <div className="ev-cover" style={{ background: themeBackground(event.coverTheme) }}>
+          <div className={`ev-cover ${event.coverUrl ? "ev-cover-flyer" : ""}`} style={{ background: themeBackground(event.coverTheme) }}>
             {/* eslint-disable-next-line @next/next/no-img-element -- flyers come from Supabase Storage at arbitrary sizes */}
             {event.coverUrl ? <img src={event.coverUrl} alt={`Flyer for ${event.title}`} /> : <span className="ev-cover-title">{event.title}</span>}
           </div>

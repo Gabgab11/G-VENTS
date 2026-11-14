@@ -940,6 +940,123 @@ export interface paths {
         patch: operations["AdminController_updateSettings_v1"];
         trace?: never;
     };
+    "/v1/admin/staff": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Staff and open invitations */
+        get: operations["StaffController_list_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/staff/invites": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Invite someone to G-ventZ staff
+         * @description Emails an invitation valid for 7 days. They accept after signing in with exactly this email. Audited.
+         */
+        post: operations["StaffController_invite_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/staff/invites/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Withdraw an invitation
+         * @description Only open invitations (else 404 staff.invite_not_found). Audited.
+         */
+        delete: operations["StaffController_revoke_v1"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/staff/{email}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Remove a staff member
+         * @description Not yourself (staff.cannot_remove_self) and never the last member (staff.last_member). 404 staff.not_found. Applies at once. Audited.
+         */
+        delete: operations["StaffController_remove_v1"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/me/staff-invite": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * My staff invitation
+         * @description The open invitation for your verified email, or 404 staff.no_invite.
+         */
+        get: operations["MyStaffInviteController_mine_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/me/staff-invite/accept": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Accept my staff invitation
+         * @description Makes you G-ventZ staff. Staff pages then need two-step sign-in. No-op if you are already staff. 404 staff.no_invite when none is open.
+         */
+        post: operations["MyStaffInviteController_accept_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/payments/availability": {
         parameters: {
             query?: never;
@@ -2031,6 +2148,26 @@ export interface components {
             /** Format: date-time */
             addedAt: string;
         };
+        InviterDto: {
+            /** Format: uuid */
+            id: string;
+            name: string | null;
+            email: string | null;
+        };
+        StaffInviteDto: {
+            /** Format: uuid */
+            id: string;
+            email: string;
+            /** @description Null when the inviting account was deleted */
+            invitedBy: components["schemas"]["InviterDto"] | null;
+            /** Format: date-time */
+            createdAt: string;
+            /**
+             * Format: date-time
+             * @description 7 days after createdAt
+             */
+            expiresAt: string;
+        };
         AdminSettingsDto: {
             payments: components["schemas"]["PaymentsStateDto"];
             /**
@@ -2048,8 +2185,10 @@ export interface components {
             /** @description Standard G-ventZ fee for every currency without its own rate in `fees`; null = none */
             defaultFee: components["schemas"]["FeeRateDto"] | null;
             settlementDelayWorkingDays: number;
-            /** @description G-ventZ staff (changed by migration only) */
+            /** @description G-ventZ staff */
             staff: components["schemas"]["StaffMemberDto"][];
+            /** @description Open staff invitations, newest first */
+            invites: components["schemas"]["StaffInviteDto"][];
         };
         ProviderSwitchDto: {
             enabled: boolean;
@@ -2078,6 +2217,29 @@ export interface components {
             /** @description Standard fee for every currency without its own rate; null clears it. */
             defaultFee?: components["schemas"]["FeeRateDto"] | null;
             settlementDelayWorkingDays?: number;
+        };
+        StaffOverviewDto: {
+            staff: components["schemas"]["StaffMemberDto"][];
+            /** @description Open invitations only (not accepted, withdrawn or expired), newest first */
+            invites: components["schemas"]["StaffInviteDto"][];
+        };
+        InviteStaffDto: {
+            /**
+             * @description Compared case-insensitively with the verified sign-in email
+             * @example colleague@gventz.com
+             */
+            email: string;
+        };
+        MyInviterDto: {
+            name: string | null;
+            email: string | null;
+        };
+        MyStaffInviteDto: {
+            /** Format: uuid */
+            id: string;
+            invitedBy: components["schemas"]["MyInviterDto"] | null;
+            /** Format: date-time */
+            expiresAt: string;
         };
         PaymentsAvailabilityDto: {
             /** @description Hosts can sell paid tickets: at least one provider is switched on and configured */
@@ -4178,6 +4340,248 @@ export interface operations {
                 content?: never;
             };
             /** @description route.not_found for anyone who is not G-ventZ staff */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    StaffController_list_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StaffOverviewDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.mfa_required: staff must confirm with their authenticator app (aal2) */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description route.not_found for anyone who is not G-ventZ staff */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    StaffController_invite_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["InviteStaffDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StaffInviteDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.mfa_required: staff must confirm with their authenticator app (aal2) */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description route.not_found for anyone who is not G-ventZ staff */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description staff.already_member or staff.invite_exists */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    StaffController_revoke_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.mfa_required: staff must confirm with their authenticator app (aal2) */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description route.not_found for anyone who is not G-ventZ staff */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    StaffController_remove_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                email: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.mfa_required: staff must confirm with their authenticator app (aal2) */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description route.not_found for anyone who is not G-ventZ staff */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description staff.cannot_remove_self or staff.last_member */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    MyStaffInviteController_mine_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MyStaffInviteDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description staff.no_invite */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    MyStaffInviteController_accept_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description staff.no_invite */
             404: {
                 headers: {
                     [name: string]: unknown;
