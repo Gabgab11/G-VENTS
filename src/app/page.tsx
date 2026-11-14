@@ -3,6 +3,7 @@ import { getFeaturedEvents } from "@/lib/events";
 import AccountLink from "./AccountLink";
 import HeroCards from "./HeroCards";
 import HeroTilt from "./HeroTilt";
+import HeroHover from "./HeroHover";
 import { pageFonts } from "@/app/fonts";
 import ColorModeToggle from "@/components/ColorModeToggle";
 import SocialLinks from "@/components/SocialLinks";
@@ -71,7 +72,10 @@ const CSS = `
   transform: rotate(var(--tilt)); pointer-events: auto;
   animation: hp-drop var(--dur) ease-in-out var(--delay) both;
 }
-.hp-card { display: block; border-radius: 14px; pointer-events: none; user-select: none; }
+.hp-card { display: block; border-radius: 14px; pointer-events: none; user-select: none; transform-origin: 50% 100%; transition: transform .45s cubic-bezier(.2,.8,.3,1.25); }
+/* Mouse effect (HeroHover.tsx): a card near the pointer leans towards it and its shadow deepens. */
+.hp-card svg { transition: filter .45s ease; }
+.hp-card.hp-near svg { filter: drop-shadow(0 22px 22px rgba(60,44,20,.32)); }
 .hp-card svg { display: block; width: 100%; height: auto; overflow: visible; filter: drop-shadow(0 10px 12px rgba(60,44,20,.2)); }
 @keyframes hp-drop {
   0%   { transform: translate(var(--sway), -115vh) rotate(calc(var(--tilt) + var(--spin))); }
@@ -221,6 +225,7 @@ export default async function HomePage() {
 
       <div className="hp-stage">
       <HeroCards />
+      <HeroHover />
       <header className="hp-top">
         <Link href="/" className="hp-logo">G-vent<b>Z</b></Link>
         <div className="hp-top-actions"><ColorModeToggle /><AccountLink /></div>
