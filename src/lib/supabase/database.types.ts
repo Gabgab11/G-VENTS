@@ -233,31 +233,7 @@ isOneToOne: false
                     "account"?: string,"amount_minor"?: number,"created_at"?: string,"currency"?: string,"dispute_id"?: string | null,"host_id"?: string | null,"id"?: never,"kind"?: string,"order_id"?: string | null,"reference"?: string | null,"refund_id"?: string | null
                   }
                   Relationships: [
-                    {
-      foreignKeyName: "ledger_entries_dispute_id_fkey"
-      columns: ["dispute_id"]
-isOneToOne: false
-      referencedRelation: "disputes"
-      referencedColumns: ["id"]
-    },{
-      foreignKeyName: "ledger_entries_host_id_fkey"
-      columns: ["host_id"]
-isOneToOne: false
-      referencedRelation: "profiles"
-      referencedColumns: ["id"]
-    },{
-      foreignKeyName: "ledger_entries_order_id_fkey"
-      columns: ["order_id"]
-isOneToOne: false
-      referencedRelation: "orders"
-      referencedColumns: ["id"]
-    },{
-      foreignKeyName: "ledger_entries_refund_id_fkey"
-      columns: ["refund_id"]
-isOneToOne: false
-      referencedRelation: "refunds"
-      referencedColumns: ["id"]
-    }
+                    
                   ]
                 },"orders": {
                   Row: {
@@ -585,14 +561,14 @@ isOneToOne: false
                   ]
                 },"webhook_inbox": {
                   Row: {
-                    "attempts": number,"country": string,"event_id": string,"id": string,"outcome": string | null,"payload": NonNullable<Json>,"processed_at": string | null,"provider": string,"received_at": string,"type": string
+                    "attempts": number,"country": string,"event_id": string,"id": string,"locked_until": string | null,"outcome": string | null,"payload": NonNullable<Json>,"processed_at": string | null,"provider": string,"received_at": string,"reference": string | null,"type": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "attempts"?: number,"country": string,"event_id": string,"id"?: string,"outcome"?: string | null,"payload": NonNullable<Json>,"processed_at"?: string | null,"provider": string,"received_at"?: string,"type": string
+                    "attempts"?: number,"country": string,"event_id": string,"id"?: string,"locked_until"?: string | null,"outcome"?: string | null,"payload": NonNullable<Json>,"processed_at"?: string | null,"provider": string,"received_at"?: string,"reference"?: string | null,"type": string
                   }
                   Update: {
-                    "attempts"?: number,"country"?: string,"event_id"?: string,"id"?: string,"outcome"?: string | null,"payload"?: NonNullable<Json>,"processed_at"?: string | null,"provider"?: string,"received_at"?: string,"type"?: string
+                    "attempts"?: number,"country"?: string,"event_id"?: string,"id"?: string,"locked_until"?: string | null,"outcome"?: string | null,"payload"?: NonNullable<Json>,"processed_at"?: string | null,"provider"?: string,"received_at"?: string,"reference"?: string | null,"type"?: string
                   }
                   Relationships: [
                     
