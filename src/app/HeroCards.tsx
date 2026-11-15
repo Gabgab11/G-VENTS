@@ -89,7 +89,9 @@ export function CardSvg({ card }: { card: Pick<Card, "shape" | "words" | "meta" 
 
 export default function HeroCards() {
   return (
-    <div className="hp-drop">
+    // Decoration whose physics (HeroHover, HeroTilt) works in left-based coordinates: always laid
+    // out left to right, also on Arabic pages.
+    <div className="hp-drop" dir="ltr">
       {CARDS.map((card, i) => {
         const s = SHAPES[card.shape];
         const name = card.words.join(" ").replace("- ", "");

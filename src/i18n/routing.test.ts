@@ -2,7 +2,7 @@ import fc from "fast-check";
 import { describe, expect, it } from "vitest";
 import type { Locale } from "./languages";
 import { resolveLanguage } from "./resolve";
-import { isPublicPath, localizedPath, splitPrefix } from "./routing";
+import { chosenLanguageRedirect, isPublicPath, localizedPath, splitPrefix } from "./routing";
 
 const ON: Locale[] = ["en", "fr", "zh-Hans", "ar"];
 
@@ -51,5 +51,19 @@ describe("resolveLanguage (W3, FR-23)", () => {
     fc.assert(fc.property(fc.string(), fc.option(fc.string()), fc.option(fc.string()), (p, c, a) => {
       expect(ON).toContain(r("/" + p, c, a));
     }));
+  });
+});
+
+describe("chosen language holds across pages (user request 2026-11-15)", () => {
+  const ON: Locale[] = ["en", "fr", "ar"];
+  it("sends a visitor who chose a language to that language's version of public pages", () => {
+    expect(chosenLanguageRedirect("/discover", "fr", ON)).toBe("/fr/discover");
+    expect(chosenLanguageRedirect("/", "ar", ON)).toBe("/ar");
+    expect(chosenLanguageRedirect("/e/afro-night", "fr", ON)).toBe("/fr/e/afro-night");
+  });
+  it("does nothing without a choice, for English, switched-off languages, prefixed or non-public pages", () => {
+    for (const [path, cookie] of [["/discover", null], ["/discover", "en"], ["/discover", "de"], ["/fr/discover", "ar"], ["/dashboard", "fr"], ["/discover", "xx"]] as const) {
+      expect(chosenLanguageRedirect(path, cookie, ON), `${path} ${cookie}`).toBeNull();
+    }
   });
 });

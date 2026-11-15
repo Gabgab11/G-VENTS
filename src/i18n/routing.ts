@@ -51,3 +51,16 @@ export function isEnglishPrefixed(pathname: string): boolean {
   const m = /^\/en(\/.*)?$/.exec(pathname);
   return !!m && PUBLIC.test(m[1] || "/");
 }
+
+/**
+ * Where a visitor who has chosen a language (the gventz_lang cookie, set by the switcher or from
+ * their profile) should go when they open a public page without a language prefix: the same page
+ * in their language. Null when nothing should happen: no choice, English, a switched-off
+ * language, or not a public page. Browser language alone never redirects (FR-24.3); an explicit
+ * choice does, so the language holds across pages (user request, 2026-11-15).
+ */
+export function chosenLanguageRedirect(pathname: string, cookie: string | null | undefined, enabled: readonly Locale[]): string | null {
+  if (!cookie || cookie === DEFAULT_LANGUAGE || !(enabled as readonly string[]).includes(cookie)) return null;
+  if (splitPrefix(pathname).lang || !PUBLIC.test(pathname)) return null;
+  return localizedPath(pathname, cookie as Locale);
+}

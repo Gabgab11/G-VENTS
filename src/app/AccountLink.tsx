@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
@@ -10,6 +11,7 @@ import { useEffect, useRef, useState } from "react";
 // cookie is httpOnly (the browser's JavaScript can't read it), so the answer comes from
 // /api/session. The admin pages themselves are still guarded by the API (staff, two-step sign-in).
 export default function AccountLink({ className = "hp-signin" }: { className?: string }) {
+  const t = useTranslations("common.account");
   const [session, setSession] = useState({ signedIn: false, isStaff: false });
   const menu = useRef<HTMLDetailsElement>(null);
   const pathname = usePathname();
@@ -38,19 +40,19 @@ export default function AccountLink({ className = "hp-signin" }: { className?: s
     return () => { document.removeEventListener("click", close); document.removeEventListener("keydown", close); };
   }, []);
 
-  if (!session.signedIn) return <Link href="/sign-in" className={className}>Sign in</Link>;
+  if (!session.signedIn) return <Link href="/sign-in" className={className}>{t("signIn")}</Link>;
   return (
     <>
       {/* On phones these two move into the Account menu (globals.css), so the header fits one line. */}
-      {session.isStaff && <Link href="/admin" className={`${className} account-admin`}>Admin</Link>}
-      <Link href="/dashboard" className={`${className} account-dash`}>Dashboard</Link>
+      {session.isStaff && <Link href="/admin" className={`${className} account-admin`}>{t("admin")}</Link>}
+      <Link href="/dashboard" className={`${className} account-dash`}>{t("dashboard")}</Link>
       <details className="account-menu" ref={menu}>
-        <summary className={className} aria-label="Account">Account</summary>
+        <summary className={className}>{t("account")}</summary>
         <div className="account-menu-list">
-          <Link href="/dashboard" className="account-menu-phone">Dashboard</Link>
-          {session.isStaff && <Link href="/admin">G-ventZ admin</Link>}
-          <Link href="/account/security">Two-step sign-in &amp; passkeys</Link>
-          <Link href="/account/payouts">Payouts</Link>
+          <Link href="/dashboard" className="account-menu-phone">{t("dashboard")}</Link>
+          {session.isStaff && <Link href="/admin">{t("platformAdmin")}</Link>}
+          <Link href="/account/security">{t("security")}</Link>
+          <Link href="/account/payouts">{t("payouts")}</Link>
         </div>
       </details>
     </>

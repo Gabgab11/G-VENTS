@@ -1,0 +1,33 @@
+{
+  "brand": {
+    "home": "G-ventZ 首页"
+  },
+  "nav": {
+    "main": "主菜单",
+    "discover": "发现",
+    "pricing": "价格",
+    "createEvent": "创建活动",
+    "back": "返回"
+  },
+  "account": {
+    "signIn": "登录",
+    "signOut": "退出登录",
+    "dashboard": "控制台",
+    "admin": "管理",
+    "account": "账户",
+    "platformAdmin": "G-ventZ 管理后台",
+    "security": "两步登录和通行密钥",
+    "payouts": "收款"
+  },
+  "language": {
+    "label": "语言",
+    "choose": "选择语言",
+    "current": "当前语言：{name}",
+    "hint": "此页面还有{name}版本。",
+    "hintSwitch": "切换到{name}",
+    "hintDismiss": "不用了"
+  },
+  "errors": {
+    "generic": "出了点问题，请重试。"
+  }
+}

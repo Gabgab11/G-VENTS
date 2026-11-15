@@ -4,7 +4,7 @@ import { env, supabaseSecretKey } from "@/lib/env";
 import { onCloudflare } from "@/lib/platform";
 import { authCookieOptions, forwardedIp, supabaseKeyAndHeaders } from "@/lib/supabase/options";
 import createIntlMiddleware from "next-intl/middleware";
-import { routing, isEnglishPrefixed, isPublicPath, splitPrefix } from "@/i18n/routing";
+import { chosenLanguageRedirect, routing, isEnglishPrefixed, isPublicPath, splitPrefix } from "@/i18n/routing";
 import { LANGUAGE_COOKIE, LANGUAGE_HEADER, resolveLanguage } from "@/i18n/resolve";
 
 // Refreshes the signed-in session cookie so users stay logged in.
@@ -50,6 +50,13 @@ const intl = createIntlMiddleware(routing);
 function withLanguage(request: NextRequest): { response: NextResponse; rebuild: () => NextResponse } {
   const path = request.nextUrl.pathname;
   if (isPublicPath(path) || isEnglishPrefixed(path)) {
+    // A visitor who chose a language keeps it: /discover → /fr/discover for them.
+    const chosen = chosenLanguageRedirect(path, request.cookies.get(LANGUAGE_COOKIE)?.value, routing.locales);
+    if (chosen) {
+      const url = request.nextUrl.clone();
+      url.pathname = chosen;
+      return { response: NextResponse.redirect(url, 307), rebuild: () => NextResponse.redirect(url, 307) };
+    }
     const response = intl(request);
     const rewrite = response.headers.get("x-middleware-rewrite");
     return {

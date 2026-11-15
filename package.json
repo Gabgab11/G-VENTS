@@ -19,7 +19,8 @@
     "api:types": "openapi-typescript ${API_OPENAPI_URL:-../gventz-api/openapi.json} -o src/lib/api/schema.d.ts",
     "api:types:pinned": "bash .github/scripts/fetch-api-contract.sh \"$(tr -d '[:space:]' < api-contract.ref)\" .api-contract.json && API_OPENAPI_URL=.api-contract.json npm run -s api:types",
     "cf:build": "opennextjs-cloudflare build",
-    "cf:preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview --env staging"
+    "cf:preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview --env staging",
+    "i18n:sync": "node scripts/i18n-sync.mjs"
   },
   "dependencies": {
     "@fontsource-variable/bricolage-grotesque": "5.3.0",
