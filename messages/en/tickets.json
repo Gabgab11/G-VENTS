@@ -1,0 +1,190 @@
+{
+  "ticket": {
+    "meta": {
+      "title": "Your ticket · G-ventZ"
+    },
+    "status": {
+      "eventCancelled": {
+        "title": "This event has been cancelled",
+        "body": "The host has cancelled this event, so this ticket can't be used."
+      },
+      "pending": {
+        "title": "Waiting for the host",
+        "body": "The host approves each guest. Your QR code appears here once you're confirmed."
+      },
+      "waitlisted": {
+        "title": "You're on the waiting list",
+        "body": "The event is full right now. If a place opens, this page turns into your ticket."
+      },
+      "declined": {
+        "title": "The host couldn't accept this request",
+        "body": "This ticket can't be used to enter the event."
+      },
+      "cancelled": {
+        "title": "This ticket was cancelled",
+        "body": "It can no longer be used to enter the event."
+      },
+      "refunded": {
+        "title": "This ticket was refunded",
+        "body": "It can no longer be used to enter the event."
+      }
+    },
+    "checkIn": {
+      "checkedIn": {
+        "title": "Checked in",
+        "body": "This guest is in. Enjoy the event!"
+      },
+      "alreadyUsed": {
+        "title": "Already checked in",
+        "body": "Don't let this ticket in twice."
+      },
+      "notConfirmed": {
+        "title": "Not confirmed yet",
+        "body": "The host hasn't approved this ticket."
+      },
+      "waitlisted": {
+        "title": "On the waiting list",
+        "body": "This ticket hasn't got a place yet."
+      },
+      "cancelled": {
+        "title": "Not valid",
+        "body": "This ticket was cancelled."
+      },
+      "refunded": {
+        "title": "Not valid",
+        "body": "This ticket was refunded."
+      },
+      "failed": {
+        "title": "Couldn't check in",
+        "body": "Refresh the page and try again."
+      }
+    },
+    "ticketFor": "Ticket for {title}",
+    "admitOne": "Admit one",
+    "date": "Date",
+    "time": "Time",
+    "ticket": "Ticket",
+    "free": "Free",
+    "ofTotal": "{number} of {total}",
+    "where": "Where",
+    "guest": "Guest",
+    "notValid": "Not valid",
+    "noQr": "No QR code yet",
+    "hintValid": "Show this code at the door. A printout works too.",
+    "hintPending": "Keep this link. It updates if your ticket changes.",
+    "stamp": "Checked in",
+    "stampAt": "at {time}",
+    "eventPage": "Event page",
+    "staff": {
+      "label": "Door check-in",
+      "already": "<b>Already checked in</b> at {time}. Don't let this ticket in twice.",
+      "intro": "<b>You're staff for this event.</b> Check this guest in at the door.",
+      "button": "Check in {name}"
+    },
+    "foot": "This ticket belongs to {name}. Anyone with this link can see it, so only share it with people you trust.",
+    "print": "Print or save as PDF"
+  },
+  "email": {
+    "label": "Email my ticket",
+    "intro": "<b>Get your ticket by email</b> We'll send it to {email}, the address you registered with.",
+    "sent": "Your ticket is on its way. Check your inbox and spam folder in a minute.",
+    "failed": "We couldn't send the email. Please try again.",
+    "confirmFirst": "Tick the box to confirm your email address first.",
+    "limit": "This ticket has been emailed several times this hour. Please try again later.",
+    "unavailable": "Email delivery isn't available for this ticket right now.",
+    "lastFailed": "Your last email didn't go through.",
+    "confirm": "This is my email address",
+    "tryAgain": "Try again",
+    "send": "Email my ticket"
+  },
+  "whatsapp": {
+    "label": "Send ticket to WhatsApp",
+    "intro": "<b>Get your ticket on WhatsApp</b> Enter your WhatsApp number, then send the message that opens.",
+    "numberLabel": "Your WhatsApp number",
+    "open": "Open WhatsApp",
+    "invalid": "Enter your WhatsApp number with its country code, for example +234 801 234 5678.",
+    "unavailable": "WhatsApp delivery isn't available right now. Use the ticket link instead.",
+    "message": "Hi G-ventZ, please send my ticket for {title}.\nTicket code: {code}\nTicket link: {url}"
+  },
+  "order": {
+    "meta": {
+      "title": "Your tickets · G-ventZ"
+    },
+    "headingIn": "You're in",
+    "headingOrder": "Your order",
+    "headingTickets": "Your tickets",
+    "footCompleted": "We've also emailed your tickets to your account email. All your tickets are in <link>My tickets</link>.",
+    "foot": "All your tickets are in <link>My tickets</link>."
+  },
+  "payment": {
+    "status": {
+      "awaitingPayment": {
+        "title": "Waiting for your payment",
+        "body": "If you've just paid, this page updates by itself in a few seconds. Don't pay twice."
+      },
+      "completed": {
+        "title": "Paid",
+        "body": "Your payment went through and your tickets are below. We've emailed them with your receipt."
+      },
+      "expired": {
+        "title": "Your hold ran out",
+        "body": "We didn't get your payment within 10 minutes, so the tickets went back on sale. If money left your account, it's returned automatically."
+      },
+      "failed": {
+        "title": "Payment didn't go through",
+        "body": "Paystack couldn't take the payment. Nothing was charged."
+      },
+      "refunded": {
+        "title": "Refunded",
+        "body": "This order was refunded. The tickets no longer work."
+      },
+      "partiallyRefunded": {
+        "title": "Partly refunded",
+        "body": "Some tickets in this order were refunded; the others still work."
+      },
+      "disputed": {
+        "title": "Payment disputed",
+        "body": "Your bank told us this payment is disputed. Your tickets still work while it's looked into."
+      },
+      "waitlisted": {
+        "title": "You're on the waiting list",
+        "body": "We'll email you if a place frees up. You'll then have 24 hours to pay."
+      }
+    },
+    "offerTitle": "A place is yours",
+    "offerBody": "Pay before {time} to get your tickets; after that the place goes to the next person.",
+    "reference": "Payment reference",
+    "tryAgain": "Try again with Paystack",
+    "pay": "Pay with Paystack",
+    "payTotal": "Pay with Paystack · {total}",
+    "startAgain": "Start again",
+    "serviceFee": "Service fee",
+    "includesVat": "(includes VAT {amount})",
+    "total": "Total",
+    "paid": "Paid",
+    "paidAt": "Paid {time}",
+    "refunds": "Refunds",
+    "refundLine": "{amount} · {count, plural, one {{count, number, ::group-off} ticket} other {{count, number, ::group-off} tickets}}",
+    "refundCancelled": "event cancelled",
+    "refundLate": "paid after the hold",
+    "refundsNote": "Refunds go back to the card or account you paid with. Banks usually take 5 to 10 working days.",
+    "held": "Your tickets are held for <b>{time}</b>.",
+    "checking": "Checking your payment with Paystack...",
+    "noAnswer": "Still no answer from Paystack. <button>Check again</button>",
+    "opening": "Opening Paystack...",
+    "orderNotFound": "This order could not be found.",
+    "openFailed": "We couldn't open the payment page. Please try again."
+  },
+  "myTickets": {
+    "meta": {
+      "title": "My tickets · G-ventZ"
+    },
+    "heading": "My tickets",
+    "which": "Which tickets",
+    "upcoming": "Upcoming",
+    "past": "Past",
+    "emptyUpcoming": "No upcoming tickets yet. Find something on Discover.",
+    "emptyPast": "No past events yet.",
+    "loadMore": "Load more"
+  }
+}

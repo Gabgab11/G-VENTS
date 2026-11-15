@@ -1,0 +1,26 @@
+"use server";
+
+import { redirect } from "next/navigation";
+import { api, data } from "@/lib/api/server";
+import { getLocale, getTranslations } from "next-intl/server";
+import { ApiError, problemMessage } from "@/lib/api/problem";
+import { isUuid } from "@/lib/forms";
+import { isCheckoutUrl } from "@/app/[lang]/e/[slug]/order-input";
+
+export type PayState = { error?: string } | undefined;
+
+/** Opens Paystack's checkout again for an unpaid order (or a waiting-list offer) the API says can be paid. */
+export async function payOrder(_prev: PayState, formData: FormData): Promise<PayState> {
+  const [t, errors, lang] = await Promise.all([getTranslations("tickets.payment"), getTranslations("errors"), getLocale()]);
+  const orderId = String(formData.get("order_id") ?? "");
+  if (!isUuid(orderId)) return { error: t("orderNotFound") };
+  let url: string | null;
+  try {
+    url = data(await (await api()).POST("/v1/me/orders/{orderId}/pay", { params: { path: { orderId } } })).authorizationUrl;
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 401) redirect(`/sign-in?next=${encodeURIComponent(`/orders/${orderId}`)}`);
+    return { error: problemMessage(error, errors, lang, t("openFailed")) };
+  }
+  if (!isCheckoutUrl(url)) return { error: t("openFailed") };
+  redirect(url);
+}

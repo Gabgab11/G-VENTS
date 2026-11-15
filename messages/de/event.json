@@ -1,0 +1,98 @@
+{
+  "page": {
+    "notices": {
+      "draft": "Entwurf. Nur Sie und Ihr Team können diese Seite sehen.",
+      "cancelled": "Diese Veranstaltung wurde abgesagt.",
+      "canManage": "Sie können diese Veranstaltung bearbeiten. <link>Veranstaltung verwalten</link>"
+    },
+    "coverAlt": "Flyer für {title}",
+    "hostedBy": "Veranstaltet von",
+    "going": "{count, plural, one {{count, number, ::group-off} Person nimmt teil} other {{count, number, ::group-off} Personen nehmen teil}}",
+    "privateEvent": "Private Veranstaltung",
+    "timeLine": "{range} · Ortszeit {zone}",
+    "place": {
+      "venue": "Veranstaltungsort",
+      "online": "Online",
+      "onlineLine": "Der Gastgeber teilt den Link mit den Gästen"
+    },
+    "about": "Über die Veranstaltung",
+    "location": "Ort",
+    "directions": "Route anzeigen ↗",
+    "refunds": "Erstattungen"
+  },
+  "tickets": {
+    "headManage": "Ihre Tickets im Verkauf",
+    "headGet": "Tickets holen",
+    "head": "Tickets",
+    "cancelled": "Diese Veranstaltung wurde abgesagt, daher sind keine Tickets mehr erhältlich.",
+    "closed": "Die Anmeldung für diese Veranstaltung ist geschlossen.",
+    "notOnSale": "Tickets für diese Veranstaltung sind noch nicht im Verkauf. Schauen Sie bald wieder vorbei.",
+    "paidUnavailable": "Kostenpflichtige Tickets können gerade nicht gekauft werden. Schauen Sie bald wieder vorbei.",
+    "separateOrders": "Kostenlose und kostenpflichtige Tickets sind getrennte Bestellungen. Holen Sie eine Art und kommen Sie dann für die andere zurück.",
+    "freeTitle": "Kostenlose Tickets",
+    "paidTitle": "Kostenpflichtige Tickets",
+    "approvalNote": "Der Gastgeber bestätigt jede Anfrage, bevor Tickets ausgestellt werden."
+  },
+  "host": {
+    "free": "Kostenlos",
+    "taken": "{sold} vergeben",
+    "takenOf": "{sold} von {quantity} vergeben",
+    "note": "Gäste sehen hier das Ticketformular. Sie verwalten diese Veranstaltung und brauchen daher kein Ticket.",
+    "seeGuests": "Gäste ansehen",
+    "manage": "Veranstaltung verwalten"
+  },
+  "signUp": {
+    "welcome": "Willkommen! Erstellen Sie ein kostenloses Konto oder melden Sie sich an, um Ihre Tickets zu erhalten. Mit Google oder einem 6-stelligen E-Mail-Code dauert es nur wenige Sekunden.",
+    "cta": "Tickets holen",
+    "haveAccount": "Sie haben bereits ein Konto? <link>Anmelden</link>"
+  },
+  "guest": {
+    "name": "Ihr vollständiger Name",
+    "email": "E-Mail",
+    "emailNote": "Alle Ihre Tickets werden an die E-Mail-Adresse Ihres Kontos gesendet.",
+    "othersLegend": "Namen für die weiteren Tickets (optional; Sie können jedes Ticket weiterleiten)",
+    "ticketNumber": "Ticket {number}",
+    "namePlaceholder": "Name des Gastes",
+    "choose": "Auswählen",
+    "socialPlaceholder": "@Name oder Profillink"
+  },
+  "order": {
+    "legend": "Tickets",
+    "soldOut": "Ausverkauft",
+    "free": "Kostenlos",
+    "howMany": "Wie viele {name}-Tickets",
+    "limit": "Bis zu {count, plural, one {{count, number, ::group-off} Ticket} other {{count, number, ::group-off} Tickets}} pro Person.",
+    "pending": "Ihre Tickets werden geholt...",
+    "request": "{count, plural, one {Ein Ticket anfragen} other {{count, number, ::group-off} Tickets anfragen}}",
+    "get": "{count, plural, one {Ticket holen} other {{count, number, ::group-off} Tickets holen}}"
+  },
+  "paid": {
+    "legend": "Kostenpflichtige Tickets",
+    "soldOutWaitlist": "Ausverkauft · Warteliste",
+    "serviceFee": "Servicegebühr",
+    "includesVat": "(inkl. MwSt. {amount})",
+    "total": "Gesamt",
+    "feesIncluded": "Die Gebühren sind im Preis enthalten.",
+    "subtotal": "Tickets",
+    "workingFee": "Servicegebühr wird berechnet...",
+    "workingTotal": "Gesamtbetrag wird berechnet...",
+    "waitlistNote": "Dieses Ticket ist ausverkauft. Tragen Sie sich in die Warteliste ein, und wir schreiben Ihnen, wenn ein Platz frei wird; Sie haben dann 24 Stunden Zeit zum Bezahlen.",
+    "refundPolicy": "Erstattungsrichtlinie:",
+    "joining": "Wird eingetragen...",
+    "opening": "Paystack wird geöffnet...",
+    "join": "Auf die Warteliste",
+    "pay": "Mit Paystack bezahlen",
+    "payTotal": "Mit Paystack bezahlen · {total}",
+    "payNote": "Sie bezahlen auf der sicheren Seite von Paystack. Ihre Tickets werden 10 Minuten lang reserviert."
+  },
+  "errors": {
+    "eventNotFound": "Diese Veranstaltung wurde nicht gefunden.",
+    "sessionEnded": "Ihre Sitzung ist abgelaufen. Melden Sie sich erneut an, um Tickets zu erhalten.",
+    "orderFailed": "Wir konnten Ihre Tickets nicht holen. Bitte versuchen Sie es erneut.",
+    "quoteFailed": "Wir konnten den Gesamtbetrag nicht berechnen. Bitte versuchen Sie es erneut.",
+    "paymentFailed": "Wir konnten Ihre Zahlung nicht starten. Bitte versuchen Sie es erneut.",
+    "chooseTicket": "Wählen Sie mindestens ein Ticket.",
+    "ticketRange": "Wählen Sie zwischen 1 und 10 Tickets.",
+    "nonRefundable": "Setzen Sie das Häkchen bei „{text}“, um fortzufahren."
+  }
+}

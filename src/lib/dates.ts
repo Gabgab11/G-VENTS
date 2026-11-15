@@ -1,30 +1,16 @@
 // One place for event date handling. Events store a time zone; Lagos is only the default.
+import { formatDateTime, type DateStyle } from "./format";
 
 export const DEFAULT_TIMEZONE = "Africa/Lagos";
 
-const STYLES = {
-  // "Sat 7 Nov, 18:00"
-  short: { weekday: "short", day: "numeric", month: "short", hour: "numeric", minute: "2-digit" },
-  // "7 Nov, 18:00"
-  compact: { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" },
-  // "Saturday 7 November 2026 at 18:00"
-  long: { weekday: "long", day: "numeric", month: "long", year: "numeric", hour: "numeric", minute: "2-digit" },
-} satisfies Record<string, Intl.DateTimeFormatOptions>;
-
+/** "Sat 7 Nov, 18:00" (short), "7 Nov, 18:00" (compact), "Saturday 7 November 2026 at 18:00" (long), in English; format.ts has the other languages. */
 export function formatEventDate(
   iso: string,
   timeZone: string | null | undefined = DEFAULT_TIMEZONE,
-  style: keyof typeof STYLES = "short",
+  style: DateStyle = "short",
 ): string {
-  const date = new Date(iso);
-  if (Number.isNaN(date.getTime())) return "";
-  const tz = timeZone || DEFAULT_TIMEZONE;
-  try {
-    return date.toLocaleString("en-GB", { ...STYLES[style], timeZone: tz });
-  } catch {
-    // Unknown zone name in the data: show Lagos time rather than crash the page.
-    return date.toLocaleString("en-GB", { ...STYLES[style], timeZone: DEFAULT_TIMEZONE });
-  }
+  // An unknown zone name in the data shows Lagos time rather than crashing the page (safeZone).
+  return formatDateTime(iso, timeZone, "en", style);
 }
 
 // Short label for the zone, e.g. "Lagos" for Africa/Lagos.

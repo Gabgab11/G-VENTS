@@ -1,0 +1,159 @@
+{
+  "security": {
+    "metaTitle": "Connexion en deux étapes · G-ventZ",
+    "title": "Connexion en deux étapes",
+    "intro": "Une seconde vérification après votre code reçu par e-mail, pour les espaces sensibles. Obligatoire pour l'équipe G-ventZ et recommandée pour les organisateurs. Utilisez une <b>clé d'accès</b> (votre empreinte digitale, votre visage ou le code PIN de votre appareil) ou une <b>application d'authentification</b>.",
+    "done": "La connexion en deux étapes est activée et cette session est confirmée.",
+    "removed": "Supprimé.",
+    "removeFailed": "Impossible de supprimer cet élément. Confirmez d'abord votre identité, puis réessayez.",
+    "passkeyTitle": "Clé d'accès (recommandée)",
+    "passkeyHint": "Confirmez avec Touch ID, Face ID, Windows Hello, votre téléphone ou une clé de sécurité. Rien à saisir.",
+    "appTitle": "Application d'authentification",
+    "confirmTitle": "Confirmez votre identité",
+    "confirmHint": "Utilisez l'une de vos méthodes.",
+    "confirmHintContinue": "Utilisez l'une de vos méthodes pour continuer.",
+    "orCode": "Ou saisissez le code de votre application d'authentification :",
+    "methodsTitle": "Vos méthodes",
+    "passkeyName": "Clé d'accès",
+    "passkeyAdded": "· clé d'accès · ajoutée le {date}",
+    "appName": "Application d'authentification",
+    "appAdded": "· ajoutée le {date}",
+    "remove": "Supprimer",
+    "removeLabel": "Supprimer {label}",
+    "removeLabelPasskey": "la clé d'accès",
+    "removeLabelApp": "l'application d'authentification",
+    "methodsNote": "Cette session est confirmée. Gardez au moins deux méthodes (par exemple une clé d'accès et l'application) pour ne pas perdre l'accès si vous perdez un appareil.",
+    "addPasskeyTitle": "Ajouter une clé d'accès",
+    "addAppTitle": "Ajouter une application d'authentification"
+  },
+  "mfa": {
+    "codeLabel": "Code à 6 chiffres",
+    "preparing": "Préparation…",
+    "setUp": "Configurer une application d'authentification",
+    "step1": "Ouvrez une application d'authentification (Google Authenticator, Microsoft Authenticator, 1Password, Authy…).",
+    "step2": "Scannez ce code QR, ou saisissez la clé ci-dessous.",
+    "step3": "Saisissez le code à 6 chiffres affiché par l'application.",
+    "qrAlt": "Code QR pour votre application d'authentification",
+    "key": "Clé : <code>{secret}</code>",
+    "checking": "Vérification…",
+    "turnOn": "Activer la connexion en deux étapes",
+    "continue": "Continuer",
+    "errors": {
+      "generic": "Cela n'a pas fonctionné. Veuillez réessayer.",
+      "setupFailed": "Impossible de configurer la connexion en deux étapes pour le moment. Veuillez réessayer.",
+      "enterCode": "Saisissez le code à 6 chiffres de votre application d'authentification.",
+      "wrongCode": "Ce code est incorrect ou a expiré. Essayez le code actuel.",
+      "setUpFirst": "Configurez d'abord une application d'authentification."
+    }
+  },
+  "passkey": {
+    "nameLabel": "Nommer cette clé d'accès (facultatif)",
+    "waiting": "En attente de votre appareil…",
+    "add": "Ajouter une clé d'accès",
+    "use": "Utiliser une clé d'accès",
+    "useNamed": "Utiliser la clé d'accès : {name}",
+    "unsupported": "Ce navigateur ne prend pas en charge les clés d'accès. Utilisez plutôt l'application d'authentification.",
+    "defaultName": "Clé d'accès",
+    "deviceName": "Clé d'accès {device}",
+    "errors": {
+      "notCreated": "Aucune clé d'accès n'a été créée.",
+      "addCancelled": "Annulé. Rien n'a été ajouté.",
+      "createFailed": "Cet appareil n'a pas pu créer de clé d'accès. Essayez un autre appareil ou l'application d'authentification.",
+      "notUsed": "Aucune clé d'accès n'a été utilisée.",
+      "useCancelled": "Annulé.",
+      "useFailed": "Cette clé d'accès n'a pas pu être utilisée sur cet appareil.",
+      "generic": "Cela n'a pas fonctionné. Veuillez réessayer.",
+      "disabled": "Les clés d'accès ne sont pas encore activées sur ce site.",
+      "notConfirmed": "Cette clé d'accès n'a pas pu être confirmée. Veuillez réessayer."
+    }
+  },
+  "payouts": {
+    "metaTitle": "Être payé · G-ventZ",
+    "title": "Être payé",
+    "intro": "Vendez des billets payants sur G-ventZ. Les invités paient avec Paystack et votre part est versée directement sur votre compte bancaire.",
+    "ok": {
+      "submitted": "Demande envoyée. Nous vous écrirons par e-mail une fois la décision prise.",
+      "payoutChanged": "Coordonnées de versement modifiées. Les ventes payantes sont suspendues jusqu'à ce que G-ventZ confirme le nouveau compte ; nous vous avons envoyé un e-mail."
+    },
+    "loadFailed": "Nous n'avons pas pu charger vos coordonnées de versement. Veuillez actualiser la page.",
+    "status": {
+      "title": "Billets payants",
+      "canSell": "Vous pouvez vendre des billets payants",
+      "decisionReason": "<b>Motif indiqué par G-ventZ :</b> {reason}",
+      "name": "Nom",
+      "country": "Pays",
+      "countryValue": "{country} · ventes en {currency}",
+      "applied": "Demande envoyée",
+      "decided": "Décision",
+      "owed": "Vous devez {amounts} à G-ventZ",
+      "owedJoin": "{first} et {second}",
+      "owedNote": "Il s'agit de votre part des billets remboursés ou des rétrofacturations perdues. Elle est prélevée automatiquement sur vos prochaines ventes payantes. Tant qu'elle n'est pas remboursée, vous ne pouvez pas publier de nouveaux événements payants ; vos événements existants restent en vente."
+    },
+    "account": {
+      "title": "Compte de versement",
+      "active": "Actif",
+      "pending": "En cours de configuration",
+      "replaced": "Remplacé",
+      "line": "{bank} · se terminant par {last4}",
+      "pendingNote": "G-ventZ configure ce compte avec Paystack. Vous pourrez vendre des billets payants dès qu'il sera actif.",
+      "change": "Modifier les coordonnées de versement"
+    },
+    "apply": {
+      "title": "Demander à vendre des billets payants",
+      "again": "Faire une nouvelle demande",
+      "closed": "Les billets payants ne sont pas encore ouverts sur G-ventZ. Tous les billets sont gratuits pour le moment ; revenez bientôt."
+    },
+    "signedIn": "Connecté en tant que {email}. Des questions d'argent ? Consultez les <fees>frais</fees> et les <refunds>remboursements</refunds>.",
+    "form": {
+      "help": "Nous utilisons ces informations pour vous payer via Paystack. Une personne de G-ventZ examine chaque demande, généralement sous deux jours ouvrés.",
+      "legalName": "Nom légal ou raison sociale",
+      "phone": "Numéro de téléphone",
+      "country": "Pays dans lequel vous êtes payé",
+      "chooseCountry": "Choisissez un pays",
+      "countryOption": "{country} ({currency})",
+      "countryHint": "Vous vendez des billets payants uniquement dans la devise de ce pays.",
+      "document": "Pièce d'identité officielle ou immatriculation de l'entreprise",
+      "documentHint": "JPG, PNG ou PDF, 10 Mo maximum. Seule l'équipe G-ventZ peut le consulter.",
+      "sending": "Envoi...",
+      "send": "Envoyer la demande",
+      "changeNote": "Pour votre sécurité, vous confirmerez votre identité avec la connexion en deux étapes. Les ventes payantes sont suspendues jusqu'à ce que G-ventZ confirme le nouveau compte, et nous vous informons du changement par e-mail.",
+      "saving": "Enregistrement...",
+      "change": "Modifier les coordonnées de versement"
+    },
+    "bank": {
+      "bank": "Banque",
+      "chooseCountryFirst": "Choisissez d'abord un pays",
+      "loadingBanks": "Chargement des banques...",
+      "chooseBank": "Choisissez votre banque",
+      "accountNumber": "Numéro de compte",
+      "checking": "Vérification...",
+      "check": "Vérifier le compte",
+      "accountName": "Titulaire du compte : <b>{name}</b>",
+      "cantCheck": "Paystack ne peut pas vérifier le nom des titulaires de compte dans ce pays. Vérifiez attentivement la banque et le numéro : les versements sont envoyés exactement sur ce compte.",
+      "confirmNamed": "C'est le bon compte ({name})",
+      "confirm": "Ces coordonnées bancaires sont correctes"
+    },
+    "errors": {
+      "chooseCountry": "Choisissez d'abord un pays.",
+      "sessionEnded": "Votre session a expiré. Reconnectez-vous.",
+      "sessionEndedApply": "Votre session a expiré. Reconnectez-vous pour faire votre demande.",
+      "loadBanksFailed": "Nous n'avons pas pu charger les banques. Veuillez réessayer.",
+      "bankAndNumber": "Choisissez votre banque et saisissez le numéro de compte (chiffres uniquement).",
+      "checkFailed": "Nous n'avons pas pu vérifier ce compte. Veuillez réessayer.",
+      "uploadFailed": "Le document n'a pas été téléversé. Veuillez réessayer.",
+      "sendFailed": "Nous n'avons pas pu envoyer votre demande. Veuillez réessayer.",
+      "changeFailed": "Nous n'avons pas pu modifier vos coordonnées de versement. Veuillez réessayer."
+    },
+    "input": {
+      "legalName": "Saisissez votre nom légal ou votre raison sociale.",
+      "phone": "Saisissez un numéro de téléphone, par exemple +234 801 234 5678.",
+      "country": "Choisissez le pays dans lequel vous êtes payé.",
+      "bank": "Choisissez votre banque.",
+      "accountNumber": "Saisissez le numéro de compte : chiffres uniquement.",
+      "confirmAccount": "Confirmez que le nom du titulaire est correct.",
+      "documentMissing": "Ajoutez votre pièce d'identité officielle ou le document d'immatriculation de votre entreprise.",
+      "documentTooLarge": "Le document dépasse 10 Mo. Veuillez utiliser un fichier plus petit.",
+      "documentType": "Utilisez un fichier JPG, PNG ou PDF pour le document."
+    }
+  }
+}

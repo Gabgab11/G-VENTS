@@ -1,0 +1,111 @@
+{
+  "errorPage": {
+    "title": "Something went wrong",
+    "body": "We couldn't load this page. Please try again in a moment.",
+    "reference": "Reference: {digest}",
+    "retry": "Try again",
+    "home": "Go home"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "This page doesn't exist, or you don't have access to it. If someone sent you a link to an event, check it's complete.",
+    "discover": "Discover events",
+    "home": "Go home"
+  },
+  "loading": "Loading…",
+  "legalDoc": {
+    "effective": "Effective date: {date}",
+    "terms": "Terms",
+    "refunds": "Refunds",
+    "pricing": "Pricing",
+    "privacy": "Privacy"
+  },
+  "orderCard": {
+    "ticketsFor": "Tickets for {title}",
+    "tickets": "Tickets",
+    "timeLine": "{range} · {zone} time",
+    "ticketNumber": "{number} of {total}",
+    "checkedIn": "Checked in",
+    "openTicket": "Open ticket",
+    "status": {
+      "completed": { "title": "You're in", "body": "Each ticket has its own QR code. Forward a ticket to the guest it's for." },
+      "pendingApproval": { "title": "Request received", "body": "The host reviews each request. We'll email your tickets as soon as they decide." },
+      "waitlisted": { "title": "You're on the waiting list", "body": "The event is full right now. If places free up, the host can move your group in." },
+      "declined": { "title": "Not accepted this time", "body": "The host couldn't accept this request." },
+      "cancelled": { "title": "Cancelled", "body": "These tickets can no longer be used." },
+      "awaitingPayment": { "title": "Waiting for payment", "body": "Your tickets are held while you pay with Paystack." },
+      "expired": { "title": "Hold ran out", "body": "The payment wasn't completed in time, so these tickets went back on sale." },
+      "failed": { "title": "Payment failed", "body": "The payment didn't go through. Nothing was charged." },
+      "refunded": { "title": "Refunded", "body": "This order was refunded. The tickets no longer work." },
+      "partiallyRefunded": { "title": "Partly refunded", "body": "Some tickets were refunded; the others still work." },
+      "disputed": { "title": "Payment disputed", "body": "The payment is disputed with the bank. Your tickets still work for now." }
+    }
+  },
+  "sellReason": {
+    "paymentsOff": "Paid tickets aren't open on G-ventZ yet. Every ticket is free for now.",
+    "notApplied": "To sell paid tickets, tell us who gets paid and where.",
+    "notAppliedAction": "Apply to sell paid tickets",
+    "applicationSubmitted": "We're reviewing your application to sell paid tickets. We'll email you when it's decided.",
+    "applicationSubmittedAction": "See your application",
+    "applicationDeclined": "Your application to sell paid tickets wasn't approved. You can see why and apply again.",
+    "applicationDeclinedAction": "See why",
+    "approvalRevoked": "Your approval to sell paid tickets was withdrawn. Tickets already sold still work.",
+    "approvalRevokedAction": "See details",
+    "payoutAccountPending": "You're approved. We're setting up your payout account with Paystack; you can sell paid tickets once it's ready.",
+    "payoutAccountPendingAction": "See payout details",
+    "countryOff": "Paystack is paused for your payout country right now. Free tickets still work.",
+    "owesMoney": "You owe G-ventZ money from refunds or chargebacks, so you can't publish new paid events. Your existing events keep selling, which pays it back.",
+    "owesMoneyAction": "See what you owe",
+    "suspended": "Your account is suspended, so you can't sell paid tickets."
+  },
+  "fees": {
+    "hostAbsorbs": { "label": "I absorb the fees", "hint": "Guests pay the ticket price. G-ventZ's fee, VAT on it and Paystack's charge come out of what you receive." },
+    "guestPays": { "label": "Guests pay the fees", "hint": "Fees are added on top of the price, so you receive the full ticket price." }
+  },
+  "payment": {
+    "nonRefundable": "I understand tickets are non-refundable, except if the event is cancelled",
+    "organizer": "The organizer, not G-ventZ, is responsible for this event."
+  },
+  "refundStatus": {
+    "queued": "Refund queued",
+    "processing": "Refund processing",
+    "refunded": "Refunded",
+    "failed": "Refund failed"
+  },
+  "applicationStatus": {
+    "none": "Not applied",
+    "submitted": "In review",
+    "approved": "Approved",
+    "declined": "Declined",
+    "revoked": "Approval withdrawn",
+    "payoutPending": "Payout account pending"
+  },
+  "emailCode": {
+    "noAccount": "There's no account for this email yet.",
+    "rateLimited": "Too many codes were requested. Wait a minute, then try again.",
+    "captcha": "The robot check didn't pass. Try again, or continue with Google.",
+    "invalid": "Enter a valid email address.",
+    "sendFailed": "We couldn't send a code right now. Try again in a moment.",
+    "tooManyTries": "Too many tries. Wait a minute, then request a new code.",
+    "wrongCode": "That code is wrong or has expired. Try again or request a new one."
+  },
+  "mapsUrl": {
+    "hint": "Paste a Google Maps link (google.com/maps, maps.app.goo.gl or share.google)."
+  },
+  "categories": {
+    "music": "Music",
+    "conferences": "Conferences",
+    "tech": "Tech",
+    "faith": "Faith",
+    "arts": "Arts",
+    "food": "Food",
+    "sports": "Sports",
+    "business": "Business",
+    "nightlife": "Nightlife",
+    "education": "Education",
+    "community": "Community",
+    "charity": "Charity",
+    "family": "Family",
+    "other": "Other"
+  }
+}

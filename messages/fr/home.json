@@ -1,0 +1,62 @@
+{
+  "hero": {
+    "pill": "Créez des événements en quelques minutes",
+    "titleStart": "Toutes les fêtes,",
+    "titleHighlight": "au même endroit.",
+    "lede": "Owambe, outdooring, braai, sangeet ou un anniversaire un samedi. Créez votre événement, partagez un seul lien et laissez les invités s’inscrire où qu’ils soient.",
+    "createFirst": "Créez votre premier événement",
+    "browse": "Parcourir les événements",
+    "tiltPlay": "Inclinez pour jouer",
+    "tiltStop": "Arrêter l’inclinaison"
+  },
+  "cards": {
+    "owambe": "Lagos · samedi",
+    "engagement": "Enugu · décembre",
+    "birthday": "Lekki · 20 h",
+    "sendOff": "Abuja · vendredi",
+    "naming": "Ibadan · dimanche"
+  },
+  "soon": {
+    "title": "Bientôt",
+    "seeAll": "Voir tous les événements",
+    "empty": "Aucun événement public pour l’instant. <link>Soyez le premier à en créer un.</link>"
+  },
+  "closing": {
+    "titleStart": "Vos invités vous",
+    "titleHighlight": "attendent déjà.",
+    "discover": "Découvrir les événements",
+    "create": "Créer un événement gratuitement"
+  },
+  "footer": {
+    "tagline": "Les belles rencontres commencent ici. Créez un événement, partagez un seul lien et rassemblez tout le monde.",
+    "discover": {
+      "title": "Découvrir",
+      "allEvents": "Tous les événements",
+      "pricing": "Tarifs",
+      "createEvent": "Créer un événement"
+    },
+    "hosts": {
+      "title": "Pour les organisateurs",
+      "host": "Organiser un événement",
+      "help": "Centre d’aide",
+      "refunds": "Remboursements"
+    },
+    "company": {
+      "title": "Entreprise",
+      "about": "À propos de G-ventZ",
+      "contact": "Contact"
+    },
+    "contact": {
+      "title": "Contact",
+      "support": "Assistance",
+      "visitHelp": "Visiter le centre d’aide",
+      "forHosts": "Pour les organisateurs d’événements",
+      "getStarted": "Commencer"
+    },
+    "legal": {
+      "label": "Mentions légales",
+      "terms": "Conditions",
+      "privacy": "Confidentialité"
+    }
+  }
+}

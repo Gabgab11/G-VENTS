@@ -49,9 +49,36 @@ export function sendFailure(error: AuthFailure, mode: AuthMode): Exclude<SendCod
   return { ok: false, reason: "failed", message: "We couldn't send a code right now. Try again in a moment." };
 }
 
+const verifyRateLimited = (error: AuthFailure) => error.code === "over_request_rate_limit" || error.status === 429;
+
 export function verifyFailure(error: AuthFailure): Exclude<VerifyCodeResult, { ok: true }> {
-  if (error.code === "over_request_rate_limit" || error.status === 429) {
+  if (verifyRateLimited(error)) {
     return { ok: false, message: "Too many tries. Wait a minute, then request a new code." };
   }
   return { ok: false, message: "That code is wrong or has expired. Try again or request a new one." };
+}
+
+// Message ids for the sign-in errors above (Change 3), so pages can show them in the reader's
+// language. The English `message` fields stay as they are.
+const SEND_FAILURE_IDS: Record<Exclude<SendCodeResult, { ok: true }>["reason"], string> = {
+  no_account: "shared.emailCode.noAccount",
+  rate_limited: "shared.emailCode.rateLimited",
+  captcha: "shared.emailCode.captcha",
+  invalid: "shared.emailCode.invalid",
+  failed: "shared.emailCode.sendFailed",
+};
+
+/** Id for sendFailure(error, mode).message; a page calls t(key) with useTranslations()/getTranslations() at the root (no namespace). */
+export function sendFailureKey(error: AuthFailure, mode: AuthMode): string {
+  return SEND_FAILURE_IDS[sendFailure(error, mode).reason];
+}
+
+/** Id for a SendCodeResult reason; a page calls t(key) with useTranslations()/getTranslations() at the root (no namespace). */
+export function sendFailureReasonKey(reason: Exclude<SendCodeResult, { ok: true }>["reason"]): string {
+  return SEND_FAILURE_IDS[reason];
+}
+
+/** Id for verifyFailure(error).message; a page calls t(key) with useTranslations()/getTranslations() at the root (no namespace). */
+export function verifyFailureKey(error: AuthFailure): string {
+  return verifyRateLimited(error) ? "shared.emailCode.tooManyTries" : "shared.emailCode.wrongCode";
 }

@@ -26,3 +26,8 @@ export const CATEGORY_COLORS: Record<Category, string> = {
 export function isCategory(value: unknown): value is Category {
   return typeof value === "string" && (CATEGORIES as readonly string[]).includes(value);
 }
+
+/** Id for a category's label (English label = the value); a page calls t(key) with useTranslations()/getTranslations() at the root (no namespace). */
+export function categoryLabelKey(category: Category): string {
+  return `shared.categories.${category.toLowerCase()}`;
+}

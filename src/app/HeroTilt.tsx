@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import { acceleration, clamp, isMoving, step, type Body, type Tilt } from "@/lib/tilt-physics";
 
@@ -48,6 +49,7 @@ const needsPermission = () =>
   typeof (DeviceOrientationEvent as unknown as { requestPermission?: unknown }).requestPermission === "function";
 
 export default function HeroTilt() {
+  const t = useTranslations("home.hero");
   const [mode, setMode] = useState<Mode>("off");
   const anchor = useRef<HTMLSpanElement>(null);
   const tilt = useRef<Tilt | null>(null);
@@ -224,10 +226,10 @@ export default function HeroTilt() {
   return (
     <span ref={anchor} className="hp-tilt">
       {mode === "ask" && (
-        <button type="button" className="hp-tilt-btn" onClick={play}>Tilt to play <span aria-hidden="true">✨</span></button>
+        <button type="button" className="hp-tilt-btn" onClick={play}>{t("tiltPlay")} <span aria-hidden="true">{"✨"}</span></button>
       )}
       {mode === "on" && (
-        <button type="button" className="hp-tilt-btn" onClick={stop}>Stop tilting</button>
+        <button type="button" className="hp-tilt-btn" onClick={stop}>{t("tiltStop")}</button>
       )}
     </span>
   );

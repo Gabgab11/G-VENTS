@@ -1,0 +1,98 @@
+{
+  "page": {
+    "notices": {
+      "draft": "Rascunho. Só você e sua equipe podem ver esta página.",
+      "cancelled": "Este evento foi cancelado.",
+      "canManage": "Você pode editar este evento. <link>Gerenciar evento</link>"
+    },
+    "coverAlt": "Cartaz de {title}",
+    "hostedBy": "Organizado por",
+    "going": "{count, plural, one {{count, number, ::group-off} pessoa vai} other {{count, number, ::group-off} pessoas vão}}",
+    "privateEvent": "Evento privado",
+    "timeLine": "{range} · horário de {zone}",
+    "place": {
+      "venue": "Local",
+      "online": "On-line",
+      "onlineLine": "O anfitrião compartilha o link com os convidados"
+    },
+    "about": "Sobre",
+    "location": "Localização",
+    "directions": "Como chegar ↗",
+    "refunds": "Reembolsos"
+  },
+  "tickets": {
+    "headManage": "Seus ingressos à venda",
+    "headGet": "Garantir ingressos",
+    "head": "Ingressos",
+    "cancelled": "Este evento foi cancelado, então os ingressos não estão mais disponíveis.",
+    "closed": "As inscrições para este evento estão encerradas.",
+    "notOnSale": "Os ingressos para este evento ainda não estão à venda. Volte em breve.",
+    "paidUnavailable": "Não é possível comprar ingressos pagos agora. Volte em breve.",
+    "separateOrders": "Ingressos gratuitos e pagos são pedidos separados. Garanta um tipo e depois volte para o outro.",
+    "freeTitle": "Ingressos gratuitos",
+    "paidTitle": "Ingressos pagos",
+    "approvalNote": "O anfitrião aprova cada pedido antes de emitir os ingressos."
+  },
+  "host": {
+    "free": "Grátis",
+    "taken": "{sold} reservados",
+    "takenOf": "{sold} reservados de {quantity}",
+    "note": "Os convidados veem o formulário de ingressos aqui. Você está gerenciando este evento, então não precisa de ingresso.",
+    "seeGuests": "Ver convidados",
+    "manage": "Gerenciar evento"
+  },
+  "signUp": {
+    "welcome": "Boas-vindas! Crie uma conta gratuita ou entre para garantir seus ingressos. Leva poucos segundos com o Google ou um código de 6 dígitos por e-mail.",
+    "cta": "Garantir ingressos",
+    "haveAccount": "Já tem uma conta? <link>Entrar</link>"
+  },
+  "guest": {
+    "name": "Seu nome completo",
+    "email": "E-mail",
+    "emailNote": "Todos os seus ingressos são enviados para o e-mail da sua conta.",
+    "othersLegend": "Nomes para os outros ingressos (opcional; você pode encaminhar cada ingresso)",
+    "ticketNumber": "Ingresso {number}",
+    "namePlaceholder": "Nome do convidado",
+    "choose": "Escolher",
+    "socialPlaceholder": "@usuário ou link do perfil"
+  },
+  "order": {
+    "legend": "Ingressos",
+    "soldOut": "Esgotado",
+    "free": "Grátis",
+    "howMany": "Quantos ingressos {name}",
+    "limit": "Até {count, plural, one {{count, number, ::group-off} ingresso} other {{count, number, ::group-off} ingressos}} por pessoa.",
+    "pending": "Garantindo seus ingressos...",
+    "request": "{count, plural, one {Solicitar um ingresso} other {Solicitar {count, number, ::group-off} ingressos}}",
+    "get": "{count, plural, one {Garantir ingresso} other {Garantir {count, number, ::group-off} ingressos}}"
+  },
+  "paid": {
+    "legend": "Ingressos pagos",
+    "soldOutWaitlist": "Esgotado · lista de espera",
+    "serviceFee": "Taxa de serviço",
+    "includesVat": "(inclui imposto {amount})",
+    "total": "Total",
+    "feesIncluded": "As taxas estão incluídas no preço.",
+    "subtotal": "Ingressos",
+    "workingFee": "Calculando a taxa de serviço...",
+    "workingTotal": "Calculando o total...",
+    "waitlistNote": "Esse ingresso está esgotado. Entre na lista de espera e avisaremos por e-mail se uma vaga abrir; você terá então 24 horas para pagar.",
+    "refundPolicy": "Política de reembolso:",
+    "joining": "Entrando...",
+    "opening": "Abrindo o Paystack...",
+    "join": "Entrar na lista de espera",
+    "pay": "Pagar com Paystack",
+    "payTotal": "Pagar com Paystack · {total}",
+    "payNote": "Você vai pagar na página segura do Paystack. Seus ingressos ficam reservados por 10 minutos."
+  },
+  "errors": {
+    "eventNotFound": "Não foi possível encontrar este evento.",
+    "sessionEnded": "Sua sessão terminou. Entre novamente para garantir ingressos.",
+    "orderFailed": "Não conseguimos garantir seus ingressos. Tente novamente.",
+    "quoteFailed": "Não conseguimos calcular o total. Tente novamente.",
+    "paymentFailed": "Não conseguimos iniciar seu pagamento. Tente novamente.",
+    "chooseTicket": "Escolha pelo menos um ingresso.",
+    "ticketRange": "Escolha entre 1 e 10 ingressos.",
+    "nonRefundable": "Marque \"{text}\" para continuar."
+  }
+}

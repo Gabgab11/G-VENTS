@@ -1,0 +1,159 @@
+{
+  "security": {
+    "metaTitle": "Two-step sign-in · G-ventZ",
+    "title": "Two-step sign-in",
+    "intro": "A second check after your email code, for sensitive areas. Required for G-ventZ staff and recommended for hosts. Use a <b>passkey</b> (your fingerprint, face or device PIN) or an <b>authenticator app</b>.",
+    "done": "Two-step sign-in is on and this session is confirmed.",
+    "removed": "Removed.",
+    "removeFailed": "That couldn't be removed. Confirm it's you first, then try again.",
+    "passkeyTitle": "Passkey (recommended)",
+    "passkeyHint": "Confirm with Touch ID, Face ID, Windows Hello, your phone or a security key. Nothing to type.",
+    "appTitle": "Authenticator app",
+    "confirmTitle": "Confirm it's you",
+    "confirmHint": "Use one of your methods.",
+    "confirmHintContinue": "Use one of your methods to continue.",
+    "orCode": "Or enter the code from your authenticator app:",
+    "methodsTitle": "Your methods",
+    "passkeyName": "Passkey",
+    "passkeyAdded": "· passkey · added {date}",
+    "appName": "Authenticator app",
+    "appAdded": "· added {date}",
+    "remove": "Remove",
+    "removeLabel": "Remove {label}",
+    "removeLabelPasskey": "passkey",
+    "removeLabelApp": "authenticator app",
+    "methodsNote": "This session is confirmed. Keep at least two methods (for example a passkey and the app) so losing one device doesn't lock you out.",
+    "addPasskeyTitle": "Add a passkey",
+    "addAppTitle": "Add an authenticator app"
+  },
+  "mfa": {
+    "codeLabel": "6-digit code",
+    "preparing": "Preparing…",
+    "setUp": "Set up an authenticator app",
+    "step1": "Open an authenticator app (Google Authenticator, Microsoft Authenticator, 1Password, Authy…).",
+    "step2": "Scan this QR code, or type the key below.",
+    "step3": "Enter the 6-digit code the app shows.",
+    "qrAlt": "QR code for your authenticator app",
+    "key": "Key: <code>{secret}</code>",
+    "checking": "Checking…",
+    "turnOn": "Turn on two-step sign-in",
+    "continue": "Continue",
+    "errors": {
+      "generic": "That didn't work. Please try again.",
+      "setupFailed": "Two-step sign-in couldn't be set up right now. Please try again.",
+      "enterCode": "Enter the 6-digit code from your authenticator app.",
+      "wrongCode": "That code isn't right, or it expired. Try the current one.",
+      "setUpFirst": "Set up an authenticator app first."
+    }
+  },
+  "passkey": {
+    "nameLabel": "Name this passkey (optional)",
+    "waiting": "Waiting for your device…",
+    "add": "Add a passkey",
+    "use": "Use passkey",
+    "useNamed": "Use passkey: {name}",
+    "unsupported": "This browser doesn't support passkeys. Use the authenticator app instead.",
+    "defaultName": "Passkey",
+    "deviceName": "{device} passkey",
+    "errors": {
+      "notCreated": "No passkey was created.",
+      "addCancelled": "Cancelled. Nothing was added.",
+      "createFailed": "This device couldn't create a passkey. Try another device or the authenticator app.",
+      "notUsed": "No passkey was used.",
+      "useCancelled": "Cancelled.",
+      "useFailed": "That passkey couldn't be used on this device.",
+      "generic": "That didn't work. Please try again.",
+      "disabled": "Passkeys aren't switched on for this site yet.",
+      "notConfirmed": "That passkey couldn't be confirmed. Please try again."
+    }
+  },
+  "payouts": {
+    "metaTitle": "Get paid · G-ventZ",
+    "title": "Get paid",
+    "intro": "Sell paid tickets on G-ventZ. Guests pay with Paystack and your share goes straight to your bank account.",
+    "ok": {
+      "submitted": "Application sent. We'll email you when it's decided.",
+      "payoutChanged": "Payout details changed. Paid sales pause until G-ventZ confirms the new account; we've emailed you."
+    },
+    "loadFailed": "We couldn't load your payout details. Please refresh the page.",
+    "status": {
+      "title": "Paid tickets",
+      "canSell": "You can sell paid tickets",
+      "decisionReason": "<b>Reason from G-ventZ:</b> {reason}",
+      "name": "Name",
+      "country": "Country",
+      "countryValue": "{country} · sells in {currency}",
+      "applied": "Applied",
+      "decided": "Decided",
+      "owed": "You owe G-ventZ {amounts}",
+      "owedJoin": "{first} and {second}",
+      "owedNote": "This is your share of refunded tickets or lost chargebacks. It's taken from your next paid sales automatically. Until it's paid back you can't publish new paid events; your existing events keep selling."
+    },
+    "account": {
+      "title": "Payout account",
+      "active": "Active",
+      "pending": "Being set up",
+      "replaced": "Replaced",
+      "line": "{bank} · ending {last4}",
+      "pendingNote": "G-ventZ is setting this account up with Paystack. You can sell paid tickets once it's active.",
+      "change": "Change payout details"
+    },
+    "apply": {
+      "title": "Apply to sell paid tickets",
+      "again": "Apply again",
+      "closed": "Paid tickets aren't open on G-ventZ yet. Every ticket is free for now; check back soon."
+    },
+    "signedIn": "Signed in as {email}. Money questions? See <fees>fees</fees> and <refunds>refunds</refunds>.",
+    "form": {
+      "help": "We use these details to pay you through Paystack. A person at G-ventZ checks each application, usually within two working days.",
+      "legalName": "Legal or business name",
+      "phone": "Phone number",
+      "country": "Country you get paid in",
+      "chooseCountry": "Choose a country",
+      "countryOption": "{country} ({currency})",
+      "countryHint": "You sell paid tickets in this country's currency only.",
+      "document": "Government ID or business registration",
+      "documentHint": "JPG, PNG or PDF, up to 10 MB. Only G-ventZ staff can see it.",
+      "sending": "Sending...",
+      "send": "Send application",
+      "changeNote": "For your safety you'll confirm it's you with two-step sign-in. Paid sales pause until G-ventZ confirms the new account, and we email you about the change.",
+      "saving": "Saving...",
+      "change": "Change payout details"
+    },
+    "bank": {
+      "bank": "Bank",
+      "chooseCountryFirst": "Choose a country first",
+      "loadingBanks": "Loading banks...",
+      "chooseBank": "Choose your bank",
+      "accountNumber": "Account number",
+      "checking": "Checking...",
+      "check": "Check account",
+      "accountName": "Account name: <b>{name}</b>",
+      "cantCheck": "Paystack can't check account names in this country. Check the bank and number carefully: payouts go to exactly this account.",
+      "confirmNamed": "This is the right account ({name})",
+      "confirm": "These bank details are right"
+    },
+    "errors": {
+      "chooseCountry": "Choose a country first.",
+      "sessionEnded": "Your session has ended. Sign in again.",
+      "sessionEndedApply": "Your session has ended. Sign in again to apply.",
+      "loadBanksFailed": "We couldn't load the banks. Please try again.",
+      "bankAndNumber": "Choose your bank and enter the account number (digits only).",
+      "checkFailed": "We couldn't check this account. Please try again.",
+      "uploadFailed": "The document didn't upload. Please try again.",
+      "sendFailed": "We couldn't send your application. Please try again.",
+      "changeFailed": "We couldn't change your payout details. Please try again."
+    },
+    "input": {
+      "legalName": "Enter your legal or business name.",
+      "phone": "Enter a phone number, like +234 801 234 5678.",
+      "country": "Choose the country you get paid in.",
+      "bank": "Choose your bank.",
+      "accountNumber": "Enter the account number: digits only.",
+      "confirmAccount": "Confirm the account name is right.",
+      "documentMissing": "Add your government ID or business registration document.",
+      "documentTooLarge": "The document is larger than 10 MB. Please use a smaller file.",
+      "documentType": "Use a JPG, PNG or PDF file for the document."
+    }
+  }
+}

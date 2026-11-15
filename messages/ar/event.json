@@ -1,0 +1,98 @@
+{
+  "page": {
+    "notices": {
+      "draft": "مسودة. لا يرى هذه الصفحة سواك أنت وفريقك.",
+      "cancelled": "أُلغيت هذه الفعالية.",
+      "canManage": "يمكنك تعديل هذه الفعالية. <link>إدارة الفعالية</link>"
+    },
+    "coverAlt": "ملصق {title}",
+    "hostedBy": "يستضيفها",
+    "going": "{count, plural, zero {لا أحد سيحضر} one {شخص واحد سيحضر} two {شخصان سيحضران} few {{count, number, ::group-off} أشخاص سيحضرون} many {{count, number, ::group-off} شخصًا سيحضرون} other {{count, number, ::group-off} شخص سيحضرون}}",
+    "privateEvent": "فعالية خاصة",
+    "timeLine": "{range} · بتوقيت {zone}",
+    "place": {
+      "venue": "المكان",
+      "online": "عبر الإنترنت",
+      "onlineLine": "يشارك المضيف الرابط مع الضيوف"
+    },
+    "about": "نبذة",
+    "location": "الموقع",
+    "directions": "الاتجاهات ↖",
+    "refunds": "استرداد الأموال"
+  },
+  "tickets": {
+    "headManage": "تذاكرك المعروضة للبيع",
+    "headGet": "احصل على التذاكر",
+    "head": "التذاكر",
+    "cancelled": "أُلغيت هذه الفعالية، لذا لم تعد التذاكر متاحة.",
+    "closed": "التسجيل في هذه الفعالية مغلق.",
+    "notOnSale": "تذاكر هذه الفعالية غير معروضة للبيع بعد. عُد قريبًا.",
+    "paidUnavailable": "لا يمكن شراء التذاكر المدفوعة الآن. عُد قريبًا.",
+    "separateOrders": "التذاكر المجانية والمدفوعة طلبات منفصلة. احصل على نوع واحد، ثم عُد للنوع الآخر.",
+    "freeTitle": "تذاكر مجانية",
+    "paidTitle": "تذاكر مدفوعة",
+    "approvalNote": "يوافق المضيف على كل طلب قبل إصدار التذاكر."
+  },
+  "host": {
+    "free": "مجانية",
+    "taken": "{sold} محجوزة",
+    "takenOf": "{sold} محجوزة من {quantity}",
+    "note": "يرى الضيوف نموذج التذاكر هنا. أنت تدير هذه الفعالية، لذا لا تحتاج إلى تذكرة.",
+    "seeGuests": "عرض الضيوف",
+    "manage": "إدارة الفعالية"
+  },
+  "signUp": {
+    "welcome": "أهلًا بك! أنشئ حسابًا مجانيًا أو سجّل الدخول للحصول على تذاكرك. يستغرق ذلك ثوانيَ معدودة باستخدام Google أو رمز من 6 أرقام عبر البريد الإلكتروني.",
+    "cta": "احصل على التذاكر",
+    "haveAccount": "لديك حساب بالفعل؟ <link>تسجيل الدخول</link>"
+  },
+  "guest": {
+    "name": "اسمك الكامل",
+    "email": "البريد الإلكتروني",
+    "emailNote": "تُرسَل جميع تذاكرك إلى البريد الإلكتروني لحسابك.",
+    "othersLegend": "أسماء للتذاكر الأخرى (اختياري؛ يمكنك إعادة توجيه كل تذكرة)",
+    "ticketNumber": "التذكرة {number}",
+    "namePlaceholder": "اسم الضيف",
+    "choose": "اختر",
+    "socialPlaceholder": "@اسم المستخدم أو رابط الملف الشخصي"
+  },
+  "order": {
+    "legend": "التذاكر",
+    "soldOut": "نفدت",
+    "free": "مجانية",
+    "howMany": "عدد تذاكر {name}",
+    "limit": "{count, plural, zero {لا تذاكر للشخص الواحد.} one {تذكرة واحدة كحد أقصى للشخص الواحد.} two {تذكرتان كحد أقصى للشخص الواحد.} few {حتى {count, number, ::group-off} تذاكر للشخص الواحد.} many {حتى {count, number, ::group-off} تذكرة للشخص الواحد.} other {حتى {count, number, ::group-off} تذكرة للشخص الواحد.}}",
+    "pending": "جارٍ الحصول على تذاكرك...",
+    "request": "{count, plural, zero {اطلب التذاكر} one {اطلب تذكرة} two {اطلب تذكرتين} few {اطلب {count, number, ::group-off} تذاكر} many {اطلب {count, number, ::group-off} تذكرة} other {اطلب {count, number, ::group-off} تذكرة}}",
+    "get": "{count, plural, zero {احصل على التذاكر} one {احصل على التذكرة} two {احصل على تذكرتين} few {احصل على {count, number, ::group-off} تذاكر} many {احصل على {count, number, ::group-off} تذكرة} other {احصل على {count, number, ::group-off} تذكرة}}"
+  },
+  "paid": {
+    "legend": "تذاكر مدفوعة",
+    "soldOutWaitlist": "نفدت · قائمة الانتظار",
+    "serviceFee": "رسوم الخدمة",
+    "includesVat": "(تشمل ضريبة القيمة المضافة {amount})",
+    "total": "الإجمالي",
+    "feesIncluded": "الرسوم مشمولة في السعر.",
+    "subtotal": "التذاكر",
+    "workingFee": "جارٍ حساب رسوم الخدمة...",
+    "workingTotal": "جارٍ حساب الإجمالي...",
+    "waitlistNote": "نفدت هذه التذكرة. انضم إلى قائمة الانتظار وسنراسلك إذا توفر مكان؛ وسيكون لديك حينها 24 ساعة للدفع.",
+    "refundPolicy": "سياسة الاسترداد:",
+    "joining": "جارٍ الانضمام...",
+    "opening": "جارٍ فتح Paystack...",
+    "join": "انضم إلى قائمة الانتظار",
+    "pay": "ادفع عبر Paystack",
+    "payTotal": "ادفع عبر Paystack · {total}",
+    "payNote": "ستدفع على صفحة Paystack الآمنة. تُحجز تذاكرك لمدة 10 دقائق."
+  },
+  "errors": {
+    "eventNotFound": "تعذّر العثور على هذه الفعالية.",
+    "sessionEnded": "انتهت جلستك. سجّل الدخول مجددًا للحصول على التذاكر.",
+    "orderFailed": "تعذّر علينا الحصول على تذاكرك. يُرجى المحاولة مرة أخرى.",
+    "quoteFailed": "تعذّر علينا حساب الإجمالي. يُرجى المحاولة مرة أخرى.",
+    "paymentFailed": "تعذّر علينا بدء عملية الدفع. يُرجى المحاولة مرة أخرى.",
+    "chooseTicket": "اختر تذكرة واحدة على الأقل.",
+    "ticketRange": "اختر من 1 إلى 10 تذاكر.",
+    "nonRefundable": "ضع علامة على «{text}» للمتابعة."
+  }
+}

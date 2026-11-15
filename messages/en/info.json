@@ -1,0 +1,108 @@
+{
+  "pricing": {
+    "meta": {
+      "title": "Pricing · G-ventZ"
+    },
+    "hero": {
+      "eyebrow": "Pricing",
+      "title": "Simple pricing that grows with your events",
+      "text": "Create events for free. You only pay a platform fee when you sell paid tickets."
+    },
+    "currency": {
+      "choose": "Choose currency",
+      "usd": "USD",
+      "ngn": "Naira",
+      "gbp": "GBP",
+      "eur": "EUR",
+      "ghs": "Cedi",
+      "kes": "Shilling",
+      "zar": "Rand"
+    },
+    "plan": {
+      "starter": "For organizers getting started with free events.",
+      "pro": "For regular organizers running events every month.",
+      "business": "For organizations running large or multiple events.",
+      "popular": "Most popular",
+      "perMonth": "/ month",
+      "fee": "Platform fee on paid tickets: {fee}%",
+      "signUpFree": "Sign up free",
+      "comingSoon": "Coming soon"
+    },
+    "features": {
+      "unlimitedEvents": "Unlimited event creation",
+      "freeTickets": "Free ticket sales",
+      "promoCodes": "Promo codes",
+      "qrCheckIn": "QR code tickets and guest check-in",
+      "basicAnalytics": "Basic analytics and email reminders",
+      "standardPages": "Standard event pages",
+      "teamOne": "1 team member",
+      "everythingStarter": "Everything in Starter",
+      "advancedAnalytics": "Advanced analytics",
+      "advancedReminders": "Advanced email reminders",
+      "customizablePages": "Customizable event pages",
+      "teamFive": "5 team members",
+      "prioritySupport": "Priority support",
+      "optionalDomain": "Optional custom domain",
+      "everythingPro": "Everything in Pro",
+      "brandedPages": "Fully branded event pages",
+      "teamFifteen": "15 team members",
+      "customDomain": "Custom domain",
+      "apiAccess": "API access"
+    },
+    "example": {
+      "title": "What fees look like",
+      "text": "Example: an organizer sells {quantity} tickets at {price} each.",
+      "sales": "Ticket sales",
+      "starter": "Starter fee (3%)",
+      "pro": "Pro fee (1.5%) + monthly price",
+      "business": "Business fee (0.5%) + monthly price",
+      "note": "Payment provider charges are separate and apply on every plan."
+    },
+    "compare": {
+      "title": "Compare all features",
+      "feature": "Feature",
+      "monthlyPrice": "Monthly price",
+      "features": {
+        "eventCreation": "Event creation",
+        "freeTickets": "Free ticket sales",
+        "platformFee": "Platform fee on paid tickets",
+        "analytics": "Event analytics",
+        "promoCodes": "Promo codes",
+        "customPages": "Custom event pages",
+        "attendeeManagement": "Attendee management",
+        "qrTickets": "QR code tickets",
+        "checkIn": "Guest check-in",
+        "emailReminders": "Email reminders",
+        "teamMembers": "Team members",
+        "exportData": "Export attendee data",
+        "prioritySupport": "Priority support",
+        "customDomain": "Custom domain",
+        "apiAccess": "API access"
+      },
+      "values": {
+        "unlimited": "Unlimited",
+        "free": "Free",
+        "basic": "Basic",
+        "advanced": "Advanced",
+        "yes": "Yes",
+        "no": "No",
+        "standard": "Standard",
+        "customizable": "Customizable",
+        "fullyBranded": "Fully branded",
+        "optional": "Optional"
+      }
+    },
+    "links": {
+      "terms": "Terms",
+      "refunds": "Refunds",
+      "privacy": "Privacy"
+    }
+  },
+  "help": {
+    "meta": {
+      "title": "Help · G-ventZ"
+    },
+    "title": "Help",
+    "text": "Guests: contact the organiser of the event you registered for. Organisers: manage your events from your dashboard."
+  }
+}

@@ -1,0 +1,190 @@
+{
+  "ticket": {
+    "meta": {
+      "title": "Votre billet · G-ventZ"
+    },
+    "status": {
+      "eventCancelled": {
+        "title": "Cet événement a été annulé",
+        "body": "L'hôte a annulé cet événement, ce billet ne peut donc pas être utilisé."
+      },
+      "pending": {
+        "title": "En attente de l'hôte",
+        "body": "L'hôte approuve chaque invité. Votre code QR apparaîtra ici une fois votre place confirmée."
+      },
+      "waitlisted": {
+        "title": "Vous êtes sur la liste d'attente",
+        "body": "L'événement est complet pour le moment. Si une place se libère, cette page deviendra votre billet."
+      },
+      "declined": {
+        "title": "L'hôte n'a pas pu accepter cette demande",
+        "body": "Ce billet ne permet pas d'entrer à l'événement."
+      },
+      "cancelled": {
+        "title": "Ce billet a été annulé",
+        "body": "Il ne permet plus d'entrer à l'événement."
+      },
+      "refunded": {
+        "title": "Ce billet a été remboursé",
+        "body": "Il ne permet plus d'entrer à l'événement."
+      }
+    },
+    "checkIn": {
+      "checkedIn": {
+        "title": "Enregistré",
+        "body": "Cet invité est entré. Bon événement !"
+      },
+      "alreadyUsed": {
+        "title": "Déjà enregistré",
+        "body": "Ne laissez pas entrer ce billet deux fois."
+      },
+      "notConfirmed": {
+        "title": "Pas encore confirmé",
+        "body": "L'hôte n'a pas approuvé ce billet."
+      },
+      "waitlisted": {
+        "title": "Sur liste d'attente",
+        "body": "Ce billet n'a pas encore de place."
+      },
+      "cancelled": {
+        "title": "Non valable",
+        "body": "Ce billet a été annulé."
+      },
+      "refunded": {
+        "title": "Non valable",
+        "body": "Ce billet a été remboursé."
+      },
+      "failed": {
+        "title": "Enregistrement impossible",
+        "body": "Actualisez la page et réessayez."
+      }
+    },
+    "ticketFor": "Billet pour {title}",
+    "admitOne": "Entrée pour une personne",
+    "date": "Date",
+    "time": "Heure",
+    "ticket": "Billet",
+    "free": "Gratuit",
+    "ofTotal": "{number} sur {total}",
+    "where": "Lieu",
+    "guest": "Invité",
+    "notValid": "Non valable",
+    "noQr": "Pas encore de code QR",
+    "hintValid": "Présentez ce code à l'entrée. Une version imprimée fonctionne aussi.",
+    "hintPending": "Gardez ce lien. Il se met à jour si votre billet change.",
+    "stamp": "Enregistré",
+    "stampAt": "à {time}",
+    "eventPage": "Page de l'événement",
+    "staff": {
+      "label": "Enregistrement à l'entrée",
+      "already": "<b>Déjà enregistré</b> à {time}. Ne laissez pas entrer ce billet deux fois.",
+      "intro": "<b>Vous faites partie de l'équipe de cet événement.</b> Enregistrez cet invité à l'entrée.",
+      "button": "Enregistrer {name}"
+    },
+    "foot": "Ce billet appartient à {name}. Toute personne disposant de ce lien peut le voir : ne le partagez qu'avec des personnes de confiance.",
+    "print": "Imprimer ou enregistrer en PDF"
+  },
+  "email": {
+    "label": "M'envoyer mon billet par e-mail",
+    "intro": "<b>Recevez votre billet par e-mail</b> Nous l'enverrons à {email}, l'adresse avec laquelle vous vous êtes inscrit.",
+    "sent": "Votre billet est en route. Vérifiez votre boîte de réception et vos spams d'ici une minute.",
+    "failed": "Nous n'avons pas pu envoyer l'e-mail. Veuillez réessayer.",
+    "confirmFirst": "Cochez d'abord la case pour confirmer votre adresse e-mail.",
+    "limit": "Ce billet a déjà été envoyé plusieurs fois cette heure-ci. Veuillez réessayer plus tard.",
+    "unavailable": "L'envoi par e-mail n'est pas disponible pour ce billet pour le moment.",
+    "lastFailed": "Votre dernier e-mail n'a pas été distribué.",
+    "confirm": "C'est bien mon adresse e-mail",
+    "tryAgain": "Réessayer",
+    "send": "M'envoyer mon billet par e-mail"
+  },
+  "whatsapp": {
+    "label": "Envoyer le billet sur WhatsApp",
+    "intro": "<b>Recevez votre billet sur WhatsApp</b> Saisissez votre numéro WhatsApp, puis envoyez le message qui s'ouvre.",
+    "numberLabel": "Votre numéro WhatsApp",
+    "open": "Ouvrir WhatsApp",
+    "invalid": "Saisissez votre numéro WhatsApp avec l'indicatif du pays, par exemple +234 801 234 5678.",
+    "unavailable": "L'envoi par WhatsApp n'est pas disponible pour le moment. Utilisez plutôt le lien du billet.",
+    "message": "Bonjour G-ventZ, merci de m'envoyer mon billet pour {title}.\nCode du billet : {code}\nLien du billet : {url}"
+  },
+  "order": {
+    "meta": {
+      "title": "Vos billets · G-ventZ"
+    },
+    "headingIn": "C'est confirmé",
+    "headingOrder": "Votre commande",
+    "headingTickets": "Vos billets",
+    "footCompleted": "Nous avons aussi envoyé vos billets à l'adresse e-mail de votre compte. Tous vos billets sont dans <link>Mes billets</link>.",
+    "foot": "Tous vos billets sont dans <link>Mes billets</link>."
+  },
+  "payment": {
+    "status": {
+      "awaitingPayment": {
+        "title": "En attente de votre paiement",
+        "body": "Si vous venez de payer, cette page se met à jour d'elle-même dans quelques secondes. Ne payez pas deux fois."
+      },
+      "completed": {
+        "title": "Payé",
+        "body": "Votre paiement a été accepté et vos billets sont ci-dessous. Nous vous les avons envoyés par e-mail avec votre reçu."
+      },
+      "expired": {
+        "title": "Votre réservation a expiré",
+        "body": "Nous n'avons pas reçu votre paiement dans les 10 minutes, les billets ont donc été remis en vente. Si de l'argent a été débité, il vous est rendu automatiquement."
+      },
+      "failed": {
+        "title": "Le paiement n'a pas abouti",
+        "body": "Paystack n'a pas pu effectuer le paiement. Rien n'a été débité."
+      },
+      "refunded": {
+        "title": "Remboursé",
+        "body": "Cette commande a été remboursée. Les billets ne sont plus valables."
+      },
+      "partiallyRefunded": {
+        "title": "Partiellement remboursé",
+        "body": "Certains billets de cette commande ont été remboursés ; les autres restent valables."
+      },
+      "disputed": {
+        "title": "Paiement contesté",
+        "body": "Votre banque nous a indiqué que ce paiement est contesté. Vos billets restent valables pendant l'examen."
+      },
+      "waitlisted": {
+        "title": "Vous êtes sur la liste d'attente",
+        "body": "Nous vous écrirons si une place se libère. Vous aurez alors 24 heures pour payer."
+      }
+    },
+    "offerTitle": "Une place vous attend",
+    "offerBody": "Payez avant le {time} pour obtenir vos billets ; ensuite, la place passe à la personne suivante.",
+    "reference": "Référence du paiement",
+    "tryAgain": "Réessayer avec Paystack",
+    "pay": "Payer avec Paystack",
+    "payTotal": "Payer avec Paystack · {total}",
+    "startAgain": "Recommencer",
+    "serviceFee": "Frais de service",
+    "includesVat": "(dont TVA {amount})",
+    "total": "Total",
+    "paid": "Payé",
+    "paidAt": "Payé le {time}",
+    "refunds": "Remboursements",
+    "refundLine": "{amount} · {count, plural, one {{count, number, ::group-off} billet} other {{count, number, ::group-off} billets}}",
+    "refundCancelled": "événement annulé",
+    "refundLate": "payé après la fin de la réservation",
+    "refundsNote": "Les remboursements reviennent sur la carte ou le compte utilisé pour payer. Les banques mettent généralement 5 à 10 jours ouvrés.",
+    "held": "Vos billets sont réservés pendant <b>{time}</b>.",
+    "checking": "Vérification de votre paiement auprès de Paystack...",
+    "noAnswer": "Toujours pas de réponse de Paystack. <button>Vérifier à nouveau</button>",
+    "opening": "Ouverture de Paystack...",
+    "orderNotFound": "Cette commande est introuvable.",
+    "openFailed": "Nous n'avons pas pu ouvrir la page de paiement. Veuillez réessayer."
+  },
+  "myTickets": {
+    "meta": {
+      "title": "Mes billets · G-ventZ"
+    },
+    "heading": "Mes billets",
+    "which": "Quels billets",
+    "upcoming": "À venir",
+    "past": "Passés",
+    "emptyUpcoming": "Aucun billet à venir pour l'instant. Trouvez quelque chose dans Découvrir.",
+    "emptyPast": "Aucun événement passé pour l'instant.",
+    "loadMore": "Voir plus"
+  }
+}

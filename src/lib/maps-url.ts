@@ -26,3 +26,6 @@ export function isGoogleMapsUrl(raw: string): boolean {
     (GOOGLE_DOMAIN.test(host) && (path === "/maps" || path.startsWith("/maps/")))
   );
 }
+
+/** Id for MAPS_URL_HINT; a page calls t(MAPS_URL_HINT_KEY) with useTranslations()/getTranslations() at the root (no namespace). */
+export const MAPS_URL_HINT_KEY = "shared.mapsUrl.hint";
