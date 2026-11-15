@@ -19,13 +19,16 @@ export default async function AdminLayout({ children }: { children: ReactNode })
     return (
       <main className="wrap page ad">
         <SiteHeader back="/dashboard" />
-        {children}
+        {/* The admin pages are written in English (D69); the header follows the visitor's language. */}
+        <div lang="en" dir="ltr" style={{ display: "contents" }}>{children}</div>
       </main>
     );
   }
   return (
     <main className="wrap page ad ad-viz">
       <SiteHeader back="/dashboard" />
+      {/* The admin pages are written in English (D69); the header follows the visitor's language. */}
+      <div lang="en" dir="ltr" style={{ display: "contents" }}>
       <div className="ad-head">
         <div>
           <div className="ad-eyebrow">G-ventZ admin</div>
@@ -34,6 +37,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
       </div>
       <AdminNav />
       {children}
+      </div>
     </main>
   );
 }
