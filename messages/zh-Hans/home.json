@@ -1,0 +1,62 @@
+{
+  "hero": {
+    "pill": "几分钟即可创建活动",
+    "titleStart": "每一场庆祝，",
+    "titleHighlight": "尽在一处。",
+    "lede": "Owambe、Outdooring、Braai、Sangeet，或是周六的生日聚会。创建您的活动，分享一个链接，让宾客随时随地报名。",
+    "createFirst": "创建您的第一个活动",
+    "browse": "浏览活动",
+    "tiltPlay": "倾斜手机来玩",
+    "tiltStop": "停止倾斜"
+  },
+  "cards": {
+    "owambe": "Lagos · 周六",
+    "engagement": "Enugu · 12月",
+    "birthday": "Lekki · 晚上8点",
+    "sendOff": "Abuja · 周五",
+    "naming": "Ibadan · 周日"
+  },
+  "soon": {
+    "title": "即将开始",
+    "seeAll": "查看全部活动",
+    "empty": "还没有公开活动。<link>成为第一个创建活动的人。</link>"
+  },
+  "closing": {
+    "titleStart": "您的宾客",
+    "titleHighlight": "已在等候。",
+    "discover": "发现活动",
+    "create": "免费创建活动"
+  },
+  "footer": {
+    "tagline": "美好的相聚从这里开始。创建活动，分享一个链接，让大家欢聚一堂。",
+    "discover": {
+      "title": "发现",
+      "allEvents": "全部活动",
+      "pricing": "价格",
+      "createEvent": "创建活动"
+    },
+    "hosts": {
+      "title": "主办方",
+      "host": "举办活动",
+      "help": "帮助中心",
+      "refunds": "退款"
+    },
+    "company": {
+      "title": "公司",
+      "about": "关于 G-ventZ",
+      "contact": "联系我们"
+    },
+    "contact": {
+      "title": "联系",
+      "support": "支持",
+      "visitHelp": "访问帮助中心",
+      "forHosts": "活动主办方",
+      "getStarted": "立即开始"
+    },
+    "legal": {
+      "label": "法律信息",
+      "terms": "条款",
+      "privacy": "隐私"
+    }
+  }
+}

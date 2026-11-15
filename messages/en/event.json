@@ -1,0 +1,98 @@
+{
+  "page": {
+    "notices": {
+      "draft": "Draft. Only you and your team can see this page.",
+      "cancelled": "This event has been cancelled.",
+      "canManage": "You can edit this event. <link>Manage event</link>"
+    },
+    "coverAlt": "Flyer for {title}",
+    "hostedBy": "Hosted by",
+    "going": "{count, plural, one {# person going} other {# people going}}",
+    "privateEvent": "Private event",
+    "timeLine": "{range} · {zone} time",
+    "place": {
+      "venue": "Venue",
+      "online": "Online",
+      "onlineLine": "The host shares the link with guests"
+    },
+    "about": "About",
+    "location": "Location",
+    "directions": "Get directions ↗",
+    "refunds": "Refunds"
+  },
+  "tickets": {
+    "headManage": "Your tickets on sale",
+    "headGet": "Get tickets",
+    "head": "Tickets",
+    "cancelled": "This event was cancelled, so tickets are no longer available.",
+    "closed": "Registration for this event is closed.",
+    "notOnSale": "Tickets for this event aren't on sale yet. Check back soon.",
+    "paidUnavailable": "Paid tickets can't be bought right now. Check back soon.",
+    "separateOrders": "Free and paid tickets are separate orders. Get one kind, then come back for the other.",
+    "freeTitle": "Free tickets",
+    "paidTitle": "Paid tickets",
+    "approvalNote": "The host approves each request before tickets are issued."
+  },
+  "host": {
+    "free": "Free",
+    "taken": "{sold} taken",
+    "takenOf": "{sold} taken of {quantity}",
+    "note": "Guests see the ticket form here. You're managing this event, so you don't need a ticket.",
+    "seeGuests": "See guests",
+    "manage": "Manage event"
+  },
+  "signUp": {
+    "welcome": "Welcome! Create a free account or sign in to get your tickets. It takes a few seconds with Google or a 6-digit email code.",
+    "cta": "Get tickets",
+    "haveAccount": "Already have an account? <link>Sign in</link>"
+  },
+  "guest": {
+    "name": "Your full name",
+    "email": "Email",
+    "emailNote": "All your tickets are sent to your account email.",
+    "othersLegend": "Names for the other tickets (optional; you can forward each ticket)",
+    "ticketNumber": "Ticket {number}",
+    "namePlaceholder": "Guest name",
+    "choose": "Choose",
+    "socialPlaceholder": "@handle or profile link"
+  },
+  "order": {
+    "legend": "Tickets",
+    "soldOut": "Sold out",
+    "free": "Free",
+    "howMany": "How many {name} tickets",
+    "limit": "Up to {count, plural, one {# ticket} other {# tickets}} per person.",
+    "pending": "Getting your tickets...",
+    "request": "{count, plural, one {Request a ticket} other {Request # tickets}}",
+    "get": "{count, plural, one {Get ticket} other {Get # tickets}}"
+  },
+  "paid": {
+    "legend": "Paid tickets",
+    "soldOutWaitlist": "Sold out · waiting list",
+    "serviceFee": "Service fee",
+    "includesVat": "(includes VAT {amount})",
+    "total": "Total",
+    "feesIncluded": "Fees are included in the price.",
+    "subtotal": "Tickets",
+    "workingFee": "Working out the service fee...",
+    "workingTotal": "Working out the total...",
+    "waitlistNote": "That ticket is sold out. Join the waiting list and we'll email you if a place frees up; you then have 24 hours to pay.",
+    "refundPolicy": "Refund policy:",
+    "joining": "Joining...",
+    "opening": "Opening Paystack...",
+    "join": "Join the waiting list",
+    "pay": "Pay with Paystack",
+    "payTotal": "Pay with Paystack · {total}",
+    "payNote": "You'll pay on Paystack's secure page. Your tickets are held for 10 minutes."
+  },
+  "errors": {
+    "eventNotFound": "This event could not be found.",
+    "sessionEnded": "Your session has ended. Sign in again to get tickets.",
+    "orderFailed": "We couldn't get your tickets. Please try again.",
+    "quoteFailed": "We couldn't work out the total. Please try again.",
+    "paymentFailed": "We couldn't start your payment. Please try again.",
+    "chooseTicket": "Choose at least one ticket.",
+    "ticketRange": "Choose between 1 and 10 tickets.",
+    "nonRefundable": "Tick \"{text}\" to continue."
+  }
+}

@@ -44,7 +44,7 @@
     "end_before_start": "The end must be after the start.",
     "forbidden": "You don't have permission to do that for this event.",
     "has_paid_registrations": "Events with paid tickets can't be deleted.",
-    "host_owes_money": "You owe G-ventZ money from refunds, so new paid events can\\",
+    "host_owes_money": "You owe G-ventZ money from refunds, so new paid events can't be published until it is repaid from your sales.",
     "location_invalid": "Check the venue details and try again.",
     "not_found": "Event not found.",
     "not_published": "This event is not published.",

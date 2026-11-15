@@ -1,32 +1,33 @@
 import { can, type EventDashboard } from "@/lib/auth";
+import { getTranslations } from "next-intl/server";
 import { addQuestion, deleteQuestion } from "./actions";
 
-const KIND_LABEL: Record<string, string> = {
-  text: "Short text", options: "Multiple choice", social: "Social profile", company: "Company",
-  terms: "Checkbox (terms)", phone: "Phone", website: "Website",
-};
+// Question kinds, in the order the form offers them (labels: dashboard.registration.kinds.*).
+const KINDS = ["text", "options", "social", "company", "terms", "phone", "website"];
 
 // Registration questions from the event dashboard (gventz-api); changed through the API.
-export default function RegistrationTab({ event, url }: { event: EventDashboard; url: string }) {
+export default async function RegistrationTab({ event, url }: { event: EventDashboard; url: string }) {
   const id = event.id;
   const manage = can(event, "questions.manage");
+  const t = await getTranslations("dashboard.registration");
+  const kindLabel = (kind: string) => (KINDS.includes(kind) ? t(`kinds.${kind}`) : kind);
   return (
     <div className="stack">
       <section className="panel">
-        <div className="panel-label">Guests fill in</div>
-        <div className="q-row"><b>Name</b><span className="muted small">Required</span></div>
-        <div className="q-row"><b>Email</b><span className="muted small">Their account email</span></div>
-        <div className="q-row"><b>Tickets</b><span className="muted small">Up to {event.perBuyerLimit} per person, on the event page</span></div>
+        <div className="panel-label">{t("guestsFillIn")}</div>
+        <div className="q-row"><b>{t("name")}</b><span className="muted small">{t("required")}</span></div>
+        <div className="q-row"><b>{t("email")}</b><span className="muted small">{t("accountEmail")}</span></div>
+        <div className="q-row"><b>{t("tickets")}</b><span className="muted small">{t("perPerson", { count: event.perBuyerLimit })}</span></div>
         {event.questions.map((q) => (
           <div className="q-row" key={q.id}>
-            <span><b>{q.label}</b> <span className="muted small">· {KIND_LABEL[q.kind] ?? q.kind}{q.kind === "options" ? `: ${q.options.join(", ")}` : ""}</span></span>
+            <span><b>{q.label}</b> <span className="muted small">· {kindLabel(q.kind)}{q.kind === "options" ? `: ${q.options.join(", ")}` : ""}</span></span>
             <span className="q-actions">
-              <span className="muted small">{q.required ? "Required" : "Optional"}</span>
+              <span className="muted small">{t(q.required ? "required" : "optional")}</span>
               {manage && (
                 <form action={deleteQuestion}>
                   <input type="hidden" name="event_id" value={id} />
                   <input type="hidden" name="question_id" value={q.id} />
-                  <button className="link-btn" type="submit" aria-label={`Remove question: ${q.label}`}>Remove</button>
+                  <button className="link-btn" type="submit" aria-label={t("removeLabel", { label: q.label })}>{t("remove")}</button>
                 </form>
               )}
             </span>
@@ -36,24 +37,24 @@ export default function RegistrationTab({ event, url }: { event: EventDashboard;
 
       {manage && (
         <section className="panel">
-          <div className="panel-label">Add a question</div>
+          <div className="panel-label">{t("addTitle")}</div>
           <form action={addQuestion} className="form">
             <input type="hidden" name="event_id" value={id} />
-            <label className="field"><span>Question</span>
-              <input className="input" name="label" maxLength={200} placeholder="e.g. Which church do you attend?" /></label>
-            <label className="field"><span>Type</span>
+            <label className="field"><span>{t("question")}</span>
+              <input className="input" name="label" maxLength={200} placeholder={t("questionPlaceholder")} /></label>
+            <label className="field"><span>{t("type")}</span>
               <select className="input" name="kind" defaultValue="text">
-                {Object.entries(KIND_LABEL).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+                {KINDS.map((k) => <option key={k} value={k}>{kindLabel(k)}</option>)}
               </select></label>
-            <label className="field"><span>Options (for multiple choice, one per line)</span>
-              <textarea className="input" name="options" rows={3} placeholder={"Adult\nYouth\nChild"} /></label>
-            <label className="check"><input type="checkbox" name="required" /> <span>Required</span></label>
-            <button className="btn-white" type="submit">Add question</button>
+            <label className="field"><span>{t("options")}</span>
+              <textarea className="input" name="options" rows={3} placeholder={t("optionsPlaceholder")} /></label>
+            <label className="check"><input type="checkbox" name="required" /> <span>{t("required")}</span></label>
+            <button className="btn-white" type="submit">{t("add")}</button>
           </form>
         </section>
       )}
 
-      <p className="muted small">Event link: <span className="gold">{url}</span></p>
+      <p className="muted small">{t.rich("eventLink", { url, link: (c) => <span className="gold">{c}</span> })}</p>
     </div>
   );
 }

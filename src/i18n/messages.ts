@@ -5,7 +5,11 @@ import type { Catalogue } from "./catalogue";
 import { DEFAULT_LANGUAGE, PSEUDO, type Locale } from "./languages";
 import { pseudoCatalogue } from "./pseudo";
 
-export const AREAS = ["common", "errors"] as const;
+export const AREAS = ["common", "errors", "shared", "home", "discover", "event", "tickets", "auth", "dashboard", "createEvent", "account", "info", "legal"] as const;
+
+/** What browser components need, per root layout (NFR-10: the rest stays on the server). */
+export const PUBLIC_CLIENT_AREAS: readonly Area[] = ["common", "errors", "shared", "home", "discover", "event", "tickets", "info"];
+export const SITE_CLIENT_AREAS: readonly Area[] = ["common", "errors", "shared", "auth", "dashboard", "createEvent", "account", "tickets", "event"];
 export type Area = (typeof AREAS)[number];
 
 async function loadOne(lang: Locale, area: Area): Promise<Catalogue> {

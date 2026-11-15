@@ -1,7 +1,9 @@
 "use client";
 
 // Last resort when the root layout itself fails. It replaces the whole document,
-// so it can't rely on the app's stylesheet.
+// so it can't rely on the app's stylesheet. It runs outside every layout, without the language or
+// the message catalogues, so it stays English (Change 3: the one deliberate exception).
+/* eslint-disable react/jsx-no-literals */
 export default function GlobalError({ reset }: { error: Error & { digest?: string }; reset: () => void }) {
   return (
     <html lang="en">

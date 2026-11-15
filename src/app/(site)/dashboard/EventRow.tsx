@@ -3,7 +3,9 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import { updateEventSetting } from "./actions";
-import { formatEventDate, timezoneLabel } from "@/lib/dates";
+import { useTranslations } from "next-intl";
+import { timezoneLabel } from "@/lib/dates";
+import { useFormat } from "@/i18n/format-hooks";
 
 export type DashEvent = {
   id: string;
@@ -19,9 +21,11 @@ export type DashEvent = {
   role: string;
 };
 
-const STATUS_LABEL: Record<string, string> = { draft: "Draft", published: "Published", cancelled: "Cancelled" };
+const STATUSES = ["draft", "published", "cancelled"];
 
 export default function EventRow({ event }: { event: DashEvent }) {
+  const t = useTranslations("dashboard");
+  const format = useFormat();
   const [pending, start] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [vis, setVis] = useState(event.visibility);
@@ -37,36 +41,36 @@ export default function EventRow({ event }: { event: DashEvent }) {
     });
   }
 
-  const when = formatEventDate(event.starts_at, event.timezone, "compact");
+  const when = format.dateTime(event.starts_at, event.timezone, "compact");
 
   return (
     <div className="dash-row">
       <div className="dash-main">
         <Link href={`/dashboard/${event.id}`} className="dash-title">{event.title}</Link>
-        <div className="muted small">{when} ({timezoneLabel(event.timezone)}) · {STATUS_LABEL[status] ?? status} · {event.going} registered</div>
+        <div className="muted small">{`${when} (${timezoneLabel(event.timezone)})`} · {STATUSES.includes(status) ? t(`status.${status}`) : status} · {t("eventRow.registered", { count: event.going })}</div>
       </div>
 
       <div className="dash-controls">
         {["owner", "admin", "editor"].includes(event.role) && <>
-        <div className="seg" role="group" aria-label={`Visibility of ${event.title}`}>
+        <div className="seg" role="group" aria-label={t("eventRow.visibilityOf", { title: event.title })}>
           <button type="button" className={vis === "public" ? "on" : ""} aria-pressed={vis === "public"} disabled={pending}
-            onClick={() => change("visibility", "public", () => setVis("public"))}>Public</button>
+            onClick={() => change("visibility", "public", () => setVis("public"))}>{t("visibility.public")}</button>
           <button type="button" className={vis === "private" ? "on" : ""} aria-pressed={vis === "private"} disabled={pending}
-            onClick={() => change("visibility", "private", () => setVis("private"))}>Private</button>
+            onClick={() => change("visibility", "private", () => setVis("private"))}>{t("visibility.private")}</button>
         </div>
 
         <label className="check">
           <input type="checkbox" checked={show} disabled={pending}
             onChange={(e) => change("show_attendee_count", String(e.target.checked), () => setShow(e.target.checked))} />
-          <span>Show attendee count</span>
+          <span>{t("eventRow.showCount")}</span>
         </label>
 
         </>}
         {status === "draft" && ["owner", "admin"].includes(event.role) && (
           <button type="button" className="btn-small" disabled={pending}
-            onClick={() => change("status", "published", () => setStatus("published"))}>Publish</button>
+            onClick={() => change("status", "published", () => setStatus("published"))}>{t("eventRow.publish")}</button>
         )}
-        <Link href={`/dashboard/${event.id}`} className="btn-small">Manage</Link>
+        <Link href={`/dashboard/${event.id}`} className="btn-small">{t("eventRow.manage")}</Link>
       </div>
 
       {error && <p className="error" role="alert">{error}</p>}

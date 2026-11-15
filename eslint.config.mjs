@@ -30,7 +30,7 @@ const eslintConfig = [
     files: ["src/**/*.tsx"],
     ignores: ["src/app/\\(site\\)/admin/**", ...NOT_YET_TRANSLATED],
     rules: {
-      "react/jsx-no-literals": ["error", { noStrings: false, ignoreProps: true, allowedStrings: ["·", "—", "–", "-", "/", "|", "×", "…", "→", "←", "↑", "↓", "%", "+", "*", "(", ")", ":", ",", ".", "!", "?", "&nbsp;", "▾", "✓"] }],
+      "react/jsx-no-literals": ["error", { noStrings: false, ignoreProps: true, allowedStrings: ["·", "—", "–", "-", "/", "|", "×", "…", "→", "←", "↑", "↓", "%", "+", "*", "(", ")", ":", ",", ".", "!", "?", "&nbsp;", "▾", "✓", "G-vent", "Z", "🌐"] }],
     },
   },
 ];

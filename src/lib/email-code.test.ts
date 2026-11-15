@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { isAuthMode, isSixDigitCode, normalizeEmail, sendFailure, verifyFailure } from "./email-code";
+import en from "../../messages/en/shared.json";
+import { isAuthMode, isSixDigitCode, normalizeEmail, sendFailure, sendFailureKey, sendFailureReasonKey, verifyFailure, verifyFailureKey, type AuthFailure, type AuthMode } from "./email-code";
 
 describe("email sign-in codes", () => {
   it("normalizes addresses and refuses what can't be one", () => {
@@ -46,5 +47,25 @@ describe("email sign-in codes", () => {
   it("tells a wrong code from too many tries", () => {
     expect(verifyFailure({ code: "otp_expired", status: 403 }).message).toMatch(/wrong or has expired/);
     expect(verifyFailure({ status: 429 }).message).toMatch(/Too many tries/);
+  });
+
+  it("gives message ids whose English is the old text (Change 3)", () => {
+    const msg = (id: string) => {
+      const [area, group, key] = id.split(".");
+      expect(area).toBe("shared");
+      return (en as unknown as Record<string, Record<string, string>>)[group!]![key!];
+    };
+    const errors: AuthFailure[] = [
+      { code: "otp_disabled" }, { message: "Signups not allowed for otp" }, { code: "over_email_send_rate_limit" }, { status: 429 },
+      { code: "captcha_failed" }, { code: "email_address_invalid" }, { code: "validation_failed" }, { code: "otp_expired", status: 403 }, {},
+    ];
+    for (const error of errors) {
+      for (const mode of ["signin", "signup"] as AuthMode[]) {
+        const old = sendFailure(error, mode);
+        expect(msg(sendFailureKey(error, mode))).toBe(old.message);
+        expect(sendFailureReasonKey(old.reason)).toBe(sendFailureKey(error, mode));
+      }
+      expect(msg(verifyFailureKey(error))).toBe(verifyFailure(error).message);
+    }
   });
 });

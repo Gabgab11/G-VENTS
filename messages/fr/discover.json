@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "title": "Découvrir des événements · G-ventZ"
+  },
+  "online": "En ligne",
+  "allEvents": "Tous les événements",
+  "categoryEvents": "Événements : {category}",
+  "categoryEmpty": "Rien de prévu dans la catégorie {category} pour l’instant. <link>Organisez-en un</link>.",
+  "noEvents": "Aucun événement public pour l’instant. <link>Créez le premier</link>.",
+  "empty": {
+    "discover": "Découvrir",
+    "title": "Les belles rencontres commencent ici",
+    "categoryTitle": "Aucun événement dans la catégorie {category} pour l’instant",
+    "text": "Soyez le premier : créez un événement et partagez un seul lien avec vos invités.",
+    "create": "Créer un événement"
+  },
+  "rails": {
+    "categories": "Catégories d’événements",
+    "soon": "Bientôt",
+    "weekend": "Ce week-end"
+  },
+  "rail": {
+    "previous": "Précédent : {title}",
+    "next": "Suivant : {title}"
+  },
+  "hero": {
+    "label": "Événements à la une",
+    "slide": "{position} sur {count} : {title}",
+    "getTickets": "Obtenir des billets",
+    "share": "Partager",
+    "shareOn": "Partager sur {network}",
+    "shareText": "{title} sur G-ventZ",
+    "choose": "Choisir un événement à la une",
+    "show": "Afficher {title}"
+  },
+  "inSentence": {
+    "music": "musique",
+    "conferences": "conférences",
+    "tech": "tech",
+    "faith": "foi",
+    "arts": "arts",
+    "food": "gastronomie",
+    "sports": "sport",
+    "business": "affaires",
+    "nightlife": "vie nocturne",
+    "education": "éducation",
+    "community": "communauté",
+    "charity": "caritatif",
+    "family": "famille",
+    "other": "autres"
+  }
+}

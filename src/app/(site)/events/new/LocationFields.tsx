@@ -1,11 +1,13 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useFormat } from "@/i18n/format-hooks";
 import Combobox from "@/components/Combobox";
 import { orderedCountries } from "@/lib/locations";
 import { countryDetails, locatePlace, placeDetails, searchPlaces, type PlaceDetails, type Suggestion } from "@/app/(site)/events/places-actions";
 import type { CountryReference } from "@/lib/reference";
-import { MAPS_URL_HINT, MAPS_URL_MAX, isGoogleMapsUrl } from "@/lib/maps-url";
+import { MAPS_URL_HINT_KEY, MAPS_URL_MAX, isGoogleMapsUrl } from "@/lib/maps-url";
 import type { ZoneContext } from "./TimeZoneField";
 
 type Place = { placeId: string; address: string; city: string; lat: number | null; lng: number | null; timeZone: string | null };
@@ -21,10 +23,11 @@ function newSession(): string {
   }
 }
 
-function problemText(code: string): string {
-  if (code === "signed_out") return "Your session ended. Sign in again to search for venues.";
-  if (code === "rate_limited") return "Too many searches at once. Wait a moment, or type the address yourself.";
-  return "Venue suggestions aren't available right now. You can type the address yourself.";
+/** The message id (createEvent.venue.*) for a venue search problem. */
+function problemKey(code: string): "signedOut" | "rateLimited" | "unavailable" {
+  if (code === "signed_out") return "signedOut";
+  if (code === "rate_limited") return "rateLimited";
+  return "unavailable";
 }
 
 const toPlace = (p: PlaceDetails): Place => ({ placeId: p.placeId, address: p.address, city: p.city, lat: p.lat, lng: p.lng, timeZone: p.timeZone });
@@ -53,7 +56,14 @@ export default function LocationFields({
   /** Tells the time zone field the country's zones and the venue's zone. */
   onZoneContext?: (context: ZoneContext) => void;
 }) {
+  const t = useTranslations("createEvent.location");
+  const root = useTranslations();
+  const format = useFormat();
+  const mapsHint = root(MAPS_URL_HINT_KEY);
   const countries = useMemo(() => orderedCountries(detectedCountry), [detectedCountry]);
+  // Country names in the page's language (English keeps the list's own spelling); the codes, and
+  // the English name posted as `country`, don't change.
+  const countryName = (c: { code: string; name: string }) => (format.lang === "en" ? c.name : format.country(c.code));
   const [countryCode, setCountryCode] = useState(countries[0].code);
   const [reference, setReference] = useState<CountryReference | null | "loading">("loading");
   const [region, setRegion] = useState("");
@@ -66,6 +76,7 @@ export default function LocationFields({
 
   const country = countries.find((c) => c.code === countryCode);
   const ref = reference === "loading" ? null : reference;
+  const shownCountry = country ? countryName(country) : countryCode;
 
   // The country's states and zones, from the API (cached for a day on the server, per visit here).
   useEffect(() => {
@@ -80,8 +91,8 @@ export default function LocationFields({
   }, [countryCode]);
 
   useEffect(() => {
-    onZoneContext?.({ countryName: country?.name ?? countryCode, countryZones: ref?.zones ?? [], venueZone: place?.timeZone ?? null });
-  }, [onZoneContext, country?.name, countryCode, ref?.zones, place?.timeZone]);
+    onZoneContext?.({ countryName: shownCountry, countryZones: ref?.zones ?? [], venueZone: place?.timeZone ?? null });
+  }, [onZoneContext, shownCountry, ref?.zones, place?.timeZone]);
 
   function clearVenue() {
     setVenue("");
@@ -109,7 +120,7 @@ export default function LocationFields({
     setPlace(toPlace(details));
     const label = (ref?.label ?? "state").toLowerCase();
     if (details.region && ref?.regions?.includes(details.region) && details.region !== region) {
-      setNote(region ? `This venue is in ${details.region}, so the ${label} was changed to match.` : `${label[0]!.toUpperCase()}${label.slice(1)} set to ${details.region}, where the venue is.`);
+      setNote(region ? t("regionChanged", { region: details.region, label }) : t("regionSet", { region: details.region, label: `${label[0]!.toUpperCase()}${label.slice(1)}` }));
       setRegion(details.region);
     } else {
       setNote("");
@@ -123,15 +134,15 @@ export default function LocationFields({
       <div className="row2">
         <Combobox
           name="country_code"
-          label="Country"
-          options={countries.map((c) => ({ value: c.code, label: c.name }))}
+          label={t("country")}
+          options={countries.map((c) => ({ value: c.code, label: countryName(c) }))}
           value={countryCode}
           onChange={changeCountry}
-          placeholder="Search countries"
+          placeholder={t("searchCountries")}
         />
         {reference === "loading" ? (
-          <label className="field"><span>State or region</span>
-            <input className="input" disabled placeholder="Loading…" /></label>
+          <label className="field"><span>{t("stateOrRegion")}</span>
+            <input className="input" disabled placeholder={t("loading")} /></label>
         ) : ref?.regions ? (
           <Combobox
             key={countryCode}
@@ -140,10 +151,10 @@ export default function LocationFields({
             options={ref.regions.map((r) => ({ value: r, label: r }))}
             value={region}
             onChange={changeRegion}
-            placeholder={`Choose a ${ref.label.toLowerCase()} (optional)`}
+            placeholder={t("chooseRegion", { label: ref.label.toLowerCase() })}
           />
         ) : (
-          <label className="field"><span>State, city or region</span>
+          <label className="field"><span>{t("stateCityRegion")}</span>
             <input className="input" name="region" maxLength={120} value={region}
               onChange={(e) => { setRegion(e.target.value); setPlace(null); setNote(""); }} /></label>
         )}
@@ -162,19 +173,19 @@ export default function LocationFields({
         onForget={() => { setPlace(null); setNote(""); }}
       />
       {note && <p className="muted small venue-note" role="status">{note}</p>}
-      {src && <iframe className="ev-map venue-map" src={src} title={`Map of ${venue || "the venue"}`} loading="lazy" referrerPolicy="strict-origin-when-cross-origin" />}
+      {src && <iframe className="ev-map venue-map" src={src} title={t("mapOf", { venue: venue || t("theVenue") })} loading="lazy" referrerPolicy="strict-origin-when-cross-origin" />}
 
-      <label className="field"><span>Google Maps link (optional)</span>
+      <label className="field"><span>{t("mapsLink")}</span>
         <input className="input" type="url" name="maps_url" inputMode="url" maxLength={MAPS_URL_MAX} value={mapsUrl}
           onChange={(e) => { setMapsUrl(e.target.value); if (mapsError) setMapsError(""); }}
-          onBlur={() => setMapsError(mapsUrl.trim() && !isGoogleMapsUrl(mapsUrl) ? MAPS_URL_HINT : "")}
+          onBlur={() => setMapsError(mapsUrl.trim() && !isGoogleMapsUrl(mapsUrl) ? mapsHint : "")}
           aria-invalid={mapsError ? true : undefined}
-          placeholder="https://maps.app.goo.gl/…" title={MAPS_URL_HINT} />
+          placeholder="https://maps.app.goo.gl/…" title={mapsHint} />
         {mapsError
-          ? <span className="error small" role="alert">{mapsError} Or leave it empty.</span>
+          ? <span className="error small" role="alert">{t("mapsError", { hint: mapsError })}</span>
           : <span className="muted small">{src
-            ? "Not needed if the map above shows the right place. Add one to send guests to an exact entrance or pin."
-            : "In Google Maps, open the venue, tap Share and copy the link. Guests use it for directions."}</span>}
+            ? t("mapsHelpWithMap")
+            : t("mapsHelp")}</span>}
       </label>
 
       <input type="hidden" name="country" value={country?.name ?? ""} />
@@ -209,6 +220,7 @@ function VenueSearch({
   onPlaced: (name: string, details: PlaceDetails | null, fallback?: Place) => void;
   onForget: () => void;
 }) {
+  const t = useTranslations("createEvent.venue");
   const [open, setOpen] = useState(false);
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [resultsFor, setResultsFor] = useState(""); // the search text the current suggestions answer
@@ -237,7 +249,7 @@ function VenueSearch({
         if (lastQuery.current !== q) return;
         if (data.error) {
           if (data.error === "not_configured") setAvailable(false);
-          else setProblem(problemText(data.error));
+          else setProblem(t(problemKey(data.error)));
           setSuggestions([]);
         } else {
           setProblem("");
@@ -247,13 +259,13 @@ function VenueSearch({
           setOpen(true);
         }
       } catch {
-        if (lastQuery.current === q) setProblem(problemText(""));
+        if (lastQuery.current === q) setProblem(t(problemKey("")));
       } finally {
         if (lastQuery.current === q) setLoading("");
       }
     }, DEBOUNCE_MS);
     return () => clearTimeout(timer);
-  }, [venue, place, available, countryCode, region, regionListed]);
+  }, [venue, place, available, countryCode, region, regionListed, t]);
 
   async function pick(s: Suggestion) {
     setOpen(false);
@@ -269,10 +281,10 @@ function VenueSearch({
         onPlaced(data.place.name || s.main, data.place);
         setProblem("");
       } else {
-        setProblem("We kept the venue, but couldn't load its exact address. You can save it as it is.");
+        setProblem(t("noDetails"));
       }
     } catch {
-      setProblem("We kept the venue, but couldn't load its exact address. You can save it as it is.");
+      setProblem(t("noDetails"));
     } finally {
       setLoading("");
       session.current = newSession(); // one billing session per search-and-pick
@@ -302,12 +314,12 @@ function VenueSearch({
         setLocated(true);
         setProblem("");
       } else if (data.error && data.error !== "not_configured") {
-        setProblem(problemText(data.error));
+        setProblem(t(problemKey(data.error)));
       } else {
-        setProblem("We couldn't find that on the map. Guests will see the address as you typed it.");
+        setProblem(t("notFound"));
       }
     } catch {
-      setProblem("We couldn't find that on the map. Guests will see the address as you typed it.");
+      setProblem(t("notFound"));
     } finally {
       if (triedLocate.current === q) setLoading("");
     }
@@ -332,7 +344,7 @@ function VenueSearch({
 
   return (
     <label className="field">
-      <span>Location / venue address</span>
+      <span>{t("label")}</span>
       <div className="combo">
         <input
           className="input"
@@ -344,7 +356,7 @@ function VenueSearch({
           aria-controls={available ? listId : undefined}
           aria-autocomplete={available ? "list" : undefined}
           aria-activedescendant={showList && active >= 0 ? `${listId}-${active}` : undefined}
-          placeholder={available ? "Search a venue, hotel, landmark or street, or type it" : "Venue name, address, or online link"}
+          placeholder={available ? t("searchPlaceholder") : t("plainPlaceholder")}
           value={venue}
           onChange={(e) => { onType(e.target.value); setOpen(true); setLocated(false); setProblem(""); }}
           onFocus={() => { if (suggestions.length) setOpen(true); }}
@@ -369,23 +381,23 @@ function VenueSearch({
               </li>
             ))}
             {suggestions.length === 0 && resultsFor === venue.trim() && (
-              <li className="combo-empty">No matching places found.</li>
+              <li className="combo-empty">{t("noMatches")}</li>
             )}
             <li className="combo-opt combo-keep" role="option" aria-selected={false}
               onMouseDown={(e) => { e.preventDefault(); keepTyped(); }}>
-              Use “{venue.trim()}” as typed
+              {t("useTyped", { text: venue.trim() })}
             </li>
           </ul>
         )}
       </div>
       <span className="muted small" aria-live="polite">
-        {loading === "search" ? "Searching places…"
-          : loading === "details" ? "Getting the address…"
-          : loading === "locate" ? "Finding it on the map…"
+        {loading === "search" ? t("searching")
+          : loading === "details" ? t("gettingAddress")
+          : loading === "locate" ? t("locating")
           : problem ? problem
-          : place?.address && located ? <>Found on the map: {place.address}. <button type="button" className="link-btn" onClick={forget}>Not this place?</button></>
-          : place?.address ? `Address: ${place.address}`
-          : available ? (regionListed && region ? `Suggestions are in ${region}. Pick one, or type the address and we'll find it on the map.` : "Pick a suggestion, or type the address and we'll find it on the map.")
+          : place?.address && located ? t.rich("found", { address: place.address, button: (c) => <button type="button" className="link-btn" onClick={forget}>{c}</button> })
+          : place?.address ? t("address", { address: place.address })
+          : available ? (regionListed && region ? t("suggestionsIn", { region }) : t("pickOrType"))
           : null}
       </span>
     </label>

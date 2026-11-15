@@ -3,7 +3,7 @@ import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import RootShell, { baseMetadata, baseViewport } from "@/app/RootShell";
 import LanguageHint from "@/components/LanguageHint";
-import { pickAreas } from "@/i18n/messages";
+import { pickAreas, PUBLIC_CLIENT_AREAS } from "@/i18n/messages";
 import { routing } from "@/i18n/routing";
 import type { Catalogue } from "@/i18n/catalogue";
 
@@ -25,7 +25,7 @@ export default async function PublicLayout({ children, params }: { children: Rea
   const messages = (await getMessages()) as Catalogue;
   return (
     <RootShell lang={lang}>
-      <NextIntlClientProvider messages={pickAreas(messages, ["common"])}>
+      <NextIntlClientProvider messages={pickAreas(messages, PUBLIC_CLIENT_AREAS)}>
         <LanguageHint />
         {children}
       </NextIntlClientProvider>

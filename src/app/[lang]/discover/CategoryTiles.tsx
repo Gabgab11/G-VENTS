@@ -1,6 +1,7 @@
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
-import { CATEGORIES, CATEGORY_COLORS, type Category } from "@/lib/categories";
+import { CATEGORIES, CATEGORY_COLORS, categoryLabelKey, type Category } from "@/lib/categories";
 import { SHAPES, type ShapeName } from "@/app/hero-shapes";
 
 // Category tiles for Discover: each category gets one of the home page's card shapes in its own
@@ -50,11 +51,13 @@ function Tile({ name, label, href, color, on }: { name: Category | "All"; label:
 
 // The tiles only: the page puts them in a sideways row with arrows (Rail, track "dc-cats").
 export default function CategoryTiles({ active }: { active?: Category }) {
+  const t = useTranslations("discover");
+  const root = useTranslations();
   return (
     <>
-      <Tile name="All" label="All events" href="/discover" color="#ffc23d" on={!active} />
+      <Tile name="All" label={t("allEvents")} href="/discover" color="#ffc23d" on={!active} />
       {CATEGORIES.map((c) => (
-        <Tile key={c} name={c} label={c} href={`/discover?category=${encodeURIComponent(c)}`} color={CATEGORY_COLORS[c]} on={active === c} />
+        <Tile key={c} name={c} label={root(categoryLabelKey(c))} href={`/discover?category=${encodeURIComponent(c)}`} color={CATEGORY_COLORS[c]} on={active === c} />
       ))}
     </>
   );

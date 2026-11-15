@@ -2,9 +2,11 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 // Shown when a page fails to load, for example if the database is unreachable.
 export default function ErrorPage({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
+  const t = useTranslations("shared.errorPage");
   useEffect(() => {
     // Lands in the Vercel function/browser logs; swap for an error-monitoring SDK when one is added.
     console.error(error);
@@ -12,12 +14,12 @@ export default function ErrorPage({ error, reset }: { error: Error & { digest?: 
 
   return (
     <main className="wrap page">
-      <h1>Something went wrong</h1>
-      <p className="muted">We couldn&apos;t load this page. Please try again in a moment.</p>
-      {error.digest && <p className="muted small">Reference: {error.digest}</p>}
+      <h1>{t("title")}</h1>
+      <p className="muted">{t("body")}</p>
+      {error.digest && <p className="muted small">{t("reference", { digest: error.digest })}</p>}
       <div className="actions">
-        <button type="button" className="btn-white" onClick={reset}>Try again</button>
-        <Link href="/" className="btn-ghost">Go home</Link>
+        <button type="button" className="btn-white" onClick={reset}>{t("retry")}</button>
+        <Link href="/" className="btn-ghost">{t("home")}</Link>
       </div>
     </main>
   );

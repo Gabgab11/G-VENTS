@@ -1,0 +1,150 @@
+{
+  "errorPage": {
+    "title": "Algo deu errado",
+    "body": "Não conseguimos carregar esta página. Tente novamente em instantes.",
+    "reference": "Referência: {digest}",
+    "retry": "Tentar novamente",
+    "home": "Ir para o início"
+  },
+  "notFound": {
+    "title": "Página não encontrada",
+    "body": "Esta página não existe ou você não tem acesso a ela. Se alguém lhe enviou o link de um evento, verifique se ele está completo.",
+    "discover": "Descobrir eventos",
+    "home": "Ir para o início"
+  },
+  "loading": "Carregando…",
+  "legalDoc": {
+    "effective": "Data de vigência: {date}",
+    "terms": "Termos",
+    "refunds": "Reembolsos",
+    "pricing": "Preços",
+    "privacy": "Privacidade"
+  },
+  "orderCard": {
+    "ticketsFor": "Ingressos para {title}",
+    "tickets": "Ingressos",
+    "timeLine": "{range} · horário de {zone}",
+    "ticketNumber": "{number} de {total}",
+    "checkedIn": "Entrada registrada",
+    "openTicket": "Abrir ingresso",
+    "status": {
+      "completed": {
+        "title": "Você está dentro",
+        "body": "Cada ingresso tem seu próprio código QR. Encaminhe cada ingresso ao convidado a quem ele se destina."
+      },
+      "pendingApproval": {
+        "title": "Pedido recebido",
+        "body": "O anfitrião analisa cada pedido. Enviaremos seus ingressos por e-mail assim que ele decidir."
+      },
+      "waitlisted": {
+        "title": "Você está na lista de espera",
+        "body": "O evento está lotado no momento. Se vagas forem liberadas, o anfitrião pode incluir seu grupo."
+      },
+      "declined": {
+        "title": "Não aceito desta vez",
+        "body": "O anfitrião não pôde aceitar este pedido."
+      },
+      "cancelled": {
+        "title": "Cancelado",
+        "body": "Estes ingressos não podem mais ser usados."
+      },
+      "awaitingPayment": {
+        "title": "Aguardando pagamento",
+        "body": "Seus ingressos ficam reservados enquanto você paga com Paystack."
+      },
+      "expired": {
+        "title": "A reserva expirou",
+        "body": "O pagamento não foi concluído a tempo, então estes ingressos voltaram à venda."
+      },
+      "failed": {
+        "title": "Falha no pagamento",
+        "body": "O pagamento não foi aprovado. Nada foi cobrado."
+      },
+      "refunded": {
+        "title": "Reembolsado",
+        "body": "Este pedido foi reembolsado. Os ingressos não são mais válidos."
+      },
+      "partiallyRefunded": {
+        "title": "Reembolsado em parte",
+        "body": "Alguns ingressos foram reembolsados; os demais continuam válidos."
+      },
+      "disputed": {
+        "title": "Pagamento contestado",
+        "body": "O pagamento está sendo contestado junto ao banco. Por enquanto, seus ingressos continuam válidos."
+      }
+    }
+  },
+  "sellReason": {
+    "paymentsOff": "Os ingressos pagos ainda não estão disponíveis na G-ventZ. Por enquanto, todos os ingressos são gratuitos.",
+    "notApplied": "Para vender ingressos pagos, diga-nos quem recebe o pagamento e onde.",
+    "notAppliedAction": "Solicitar a venda de ingressos pagos",
+    "applicationSubmitted": "Estamos analisando sua solicitação para vender ingressos pagos. Enviaremos um e-mail quando houver uma decisão.",
+    "applicationSubmittedAction": "Ver sua solicitação",
+    "applicationDeclined": "Sua solicitação para vender ingressos pagos não foi aprovada. Você pode ver o motivo e solicitar novamente.",
+    "applicationDeclinedAction": "Ver o motivo",
+    "approvalRevoked": "Sua aprovação para vender ingressos pagos foi retirada. Os ingressos já vendidos continuam válidos.",
+    "approvalRevokedAction": "Ver detalhes",
+    "payoutAccountPending": "Você foi aprovado. Estamos configurando sua conta de repasse com a Paystack; você poderá vender ingressos pagos assim que ela estiver pronta.",
+    "payoutAccountPendingAction": "Ver detalhes do repasse",
+    "countryOff": "A Paystack está pausada no país da sua conta de repasse no momento. Os ingressos gratuitos continuam funcionando.",
+    "owesMoney": "Você deve dinheiro à G-ventZ por reembolsos ou estornos, por isso não pode publicar novos eventos pagos. Seus eventos atuais continuam vendendo, o que quita o valor.",
+    "owesMoneyAction": "Ver quanto você deve",
+    "suspended": "Sua conta está suspensa, por isso você não pode vender ingressos pagos."
+  },
+  "fees": {
+    "hostAbsorbs": {
+      "label": "Eu assumo as taxas",
+      "hint": "Os convidados pagam o preço do ingresso. A taxa da G-ventZ, o imposto sobre ela e a tarifa da Paystack são descontados do que você recebe."
+    },
+    "guestPays": {
+      "label": "Os convidados pagam as taxas",
+      "hint": "As taxas são somadas ao preço, então você recebe o valor integral do ingresso."
+    }
+  },
+  "payment": {
+    "nonRefundable": "Entendo que os ingressos não são reembolsáveis, exceto se o evento for cancelado",
+    "organizer": "O organizador, e não a G-ventZ, é responsável por este evento."
+  },
+  "refundStatus": {
+    "queued": "Reembolso na fila",
+    "processing": "Reembolso em processamento",
+    "refunded": "Reembolsado",
+    "failed": "Falha no reembolso"
+  },
+  "applicationStatus": {
+    "none": "Não solicitado",
+    "submitted": "Em análise",
+    "approved": "Aprovado",
+    "declined": "Recusado",
+    "revoked": "Aprovação retirada",
+    "payoutPending": "Conta de repasse pendente"
+  },
+  "emailCode": {
+    "noAccount": "Ainda não existe uma conta com este e-mail.",
+    "rateLimited": "Foram solicitados códigos demais. Aguarde um minuto e tente novamente.",
+    "captcha": "A verificação anti-robô não foi aprovada. Tente novamente ou continue com o Google.",
+    "invalid": "Informe um endereço de e-mail válido.",
+    "sendFailed": "Não conseguimos enviar um código agora. Tente novamente em instantes.",
+    "tooManyTries": "Tentativas demais. Aguarde um minuto e solicite um novo código.",
+    "wrongCode": "Esse código está incorreto ou expirou. Tente novamente ou solicite um novo."
+  },
+  "mapsUrl": {
+    "hint": "Cole um link do Google Maps (google.com/maps, maps.app.goo.gl ou share.google)."
+  },
+  "categories": {
+    "music": "Música",
+    "conferences": "Conferências",
+    "tech": "Tecnologia",
+    "faith": "Fé",
+    "arts": "Artes",
+    "food": "Gastronomia",
+    "sports": "Esportes",
+    "business": "Negócios",
+    "nightlife": "Vida noturna",
+    "education": "Educação",
+    "community": "Comunidade",
+    "charity": "Beneficente",
+    "family": "Família",
+    "other": "Outros"
+  }
+}

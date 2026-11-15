@@ -1,219 +1,219 @@
 {
   "admin": {
-    "host_not_found": "Host not found.",
-    "range_invalid": "Choose a start before the end.",
-    "range_too_long": "Choose a shorter period.",
-    "reason_invalid": "Give a reason of 3 to 500 characters."
+    "host_not_found": "未找到主办方。",
+    "range_invalid": "请选择早于结束时间的开始时间。",
+    "range_too_long": "请选择更短的时间段。",
+    "reason_invalid": "请填写 3 到 500 个字符的原因。"
   },
   "announcement": {
-    "already_sent": "This announcement has already been sent.",
-    "event_draft": "Publish the event before sending announcements.",
-    "event_limit": "You have sent all the announcements your plan allows for this event.",
-    "event_started": "Announcements can only be sent before the event starts.",
-    "no_recipients": "Nobody in this audience can receive emails yet.",
-    "not_found": "This announcement could not be found.",
-    "segment_invalid": "Choose who receives this announcement.",
-    "unsubscribe_unknown": "This unsubscribe link is not valid."
+    "already_sent": "此公告已发送。",
+    "event_draft": "请先发布活动，再发送公告。",
+    "event_limit": "您已发送完您的套餐允许此活动发送的全部公告。",
+    "event_started": "公告只能在活动开始前发送。",
+    "no_recipients": "此受众中暂时没有人可以接收电子邮件。",
+    "not_found": "找不到此公告。",
+    "segment_invalid": "请选择此公告的接收对象。",
+    "unsubscribe_unknown": "此退订链接无效。"
   },
   "auth": {
-    "anonymous_not_allowed": "Sign in with your email or Google to continue.",
-    "invalid_token": "Your session isn't valid. Sign in again.",
-    "mfa_required": "Confirm with your authenticator app to continue.",
-    "required": "Sign in to continue.",
-    "token_expired": "Your session has expired. Sign in again."
+    "anonymous_not_allowed": "请使用电子邮件或 Google 登录以继续。",
+    "invalid_token": "您的会话无效。请重新登录。",
+    "mfa_required": "请使用您的身份验证器应用确认以继续。",
+    "required": "请登录以继续。",
+    "token_expired": "您的会话已过期。请重新登录。"
   },
   "conflict": {
-    "duplicate": "This already exists."
+    "duplicate": "此项已存在。"
   },
   "db": {
-    "busy": "We are very busy right now. Please try again in a moment."
+    "busy": "我们现在非常繁忙。请稍后再试。"
   },
   "event": {
-    "already_cancelled": "This event is already cancelled.",
-    "buyer_limit_invalid": "Choose a limit from 1 to 10 tickets per person.",
-    "cancel_confirm": "Confirm that you want to cancel this event.",
-    "cancelled": "This event was cancelled.",
-    "capacity_invalid": "Capacity must be a whole number from 1 to 1,000,000, or empty for unlimited.",
-    "category_invalid": "Choose a category.",
-    "country_invalid": "Choose a country from the list.",
-    "currency_invalid": "Use a three-letter currency code such as NGN or USD.",
-    "currency_mixed": "All ticket types must use the same currency.",
-    "currency_not_payout": "Paid tickets are sold in your payout currency.",
-    "delete_confirm": "Type the event name exactly to confirm.",
-    "description_length": "The description can be at most 5,000 characters.",
-    "end_before_start": "The end must be after the start.",
-    "forbidden": "You don't have permission to do that for this event.",
-    "has_paid_registrations": "Events with paid tickets can't be deleted.",
-    "host_owes_money": "You owe G-ventZ money from refunds, so new paid events can\\",
-    "location_invalid": "Check the venue details and try again.",
-    "not_found": "Event not found.",
-    "not_published": "This event is not published.",
-    "paid_not_allowed": "Paid tickets are coming soon.",
-    "paid_tickets_unsupported": "Paid tickets are not available yet.",
-    "payout_account_required": "Connect a payout account before publishing paid tickets.",
-    "price_invalid": "Ticket prices must be whole amounts of 0 or more.",
-    "refund_policy_length": "The refund policy can be at most 2,000 characters.",
-    "region_invalid": "Choose a state or region from the list.",
-    "sales_window_invalid": "A ticket type’s sales end must be after its start.",
-    "slug_unavailable": "We couldn't create a link for this event. Please try again.",
-    "ticket_name_invalid": "Ticket names must be 1 to 80 characters.",
-    "ticket_quantity_invalid": "Ticket quantities must be whole numbers above 0.",
-    "ticket_types_count": "Add between 1 and 20 ticket types.",
-    "time_invalid": "Use a valid date and time.",
-    "time_not_in_zone": "That time doesn't exist in this time zone because the clocks change. Pick another time.",
-    "time_zone_required": "Choose the event's time zone.",
-    "title_length": "Event name must be 3 to 140 characters."
+    "already_cancelled": "此活动已取消。",
+    "buyer_limit_invalid": "请选择每人 1 到 10 张票的上限。",
+    "cancel_confirm": "请确认您要取消此活动。",
+    "cancelled": "此活动已被取消。",
+    "capacity_invalid": "容量必须是 1 到 1,000,000 之间的整数，留空则表示不限。",
+    "category_invalid": "请选择一个类别。",
+    "country_invalid": "请从列表中选择国家或地区。",
+    "currency_invalid": "请使用三个字母的货币代码，例如 NGN 或 USD。",
+    "currency_mixed": "所有票种必须使用相同的货币。",
+    "currency_not_payout": "付费门票以您的结算货币出售。",
+    "delete_confirm": "请准确输入活动名称以确认。",
+    "description_length": "描述最多 5,000 个字符。",
+    "end_before_start": "结束时间必须晚于开始时间。",
+    "forbidden": "您无权对此活动执行该操作。",
+    "has_paid_registrations": "包含付费门票的活动无法删除。",
+    "host_owes_money": "您因退款欠 G-ventZ 款项，在用销售收入还清之前无法发布新的付费活动。",
+    "location_invalid": "请检查场地信息后重试。",
+    "not_found": "未找到活动。",
+    "not_published": "此活动尚未发布。",
+    "paid_not_allowed": "付费门票即将推出。",
+    "paid_tickets_unsupported": "付费门票暂不可用。",
+    "payout_account_required": "发布付费门票前，请先绑定结算账户。",
+    "price_invalid": "票价必须是 0 或以上的整数金额。",
+    "refund_policy_length": "退款政策最多 2,000 个字符。",
+    "region_invalid": "请从列表中选择州或地区。",
+    "sales_window_invalid": "票种的停售时间必须晚于开售时间。",
+    "slug_unavailable": "我们无法为此活动创建链接。请重试。",
+    "ticket_name_invalid": "票种名称必须为 1 到 80 个字符。",
+    "ticket_quantity_invalid": "门票数量必须是大于 0 的整数。",
+    "ticket_types_count": "请添加 1 到 20 个票种。",
+    "time_invalid": "请使用有效的日期和时间。",
+    "time_not_in_zone": "由于时钟调整，该时间在此时区中不存在。请选择其他时间。",
+    "time_zone_required": "请选择活动的时区。",
+    "title_length": "活动名称必须为 3 到 140 个字符。"
   },
   "export": {
-    "busy": "An export is already running. Please try again in a minute."
+    "busy": "已有导出正在进行。请一分钟后再试。"
   },
   "flyer": {
-    "not_uploaded": "Upload the image first.",
-    "path_invalid": "That upload doesn't belong to this event.",
-    "size": "Flyers can be at most 5 MB.",
-    "storage_unavailable": "Flyer uploads are unavailable right now. Please try again shortly.",
-    "type": "Use a JPEG, PNG or WebP image."
+    "not_uploaded": "请先上传图片。",
+    "path_invalid": "该上传文件不属于此活动。",
+    "size": "海报最大为 5 MB。",
+    "storage_unavailable": "海报上传暂不可用。请稍后再试。",
+    "type": "请使用 JPEG、PNG 或 WebP 图片。"
   },
   "host": {
-    "already_suspended": "This host is already suspended.",
-    "cannot_suspend_self": "You can't suspend your own account.",
-    "not_suspended": "This host is not suspended.",
-    "suspended": "This host account is suspended, so its events can't be created, published or edited. Contact G-ventZ support."
+    "already_suspended": "此主办方已被停用。",
+    "cannot_suspend_self": "您不能停用自己的账户。",
+    "not_suspended": "此主办方未被停用。",
+    "suspended": "此主办方账户已被停用，因此无法创建、发布或编辑其活动。请联系 G-ventZ 客服。"
   },
   "host_application": {
-    "document_invalid": "Upload your ID or business document (JPG, PNG or PDF, at most 10 MB) first.",
-    "document_too_large": "The document can be at most 10 MB.",
-    "exists": "You already have an application in progress or approved.",
-    "invalid": "Check the application details and try again.",
-    "not_approved": "This application is not approved.",
-    "not_found": "Application not found.",
-    "not_submitted": "This application has already been decided.",
-    "reason_invalid": "Give a reason of 3 to 500 characters."
+    "document_invalid": "请先上传您的身份证件或企业文件（JPG、PNG 或 PDF，最大 10 MB）。",
+    "document_too_large": "文件最大为 10 MB。",
+    "exists": "您已有一份处理中或已批准的申请。",
+    "invalid": "请检查申请信息后重试。",
+    "not_approved": "此申请未获批准。",
+    "not_found": "未找到申请。",
+    "not_submitted": "此申请已有处理结果。",
+    "reason_invalid": "请填写 3 到 500 个字符的原因。"
   },
   "invalid": {
-    "constraint": "This change is not allowed."
+    "constraint": "不允许此更改。"
   },
   "money": {
-    "currency_mismatch": "Amounts in different currencies cannot be combined.",
-    "negative": "The result cannot be below zero."
+    "currency_mismatch": "不同货币的金额无法合并。",
+    "negative": "结果不能小于零。"
   },
   "order": {
-    "answer_invalid": "Choose one of the options for each question.",
-    "answer_required": "Please answer the required questions.",
-    "busy": "Lots of people are getting tickets right now. Please try again.",
-    "buyer_limit": "You have reached the number of tickets one person can get for this event.",
-    "buyer_name_required": "Enter your full name.",
-    "guest_name_invalid": "Guest names must be 2 to 120 characters.",
-    "host_suspended": "This event isn't taking registrations right now.",
-    "mixed_free_paid": "Free and paid tickets are separate orders. Get the free ones first, then the paid ones.",
-    "non_refundable_required": "Tick \"I understand tickets are non-refundable, except if the event is cancelled\" to continue.",
-    "not_enough_places": "There aren’t enough places left for that many tickets.",
-    "not_enough_tickets": "There aren’t enough tickets of that type left.",
-    "not_found": "Order not found.",
-    "not_open": "This event is not open for registration.",
-    "not_paid_types": "Choose paid ticket types only; free tickets are a separate order.",
-    "not_payable": "This order can no longer be paid. Start a new order.",
-    "not_pending": "This request has already been decided.",
-    "paid_not_supported": "Paid tickets are bought separately: use checkout for paid tickets.",
-    "paid_sales_closed": "Paid tickets for this event can't be bought right now.",
-    "price_too_low": "This ticket price is lower than the fees on it.",
-    "quantity_invalid": "Choose between 1 and 10 tickets.",
-    "sales_ended": "Ticket sales have ended.",
-    "sales_not_started": "Ticket sales have not started yet.",
-    "sold_out": "That ticket type is sold out.",
-    "ticket_type_unavailable": "That ticket type isn't available.",
-    "transition_not_allowed": "This order cannot be changed that way."
+    "answer_invalid": "请为每个问题选择一个选项。",
+    "answer_required": "请回答必答问题。",
+    "busy": "现在有很多人正在领取门票。请重试。",
+    "buyer_limit": "您已达到每人可获取此活动门票的数量上限。",
+    "buyer_name_required": "请输入您的全名。",
+    "guest_name_invalid": "嘉宾姓名必须为 2 到 120 个字符。",
+    "host_suspended": "此活动目前不接受报名。",
+    "mixed_free_paid": "免费门票和付费门票需分开下单。请先领取免费门票，再购买付费门票。",
+    "non_refundable_required": "请勾选“我了解门票不可退款，活动取消的情况除外”以继续。",
+    "not_enough_places": "剩余名额不足以容纳这么多门票。",
+    "not_enough_tickets": "该票种的剩余门票不足。",
+    "not_found": "未找到订单。",
+    "not_open": "此活动未开放报名。",
+    "not_paid_types": "请只选择付费票种；免费门票需单独下单。",
+    "not_payable": "此订单已无法支付。请重新下单。",
+    "not_pending": "此请求已有处理结果。",
+    "paid_not_supported": "付费门票需单独购买：请通过结账购买付费门票。",
+    "paid_sales_closed": "此活动的付费门票目前无法购买。",
+    "price_too_low": "此票价低于其所含费用。",
+    "quantity_invalid": "请选择 1 到 10 张门票。",
+    "sales_ended": "门票销售已结束。",
+    "sales_not_started": "门票尚未开售。",
+    "sold_out": "该票种已售罄。",
+    "ticket_type_unavailable": "该票种不可用。",
+    "transition_not_allowed": "此订单无法以这种方式更改。"
   },
   "payment": {
-    "forbidden": "You do not have permission to do that.",
-    "own_application": "Another staff member must review your own application or payout account.",
-    "provider_unavailable": "We couldn't reach the payment service. Please try again."
+    "forbidden": "您无权执行此操作。",
+    "own_application": "您本人的申请或结算账户必须由其他工作人员审核。",
+    "provider_unavailable": "无法连接支付服务。请重试。"
   },
   "payout": {
-    "account_unresolved": "The bank couldn't find this account. Check the bank and account number.",
-    "country_unavailable": "Paystack isn't available for this country yet.",
-    "not_approved": "You can change payout details once you are approved to sell paid tickets.",
-    "not_pending": "There is no payout account waiting to be created."
+    "account_unresolved": "银行找不到此账户。请检查银行和账号。",
+    "country_unavailable": "Paystack 暂不支持此国家或地区。",
+    "not_approved": "获准销售付费门票后，您才能更改结算信息。",
+    "not_pending": "没有等待创建的结算账户。"
   },
   "places": {
-    "bad_request": "Check the search and try again.",
-    "not_configured": "Place search isn't set up yet.",
-    "unavailable": "Place search is unavailable right now. Type the address instead."
+    "bad_request": "请检查搜索内容后重试。",
+    "not_configured": "地点搜索尚未设置。",
+    "unavailable": "地点搜索暂不可用。请直接输入地址。"
   },
   "profile": {
-    "unavailable": "Your profile couldn't be loaded. Please contact support."
+    "unavailable": "无法加载您的个人资料。请联系客服。"
   },
   "question": {
-    "kind_invalid": "Choose a question type.",
-    "label_length": "Questions must be 1 to 200 characters.",
-    "limit": "An event can have at most 30 questions.",
-    "not_found": "Question not found.",
-    "options_count": "Add at least 2 different options."
+    "kind_invalid": "请选择问题类型。",
+    "label_length": "问题必须为 1 到 200 个字符。",
+    "limit": "一个活动最多可有 30 个问题。",
+    "not_found": "未找到问题。",
+    "options_count": "请至少添加 2 个不同的选项。"
   },
   "rate_limit": {
-    "exceeded": "Too many requests. Please wait a moment and try again."
+    "exceeded": "请求过多。请稍候再试。"
   },
   "reference": {
-    "country_not_found": "Country not found.",
-    "time_zone_not_found": "No time zone found for that place."
+    "country_not_found": "未找到国家或地区。",
+    "time_zone_not_found": "未找到该地点的时区。"
   },
   "refund": {
-    "needs_approval": "This refund is more than your team can send yourselves right now. Contact G-ventZ support and we'll review it.",
-    "not_refundable": "This ticket can't be refunded: it isn't a paid, confirmed ticket, or it was already refunded."
+    "needs_approval": "此退款超出了您的团队目前可自行发放的额度。请联系 G-ventZ 客服，我们会进行审核。",
+    "not_refundable": "此门票无法退款：它不是已确认的付费门票，或已经退款。"
   },
   "registration": {
-    "already_registered": "You already have a ticket for this event.",
-    "closed": "Registration for this event is closed."
+    "already_registered": "您已有此活动的门票。",
+    "closed": "此活动的报名已截止。"
   },
   "request": {
-    "malformed": "The request could not be read.",
-    "method_not_allowed": "This method is not allowed here.",
-    "too_large": "The request is too large.",
-    "unsupported_media_type": "Send the request body as JSON."
+    "malformed": "无法读取该请求。",
+    "method_not_allowed": "此处不允许使用该方法。",
+    "too_large": "请求过大。",
+    "unsupported_media_type": "请以 JSON 格式发送请求正文。"
   },
   "resource": {
-    "not_found": "There is nothing at this address."
+    "not_found": "此地址没有任何内容。"
   },
   "route": {
-    "not_found": "There is nothing at this address."
+    "not_found": "此地址没有任何内容。"
   },
   "service": {
-    "busy": "We are very busy right now. Please try again in a moment."
+    "busy": "我们现在非常繁忙。请稍后再试。"
   },
   "settings": {
-    "delay_invalid": "The settlement delay must be a whole number of working days from 0 to 30.",
-    "fee_currency_invalid": "Use a three-letter currency code such as NGN or USD.",
-    "fee_invalid": "Enter a valid fee.",
-    "provider_not_configured": "This payment provider isn’t set up for this environment yet.",
-    "vat_invalid": "The VAT rate is in basis points: a whole number from 0 to 10000 (100%)."
+    "delay_invalid": "结算延迟必须是 0 到 30 之间的整数个工作日。",
+    "fee_currency_invalid": "请使用三个字母的货币代码，例如 NGN 或 USD。",
+    "fee_invalid": "请输入有效的费用。",
+    "provider_not_configured": "此支付服务商尚未在此环境中设置。",
+    "vat_invalid": "增值税率以基点表示：0 到 10000 之间的整数（100%）。"
   },
   "staff": {
-    "already_member": "This person is already G-ventZ staff.",
-    "cannot_remove_self": "You can't remove yourself from G-ventZ staff.",
-    "email_invalid": "Enter a valid email address.",
-    "email_unconfirmed": "Confirm your email address before you accept a staff invitation.",
-    "invite_exists": "This email already has an open invitation.",
-    "invite_not_found": "There is no open invitation with this id.",
-    "last_member": "The last G-ventZ staff member can't be removed.",
-    "no_invite": "There is no open staff invitation for your email address.",
-    "not_found": "This email is not G-ventZ staff."
+    "already_member": "此人已是 G-ventZ 工作人员。",
+    "cannot_remove_self": "您不能将自己从 G-ventZ 工作人员中移除。",
+    "email_invalid": "请输入有效的电子邮件地址。",
+    "email_unconfirmed": "接受工作人员邀请前，请先确认您的电子邮件地址。",
+    "invite_exists": "此电子邮件已有一个待处理的邀请。",
+    "invite_not_found": "没有与此 ID 对应的待处理邀请。",
+    "last_member": "无法移除最后一名 G-ventZ 工作人员。",
+    "no_invite": "您的电子邮件地址没有待处理的工作人员邀请。",
+    "not_found": "此电子邮件不属于 G-ventZ 工作人员。"
   },
   "storage": {
-    "unavailable": "File storage is unavailable. Please try again."
+    "unavailable": "文件存储不可用。请重试。"
   },
   "ticket": {
-    "email_limit": "This ticket has been emailed several times this hour. Please try again later.",
-    "email_unavailable": "We couldn't send the email right now. Please try again.",
-    "not_found": "Ticket not found."
+    "email_limit": "此门票在一小时内已多次通过电子邮件发送。请稍后再试。",
+    "email_unavailable": "我们暂时无法发送电子邮件。请重试。",
+    "not_found": "未找到门票。"
   },
   "validation": {
-    "failed": "Some fields are not valid."
+    "failed": "部分字段无效。"
   },
   "waitlist": {
-    "empty": "Nobody is on the waiting list.",
-    "none_fits": "The next group on the waiting list needs more places than are free."
+    "empty": "候补名单上没有人。",
+    "none_fits": "候补名单上的下一组所需名额多于剩余名额。"
   },
   "webhook": {
-    "signature_invalid": "Invalid signature."
+    "signature_invalid": "签名无效。"
   }
 }

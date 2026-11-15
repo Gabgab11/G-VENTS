@@ -1,0 +1,108 @@
+{
+  "pricing": {
+    "meta": {
+      "title": "Preços · G-ventZ"
+    },
+    "hero": {
+      "eyebrow": "Preços",
+      "title": "Preços simples que crescem com seus eventos",
+      "text": "Crie eventos de graça. Você só paga uma taxa da plataforma quando vende ingressos pagos."
+    },
+    "currency": {
+      "choose": "Escolher moeda",
+      "usd": "USD",
+      "ngn": "Naira",
+      "gbp": "GBP",
+      "eur": "EUR",
+      "ghs": "Cedi",
+      "kes": "Xelim",
+      "zar": "Rand"
+    },
+    "plan": {
+      "starter": "Para organizadores começando com eventos gratuitos.",
+      "pro": "Para organizadores que realizam eventos todo mês.",
+      "business": "Para organizações com eventos grandes ou múltiplos.",
+      "popular": "Mais popular",
+      "perMonth": "/ mês",
+      "fee": "Taxa da plataforma em ingressos pagos: {fee}%",
+      "signUpFree": "Cadastre-se grátis",
+      "comingSoon": "Em breve"
+    },
+    "features": {
+      "unlimitedEvents": "Criação ilimitada de eventos",
+      "freeTickets": "Emissão de ingressos gratuitos",
+      "promoCodes": "Códigos promocionais",
+      "qrCheckIn": "Ingressos com QR code e check-in de convidados",
+      "basicAnalytics": "Análises básicas e lembretes por e-mail",
+      "standardPages": "Páginas de evento padrão",
+      "teamOne": "1 membro da equipe",
+      "everythingStarter": "Tudo do Starter",
+      "advancedAnalytics": "Análises avançadas",
+      "advancedReminders": "Lembretes por e-mail avançados",
+      "customizablePages": "Páginas de evento personalizáveis",
+      "teamFive": "5 membros da equipe",
+      "prioritySupport": "Suporte prioritário",
+      "optionalDomain": "Domínio próprio opcional",
+      "everythingPro": "Tudo do Pro",
+      "brandedPages": "Páginas de evento totalmente com sua marca",
+      "teamFifteen": "15 membros da equipe",
+      "customDomain": "Domínio próprio",
+      "apiAccess": "Acesso à API"
+    },
+    "example": {
+      "title": "Como ficam as taxas",
+      "text": "Exemplo: um organizador vende {quantity} ingressos a {price} cada.",
+      "sales": "Venda de ingressos",
+      "starter": "Taxa Starter (3%)",
+      "pro": "Taxa Pro (1,5%) + preço mensal",
+      "business": "Taxa Business (0,5%) + preço mensal",
+      "note": "As tarifas do provedor de pagamento são cobradas à parte e valem para todos os planos."
+    },
+    "compare": {
+      "title": "Comparar todos os recursos",
+      "feature": "Recurso",
+      "monthlyPrice": "Preço mensal",
+      "features": {
+        "eventCreation": "Criação de eventos",
+        "freeTickets": "Emissão de ingressos gratuitos",
+        "platformFee": "Taxa da plataforma em ingressos pagos",
+        "analytics": "Análises do evento",
+        "promoCodes": "Códigos promocionais",
+        "customPages": "Páginas de evento personalizadas",
+        "attendeeManagement": "Gestão de participantes",
+        "qrTickets": "Ingressos com QR code",
+        "checkIn": "Check-in de convidados",
+        "emailReminders": "Lembretes por e-mail",
+        "teamMembers": "Membros da equipe",
+        "exportData": "Exportar dados de participantes",
+        "prioritySupport": "Suporte prioritário",
+        "customDomain": "Domínio próprio",
+        "apiAccess": "Acesso à API"
+      },
+      "values": {
+        "unlimited": "Ilimitado",
+        "free": "Grátis",
+        "basic": "Básico",
+        "advanced": "Avançado",
+        "yes": "Sim",
+        "no": "Não",
+        "standard": "Padrão",
+        "customizable": "Personalizável",
+        "fullyBranded": "Totalmente com sua marca",
+        "optional": "Opcional"
+      }
+    },
+    "links": {
+      "terms": "Termos",
+      "refunds": "Reembolsos",
+      "privacy": "Privacidade"
+    }
+  },
+  "help": {
+    "meta": {
+      "title": "Ajuda · G-ventZ"
+    },
+    "title": "Ajuda",
+    "text": "Convidados: entrem em contato com o organizador do evento em que se inscreveram. Organizadores: gerenciem seus eventos pelo painel."
+  }
+}

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useEffect, useState, useTransition } from "react";
 import type { PayoutCountry } from "@/lib/payment-text";
 import { checkAccount, loadBanks } from "./actions";
@@ -10,6 +11,7 @@ type Resolved = { verified: boolean; accountName: string | null };
 // Bank, account number and Paystack's account-name check (HA1). The resolved name is shown back
 // so the host confirms it's theirs; the confirm box appears only after a check of these details.
 export default function BankAccountFields({ country }: { country: PayoutCountry | null }) {
+  const t = useTranslations("account.payouts.bank");
   const [banks, setBanks] = useState<Bank[]>([]);
   const [bankError, setBankError] = useState("");
   const [loadingBanks, setLoadingBanks] = useState(false);
@@ -51,22 +53,22 @@ export default function BankAccountFields({ country }: { country: PayoutCountry 
 
   return (
     <div className="stack">
-      <label className="field"><span>Bank</span>
+      <label className="field"><span>{t("bank")}</span>
         <select className="input" name="bank_code" value={bankCode} required disabled={!country || loadingBanks}
           onChange={(e) => { setBankCode(e.target.value); setResolved(null); }}>
-          <option value="" disabled>{!country ? "Choose a country first" : loadingBanks ? "Loading banks..." : "Choose your bank"}</option>
+          <option value="" disabled>{!country ? t("chooseCountryFirst") : loadingBanks ? t("loadingBanks") : t("chooseBank")}</option>
           {banks.map((b) => <option key={`${b.code}-${b.name}`} value={b.code}>{b.name}</option>)}
         </select></label>
       <input type="hidden" name="bank_name" value={bankName} />
       {bankError && <p className="error" role="alert">{bankError}</p>}
 
-      <label className="field"><span>Account number</span>
+      <label className="field"><span>{t("accountNumber")}</span>
         <input className="input" name="account_number" inputMode="numeric" autoComplete="off" maxLength={24} required value={number}
           onChange={(e) => { setNumber(e.target.value); setResolved(null); }} /></label>
 
       <div className="row-gap">
         <button type="button" className="btn-ghost" onClick={check} disabled={checking || !bankCode || number.trim().length < 6}>
-          {checking ? "Checking..." : "Check account"}
+          {checking ? t("checking") : t("check")}
         </button>
       </div>
       {checkError && <p className="error" role="alert">{checkError}</p>}
@@ -74,13 +76,13 @@ export default function BankAccountFields({ country }: { country: PayoutCountry 
       {resolved && (
         <div className="pay-resolved" role="status">
           {resolved.verified && resolved.accountName ? (
-            <p>Account name: <b>{resolved.accountName}</b></p>
+            <p>{t.rich("accountName", { name: resolved.accountName, b: (c) => <b>{c}</b> })}</p>
           ) : (
-            <p className="muted small">Paystack can&apos;t check account names in this country. Check the bank and number carefully: payouts go to exactly this account.</p>
+            <p className="muted small">{t("cantCheck")}</p>
           )}
           <label className="check">
             <input type="checkbox" name="confirm_account" required />
-            <span>{resolved.verified && resolved.accountName ? `This is the right account (${resolved.accountName})` : "These bank details are right"}</span>
+            <span>{resolved.verified && resolved.accountName ? t("confirmNamed", { name: resolved.accountName }) : t("confirm")}</span>
           </label>
         </div>
       )}

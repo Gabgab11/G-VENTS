@@ -1,0 +1,277 @@
+{
+  "notice": "Dies ist eine Übersetzung zu Ihrer Information; maßgeblich ist <link>die englische Fassung</link>.",
+  "terms": {
+    "metaTitle": "Nutzungsbedingungen · G-ventZ",
+    "title": "Nutzungsbedingungen",
+    "sections": {
+      "introduction": {
+        "title": "Einleitung",
+        "p1": "Willkommen bei G-ventZ.",
+        "p2": "Diese Nutzungsbedingungen regeln Ihren Zugang zu und Ihre Nutzung unserer Website, Anwendungen, Tools zur Veranstaltungsverwaltung, Ticketing-Dienste und zugehörigen Funktionen.",
+        "p3": "G-ventZ stellt eine Plattform bereit, mit der Nutzer Veranstaltungen erstellen, veröffentlichen, entdecken, verwalten und bewerben, Teilnehmer registrieren und Tickets verkaufen können.",
+        "p4": "Indem Sie ein Konto erstellen oder unsere Dienste nutzen, stimmen Sie diesen Bedingungen zu. Wenn Sie nicht zustimmen, müssen Sie die Nutzung der Plattform einstellen."
+      },
+      "eligibilityAndAccounts": {
+        "title": "Voraussetzungen und Konten",
+        "p1": "Um unsere Dienste zu nutzen, müssen Sie rechtlich in der Lage sein, eine verbindliche Vereinbarung zu schließen.",
+        "p2": "Sie verpflichten sich:",
+        "b1": "Zutreffende und vollständige Registrierungsangaben zu machen.",
+        "b2": "Ihre Anmeldedaten sicher aufzubewahren.",
+        "b3": "Zutreffende Angaben zu Ihren Veranstaltungen zu pflegen.",
+        "b4": "Uns unverzüglich über unbefugte Zugriffe auf Ihr Konto zu informieren.",
+        "b5": "Nach Maßgabe des anwendbaren Rechts die Verantwortung für Aktivitäten über Ihr Konto zu übernehmen.",
+        "a1": "Wir behalten uns das Recht vor, Konten, die gegen diese Bedingungen verstoßen, einzuschränken oder zu sperren."
+      },
+      "eventOrganizers": {
+        "title": "Veranstalter",
+        "p1": "Veranstalter sind für die Veranstaltungen verantwortlich, die sie über unsere Plattform veröffentlichen und verwalten.",
+        "p2": "Veranstalter müssen:",
+        "b1": "Zutreffende Beschreibungen, Termine, Orte, Abläufe und Ticketpreise ihrer Veranstaltungen angeben.",
+        "b2": "Alle für ihre Veranstaltungen erforderlichen Genehmigungen, Lizenzen und Erlaubnisse einholen.",
+        "b3": "Sicherstellen, dass ihre Veranstaltungen dem anwendbaren Recht entsprechen.",
+        "b4": "Veranstaltungsspezifische Regeln und Erstattungsbedingungen klar offenlegen.",
+        "b5": "Die beworbenen Veranstaltungen und Leistungen gegenüber den Teilnehmern erbringen.",
+        "b6": "Anfragen, Beschwerden, Stornierungen und anfallende Erstattungen der Teilnehmer bearbeiten.",
+        "b7": "Irreführende Werbung, betrügerische Ticketverkäufe und die unbefugte Nutzung geistigen Eigentums unterlassen.",
+        "a1": "Veranstalter dürfen die Plattform nicht nutzen, um illegale Aktivitäten, betrügerische Transaktionen oder verbotene Veranstaltungen zu ermöglichen."
+      },
+      "attendeesAndTicketPurchases": {
+        "title": "Teilnehmer und Ticketkäufe",
+        "p1": "Teilnehmer sind dafür verantwortlich, die Veranstaltungsinformationen vor dem Kauf von Tickets zu prüfen.",
+        "p2": "Ein Ticketkauf begründet eine Transaktion zwischen dem Teilnehmer und dem jeweiligen Veranstalter, vorbehaltlich der geltenden Zahlungsvereinbarungen und Verbraucherschutzgesetze.",
+        "p3": "Tickets können veranstaltungsspezifischen Einschränkungen, Einlassbedingungen, Ausweisanforderungen oder Übertragungsbeschränkungen unterliegen.",
+        "p4": "Wir garantieren keinen Einlass, wenn ein Teilnehmer gegen die veröffentlichten Einlassbedingungen einer Veranstaltung verstößt."
+      },
+      "platformFeesAndPayments": {
+        "title": "Plattformgebühren und Zahlungen",
+        "p1": "Die Erstellung eines Kontos und die Veröffentlichung kostenloser Veranstaltungen können kostenlos angeboten werden.",
+        "p2": "Für den Verkauf kostenpflichtiger Tickets können Plattformgebühren, Gebühren für die Zahlungsabwicklung, Abonnementgebühren oder andere klar ausgewiesene Entgelte anfallen.",
+        "p3": "Anfallende Gebühren werden vor Abschluss der jeweiligen Transaktion angezeigt.",
+        "p4": "Die Zahlungsabwicklung kann durch externe Zahlungsdienstleister erfolgen. Deren Bedingungen und Richtlinien können ebenfalls gelten.",
+        "p5": "Veranstalter sind dafür verantwortlich, dass ihre Zahlungs- und Auszahlungsdaten korrekt sind, und für die Einhaltung der geltenden Steuer- und Meldepflichten.",
+        "p6": "Wir können unsere Preise mit angemessener Vorankündigung ändern. Änderungen wirken sich nicht rückwirkend auf Gebühren aus, die für abgeschlossene Transaktionen bereits berechnet wurden."
+      },
+      "payouts": {
+        "title": "Auszahlungen",
+        "p1": "Ticketerlöse werden an berechtigte Veranstalter gemäß dem geltenden Auszahlungsplan und den Anforderungen des Zahlungsdienstleisters ausgezahlt.",
+        "p2": "Auszahlungen können sich verzögern, wenn eine zusätzliche Überprüfung erforderlich ist, eine Transaktion angefochten wird, ein Betrugsverdacht besteht, eine Erstattung aussteht oder das anwendbare Recht eine Einschränkung verlangt.",
+        "p3": "Wir können angemessene Rücklagen bilden, soweit dies nach dem Gesetz und unseren Vereinbarungen zur Zahlungsabwicklung zulässig ist.",
+        "p4": "Wir halten Gelder nicht absichtlich ohne berechtigten vertraglichen, rechtlichen, sicherheitsbezogenen oder zahlungstechnischen Grund zurück."
+      },
+      "cancellationsAndRefunds": {
+        "title": "Stornierungen und Erstattungen",
+        "p1": "Veranstalter müssen ihre Erstattungsrichtlinie klar offenlegen, bevor Teilnehmer Tickets kaufen.",
+        "p2": "Erstattungsanträge werden gemäß der veröffentlichten Richtlinie der Veranstaltung, diesen Bedingungen und dem anwendbaren Recht bearbeitet.",
+        "p3": "Wird eine Veranstaltung abgesagt, muss der Veranstalter die Absage unverzüglich mitteilen und Erstattungen leisten, soweit das Gesetz oder die geltende Richtlinie der Veranstaltung dies verlangt.",
+        "p4": "Je nach Zahlungsdienstleister und Finanzinstitut des Teilnehmers kann es mehrere Werktage dauern, bis Erstattungen sichtbar sind.",
+        "p5": "Plattformgebühren und Gebühren für die Zahlungsabwicklung werden gemäß den geltenden Gebührenangaben, den Regeln des Zahlungsdienstleisters und den gesetzlichen Anforderungen behandelt.",
+        "p6": "Keine Bestimmung dieses Abschnitts schränkt zwingende Erstattungs- oder Verbraucherrechte nach anwendbarem Recht ein."
+      },
+      "prohibitedActivities": {
+        "title": "Verbotene Aktivitäten",
+        "p1": "Es ist Ihnen nicht gestattet:",
+        "b1": "Betrügerische oder irreführende Veranstaltungen zu erstellen.",
+        "b2": "Gefälschte, nicht autorisierte oder ungültige Tickets zu verkaufen.",
+        "b3": "Ticketverkäufe oder Zahlungssysteme zu manipulieren.",
+        "b4": "Plattformgebühren oder Sicherheitskontrollen zu umgehen.",
+        "b5": "Personenbezogene Daten rechtswidrig zu erheben.",
+        "b6": "Unerwünschte Werbenachrichten unter Verstoß gegen das anwendbare Recht zu versenden.",
+        "b7": "Schadsoftware hochzuladen oder unbefugten Zugriff auf unsere Systeme zu versuchen.",
+        "b8": "Das geistige Eigentum anderer zu verletzen.",
+        "b9": "Die Plattform für rechtswidrige Diskriminierung, Belästigung, Betrug oder sonstiges verbotenes Verhalten zu nutzen.",
+        "a1": "Wir können Inhalte entfernen, Einträge löschen, Funktionen einschränken oder Konten sperren, soweit dies zur Durchsetzung dieser Bedingungen oder zur Einhaltung des Gesetzes vernünftigerweise erforderlich ist."
+      },
+      "intellectualProperty": {
+        "title": "Geistiges Eigentum",
+        "p1": "Sie bleiben Eigentümer der Inhalte, die Ihnen gehören und die Sie auf die Plattform hochladen.",
+        "p2": "Mit der Veröffentlichung von Veranstaltungsinhalten räumen Sie G-ventZ eine beschränkte, nicht ausschließliche, weltweite und gebührenfreie Lizenz ein, diese Inhalte zu hosten, zu vervielfältigen, anzuzeigen und zu verbreiten, soweit dies für den Betrieb, die Bewerbung und die Erbringung der von Ihnen angeforderten Dienste vernünftigerweise erforderlich ist.",
+        "p3": "Sie versichern, dass Sie über die erforderlichen Rechte und Genehmigungen verfügen, um Ihre Inhalte hochzuladen und zu nutzen.",
+        "p4": "Unsere Software, unsere Marke, unsere Benutzeroberfläche und die originären Plattforminhalte bleiben unser Eigentum oder das unserer Lizenzgeber."
+      },
+      "privacy": {
+        "title": "Datenschutz",
+        "p1": "Die Erhebung und Nutzung personenbezogener Daten richtet sich nach unserer Datenschutzerklärung.",
+        "p2": "Veranstalter müssen die Daten der Teilnehmer rechtmäßig verarbeiten und sie nur für die zulässige Verwaltung der Veranstaltung, für Mitteilungen und andere offengelegte Zwecke verwenden.",
+        "p3": "Veranstalter müssen jede erforderliche Einwilligung einholen, bevor sie Teilnehmerdaten für sachfremde Werbung verwenden."
+      },
+      "thirdPartyServices": {
+        "title": "Dienste Dritter",
+        "p1": "Unsere Plattform kann mit Zahlungsabwicklern, Analyseanbietern, E-Mail-Diensten, Tools zur Identitätsprüfung und anderen Diensten Dritter verbunden sein.",
+        "p2": "Für unabhängige Dienste Dritter sind wir nicht verantwortlich, soweit uns nicht nach anwendbarem Recht oder aufgrund unserer Vereinbarungen mit diesen Anbietern Pflichten obliegen.",
+        "p3": "Für Ihre Nutzung dieser Dienste können zusätzliche Bedingungen gelten."
+      },
+      "serviceAvailability": {
+        "title": "Verfügbarkeit des Dienstes",
+        "p1": "Wir bemühen uns um einen zuverlässigen Dienst, garantieren jedoch keinen unterbrechungsfreien Zugang.",
+        "p2": "Wartungsarbeiten, technische Probleme, Sicherheitsvorfälle oder Umstände außerhalb unserer zumutbaren Kontrolle können die Verfügbarkeit vorübergehend beeinträchtigen.",
+        "p3": "Wir ergreifen angemessene Maßnahmen, um betroffene Dienste wiederherzustellen."
+      },
+      "limitationOfLiability": {
+        "title": "Haftungsbeschränkung",
+        "p1": "Soweit nach anwendbarem Recht zulässig, haftet G-ventZ nicht für Verluste, die ausschließlich darauf beruhen, dass ein Veranstalter eine Veranstaltung nicht durchführt, ein Veranstalter unzutreffende Veranstaltungsinformationen bereitstellt oder Streitigkeiten zwischen Veranstaltern und Teilnehmern bestehen.",
+        "p2": "Keine Bestimmung dieser Bedingungen schließt eine Haftung aus, die gesetzlich nicht ausgeschlossen werden kann, einschließlich geltender Verbraucherrechte und der Haftung für Betrug oder vorsätzliches Fehlverhalten.",
+        "p3": "Jede andere Haftungsbeschränkung gilt nur, soweit dies nach anwendbarem Recht zulässig ist."
+      },
+      "accountSuspensionAndTermination": {
+        "title": "Sperrung und Kündigung von Konten",
+        "p1": "Sie können die Nutzung der Plattform jederzeit beenden.",
+        "p2": "Wir können den Zugang sperren oder beenden, wenn Sie wesentlich gegen diese Bedingungen verstoßen, betrügerisch handeln, ein Sicherheitsrisiko verursachen oder wenn eine Sperrung zur Einhaltung des Gesetzes erforderlich ist.",
+        "p3": "Soweit vernünftigerweise möglich, erläutern wir den Grund der Sperrung und geben Ihnen Gelegenheit, das Problem zu beheben.",
+        "p4": "Offene Zahlungs-, Erstattungs- und rechtliche Verpflichtungen können über die Beendigung hinaus fortbestehen."
+      },
+      "changesToTheseTerms": {
+        "title": "Änderungen dieser Bedingungen",
+        "p1": "Wir können diese Bedingungen von Zeit zu Zeit ändern.",
+        "p2": "Wesentliche Änderungen werden über die Plattform, per E-Mail oder auf andere geeignete Weise mitgeteilt.",
+        "p3": "Die geänderten Bedingungen geben ihr Datum des Inkrafttretens an."
+      },
+      "governingLaw": {
+        "title": "Anwendbares Recht",
+        "p1": "Diese Bedingungen unterliegen dem Recht Nigerias, vorbehaltlich zwingender gesetzlicher Schutzbestimmungen zugunsten der Nutzer.",
+        "p2": "Streitigkeiten werden von den zuständigen Gerichten oder Streitbeilegungsstellen behandelt, die nach anwendbarem Recht bestimmt werden."
+      },
+      "contact": {
+        "title": "Kontakt",
+        "p1": "Bei Fragen zu diesen Bedingungen wenden Sie sich bitte an:",
+        "p2": "Plattform: G-ventZ",
+        "p3": "E-Mail: support@gventz.com"
+      }
+    }
+  },
+  "privacy": {
+    "metaTitle": "Datenschutzerklärung · G-ventZ",
+    "title": "Datenschutzerklärung",
+    "effective": "Wird noch bekanntgegeben",
+    "intro": "Diese Erklärung wird derzeit ausgearbeitet. Der vollständige Text wird vor dem Start kostenpflichtiger Tickets veröffentlicht.",
+    "toBeWritten": "Wird noch ergänzt.",
+    "sections": {
+      "introduction": {
+        "title": "Einleitung",
+        "p1": "Diese Datenschutzerklärung wird erläutern, wie G-ventZ Ihre personenbezogenen Daten erhebt, verwendet und schützt, wenn Sie unsere Website, Apps und Ticketing-Dienste nutzen."
+      },
+      "informationWeCollect": {
+        "title": "Welche Daten wir erheben",
+        "b1": "Kontodaten (Name, E-Mail-Adresse)",
+        "b2": "Angaben zu Veranstaltungen und Anmeldungen",
+        "b3": "Tickets und Check-in-Protokolle",
+        "b4": "Geräte- und Nutzungsdaten"
+      },
+      "howWeUseYourInformation": {
+        "title": "Wie wir Ihre Daten verwenden"
+      },
+      "sharingWithEventHosts": {
+        "title": "Weitergabe an Veranstalter"
+      },
+      "thirdPartyServices": {
+        "title": "Dienste Dritter"
+      },
+      "cookiesAndLocalStorage": {
+        "title": "Cookies und lokale Speicherung"
+      },
+      "dataRetention": {
+        "title": "Speicherdauer"
+      },
+      "yourRights": {
+        "title": "Ihre Rechte"
+      },
+      "security": {
+        "title": "Sicherheit"
+      },
+      "children": {
+        "title": "Kinder"
+      },
+      "changesToThisPolicy": {
+        "title": "Änderungen dieser Erklärung"
+      },
+      "contactUs": {
+        "title": "Kontakt"
+      }
+    }
+  },
+  "refunds": {
+    "metaTitle": "Erstattungsrichtlinie · G-ventZ",
+    "title": "Erstattungs- und Stornierungsrichtlinie",
+    "sections": {
+      "overview": {
+        "title": "Überblick",
+        "p1": "Diese Erstattungs- und Stornierungsrichtlinie erläutert, wie Erstattungsanträge für über G-ventZ veröffentlichte Veranstaltungen bearbeitet werden.",
+        "p2": "Unsere Plattform stellt Veranstaltern Tools bereit, um Veranstaltungen zu veröffentlichen, Tickets zu verkaufen und Anmeldungen zu verwalten. Sofern nicht ausdrücklich anders angegeben, sind die Veranstalter für die Durchführung ihrer Veranstaltungen und die Abwicklung veranstaltungsspezifischer Erstattungen verantwortlich.",
+        "p3": "Diese Richtlinie gilt vorbehaltlich der anwendbaren Verbraucherschutzgesetze."
+      },
+      "eventSpecificRefundPolicies": {
+        "title": "Veranstaltungsspezifische Erstattungsrichtlinien",
+        "p1": "Jeder Veranstalter muss für seine Veranstaltung eine Erstattungsrichtlinie festlegen.",
+        "p2": "Die geltende Richtlinie sollte vor dem Ticketkauf angezeigt werden und kann Folgendes festlegen:",
+        "b1": "Ob Tickets erstattungsfähig sind.",
+        "b2": "Die Frist für einen Erstattungsantrag.",
+        "b3": "Ob Stornierungen zu einer vollständigen oder teilweisen Erstattung berechtigen.",
+        "b4": "Ob Tickets auf eine andere Person übertragen werden können.",
+        "b5": "Etwaige zulässige Bearbeitungsabzüge.",
+        "b6": "Wie ein Erstattungsantrag gestellt wird.",
+        "a1": "Teilnehmer sollten die Erstattungsrichtlinie der Veranstaltung vor Abschluss eines Kaufs prüfen.",
+        "a2": "Keine veranstaltungsspezifische Richtlinie kann zwingende Rechte nach anwendbarem Recht außer Kraft setzen."
+      },
+      "attendeeInitiatedRefundRequests": {
+        "title": "Erstattungsanträge durch Teilnehmer",
+        "p1": "Kann ein Teilnehmer eine Veranstaltung nicht mehr besuchen, sollte er sich an den Veranstalter wenden oder über die verfügbaren Plattform-Tools einen Erstattungsantrag stellen.",
+        "p2": "Der Anspruch auf Erstattung wird anhand der veröffentlichten Richtlinie der Veranstaltung und des anwendbaren Rechts geprüft.",
+        "p3": "Sofern die Richtlinie der Veranstaltung oder das anwendbare Recht nichts anderes vorsieht, können Veranstalter freiwillige Erstattungsanträge ablehnen, etwa bei geänderten persönlichen Plänen oder Nichterscheinen."
+      },
+      "cancelledEvents": {
+        "title": "Abgesagte Veranstaltungen",
+        "p1": "Sagt ein Veranstalter eine Veranstaltung ab, muss er die betroffenen Teilnehmer unverzüglich benachrichtigen.",
+        "p2": "Ist eine Erstattung gesetzlich oder nach der geltenden Richtlinie der Veranstaltung vorgeschrieben, muss der Veranstalter die entsprechende Erstattung veranlassen.",
+        "p3": "Eine gesetzlich vorgeschriebene Erstattung darf nicht allein deshalb verweigert werden, weil die Richtlinie einer Veranstaltung Tickets als nicht erstattungsfähig bezeichnet."
+      },
+      "postponedOrRescheduledEvents": {
+        "title": "Verschobene oder neu terminierte Veranstaltungen",
+        "p1": "Wird eine Veranstaltung verschoben oder neu terminiert, muss der Veranstalter die Ticketinhaber über die neuen Regelungen informieren.",
+        "p2": "Der Anspruch auf Erstattung richtet sich nach der Richtlinie der Veranstaltung und dem anwendbaren Recht, einschließlich etwaiger Rechte, die durch eine wesentliche Änderung der Veranstaltung entstehen."
+      },
+      "duplicateOrIncorrectPayments": {
+        "title": "Doppelte oder fehlerhafte Zahlungen",
+        "p1": "Wenn Sie glauben, dass Ihnen für dieselbe Bestellung mehr als einmal oder ein falscher Betrag berechnet wurde, wenden Sie sich mit Ihrer Bestellnummer und den relevanten Transaktionsdaten an den Support.",
+        "p2": "Wir prüfen das Problem und stimmen uns gegebenenfalls mit dem Veranstalter oder dem Zahlungsdienstleister ab.",
+        "p3": "Bestätigte Doppelbelastungen werden gemäß den geltenden Zahlungsregeln und Gesetzen behoben."
+      },
+      "processingRefunds": {
+        "title": "Abwicklung von Erstattungen",
+        "p1": "Genehmigte Erstattungen erfolgen in der Regel über die ursprüngliche Zahlungsmethode, sofern diese unterstützt wird.",
+        "p2": "Wie lange es dauert, bis der Betrag auf Ihrem Konto erscheint, hängt vom Zahlungsdienstleister und Ihrem Finanzinstitut ab.",
+        "p3": "Wir informieren Sie über erhebliche Verzögerungen oder zusätzliche Angaben, die für die Abwicklung der Erstattung erforderlich sind."
+      },
+      "platformAndProcessingFees": {
+        "title": "Plattform- und Abwicklungsgebühren",
+        "p1": "Plattform- oder Zahlungsabwicklungsgebühren im Zusammenhang mit einer Erstattung werden gemäß den beim Bezahlvorgang offengelegten Gebührenbedingungen, den Regeln des jeweiligen Zahlungsdienstleisters und dem anwendbaren Recht behandelt.",
+        "p2": "Wir behalten keine Gebühren ein und ziehen keine ab, wenn dies gegen zwingende gesetzliche Anforderungen verstoßen würde."
+      },
+      "subscriptionRefunds": {
+        "title": "Erstattung von Abonnements",
+        "p1": "Für optionale Veranstalter-Abonnements gezahlte Gebühren sind nach Beginn des jeweiligen Abrechnungszeitraums grundsätzlich nicht erstattungsfähig, es sei denn, dies ist gesetzlich vorgeschrieben oder wir stellen fest, dass eine Erstattung aufgrund eines Abrechnungsfehlers oder eines anderen außergewöhnlichen Umstands angemessen ist.",
+        "p2": "Die Kündigung eines Abonnements beendet künftige Verlängerungen, führt aber nicht automatisch zur Erstattung früherer Zahlungen."
+      },
+      "fraudAndUnauthorizedTransactions": {
+        "title": "Betrug und nicht autorisierte Transaktionen",
+        "p1": "Wenn Sie vermuten, dass ein Ticketkauf oder eine Zahlung nicht autorisiert war, kontaktieren Sie uns bitte umgehend.",
+        "p2": "Wir können relevante Transaktionsdaten anfordern und uns zur Untersuchung mit dem Zahlungsdienstleister abstimmen.",
+        "p3": "Keine Bestimmung dieses Abschnitts schränkt Rechte ein, die Ihnen nach geltendem Zahlungs- oder Verbraucherschutzrecht zustehen."
+      },
+      "howToRequestARefund": {
+        "title": "So beantragen Sie eine Erstattung",
+        "p1": "Wenden Sie sich über die Kontaktdaten auf der Veranstaltungsseite an den Veranstalter.",
+        "p2": "Bei Problemen mit der Zahlungsabwicklung, Doppelbelastungen oder plattformbezogenen Problemen wenden Sie sich an:",
+        "p3": "Support-E-Mail: support@gventz.com",
+        "p4": "Bitte geben Sie Ihre Bestellnummer, den Namen der Veranstaltung, das Kaufdatum und eine Beschreibung des Problems an. Senden Sie nicht Ihre vollständige Kartennummer oder Ihren Sicherheitscode."
+      },
+      "policyUpdates": {
+        "title": "Aktualisierungen der Richtlinie",
+        "p1": "Wir können diese Richtlinie von Zeit zu Zeit ändern. Das Datum des Inkrafttretens wird bei der Veröffentlichung von Änderungen aktualisiert."
+      },
+      "contact": {
+        "title": "Kontakt",
+        "p1": "Plattform: G-ventZ",
+        "p2": "E-Mail: support@gventz.com"
+      }
+    }
+  }
+}

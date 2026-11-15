@@ -1,14 +1,15 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { useLayoutEffect, useMemo, useRef, useState } from "react";
+import { intlLocale } from "@/lib/format";
+import type { Locale } from "@/i18n/languages";
 
 // Apple-style wheel picker for a date and a time. It writes two hidden inputs so the
 // server action reads the same fields it did before (date/time or end_date/end_time).
 
 const ITEM = 44; // height of one row in px
 const VISIBLE = 5; // rows visible at once (the middle one is selected)
-const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const DAYS_AHEAD = 365;
 
 type Option<T extends string | number> = { value: T; label: string };
@@ -65,15 +66,35 @@ function pad2(n: number) {
   return String(n).padStart(2, "0");
 }
 
-// "2026-11-14" -> "Sat 14 Nov", computed without the device locale so server and client match.
-function formatDay(iso: string) {
+const isEnglish = (lang: Locale) => lang === "en" || lang === "en-XA";
+
+// "2026-11-14" -> "Sat 14 Nov" in English (names from Intl's en-US data, which match the old
+// "Sep" abbreviations), the page language's own short date otherwise. The page language, not the
+// device's, so server and client match.
+function formatDay(iso: string, lang: Locale) {
   const [y, m, d] = iso.split("-").map(Number);
   const dt = new Date(Date.UTC(y, m - 1, d));
-  return `${WEEKDAYS[dt.getUTCDay()]} ${d} ${MONTHS[m - 1]}`;
+  if (!isEnglish(lang)) {
+    return new Intl.DateTimeFormat(intlLocale(lang, "date"), { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" }).format(dt);
+  }
+  const part = (o: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat("en-US", { ...o, timeZone: "UTC" }).format(dt);
+  return `${part({ weekday: "short" })} ${d} ${part({ month: "short" })}`;
 }
 
-function formatTime(time: string) {
+// "AM" / "PM" in English; the language's own morning and afternoon marks otherwise.
+function periodLabel(period: string, lang: Locale) {
+  if (isEnglish(lang)) return period;
+  const dt = new Date(Date.UTC(2000, 0, 1, period === "PM" ? 15 : 9));
+  return new Intl.DateTimeFormat(intlLocale(lang, "date"), { hour: "numeric", hour12: true, timeZone: "UTC" })
+    .formatToParts(dt).find((p) => p.type === "dayPeriod")?.value ?? period;
+}
+
+function formatTime(time: string, lang: Locale) {
   const [h, min] = time.split(":").map(Number);
+  if (!isEnglish(lang)) {
+    return new Intl.DateTimeFormat(intlLocale(lang, "date"), { hour: "numeric", minute: "2-digit", hour12: true, timeZone: "UTC" })
+      .format(new Date(Date.UTC(2000, 0, 1, h, min)));
+  }
   const period = h >= 12 ? "PM" : "AM";
   const hour12 = h % 12 === 0 ? 12 : h % 12;
   return `${hour12}:${pad2(min)} ${period}`;
@@ -85,27 +106,23 @@ function todayIso() {
 }
 
 // Today plus the next year, plus the chosen date if it has since passed.
-function dayOptions(selected: string): Option<string>[] {
+function dayOptions(selected: string, lang: Locale): Option<string>[] {
   const [y, m, d] = todayIso().split("-").map(Number);
   const start = Date.UTC(y, m - 1, d);
   const opts: Option<string>[] = [];
   for (let i = 0; i <= DAYS_AHEAD; i++) {
     const dt = new Date(start + i * 86400000);
     const iso = `${dt.getUTCFullYear()}-${pad2(dt.getUTCMonth() + 1)}-${pad2(dt.getUTCDate())}`;
-    opts.push({ value: iso, label: formatDay(iso) });
+    opts.push({ value: iso, label: formatDay(iso, lang) });
   }
   if (selected && !opts.some((o) => o.value === selected)) {
-    opts.unshift({ value: selected, label: formatDay(selected) });
+    opts.unshift({ value: selected, label: formatDay(selected, lang) });
   }
   return opts;
 }
 
 const HOURS: Option<number>[] = Array.from({ length: 12 }, (_, i) => ({ value: i + 1, label: String(i + 1) }));
 const MINUTES: Option<number>[] = Array.from({ length: 12 }, (_, i) => ({ value: i * 5, label: pad2(i * 5) }));
-const PERIODS: Option<string>[] = [
-  { value: "AM", label: "AM" },
-  { value: "PM", label: "PM" },
-];
 
 // Turns "19:30" into the parts the wheels show.
 function splitTime(time: string) {
@@ -136,6 +153,9 @@ export default function DateTimeWheel({
   onChange: (next: { date: string; time: string }) => void;
   invalid?: boolean;
 }) {
+  const t = useTranslations("createEvent.wheel");
+  const lang = useLocale() as Locale;
+  const periods = useMemo<Option<string>[]>(() => ["AM", "PM"].map((p) => ({ value: p, label: periodLabel(p, lang) })), [lang]);
   const [open, setOpen] = useState(false);
   const [draftDate, setDraftDate] = useState(date || todayIso());
   const [draft, setDraft] = useState(() => splitTime(time));
@@ -162,11 +182,11 @@ export default function DateTimeWheel({
         onClick={() => (open ? setOpen(false) : openPicker())} aria-expanded={open}>
         {filled ? (
           <>
-            <span className="wheel-trigger-day">{formatDay(date)}</span>
-            <span className="wheel-trigger-time">{formatTime(time)}</span>
+            <span className="wheel-trigger-day">{formatDay(date, lang)}</span>
+            <span className="wheel-trigger-time">{formatTime(time, lang)}</span>
           </>
         ) : (
-          <span className="wheel-trigger-empty">Choose {label.toLowerCase()}</span>
+          <span className="wheel-trigger-empty">{t("choose", { label })}</span>
         )}
       </button>
 
@@ -174,25 +194,25 @@ export default function DateTimeWheel({
         <div className="wheel-panel">
           <div className="wheel-columns">
             <div className="wheel-group wide">
-              <div className="wheel-head">Day</div>
-              <Wheel label="Day" options={dayOptions(draftDate)} value={draftDate} onChange={setDraftDate} />
+              <div className="wheel-head">{t("day")}</div>
+              <Wheel label={t("day")} options={dayOptions(draftDate, lang)} value={draftDate} onChange={setDraftDate} />
             </div>
             <div className="wheel-group">
-              <div className="wheel-head">Hour</div>
-              <Wheel label="Hour" options={HOURS} value={draft.hour} onChange={(hour) => setDraft({ ...draft, hour })} />
+              <div className="wheel-head">{t("hour")}</div>
+              <Wheel label={t("hour")} options={HOURS} value={draft.hour} onChange={(hour) => setDraft({ ...draft, hour })} />
             </div>
             <div className="wheel-group">
-              <div className="wheel-head">Min</div>
-              <Wheel label="Minute" options={MINUTES} value={draft.minute} onChange={(minute) => setDraft({ ...draft, minute })} />
+              <div className="wheel-head">{t("min")}</div>
+              <Wheel label={t("minute")} options={MINUTES} value={draft.minute} onChange={(minute) => setDraft({ ...draft, minute })} />
             </div>
             <div className="wheel-group">
               <div className="wheel-head">&nbsp;</div>
-              <Wheel label="AM or PM" options={PERIODS} value={draft.period} onChange={(period) => setDraft({ ...draft, period })} />
+              <Wheel label={t("period")} options={periods} value={draft.period} onChange={(period) => setDraft({ ...draft, period })} />
             </div>
           </div>
           <div className="wheel-foot">
-            <span className="muted small">{formatDay(draftDate)} · {formatTime(joinTime(draft.hour, draft.minute, draft.period))}</span>
-            <button type="button" className="btn-grad wheel-done" onClick={done}>Done</button>
+            <span className="muted small">{formatDay(draftDate, lang)} · {formatTime(joinTime(draft.hour, draft.minute, draft.period), lang)}</span>
+            <button type="button" className="btn-grad wheel-done" onClick={done}>{t("done")}</button>
           </div>
         </div>
       )}

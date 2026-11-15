@@ -1,17 +1,22 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 
-export const metadata: Metadata = { title: "You're offline · G-ventZ", robots: { index: false } };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("auth.offline");
+  return { title: t("metaTitle"), robots: { index: false } };
+}
 
 // Shown by the service worker (public/sw.js) when a page can't load without a connection.
-export default function OfflinePage() {
+export default async function OfflinePage() {
+  const t = await getTranslations("auth.offline");
   return (
     <main className="offline">
       <div className="offline-card">
-        <p className="si-eyebrow">No connection</p>
-        <h1 className="si-title">You&apos;re offline</h1>
-        <p className="si-sub">Check your connection and try again. Tickets you&apos;ve opened on this phone before still work offline: open them from the link in your email.</p>
-        <Link href="/my-tickets" className="si-primary offline-btn">Try again</Link>
+        <p className="si-eyebrow">{t("eyebrow")}</p>
+        <h1 className="si-title">{t("title")}</h1>
+        <p className="si-sub">{t("sub")}</p>
+        <Link href="/my-tickets" className="si-primary offline-btn">{t("retry")}</Link>
       </div>
     </main>
   );

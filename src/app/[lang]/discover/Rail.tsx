@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 
 // A titled row of cards that scrolls sideways: swipe or trackpad, or the arrow buttons, which
 // move one screenful and switch off at either end.
 export default function Rail({ title, id, more, track = "dc-rail-track", children }: { title: string; id: string; more?: { href: string; label: string }; track?: string; children: ReactNode }) {
+  const t = useTranslations("discover.rail");
   const trackRef = useRef<HTMLDivElement>(null);
   const [ends, setEnds] = useState({ start: true, end: true });
 
@@ -39,10 +41,10 @@ export default function Rail({ title, id, more, track = "dc-rail-track", childre
         {more && <Link href={more.href} className="dc-link">{more.label}</Link>}
         {!(ends.start && ends.end) && (
           <div className="dc-rail-arrows">
-            <button type="button" aria-label={`Previous: ${title}`} onClick={() => move(-1)} disabled={ends.start}>
+            <button type="button" aria-label={t("previous", { title })} onClick={() => move(-1)} disabled={ends.start}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6" /></svg>
             </button>
-            <button type="button" aria-label={`Next: ${title}`} onClick={() => move(1)} disabled={ends.end}>
+            <button type="button" aria-label={t("next", { title })} onClick={() => move(1)} disabled={ends.end}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg>
             </button>
           </div>

@@ -1,0 +1,277 @@
+{
+  "notice": "Ceci est une traduction fournie à titre indicatif ; seule <link>la version anglaise</link> fait foi.",
+  "terms": {
+    "metaTitle": "Conditions d’utilisation · G-ventZ",
+    "title": "Conditions d’utilisation du service",
+    "sections": {
+      "introduction": {
+        "title": "Introduction",
+        "p1": "Bienvenue sur G-ventZ.",
+        "p2": "Les présentes Conditions d’utilisation du service régissent votre accès à notre site web, à nos applications, à nos outils de gestion d’événements, à nos services de billetterie et aux fonctionnalités associées, ainsi que leur utilisation.",
+        "p3": "G-ventZ fournit une plateforme qui permet aux utilisateurs de créer, publier, découvrir, gérer et promouvoir des événements, d’inscrire des participants et de vendre des billets.",
+        "p4": "En créant un compte ou en utilisant nos services, vous acceptez les présentes Conditions. Si vous ne les acceptez pas, vous devez cesser d’utiliser la plateforme."
+      },
+      "eligibilityAndAccounts": {
+        "title": "Conditions d’accès et comptes",
+        "p1": "Pour utiliser nos services, vous devez avoir la capacité juridique de conclure un contrat contraignant.",
+        "p2": "Vous vous engagez à :",
+        "b1": "Fournir des informations d’inscription exactes et complètes.",
+        "b2": "Préserver la sécurité de vos identifiants de connexion.",
+        "b3": "Tenir à jour des informations exactes sur vos événements.",
+        "b4": "Nous signaler sans délai tout accès non autorisé à votre compte.",
+        "b5": "Assumer la responsabilité des activités menées depuis votre compte, sous réserve de la loi applicable.",
+        "a1": "Nous nous réservons le droit de restreindre ou de suspendre les comptes qui enfreignent les présentes Conditions."
+      },
+      "eventOrganizers": {
+        "title": "Organisateurs d’événements",
+        "p1": "Les organisateurs d’événements sont responsables des événements qu’ils publient et gèrent sur notre plateforme.",
+        "p2": "Les organisateurs doivent :",
+        "b1": "Fournir des descriptions, dates, lieux, horaires et prix des billets exacts pour leurs événements.",
+        "b2": "Obtenir tous les permis, licences et autorisations nécessaires à leurs événements.",
+        "b3": "Veiller à ce que leurs événements respectent la loi applicable.",
+        "b4": "Indiquer clairement les règles propres à l’événement et les conditions de remboursement.",
+        "b5": "Fournir aux participants les événements et services annoncés.",
+        "b6": "Traiter les demandes, réclamations, annulations et remboursements applicables des participants.",
+        "b7": "S’abstenir de toute publicité trompeuse, de toute vente frauduleuse de billets et de toute utilisation non autorisée de la propriété intellectuelle.",
+        "a1": "Les organisateurs ne doivent pas utiliser la plateforme pour faciliter des activités illégales, des transactions frauduleuses ou des événements interdits."
+      },
+      "attendeesAndTicketPurchases": {
+        "title": "Participants et achat de billets",
+        "p1": "Il incombe aux participants de consulter les informations sur l’événement avant d’acheter des billets.",
+        "p2": "L’achat d’un billet constitue une transaction entre le participant et l’organisateur de l’événement concerné, sous réserve des modalités de paiement applicables et des lois sur la protection des consommateurs.",
+        "p3": "Les billets peuvent être soumis à des restrictions propres à l’événement, à des conditions d’admission, à des exigences d’identification ou à des limites de transfert.",
+        "p4": "Nous ne garantissons pas l’admission d’un participant qui ne respecte pas les conditions d’entrée publiées pour un événement."
+      },
+      "platformFeesAndPayments": {
+        "title": "Frais de plateforme et paiements",
+        "p1": "La création d’un compte et la publication d’événements gratuits peuvent être proposées sans frais.",
+        "p2": "La vente de billets payants peut entraîner des frais de plateforme, des frais de traitement des paiements, des frais d’abonnement ou d’autres frais clairement indiqués.",
+        "p3": "Les frais applicables seront présentés avant la finalisation de la transaction concernée.",
+        "p4": "Le traitement des paiements peut être assuré par des prestataires de services de paiement tiers. Leurs conditions et politiques peuvent également s’appliquer.",
+        "p5": "Il incombe aux organisateurs de veiller à l’exactitude de leurs informations de paiement et de versement et de respecter leurs obligations fiscales et déclaratives applicables.",
+        "p6": "Nous pouvons modifier nos tarifs moyennant un préavis raisonnable. Les modifications n’affecteront pas rétroactivement les frais déjà facturés sur des transactions finalisées."
+      },
+      "payouts": {
+        "title": "Versements",
+        "p1": "Les recettes de billetterie seront versées aux organisateurs éligibles selon le calendrier de versement applicable et les exigences du prestataire de paiement.",
+        "p2": "Les versements peuvent être retardés lorsqu’une vérification supplémentaire est nécessaire, qu’une transaction est contestée, qu’une fraude est soupçonnée, qu’un remboursement est en attente ou que la loi applicable impose une restriction.",
+        "p3": "Nous pouvons constituer des réserves raisonnables lorsque la loi et nos contrats de traitement des paiements le permettent.",
+        "p4": "Nous ne retiendrons pas intentionnellement de fonds sans motif légitime d’ordre contractuel, juridique, de sécurité ou lié au traitement des paiements."
+      },
+      "cancellationsAndRefunds": {
+        "title": "Annulations et remboursements",
+        "p1": "Les organisateurs d’événements doivent indiquer clairement leur politique de remboursement avant que les participants n’achètent des billets.",
+        "p2": "Les demandes de remboursement seront traitées conformément à la politique publiée de l’événement, aux présentes Conditions et à la loi applicable.",
+        "p3": "En cas d’annulation d’un événement, l’organisateur doit communiquer l’annulation sans délai et effectuer les remboursements lorsque la loi ou la politique applicable de l’événement l’exige.",
+        "p4": "Les remboursements peuvent mettre plusieurs jours ouvrés à apparaître, selon le prestataire de paiement et l’établissement financier du participant.",
+        "p5": "Les frais de plateforme et les frais de traitement des paiements seront traités conformément aux informations tarifaires applicables, aux règles du prestataire de paiement et aux exigences légales.",
+        "p6": "Aucune disposition de la présente section ne supprime les droits impératifs au remboursement ou les droits des consommateurs prévus par la loi applicable."
+      },
+      "prohibitedActivities": {
+        "title": "Activités interdites",
+        "p1": "Vous ne pouvez pas :",
+        "b1": "Créer des événements frauduleux ou trompeurs.",
+        "b2": "Vendre des billets contrefaits, non autorisés ou non valides.",
+        "b3": "Manipuler les ventes de billets ou les systèmes de paiement.",
+        "b4": "Contourner les frais de plateforme ou les contrôles de sécurité.",
+        "b5": "Collecter des informations personnelles de manière illicite.",
+        "b6": "Envoyer des communications commerciales non sollicitées en violation de la loi applicable.",
+        "b7": "Téléverser des logiciels malveillants ou tenter d’accéder sans autorisation à nos systèmes.",
+        "b8": "Porter atteinte à la propriété intellectuelle d’autrui.",
+        "b9": "Utiliser la plateforme à des fins de discrimination illicite, de harcèlement, de fraude ou de tout autre comportement interdit.",
+        "a1": "Nous pouvons supprimer du contenu, annuler des annonces, restreindre des fonctionnalités ou suspendre des comptes lorsque cela est raisonnablement nécessaire pour faire respecter les présentes Conditions ou nous conformer à la loi."
+      },
+      "intellectualProperty": {
+        "title": "Propriété intellectuelle",
+        "p1": "Vous conservez la propriété du contenu qui vous appartient et que vous téléversez sur la plateforme.",
+        "p2": "En publiant du contenu d’événement, vous accordez à G-ventZ une licence limitée, non exclusive, mondiale et gratuite pour héberger, reproduire, afficher et diffuser ce contenu dans la mesure raisonnablement nécessaire pour exploiter, promouvoir et fournir les services que vous demandez.",
+        "p3": "Vous déclarez disposer des droits et autorisations nécessaires pour téléverser et utiliser votre contenu.",
+        "p4": "Nos logiciels, notre image de marque, notre interface et les éléments originaux de la plateforme restent notre propriété ou celle de nos concédants de licence."
+      },
+      "privacy": {
+        "title": "Confidentialité",
+        "p1": "La collecte et l’utilisation des informations personnelles sont régies par notre Politique de confidentialité.",
+        "p2": "Les organisateurs doivent traiter les informations des participants de manière licite et ne les utiliser que pour l’administration autorisée de l’événement, les communications et les autres finalités indiquées.",
+        "p3": "Les organisateurs doivent obtenir tout consentement requis avant d’utiliser les informations des participants à des fins de marketing sans rapport avec l’événement."
+      },
+      "thirdPartyServices": {
+        "title": "Services tiers",
+        "p1": "Notre plateforme peut s’intégrer à des processeurs de paiement, des fournisseurs d’analyse, des services d’e-mail, des outils de vérification d’identité et d’autres services tiers.",
+        "p2": "Nous ne sommes pas responsables des services tiers indépendants au-delà des responsabilités qui nous incombent en vertu de la loi applicable ou de nos contrats avec ces prestataires.",
+        "p3": "Votre utilisation de ces services peut être soumise à des conditions supplémentaires."
+      },
+      "serviceAvailability": {
+        "title": "Disponibilité du service",
+        "p1": "Nous nous efforçons de fournir un service fiable, mais ne garantissons pas un accès ininterrompu.",
+        "p2": "La maintenance, des problèmes techniques, des incidents de sécurité ou des circonstances échappant à notre contrôle raisonnable peuvent affecter temporairement la disponibilité.",
+        "p3": "Nous prendrons des mesures raisonnables pour rétablir les services concernés."
+      },
+      "limitationOfLiability": {
+        "title": "Limitation de responsabilité",
+        "p1": "Dans la mesure permise par la loi applicable, G-ventZ n’est pas responsable des pertes résultant uniquement du fait qu’un organisateur n’a pas tenu un événement, d’informations inexactes sur un événement fournies par un organisateur, ou de litiges entre organisateurs et participants.",
+        "p2": "Aucune disposition des présentes Conditions n’exclut une responsabilité qui ne peut légalement être exclue, y compris les droits des consommateurs applicables et la responsabilité en cas de fraude ou de faute intentionnelle.",
+        "p3": "Toute autre limitation de responsabilité ne s’appliquera que dans la mesure permise par la loi applicable."
+      },
+      "accountSuspensionAndTermination": {
+        "title": "Suspension et résiliation du compte",
+        "p1": "Vous pouvez cesser d’utiliser la plateforme à tout moment.",
+        "p2": "Nous pouvons suspendre ou résilier votre accès si vous enfreignez de manière substantielle les présentes Conditions, commettez une fraude, créez un risque pour la sécurité, ou lorsque la suspension est nécessaire pour nous conformer à la loi.",
+        "p3": "Dans la mesure du possible, nous vous expliquerons le motif de la suspension et vous donnerons la possibilité de résoudre le problème.",
+        "p4": "Les obligations de paiement, de remboursement et légales en suspens peuvent subsister après la résiliation."
+      },
+      "changesToTheseTerms": {
+        "title": "Modifications des présentes Conditions",
+        "p1": "Nous pouvons modifier les présentes Conditions de temps à autre.",
+        "p2": "Les modifications importantes seront communiquées via la plateforme, par e-mail ou par tout autre moyen approprié.",
+        "p3": "Les Conditions révisées indiqueront leur date d’entrée en vigueur."
+      },
+      "governingLaw": {
+        "title": "Droit applicable",
+        "p1": "Les présentes Conditions sont régies par les lois du Nigeria, sous réserve des protections légales impératives applicables aux utilisateurs.",
+        "p2": "Tout litige sera traité par les juridictions ou organismes de règlement des litiges compétents déterminés conformément à la loi applicable."
+      },
+      "contact": {
+        "title": "Contact",
+        "p1": "Pour toute question sur les présentes Conditions, contactez :",
+        "p2": "Plateforme : G-ventZ",
+        "p3": "E-mail : support@gventz.com"
+      }
+    }
+  },
+  "privacy": {
+    "metaTitle": "Politique de confidentialité · G-ventZ",
+    "title": "Politique de confidentialité",
+    "effective": "À confirmer",
+    "intro": "Cette politique est en cours de rédaction. Le texte complet sera publié avant le lancement des billets payants.",
+    "toBeWritten": "En cours de rédaction.",
+    "sections": {
+      "introduction": {
+        "title": "Introduction",
+        "p1": "La présente Politique de confidentialité expliquera comment G-ventZ collecte, utilise et protège vos informations personnelles lorsque vous utilisez notre site web, nos applications et nos services de billetterie."
+      },
+      "informationWeCollect": {
+        "title": "Informations que nous collectons",
+        "b1": "Données du compte (nom, adresse e-mail)",
+        "b2": "Données relatives aux événements et aux inscriptions",
+        "b3": "Billets et historique d’enregistrement",
+        "b4": "Informations sur l’appareil et l’utilisation"
+      },
+      "howWeUseYourInformation": {
+        "title": "Comment nous utilisons vos informations"
+      },
+      "sharingWithEventHosts": {
+        "title": "Partage avec les organisateurs d’événements"
+      },
+      "thirdPartyServices": {
+        "title": "Services tiers"
+      },
+      "cookiesAndLocalStorage": {
+        "title": "Cookies et stockage local"
+      },
+      "dataRetention": {
+        "title": "Conservation des données"
+      },
+      "yourRights": {
+        "title": "Vos droits"
+      },
+      "security": {
+        "title": "Sécurité"
+      },
+      "children": {
+        "title": "Enfants"
+      },
+      "changesToThisPolicy": {
+        "title": "Modifications de la présente politique"
+      },
+      "contactUs": {
+        "title": "Nous contacter"
+      }
+    }
+  },
+  "refunds": {
+    "metaTitle": "Politique de remboursement · G-ventZ",
+    "title": "Politique de remboursement et d’annulation",
+    "sections": {
+      "overview": {
+        "title": "Présentation",
+        "p1": "La présente Politique de remboursement et d’annulation explique comment sont traitées les demandes de remboursement pour les événements publiés sur G-ventZ.",
+        "p2": "Notre plateforme fournit aux organisateurs des outils pour publier des événements, vendre des billets et gérer les inscriptions. Sauf indication contraire expresse, il incombe aux organisateurs d’événements de tenir leurs événements et de gérer les remboursements propres à chaque événement.",
+        "p3": "La présente politique est soumise aux lois applicables sur la protection des consommateurs."
+      },
+      "eventSpecificRefundPolicies": {
+        "title": "Politiques de remboursement propres à chaque événement",
+        "p1": "Chaque organisateur doit établir une politique de remboursement pour son événement.",
+        "p2": "La politique applicable doit être affichée avant l’achat d’un billet et peut préciser :",
+        "b1": "Si les billets sont remboursables.",
+        "b2": "Le délai pour demander un remboursement.",
+        "b3": "Si les annulations donnent droit à un remboursement total ou partiel.",
+        "b4": "Si les billets peuvent être transférés à une autre personne.",
+        "b5": "Les éventuelles retenues administratives autorisées.",
+        "b6": "La procédure pour soumettre une demande de remboursement.",
+        "a1": "Les participants doivent consulter la politique de remboursement de l’événement avant de finaliser un achat.",
+        "a2": "Aucune politique propre à un événement ne peut déroger aux droits impératifs prévus par la loi applicable."
+      },
+      "attendeeInitiatedRefundRequests": {
+        "title": "Demandes de remboursement à l’initiative du participant",
+        "p1": "Si un participant ne peut plus assister à un événement, il doit contacter l’organisateur ou soumettre une demande de remboursement via les outils disponibles sur la plateforme.",
+        "p2": "Le droit au remboursement sera apprécié selon la politique publiée de l’événement et la loi applicable.",
+        "p3": "Sauf disposition contraire de la politique de l’événement ou de la loi applicable, les organisateurs peuvent refuser les demandes de remboursement volontaires motivées, par exemple, par un changement de projets personnels ou une absence à l’événement."
+      },
+      "cancelledEvents": {
+        "title": "Événements annulés",
+        "p1": "Si un organisateur annule un événement, il doit en informer sans délai les participants concernés.",
+        "p2": "Lorsqu’un remboursement est exigé par la loi ou par la politique applicable de l’événement, l’organisateur doit procéder au remboursement approprié.",
+        "p3": "Un remboursement exigé par la loi ne peut être refusé au seul motif que la politique d’un événement indique que les billets ne sont pas remboursables."
+      },
+      "postponedOrRescheduledEvents": {
+        "title": "Événements reportés ou reprogrammés",
+        "p1": "Si un événement est reporté ou reprogrammé, l’organisateur doit informer les détenteurs de billets des nouvelles modalités.",
+        "p2": "Le droit au remboursement dépendra de la politique de l’événement et de la loi applicable, y compris de tout droit découlant d’une modification substantielle de l’événement."
+      },
+      "duplicateOrIncorrectPayments": {
+        "title": "Paiements en double ou erronés",
+        "p1": "Si vous pensez avoir été débité plus d’une fois pour la même commande ou d’un montant erroné, contactez l’assistance en indiquant la référence de votre commande et les détails pertinents de la transaction.",
+        "p2": "Nous examinerons le problème et nous coordonnerons, le cas échéant, avec l’organisateur ou le prestataire de paiement.",
+        "p3": "Les doubles débits avérés seront traités conformément aux règles de paiement et à la loi applicables."
+      },
+      "processingRefunds": {
+        "title": "Traitement des remboursements",
+        "p1": "Les remboursements approuvés seront en général effectués via le moyen de paiement d’origine lorsque cela est possible.",
+        "p2": "Le délai d’apparition des fonds sur votre compte dépend du prestataire de paiement et de votre établissement financier.",
+        "p3": "Nous vous informerons de tout retard important ou de toute information supplémentaire nécessaire au traitement du remboursement."
+      },
+      "platformAndProcessingFees": {
+        "title": "Frais de plateforme et de traitement",
+        "p1": "Les éventuels frais de plateforme ou de traitement des paiements liés à un remboursement seront traités conformément aux conditions tarifaires indiquées lors du paiement, aux règles du prestataire de paiement concerné et à la loi applicable.",
+        "p2": "Nous ne conserverons ni ne déduirons de frais lorsque cela enfreindrait des exigences légales impératives."
+      },
+      "subscriptionRefunds": {
+        "title": "Remboursement des abonnements",
+        "p1": "Les frais payés pour les abonnements facultatifs destinés aux organisateurs ne sont en général pas remboursables une fois la période de facturation concernée commencée, sauf si la loi l’exige ou si nous estimons qu’un remboursement est justifié en raison d’une erreur de facturation ou d’une autre circonstance exceptionnelle.",
+        "p2": "La résiliation d’un abonnement met fin aux renouvellements futurs, mais n’entraîne pas automatiquement le remboursement des paiements antérieurs."
+      },
+      "fraudAndUnauthorizedTransactions": {
+        "title": "Fraude et transactions non autorisées",
+        "p1": "Si vous soupçonnez qu’un achat de billets ou un paiement n’a pas été autorisé, contactez-nous sans délai.",
+        "p2": "Nous pouvons demander les informations pertinentes sur la transaction et nous coordonner avec le prestataire de paiement pour mener l’enquête.",
+        "p3": "Aucune disposition de la présente section ne limite les droits dont vous pouvez disposer en vertu des lois applicables en matière de paiement ou de protection des consommateurs."
+      },
+      "howToRequestARefund": {
+        "title": "Comment demander un remboursement",
+        "p1": "Contactez l’organisateur de l’événement à l’aide des coordonnées figurant sur la page de l’événement.",
+        "p2": "Pour les problèmes de traitement des paiements, les doubles débits ou les problèmes liés à la plateforme, contactez :",
+        "p3": "E-mail de l’assistance : support@gventz.com",
+        "p4": "Veuillez indiquer la référence de votre commande, le nom de l’événement, la date d’achat et une description du problème. N’envoyez pas le numéro complet de votre carte de paiement ni son code de sécurité."
+      },
+      "policyUpdates": {
+        "title": "Mises à jour de la politique",
+        "p1": "Nous pouvons modifier la présente politique de temps à autre. La date d’entrée en vigueur sera mise à jour lors de la publication des modifications."
+      },
+      "contact": {
+        "title": "Contact",
+        "p1": "Plateforme : G-ventZ",
+        "p2": "E-mail : support@gventz.com"
+      }
+    }
+  }
+}

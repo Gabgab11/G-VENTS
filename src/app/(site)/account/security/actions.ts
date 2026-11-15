@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { requireUser } from "@/lib/auth";
 import { safeNext } from "@/lib/mfa";
@@ -9,7 +10,6 @@ export type EnrollState = { factorId?: string; qr?: string; secret?: string; err
 export type VerifyState = { error?: string } | undefined;
 
 const CODE = /^\d{6}$/;
-const GENERIC = "That didn't work. Please try again.";
 
 function code(formData: FormData): string {
   return String(formData.get("code") ?? "").replace(/\s+/g, "");
@@ -27,7 +27,8 @@ export async function startEnroll(): Promise<EnrollState> {
   const { data, error } = await supabase.auth.mfa.enroll({ factorType: "totp", friendlyName: "Authenticator app" });
   if (error || !data) {
     console.error(`[mfa] enroll failed: ${error?.message ?? "no data"}`);
-    return { error: "Two-step sign-in couldn't be set up right now. Please try again." };
+    const t = await getTranslations("account.mfa.errors");
+    return { error: t("setupFailed") };
   }
   return { factorId: data.id, qr: data.totp.qr_code, secret: data.totp.secret };
 }
@@ -38,10 +39,11 @@ export async function finishEnroll(_prev: EnrollState, formData: FormData): Prom
   const factorId = String(formData.get("factor_id") ?? "");
   const value = code(formData);
   const keep = { factorId, qr: String(formData.get("qr") ?? ""), secret: String(formData.get("secret") ?? "") };
-  if (!CODE.test(value)) return { ...keep, error: "Enter the 6-digit code from your authenticator app." };
+  const t = await getTranslations("account.mfa.errors");
+  if (!CODE.test(value)) return { ...keep, error: t("enterCode") };
   const supabase = await createSupabaseServerClient();
   const { error } = await supabase.auth.mfa.challengeAndVerify({ factorId, code: value });
-  if (error) return { ...keep, error: error.status === 422 || error.status === 400 ? "That code isn't right, or it expired. Try the current one." : GENERIC };
+  if (error) return { ...keep, error: error.status === 422 || error.status === 400 ? t("wrongCode") : t("generic") };
   redirect(safeNext(formData.get("next"), "/account/security?done=1"));
 }
 
@@ -49,13 +51,14 @@ export async function finishEnroll(_prev: EnrollState, formData: FormData): Prom
 export async function verifyCode(_prev: VerifyState, formData: FormData): Promise<VerifyState> {
   await requireUser("/account/security");
   const value = code(formData);
-  if (!CODE.test(value)) return { error: "Enter the 6-digit code from your authenticator app." };
+  const t = await getTranslations("account.mfa.errors");
+  if (!CODE.test(value)) return { error: t("enterCode") };
   const supabase = await createSupabaseServerClient();
   const { data: factors } = await supabase.auth.mfa.listFactors();
   const factor = factors?.totp?.find((f) => f.status === "verified");
-  if (!factor) return { error: "Set up an authenticator app first." };
+  if (!factor) return { error: t("setUpFirst") };
   const { error } = await supabase.auth.mfa.challengeAndVerify({ factorId: factor.id, code: value });
-  if (error) return { error: error.status === 422 || error.status === 400 ? "That code isn't right, or it expired. Try the current one." : GENERIC };
+  if (error) return { error: error.status === 422 || error.status === 400 ? t("wrongCode") : t("generic") };
   redirect(safeNext(formData.get("next")));
 }
 

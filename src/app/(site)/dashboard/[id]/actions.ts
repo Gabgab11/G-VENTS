@@ -9,7 +9,8 @@ import { requireEvent } from "@/lib/auth";
 import { checkbox, field, isUuid } from "@/lib/forms";
 import { isThemeKey } from "@/lib/themes";
 import { locationInput } from "@/app/(site)/events/create-event-input";
-import { MAPS_URL_HINT } from "@/lib/maps-url";
+import { MAPS_URL_HINT_KEY } from "@/lib/maps-url";
+import { getTranslations } from "next-intl/server";
 import { flyerFrom, uploadFlyer as sendFlyer } from "@/lib/flyer";
 import type { MessageCode } from "./messages";
 
@@ -153,8 +154,9 @@ export async function updateEventDetails(formData: FormData) {
 
 export async function updateVenue(formData: FormData) {
   const id = await eventIdFrom(formData);
-  const location = locationInput(formData);
-  if ("error" in location) fail(id, "settings", location.error === MAPS_URL_HINT ? "venue_maps_url" : "venue_country");
+  const t = await getTranslations();
+  const location = locationInput(formData, (k, v) => t(k, v));
+  if ("error" in location) fail(id, "settings", location.error === t(MAPS_URL_HINT_KEY) ? "venue_maps_url" : "venue_country");
   await call(id, "settings", async () => (await api()).PUT("/v1/events/{id}/location", { params: { path: { id } }, body: location }));
   done(id, "settings", "venue_saved");
 }

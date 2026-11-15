@@ -1,5 +1,6 @@
 "use server";
 
+import { getTranslations } from "next-intl/server";
 import { requireUser } from "@/lib/auth";
 import { env } from "@/lib/env";
 import { safeNext } from "@/lib/mfa";
@@ -20,18 +21,19 @@ function relyingParty() {
   return { rpId: url.hostname, rpOrigins: [url.origin] };
 }
 
-function friendly(error: { message?: string; status?: number } | null): string {
-  if (!error) return "That didn't work. Please try again.";
-  if (/disabled/i.test(error.message ?? "")) return "Passkeys aren't switched on for this site yet.";
-  if (error.status === 422 || error.status === 400) return "That passkey couldn't be confirmed. Please try again.";
-  return "That didn't work. Please try again.";
+async function friendly(error: { message?: string; status?: number } | null): Promise<string> {
+  const t = await getTranslations("account.passkey.errors");
+  if (!error) return t("generic");
+  if (/disabled/i.test(error.message ?? "")) return t("disabled");
+  if (error.status === 422 || error.status === 400) return t("notConfirmed");
+  return t("generic");
 }
 
 /** Starts adding a passkey: returns the options for navigator.credentials.create(). */
 export async function startPasskeyEnroll(name: string): Promise<Started> {
   await requireUser("/account/security");
   const supabase = await createSupabaseServerClient();
-  const label = (name.trim() || "Passkey").slice(0, 60);
+  const label = (name.trim() || (await getTranslations("account.passkey"))("defaultName")).slice(0, 60);
   // Names must be unique among the user's factors, and an unfinished attempt would block a retry.
   const { data: factors } = await supabase.auth.mfa.listFactors();
   for (const f of factors?.all ?? []) {
@@ -43,12 +45,12 @@ export async function startPasskeyEnroll(name: string): Promise<Started> {
   const enrolled = await supabase.auth.mfa.enroll({ factorType: "webauthn", friendlyName });
   if (enrolled.error || !enrolled.data) {
     console.error(`[passkey] enroll failed: ${enrolled.error?.message ?? "no data"}`);
-    return { error: friendly(enrolled.error) };
+    return { error: await friendly(enrolled.error) };
   }
   const challenge = await supabase.auth.mfa.challenge({ factorId: enrolled.data.id, webauthn: relyingParty() });
   if (challenge.error || !challenge.data || !("webauthn" in challenge.data)) {
     console.error(`[passkey] challenge failed: ${challenge.error?.message ?? "no options"}`);
-    return { error: friendly(challenge.error) };
+    return { error: await friendly(challenge.error) };
   }
   return {
     factorId: enrolled.data.id,
@@ -64,7 +66,7 @@ export async function startPasskeyVerify(factorId: string): Promise<Started> {
   const challenge = await supabase.auth.mfa.challenge({ factorId, webauthn: relyingParty() });
   if (challenge.error || !challenge.data || !("webauthn" in challenge.data)) {
     console.error(`[passkey] challenge failed: ${challenge.error?.message ?? "no options"}`);
-    return { error: friendly(challenge.error) };
+    return { error: await friendly(challenge.error) };
   }
   return { factorId, challengeId: challenge.data.id, options: optionsToJSON(challenge.data.webauthn.credential_options.publicKey) as Record<string, unknown> };
 }
@@ -82,7 +84,7 @@ export async function finishPasskey(input: { factorId: string; challengeId: stri
   });
   if (error) {
     console.error(`[passkey] verify failed: ${error.message}`);
-    return { error: friendly(error) };
+    return { error: await friendly(error) };
   }
   return { ok: true, next: safeNext(input.next, "/account/security?done=1") };
 }

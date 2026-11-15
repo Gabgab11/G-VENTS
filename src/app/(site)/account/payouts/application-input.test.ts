@@ -34,12 +34,12 @@ describe("host application form (HA1)", () => {
 
   it("refuses what the form must get right", () => {
     const without = (k: string) => form(good.filter(([n]) => n !== k));
-    expect(applicationBody(without("legal_name"))).toEqual({ error: "Enter your legal or business name." });
-    expect(applicationBody(form([...good.filter(([n]) => n !== "phone"), ["phone", "12"]]))).toMatchObject({ error: expect.stringContaining("phone") });
-    expect(applicationBody(form([...good.filter(([n]) => n !== "payout_country"), ["payout_country", "US"]]))).toEqual({ error: "Choose the country you get paid in." });
-    expect(applicationBody(without("bank_code"))).toEqual({ error: "Choose your bank." });
-    expect(applicationBody(form([...good.filter(([n]) => n !== "account_number"), ["account_number", "12ab"]]))).toMatchObject({ error: expect.stringContaining("account number") });
-    expect(applicationBody(without("confirm_account"))).toEqual({ error: "Confirm the account name is right." });
+    expect(applicationBody(without("legal_name"))).toEqual({ error: "payouts.input.legalName" });
+    expect(applicationBody(form([...good.filter(([n]) => n !== "phone"), ["phone", "12"]]))).toEqual({ error: "payouts.input.phone" });
+    expect(applicationBody(form([...good.filter(([n]) => n !== "payout_country"), ["payout_country", "US"]]))).toEqual({ error: "payouts.input.country" });
+    expect(applicationBody(without("bank_code"))).toEqual({ error: "payouts.input.bank" });
+    expect(applicationBody(form([...good.filter(([n]) => n !== "account_number"), ["account_number", "12ab"]]))).toEqual({ error: "payouts.input.accountNumber" });
+    expect(applicationBody(without("confirm_account"))).toEqual({ error: "payouts.input.confirmAccount" });
   });
 
   it("payout change needs only the bank details", () => {
@@ -60,8 +60,8 @@ describe("document (HA1: JPG, PNG or PDF, at most 10 MB)", () => {
     expect("error" in doc ? doc.error : doc.contentType).toBe("application/pdf");
   });
   it("refuses missing, wrong type and too large", () => {
-    expect(documentFrom(form([]))).toMatchObject({ error: expect.stringContaining("Add your") });
-    expect(documentFrom(form([["document", new Blob(["x"], { type: "image/gif" }), "a.gif"]]))).toMatchObject({ error: expect.stringContaining("JPG, PNG or PDF") });
-    expect(documentFrom(form([["document", new Blob([new Uint8Array(10 * 1024 * 1024 + 1)], { type: "image/png" }), "big.png"]]))).toMatchObject({ error: expect.stringContaining("10 MB") });
+    expect(documentFrom(form([]))).toEqual({ error: "payouts.input.documentMissing" });
+    expect(documentFrom(form([["document", new Blob(["x"], { type: "image/gif" }), "a.gif"]]))).toEqual({ error: "payouts.input.documentType" });
+    expect(documentFrom(form([["document", new Blob([new Uint8Array(10 * 1024 * 1024 + 1)], { type: "image/png" }), "big.png"]]))).toEqual({ error: "payouts.input.documentTooLarge" });
   });
 });

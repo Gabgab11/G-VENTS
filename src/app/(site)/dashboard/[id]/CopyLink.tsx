@@ -1,8 +1,10 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 export default function CopyLink({ url }: { url: string }) {
+  const t = useTranslations("dashboard.copyLink");
   const [copied, setCopied] = useState(false);
   return (
     <div className="copy-box">
@@ -11,7 +13,7 @@ export default function CopyLink({ url }: { url: string }) {
         await navigator.clipboard.writeText(url);
         setCopied(true);
         setTimeout(() => setCopied(false), 1500);
-      }}>{copied ? "Copied" : "Copy link"}</button>
+      }}>{t(copied ? "copied" : "copy")}</button>
     </div>
   );
 }

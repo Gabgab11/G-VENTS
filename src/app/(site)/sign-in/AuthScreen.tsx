@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { pageFonts } from "@/app/fonts";
 import { sendEmailCode, startGoogleSignIn, verifyEmailCode } from "@/app/(site)/auth/actions";
@@ -11,13 +12,15 @@ import OtpInput from "@/components/OtpInput";
 import Turnstile, { type TurnstileHandle } from "@/components/Turnstile";
 import { env } from "@/lib/env";
 import ColorModeToggle from "@/components/ColorModeToggle";
-import SignInArt from "./SignInArt";
 
 // Log in and sign up share one screen (no passwords: Google or a 6-digit email code). Log in only
 // sends codes to existing accounts, so a typo or a new visitor is pointed to sign up instead of
 // silently creating an account; sign up creates it. Google does both. Every Supabase call runs in a
-// server action (src/app/auth/actions.ts): the browser never talks to Supabase.
-export default function AuthScreen({ mode }: { mode: AuthMode }) {
+// server action (src/app/auth/actions.ts): the browser never talks to Supabase. The picture (`art`,
+// SignInArt) is rendered on the server by the page, so its text is translated there.
+export default function AuthScreen({ mode, art }: { mode: AuthMode; art: ReactNode }) {
+  const t = useTranslations("auth.screen");
+  const tr = useTranslations();
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -35,8 +38,8 @@ export default function AuthScreen({ mode }: { mode: AuthMode }) {
     setFromCreate(params.get("next") === "/events/new");
     const n = params.get("next");
     setNext(n ? `?next=${encodeURIComponent(safeNextPath(n))}` : "");
-    if (params.get("error") === "google") setError("Google sign-in didn't finish. Try again, or use your email.");
-  }, []);
+    if (params.get("error") === "google") setError(t("googleDidntFinish"));
+  }, [t]);
 
   function nextPath() {
     if (typeof window === "undefined") return "/dashboard";
@@ -47,7 +50,7 @@ export default function AuthScreen({ mode }: { mode: AuthMode }) {
   async function continueWithGoogle() {
     setError(null);
     setBusy(true);
-    const result = await startGoogleSignIn(nextPath()).catch(() => ({ error: "Google sign-in isn't available right now. Use your email instead." }));
+    const result = await startGoogleSignIn(nextPath()).catch(() => ({ error: t("googleUnavailable") }));
     if ("url" in result) {
       window.location.href = result.url;
       return;
@@ -60,10 +63,10 @@ export default function AuthScreen({ mode }: { mode: AuthMode }) {
     e.preventDefault();
     setError(null);
     setNoAccount(false);
-    if (siteKey && !captchaToken) return setError("Please wait a moment while we check you're not a robot, then try again.");
+    if (siteKey && !captchaToken) return setError(t("captchaWait"));
     setBusy(true);
     const result = await sendEmailCode({ email, mode, captchaToken: siteKey ? captchaToken : null }).catch(
-      () => ({ ok: false, reason: "failed", message: "We couldn't send a code right now. Try again in a moment." }) as const,
+      () => ({ ok: false, reason: "failed", message: tr("shared.emailCode.sendFailed") }) as const,
     );
     setBusy(false);
     // Each token works once: get a fresh one for the next request.
@@ -80,7 +83,7 @@ export default function AuthScreen({ mode }: { mode: AuthMode }) {
     setError(null);
     setBusy(true);
     const result = await verifyEmailCode({ email, code }).catch(
-      () => ({ ok: false, message: "We couldn't check the code right now. Try again in a moment." }) as const,
+      () => ({ ok: false, message: t("verifyFailed") }) as const,
     );
     setBusy(false);
     if (!result.ok) return setError(result.message);
@@ -94,23 +97,23 @@ export default function AuthScreen({ mode }: { mode: AuthMode }) {
           <Link href="/" className="si-logo">G-vent<b>Z</b></Link>
           <div className="si-top-right">
             <ColorModeToggle />
-            <BackLink fallback="/" label="← Back" />
+            <BackLink fallback="/" label={t("back")} />
           </div>
         </header>
 
         <div className="si-body">
           {!sent ? (
             <>
-              <p className="si-eyebrow">{mode === "signin" ? "Welcome back" : fromCreate ? "Free to host" : "Free to join"}</p>
+              <p className="si-eyebrow">{mode === "signin" ? t("signin.eyebrow") : fromCreate ? t("signup.eyebrowCreate") : t("signup.eyebrow")}</p>
               <h1 className="si-title">
-                {mode === "signin" ? (fromCreate ? "Log in to create your event" : "Log in to your account") : fromCreate ? "Create your free account" : "Create your account"}
+                {mode === "signin" ? (fromCreate ? t("signin.titleCreate") : t("signin.title")) : fromCreate ? t("signup.titleCreate") : t("signup.title")}
               </h1>
               <p className="si-sub">
                 {mode === "signin"
-                  ? "Use Google, or we'll email you a 6-digit code. No password needed."
+                  ? t("signin.sub")
                   : fromCreate
-                    ? "One account to create your event, share it and check guests in. No password needed."
-                    : "Get tickets and host your own events. Use Google, or we'll email you a 6-digit code. No password needed."}
+                    ? t("signup.subCreate")
+                    : t("signup.sub")}
               </p>
 
               <button type="button" className="si-google" onClick={continueWithGoogle} disabled={busy}>
@@ -120,38 +123,38 @@ export default function AuthScreen({ mode }: { mode: AuthMode }) {
               <path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z" />
               <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z" />
             </svg>
-                Continue with Google
+                {t("google")}
               </button>
-              <div className="si-divider" role="separator"><span>or use your email</span></div>
+              <div className="si-divider" role="separator"><span>{t("divider")}</span></div>
               <form onSubmit={sendCode} className="si-form">
-                <label className="si-label" htmlFor="sign-in-email">Email address</label>
+                <label className="si-label" htmlFor="sign-in-email">{t("emailLabel")}</label>
                 <input id="sign-in-email" className="si-input" type="email" required autoFocus autoComplete="email" value={email}
-                  onChange={(e) => setEmail(e.target.value)} placeholder="you@email.com" />
+                  onChange={(e) => setEmail(e.target.value)} placeholder={t("emailPlaceholder")} />
                 {siteKey && (
                   <Turnstile ref={captcha} siteKey={siteKey} onToken={setCaptchaToken}
-                    onError={() => setError("The robot check didn't load. Refresh the page, or continue with Google.")} />
+                    onError={() => setError(t("captchaLoad"))} />
                 )}
                 <button className="si-primary" type="submit" disabled={busy}>
-                  {busy ? "Sending code..." : "Email me a code"}
+                  {busy ? t("sending") : t("send")}
                 </button>
               </form>
             </>
           ) : (
             <div className="si-form">
-              <p className="si-eyebrow">Check your inbox</p>
-              <h1 className="si-title">Enter your code</h1>
-              <p className="si-sub">We sent a 6-digit code to <span className="auth-email">{email}</span>. It expires in a few minutes.</p>
+              <p className="si-eyebrow">{t("code.eyebrow")}</p>
+              <h1 className="si-title">{t("code.title")}</h1>
+              <p className="si-sub">{t.rich("code.sub", { email, address: (c) => <span className="auth-email">{c}</span> })}</p>
               <OtpInput length={6} onComplete={verifyCode} />
-              {busy && <p className="muted" role="status">Checking...</p>}
+              {busy && <p className="muted" role="status">{t("code.checking")}</p>}
               <button type="button" className="si-link" onClick={() => { setSent(false); setError(null); }}>
-                Use a different email
+                {t("code.differentEmail")}
               </button>
             </div>
           )}
 
           {noAccount && (
             <p className="error si-error" role="alert">
-              There&apos;s no account for {email.trim()} yet. <Link href={`/sign-up${next}`} className="gold">Sign up with this email</Link>
+              {t.rich("noAccount", { email: email.trim(), link: (c) => <Link href={`/sign-up${next}`} className="gold">{c}</Link> })}
             </p>
           )}
           {error && <p className="error si-error" role="alert">{error}</p>}
@@ -159,20 +162,20 @@ export default function AuthScreen({ mode }: { mode: AuthMode }) {
           {!sent && (
             <p className="si-switch">
               {mode === "signin" ? (
-                <>Don&apos;t have an account? <Link href={`/sign-up${next}`} className="gold">Sign up</Link></>
+                <>{t.rich("switchToSignUp", { link: (c) => <Link href={`/sign-up${next}`} className="gold">{c}</Link> })}</>
               ) : (
-                <>Already have an account? <Link href={`/sign-in${next}`} className="gold">Log in</Link></>
+                <>{t.rich("switchToSignIn", { link: (c) => <Link href={`/sign-in${next}`} className="gold">{c}</Link> })}</>
               )}
             </p>
           )}
         </div>
 
         <p className="si-legal">
-          By continuing you agree to our <Link href="/terms">Terms</Link> and <Link href="/privacy">Privacy Policy</Link>.
+          {t.rich("legal", { terms: (c) => <Link href="/terms">{c}</Link>, privacy: (c) => <Link href="/privacy">{c}</Link> })}
         </p>
       </section>
 
-      <SignInArt />
+      {art}
     </main>
   );
 }

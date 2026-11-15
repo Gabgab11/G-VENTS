@@ -1,21 +1,28 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import SiteHeader from "@/components/SiteHeader";
 import { requireUser } from "@/lib/auth";
+import { intlLocale } from "@/lib/format";
+import { getFormat } from "@/i18n/format-server";
 import { mfaState, safeNext, type Method } from "@/lib/mfa";
 import { removeFactor } from "./actions";
 import { EnrollForm, VerifyForm } from "./MfaForms";
 import { AddPasskey, UsePasskey } from "./Passkeys";
 
-export const metadata: Metadata = { title: "Two-step sign-in · G-ventZ", robots: { index: false } };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("account.security");
+  return { title: t("metaTitle"), robots: { index: false } };
+}
 
-const added = (m: Method) => new Date(m.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+const addedOn = (m: Method, lang: string) => new Date(m.createdAt).toLocaleDateString(lang, { day: "numeric", month: "short", year: "numeric" });
 
-function RemoveButton({ id, label }: { id: string; label: string }) {
+async function RemoveButton({ id, label }: { id: string; label: string }) {
+  const t = await getTranslations("account.security");
   return (
     <form action={removeFactor}>
       <input type="hidden" name="factor_id" value={id} />
-      <button type="submit" className="link-btn" aria-label={`Remove ${label}`}>Remove</button>
+      <button type="submit" className="link-btn" aria-label={t("removeLabel", { label })}>{t("remove")}</button>
     </form>
   );
 }
@@ -32,30 +39,32 @@ export default async function SecurityPage({ searchParams }: { searchParams: Pro
   const hasAny = !!factor || passkeys.length > 0;
   if (confirmed && sp.next) redirect(next);
   const after = sp.next ? next : "/account/security?done=1";
+  const t = await getTranslations("account.security");
+  const dateLocale = intlLocale((await getFormat()).lang, "date");
+  const added = (m: Method) => addedOn(m, dateLocale);
 
   return (
     <main className="wrap page">
       <SiteHeader back="/dashboard" />
-      <h1>Two-step sign-in</h1>
+      <h1>{t("title")}</h1>
       <p className="muted">
-        A second check after your email code, for sensitive areas. Required for G-ventZ staff and recommended for hosts.
-        Use a <b>passkey</b> (your fingerprint, face or device PIN) or an <b>authenticator app</b>.
+        {t.rich("intro", { b: (c) => <b>{c}</b> })}
       </p>
 
-      {sp.done && <p className="ok-note" role="status">Two-step sign-in is on and this session is confirmed.</p>}
-      {sp.removed && <p className="ok-note" role="status">Removed.</p>}
-      {sp.err && <p className="error" role="alert">That couldn&apos;t be removed. Confirm it&apos;s you first, then try again.</p>}
+      {sp.done && <p className="ok-note" role="status">{t("done")}</p>}
+      {sp.removed && <p className="ok-note" role="status">{t("removed")}</p>}
+      {sp.err && <p className="error" role="alert">{t("removeFailed")}</p>}
 
       {/* Not set up yet: offer both, passkey first. */}
       {!hasAny && (
         <>
           <section className="panel stack" aria-labelledby="sec-passkey">
-            <div id="sec-passkey" className="panel-label">Passkey (recommended)</div>
-            <p className="muted small">Confirm with Touch ID, Face ID, Windows Hello, your phone or a security key. Nothing to type.</p>
+            <div id="sec-passkey" className="panel-label">{t("passkeyTitle")}</div>
+            <p className="muted small">{t("passkeyHint")}</p>
             <AddPasskey next={after} />
           </section>
           <section className="panel stack" aria-labelledby="sec-totp">
-            <div id="sec-totp" className="panel-label">Authenticator app</div>
+            <div id="sec-totp" className="panel-label">{t("appTitle")}</div>
             <EnrollForm next={after} />
           </section>
         </>
@@ -64,12 +73,12 @@ export default async function SecurityPage({ searchParams }: { searchParams: Pro
       {/* Set up, but this session isn't confirmed yet. */}
       {hasAny && !confirmed && (
         <section className="panel stack" aria-labelledby="sec-confirm">
-          <div id="sec-confirm" className="panel-label">Confirm it&apos;s you</div>
-          <p className="muted small">Use one of your methods{sp.next ? " to continue" : ""}.</p>
+          <div id="sec-confirm" className="panel-label">{t("confirmTitle")}</div>
+          <p className="muted small">{sp.next ? t("confirmHintContinue") : t("confirmHint")}</p>
           {passkeys.map((p) => <UsePasskey key={p.id} factorId={p.id} name={p.name} next={after} />)}
           {factor && (
             <>
-              {passkeys.length > 0 && <p className="muted small">Or enter the code from your authenticator app:</p>}
+              {passkeys.length > 0 && <p className="muted small">{t("orCode")}</p>}
               <VerifyForm next={after} />
             </>
           )}
@@ -80,24 +89,24 @@ export default async function SecurityPage({ searchParams }: { searchParams: Pro
       {hasAny && confirmed && (
         <>
           <section className="panel stack" aria-labelledby="sec-methods">
-            <div id="sec-methods" className="panel-label">Your methods</div>
+            <div id="sec-methods" className="panel-label">{t("methodsTitle")}</div>
             <ul className="sec-methods">
               {passkeys.map((p) => (
-                <li key={p.id}><span><b>{p.name || "Passkey"}</b><span className="muted small"> · passkey · added {added(p)}</span></span><RemoveButton id={p.id} label={p.name || "passkey"} /></li>
+                <li key={p.id}><span><b>{p.name || t("passkeyName")}</b><span className="muted small">{" "}{t("passkeyAdded", { date: added(p) })}</span></span><RemoveButton id={p.id} label={p.name || t("removeLabelPasskey")} /></li>
               ))}
               {factor && (
-                <li><span><b>Authenticator app</b><span className="muted small"> · added {added(factor)}</span></span><RemoveButton id={factor.id} label="authenticator app" /></li>
+                <li><span><b>{t("appName")}</b><span className="muted small">{" "}{t("appAdded", { date: added(factor) })}</span></span><RemoveButton id={factor.id} label={t("removeLabelApp")} /></li>
               )}
             </ul>
-            <p className="muted small">This session is confirmed. Keep at least two methods (for example a passkey and the app) so losing one device doesn&apos;t lock you out.</p>
+            <p className="muted small">{t("methodsNote")}</p>
           </section>
           <section className="panel stack" aria-labelledby="sec-add">
-            <div id="sec-add" className="panel-label">Add a passkey</div>
+            <div id="sec-add" className="panel-label">{t("addPasskeyTitle")}</div>
             <AddPasskey next="/account/security?done=1" />
           </section>
           {!factor && (
             <section className="panel stack" aria-labelledby="sec-add-totp">
-              <div id="sec-add-totp" className="panel-label">Add an authenticator app</div>
+              <div id="sec-add-totp" className="panel-label">{t("addAppTitle")}</div>
               <EnrollForm next="/account/security?done=1" />
             </section>
           )}

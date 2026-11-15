@@ -1,0 +1,108 @@
+{
+  "pricing": {
+    "meta": {
+      "title": "Preise · G-ventZ"
+    },
+    "hero": {
+      "eyebrow": "Preise",
+      "title": "Einfache Preise, die mit Ihren Events wachsen",
+      "text": "Erstellen Sie Events kostenlos. Sie zahlen nur eine Plattformgebühr, wenn Sie kostenpflichtige Tickets verkaufen."
+    },
+    "currency": {
+      "choose": "Währung wählen",
+      "usd": "USD",
+      "ngn": "Naira",
+      "gbp": "GBP",
+      "eur": "EUR",
+      "ghs": "Cedi",
+      "kes": "Schilling",
+      "zar": "Rand"
+    },
+    "plan": {
+      "starter": "Für Veranstalter, die mit kostenlosen Events starten.",
+      "pro": "Für Veranstalter, die jeden Monat Events durchführen.",
+      "business": "Für Organisationen mit großen oder mehreren Events.",
+      "popular": "Am beliebtesten",
+      "perMonth": "/ Monat",
+      "fee": "Plattformgebühr auf kostenpflichtige Tickets: {fee} %",
+      "signUpFree": "Kostenlos registrieren",
+      "comingSoon": "Demnächst verfügbar"
+    },
+    "features": {
+      "unlimitedEvents": "Unbegrenzt Events erstellen",
+      "freeTickets": "Verkauf kostenloser Tickets",
+      "promoCodes": "Promo-Codes",
+      "qrCheckIn": "Tickets mit QR-Code und Gäste-Check-in",
+      "basicAnalytics": "Basis-Statistiken und E-Mail-Erinnerungen",
+      "standardPages": "Standard-Eventseiten",
+      "teamOne": "1 Teammitglied",
+      "everythingStarter": "Alles aus Starter",
+      "advancedAnalytics": "Erweiterte Statistiken",
+      "advancedReminders": "Erweiterte E-Mail-Erinnerungen",
+      "customizablePages": "Anpassbare Eventseiten",
+      "teamFive": "5 Teammitglieder",
+      "prioritySupport": "Priorisierter Support",
+      "optionalDomain": "Optional eigene Domain",
+      "everythingPro": "Alles aus Pro",
+      "brandedPages": "Eventseiten komplett im eigenen Branding",
+      "teamFifteen": "15 Teammitglieder",
+      "customDomain": "Eigene Domain",
+      "apiAccess": "API-Zugang"
+    },
+    "example": {
+      "title": "So sehen die Gebühren aus",
+      "text": "Beispiel: Ein Veranstalter verkauft {quantity} Tickets zu je {price}.",
+      "sales": "Ticketverkäufe",
+      "starter": "Starter-Gebühr (3 %)",
+      "pro": "Pro-Gebühr (1,5 %) + Monatspreis",
+      "business": "Business-Gebühr (0,5 %) + Monatspreis",
+      "note": "Gebühren des Zahlungsanbieters kommen separat hinzu und gelten für jeden Tarif."
+    },
+    "compare": {
+      "title": "Alle Funktionen vergleichen",
+      "feature": "Funktion",
+      "monthlyPrice": "Monatspreis",
+      "features": {
+        "eventCreation": "Events erstellen",
+        "freeTickets": "Verkauf kostenloser Tickets",
+        "platformFee": "Plattformgebühr auf kostenpflichtige Tickets",
+        "analytics": "Event-Statistiken",
+        "promoCodes": "Promo-Codes",
+        "customPages": "Individuelle Eventseiten",
+        "attendeeManagement": "Teilnehmerverwaltung",
+        "qrTickets": "Tickets mit QR-Code",
+        "checkIn": "Gäste-Check-in",
+        "emailReminders": "E-Mail-Erinnerungen",
+        "teamMembers": "Teammitglieder",
+        "exportData": "Teilnehmerdaten exportieren",
+        "prioritySupport": "Priorisierter Support",
+        "customDomain": "Eigene Domain",
+        "apiAccess": "API-Zugang"
+      },
+      "values": {
+        "unlimited": "Unbegrenzt",
+        "free": "Kostenlos",
+        "basic": "Basis",
+        "advanced": "Erweitert",
+        "yes": "Ja",
+        "no": "Nein",
+        "standard": "Standard",
+        "customizable": "Anpassbar",
+        "fullyBranded": "Komplett im eigenen Branding",
+        "optional": "Optional"
+      }
+    },
+    "links": {
+      "terms": "AGB",
+      "refunds": "Erstattungen",
+      "privacy": "Datenschutz"
+    }
+  },
+  "help": {
+    "meta": {
+      "title": "Hilfe · G-ventZ"
+    },
+    "title": "Hilfe",
+    "text": "Gäste: Wenden Sie sich an den Veranstalter des Events, für das Sie sich angemeldet haben. Veranstalter: Verwalten Sie Ihre Events in Ihrem Dashboard."
+  }
+}

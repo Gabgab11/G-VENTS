@@ -1,0 +1,98 @@
+{
+  "page": {
+    "notices": {
+      "draft": "Borrador. Solo usted y su equipo pueden ver esta página.",
+      "cancelled": "Este evento se ha cancelado.",
+      "canManage": "Puede editar este evento. <link>Gestionar evento</link>"
+    },
+    "coverAlt": "Cartel de {title}",
+    "hostedBy": "Organizado por",
+    "going": "{count, plural, one {# persona asistirá} other {# personas asistirán}}",
+    "privateEvent": "Evento privado",
+    "timeLine": "{range} · hora de {zone}",
+    "place": {
+      "venue": "Lugar",
+      "online": "En línea",
+      "onlineLine": "El anfitrión comparte el enlace con los invitados"
+    },
+    "about": "Acerca de",
+    "location": "Ubicación",
+    "directions": "Cómo llegar ↗",
+    "refunds": "Reembolsos"
+  },
+  "tickets": {
+    "headManage": "Sus entradas a la venta",
+    "headGet": "Conseguir entradas",
+    "head": "Entradas",
+    "cancelled": "Este evento se canceló, así que las entradas ya no están disponibles.",
+    "closed": "La inscripción para este evento está cerrada.",
+    "notOnSale": "Las entradas para este evento aún no están a la venta. Vuelva pronto.",
+    "paidUnavailable": "Ahora mismo no se pueden comprar entradas de pago. Vuelva pronto.",
+    "separateOrders": "Las entradas gratuitas y las de pago son pedidos distintos. Consiga un tipo y luego vuelva por el otro.",
+    "freeTitle": "Entradas gratuitas",
+    "paidTitle": "Entradas de pago",
+    "approvalNote": "El anfitrión aprueba cada solicitud antes de emitir las entradas."
+  },
+  "host": {
+    "free": "Gratis",
+    "taken": "{sold} reservadas",
+    "takenOf": "{sold} reservadas de {quantity}",
+    "note": "Los invitados ven aquí el formulario de entradas. Usted gestiona este evento, así que no necesita entrada.",
+    "seeGuests": "Ver invitados",
+    "manage": "Gestionar evento"
+  },
+  "signUp": {
+    "welcome": "¡Bienvenido! Cree una cuenta gratuita o inicie sesión para conseguir sus entradas. Solo tarda unos segundos con Google o un código de 6 dígitos por correo.",
+    "cta": "Conseguir entradas",
+    "haveAccount": "¿Ya tiene una cuenta? <link>Iniciar sesión</link>"
+  },
+  "guest": {
+    "name": "Su nombre completo",
+    "email": "Correo electrónico",
+    "emailNote": "Todas sus entradas se envían al correo de su cuenta.",
+    "othersLegend": "Nombres para las demás entradas (opcional; puede reenviar cada entrada)",
+    "ticketNumber": "Entrada {number}",
+    "namePlaceholder": "Nombre del invitado",
+    "choose": "Elegir",
+    "socialPlaceholder": "@usuario o enlace al perfil"
+  },
+  "order": {
+    "legend": "Entradas",
+    "soldOut": "Agotadas",
+    "free": "Gratis",
+    "howMany": "Cuántas entradas {name}",
+    "limit": "Hasta {count, plural, one {# entrada} other {# entradas}} por persona.",
+    "pending": "Consiguiendo sus entradas...",
+    "request": "{count, plural, one {Solicitar una entrada} other {Solicitar # entradas}}",
+    "get": "{count, plural, one {Conseguir entrada} other {Conseguir # entradas}}"
+  },
+  "paid": {
+    "legend": "Entradas de pago",
+    "soldOutWaitlist": "Agotadas · lista de espera",
+    "serviceFee": "Cargo por servicio",
+    "includesVat": "(incluye IVA {amount})",
+    "total": "Total",
+    "feesIncluded": "Los cargos están incluidos en el precio.",
+    "subtotal": "Entradas",
+    "workingFee": "Calculando el cargo por servicio...",
+    "workingTotal": "Calculando el total...",
+    "waitlistNote": "Esa entrada está agotada. Únase a la lista de espera y le avisaremos por correo si se libera un lugar; entonces tendrá 24 horas para pagar.",
+    "refundPolicy": "Política de reembolso:",
+    "joining": "Uniéndose...",
+    "opening": "Abriendo Paystack...",
+    "join": "Unirse a la lista de espera",
+    "pay": "Pagar con Paystack",
+    "payTotal": "Pagar con Paystack · {total}",
+    "payNote": "Pagará en la página segura de Paystack. Sus entradas se reservan durante 10 minutos."
+  },
+  "errors": {
+    "eventNotFound": "No se encontró este evento.",
+    "sessionEnded": "Su sesión ha terminado. Inicie sesión de nuevo para conseguir entradas.",
+    "orderFailed": "No pudimos conseguir sus entradas. Inténtelo de nuevo.",
+    "quoteFailed": "No pudimos calcular el total. Inténtelo de nuevo.",
+    "paymentFailed": "No pudimos iniciar su pago. Inténtelo de nuevo.",
+    "chooseTicket": "Elija al menos una entrada.",
+    "ticketRange": "Elija entre 1 y 10 entradas.",
+    "nonRefundable": "Marque «{text}» para continuar."
+  }
+}

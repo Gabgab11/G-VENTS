@@ -1,9 +1,10 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useActionState, useEffect, useMemo, useState } from "react";
+import { useFormat } from "@/i18n/format-hooks";
 import type { PageQuestion, PageTicketType } from "@/lib/event-page";
-import { formatMinor } from "@/lib/money";
-import { NON_REFUNDABLE_TEXT, ORGANIZER_TEXT, type FeeChoice } from "@/lib/payment-text";
+import { NON_REFUNDABLE_KEY, ORGANIZER_KEY, type FeeChoice } from "@/lib/payment-text";
 import { placePaidOrder, quotePaid, type OrderState, type Quote } from "./actions";
 import GuestDetails from "./GuestDetails";
 
@@ -23,13 +24,17 @@ type Props = {
 // the organizer statement, then "Pay with Paystack". A sold-out type can be chosen to join its
 // waiting list (WL1).
 export default function PaidOrderForm({ eventId, ticketTypes, questions, perBuyerLimit, userEmail, defaultName, refundPolicy, feeChoice }: Props) {
+  const t = useTranslations("event.paid");
+  const root = useTranslations();
+  const format = useFormat();
+  const formatMinor = format.money;
   const [state, action, pending] = useActionState<OrderState, FormData>(placePaidOrder, undefined);
-  const first = ticketTypes.find((t) => t.remaining === null || t.remaining > 0);
+  const first = ticketTypes.find((tt) => tt.remaining === null || tt.remaining > 0);
   const [qty, setQty] = useState<Record<string, number>>(first ? { [first.id]: 1 } : {});
   const [quote, setQuote] = useState<Quote | null>(null);
   const [quoteError, setQuoteError] = useState("");
   const total = Object.values(qty).reduce((a, b) => a + b, 0);
-  const soldOut = (t: PageTicketType) => t.remaining !== null && t.remaining <= 0;
+  const soldOut = (tt: PageTicketType) => tt.remaining !== null && tt.remaining <= 0;
   const waitlist = ticketTypes.some((t) => soldOut(t) && (qty[t.id] ?? 0) > 0);
   // A string key, so the quote is asked for again only when the chosen tickets change.
   const linesKey = useMemo(() => JSON.stringify(Object.entries(qty).filter(([, n]) => n > 0).map(([ticketTypeId, quantity]) => ({ ticketTypeId, quantity }))), [qty]);
@@ -58,7 +63,7 @@ export default function PaidOrderForm({ eventId, ticketTypes, questions, perBuye
   };
 
   // Shown before the quote arrives, and if it can't be had: the plain sum of the prices.
-  const subtotal = ticketTypes.reduce((sum, t) => sum + t.priceMinor * (qty[t.id] ?? 0), 0);
+  const subtotal = ticketTypes.reduce((sum, tt) => sum + tt.priceMinor * (qty[tt.id] ?? 0), 0);
 
   return (
     <form action={action} className="form register">
@@ -66,18 +71,18 @@ export default function PaidOrderForm({ eventId, ticketTypes, questions, perBuye
       <input type="hidden" name="join_waitlist" value={waitlist ? "true" : "false"} />
 
       <fieldset className="form" style={{ gap: 8, border: 0 }}>
-        <legend className="sr-only">Paid tickets</legend>
-        {ticketTypes.map((t) => (
-          <label key={t.id} className="tier-pick">
-            <span className="grow">{t.name}</span>
-            <span className="muted small">{soldOut(t) ? "Sold out · waiting list" : formatMinor(t.priceMinor, t.currency)}</span>
-            <select className="input qty" name={`qty_${t.id}`} value={qty[t.id] ?? 0} aria-label={`How many ${t.name} tickets`}
-              onChange={(e) => setQty((q) => ({ ...q, [t.id]: Number(e.target.value) }))}>
-              {options(t).map((n) => <option key={n} value={n}>{n}</option>)}
+        <legend className="sr-only">{t("legend")}</legend>
+        {ticketTypes.map((tt) => (
+          <label key={tt.id} className="tier-pick">
+            <span className="grow">{tt.name}</span>
+            <span className="muted small">{soldOut(tt) ? t("soldOutWaitlist") : formatMinor(tt.priceMinor, tt.currency)}</span>
+            <select className="input qty" name={`qty_${tt.id}`} value={qty[tt.id] ?? 0} aria-label={root("event.order.howMany", { name: tt.name })}
+              onChange={(e) => setQty((q) => ({ ...q, [tt.id]: Number(e.target.value) }))}>
+              {options(tt).map((n) => <option key={n} value={n}>{n}</option>)}
             </select>
           </label>
         ))}
-        <p className="muted small">Up to {perBuyerLimit} {perBuyerLimit === 1 ? "ticket" : "tickets"} per person.</p>
+        <p className="muted small">{root("event.order.limit", { count: perBuyerLimit })}</p>
       </fieldset>
 
       {total > 0 && !waitlist && (
@@ -91,40 +96,40 @@ export default function PaidOrderForm({ eventId, ticketTypes, questions, perBuye
               ))}
               {quote.serviceFeeMinor > 0 && (
                 <div className="pay-line">
-                  <span>Service fee{quote.vatMinor > 0 ? <span className="muted small"> (includes VAT {formatMinor(quote.vatMinor, quote.currency)})</span> : null}</span>
+                  <span>{t("serviceFee")}{quote.vatMinor > 0 ? <span className="muted small">{` ${t("includesVat", { amount: formatMinor(quote.vatMinor, quote.currency) })}`}</span> : null}</span>
                   <span>{formatMinor(quote.serviceFeeMinor, quote.currency)}</span>
                 </div>
               )}
-              <div className="pay-line pay-total"><span>Total</span><span>{formatMinor(quote.totalMinor, quote.currency)}</span></div>
-              {quote.serviceFeeMinor === 0 && <p className="muted small">Fees are included in the price.</p>}
+              <div className="pay-line pay-total"><span>{t("total")}</span><span>{formatMinor(quote.totalMinor, quote.currency)}</span></div>
+              {quote.serviceFeeMinor === 0 && <p className="muted small">{t("feesIncluded")}</p>}
             </>
           ) : (
             <>
-              <div className="pay-line"><span>Tickets</span><span>{formatMinor(subtotal, currency)}</span></div>
-              <p className="muted small">{quoteError || (feeChoice === "guest_pays" ? "Working out the service fee..." : "Working out the total...")}</p>
+              <div className="pay-line"><span>{t("subtotal")}</span><span>{formatMinor(subtotal, currency)}</span></div>
+              <p className="muted small">{quoteError || (feeChoice === "guest_pays" ? t("workingFee") : t("workingTotal"))}</p>
             </>
           )}
         </div>
       )}
-      {waitlist && <p className="muted small">That ticket is sold out. Join the waiting list and we&apos;ll email you if a place frees up; you then have 24 hours to pay.</p>}
+      {waitlist && <p className="muted small">{t("waitlistNote")}</p>}
 
       <GuestDetails idPrefix="paid" total={total} questions={questions} userEmail={userEmail} defaultName={defaultName} />
 
       <div className="pay-terms">
-        {refundPolicy && <p className="small"><b>Refund policy:</b> {refundPolicy}</p>}
-        <p className="small muted">{ORGANIZER_TEXT}</p>
+        {refundPolicy && <p className="small"><b>{t("refundPolicy")}</b> {refundPolicy}</p>}
+        <p className="small muted">{root(ORGANIZER_KEY)}</p>
         <label className="check">
           <input type="checkbox" name="non_refundable" required />
-          <span>{NON_REFUNDABLE_TEXT}</span>
+          <span>{root(NON_REFUNDABLE_KEY)}</span>
         </label>
       </div>
 
       {state?.error && <p className="error" role="alert">{state.error}</p>}
 
       <button className="btn-white" type="submit" disabled={pending || total === 0}>
-        {pending ? (waitlist ? "Joining..." : "Opening Paystack...") : waitlist ? "Join the waiting list" : `Pay with Paystack${quote ? ` · ${formatMinor(quote.totalMinor, quote.currency)}` : ""}`}
+        {pending ? (waitlist ? t("joining") : t("opening")) : waitlist ? t("join") : quote ? t("payTotal", { total: formatMinor(quote.totalMinor, quote.currency) }) : t("pay")}
       </button>
-      {!waitlist && <p className="muted small">You&apos;ll pay on Paystack&apos;s secure page. Your tickets are held for 10 minutes.</p>}
+      {!waitlist && <p className="muted small">{t("payNote")}</p>}
     </form>
   );
 }

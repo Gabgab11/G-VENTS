@@ -1,0 +1,108 @@
+{
+  "pricing": {
+    "meta": {
+      "title": "الأسعار · G-ventZ"
+    },
+    "hero": {
+      "eyebrow": "الأسعار",
+      "title": "أسعار بسيطة تنمو مع فعالياتك",
+      "text": "أنشئ الفعاليات مجانًا. لا تدفع رسوم المنصة إلا عند بيع تذاكر مدفوعة."
+    },
+    "currency": {
+      "choose": "اختر العملة",
+      "usd": "USD",
+      "ngn": "نيرة",
+      "gbp": "GBP",
+      "eur": "EUR",
+      "ghs": "سيدي",
+      "kes": "شلن",
+      "zar": "راند"
+    },
+    "plan": {
+      "starter": "للمنظّمين الذين يبدؤون بفعاليات مجانية.",
+      "pro": "للمنظّمين الذين يقيمون فعاليات كل شهر.",
+      "business": "للمؤسسات التي تقيم فعاليات كبيرة أو متعددة.",
+      "popular": "الأكثر شيوعًا",
+      "perMonth": "/ شهريًا",
+      "fee": "رسوم المنصة على التذاكر المدفوعة: {fee}٪",
+      "signUpFree": "سجّل مجانًا",
+      "comingSoon": "قريبًا"
+    },
+    "features": {
+      "unlimitedEvents": "إنشاء فعاليات بلا حدود",
+      "freeTickets": "إصدار تذاكر مجانية",
+      "promoCodes": "رموز ترويجية",
+      "qrCheckIn": "تذاكر برمز QR وتسجيل دخول الضيوف",
+      "basicAnalytics": "تحليلات أساسية وتذكيرات بالبريد الإلكتروني",
+      "standardPages": "صفحات فعاليات قياسية",
+      "teamOne": "عضو واحد في الفريق",
+      "everythingStarter": "كل ما في Starter",
+      "advancedAnalytics": "تحليلات متقدمة",
+      "advancedReminders": "تذكيرات متقدمة بالبريد الإلكتروني",
+      "customizablePages": "صفحات فعاليات قابلة للتخصيص",
+      "teamFive": "5 أعضاء في الفريق",
+      "prioritySupport": "دعم ذو أولوية",
+      "optionalDomain": "نطاق مخصص اختياري",
+      "everythingPro": "كل ما في Pro",
+      "brandedPages": "صفحات فعاليات بهويتك التجارية بالكامل",
+      "teamFifteen": "15 عضوًا في الفريق",
+      "customDomain": "نطاق مخصص",
+      "apiAccess": "الوصول إلى API"
+    },
+    "example": {
+      "title": "كيف تبدو الرسوم",
+      "text": "مثال: منظّم يبيع {quantity} تذكرة بسعر {price} للتذكرة.",
+      "sales": "مبيعات التذاكر",
+      "starter": "رسوم Starter (3٪)",
+      "pro": "رسوم Pro (1.5٪) + السعر الشهري",
+      "business": "رسوم Business (0.5٪) + السعر الشهري",
+      "note": "رسوم مزوّد الدفع منفصلة وتنطبق على كل الخطط."
+    },
+    "compare": {
+      "title": "قارن كل الميزات",
+      "feature": "الميزة",
+      "monthlyPrice": "السعر الشهري",
+      "features": {
+        "eventCreation": "إنشاء الفعاليات",
+        "freeTickets": "إصدار تذاكر مجانية",
+        "platformFee": "رسوم المنصة على التذاكر المدفوعة",
+        "analytics": "تحليلات الفعالية",
+        "promoCodes": "رموز ترويجية",
+        "customPages": "صفحات فعاليات مخصصة",
+        "attendeeManagement": "إدارة الحضور",
+        "qrTickets": "تذاكر برمز QR",
+        "checkIn": "تسجيل دخول الضيوف",
+        "emailReminders": "تذكيرات بالبريد الإلكتروني",
+        "teamMembers": "أعضاء الفريق",
+        "exportData": "تصدير بيانات الحضور",
+        "prioritySupport": "دعم ذو أولوية",
+        "customDomain": "نطاق مخصص",
+        "apiAccess": "الوصول إلى API"
+      },
+      "values": {
+        "unlimited": "بلا حدود",
+        "free": "مجاني",
+        "basic": "أساسي",
+        "advanced": "متقدم",
+        "yes": "نعم",
+        "no": "لا",
+        "standard": "قياسي",
+        "customizable": "قابل للتخصيص",
+        "fullyBranded": "بهويتك بالكامل",
+        "optional": "اختياري"
+      }
+    },
+    "links": {
+      "terms": "الشروط",
+      "refunds": "الاسترداد",
+      "privacy": "الخصوصية"
+    }
+  },
+  "help": {
+    "meta": {
+      "title": "المساعدة · G-ventZ"
+    },
+    "title": "المساعدة",
+    "text": "الضيوف: تواصلوا مع منظّم الفعالية التي سجّلتم فيها. المنظّمون: أديروا فعالياتكم من لوحة التحكم."
+  }
+}

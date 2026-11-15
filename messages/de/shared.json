@@ -1,0 +1,150 @@
+{
+  "errorPage": {
+    "title": "Etwas ist schiefgelaufen",
+    "body": "Diese Seite konnte nicht geladen werden. Bitte versuchen Sie es gleich noch einmal.",
+    "reference": "Referenz: {digest}",
+    "retry": "Erneut versuchen",
+    "home": "Zur Startseite"
+  },
+  "notFound": {
+    "title": "Seite nicht gefunden",
+    "body": "Diese Seite existiert nicht, oder Sie haben keinen Zugriff darauf. Wenn Ihnen jemand den Link zu einer Veranstaltung geschickt hat, prüfen Sie, ob er vollständig ist.",
+    "discover": "Veranstaltungen entdecken",
+    "home": "Zur Startseite"
+  },
+  "loading": "Wird geladen…",
+  "legalDoc": {
+    "effective": "Gültig ab: {date}",
+    "terms": "AGB",
+    "refunds": "Erstattungen",
+    "pricing": "Preise",
+    "privacy": "Datenschutz"
+  },
+  "orderCard": {
+    "ticketsFor": "Tickets für {title}",
+    "tickets": "Tickets",
+    "timeLine": "{range} · Ortszeit {zone}",
+    "ticketNumber": "{number} von {total}",
+    "checkedIn": "Eingecheckt",
+    "openTicket": "Ticket öffnen",
+    "status": {
+      "completed": {
+        "title": "Sie sind dabei",
+        "body": "Jedes Ticket hat einen eigenen QR-Code. Leiten Sie jedes Ticket an den Gast weiter, für den es bestimmt ist."
+      },
+      "pendingApproval": {
+        "title": "Anfrage erhalten",
+        "body": "Der Gastgeber prüft jede Anfrage. Wir senden Ihnen Ihre Tickets per E-Mail, sobald er entschieden hat."
+      },
+      "waitlisted": {
+        "title": "Sie stehen auf der Warteliste",
+        "body": "Die Veranstaltung ist gerade ausgebucht. Werden Plätze frei, kann der Gastgeber Ihre Gruppe nachrücken lassen."
+      },
+      "declined": {
+        "title": "Diesmal nicht angenommen",
+        "body": "Der Gastgeber konnte diese Anfrage nicht annehmen."
+      },
+      "cancelled": {
+        "title": "Storniert",
+        "body": "Diese Tickets können nicht mehr verwendet werden."
+      },
+      "awaitingPayment": {
+        "title": "Warten auf Zahlung",
+        "body": "Ihre Tickets werden reserviert, während Sie mit Paystack bezahlen."
+      },
+      "expired": {
+        "title": "Reservierung abgelaufen",
+        "body": "Die Zahlung wurde nicht rechtzeitig abgeschlossen, daher sind diese Tickets wieder im Verkauf."
+      },
+      "failed": {
+        "title": "Zahlung fehlgeschlagen",
+        "body": "Die Zahlung ist nicht durchgegangen. Es wurde nichts abgebucht."
+      },
+      "refunded": {
+        "title": "Erstattet",
+        "body": "Diese Bestellung wurde erstattet. Die Tickets sind nicht mehr gültig."
+      },
+      "partiallyRefunded": {
+        "title": "Teilweise erstattet",
+        "body": "Einige Tickets wurden erstattet; die anderen sind weiterhin gültig."
+      },
+      "disputed": {
+        "title": "Zahlung angefochten",
+        "body": "Die Zahlung wird bei der Bank angefochten. Ihre Tickets sind vorerst weiterhin gültig."
+      }
+    }
+  },
+  "sellReason": {
+    "paymentsOff": "Kostenpflichtige Tickets sind auf G-ventZ noch nicht verfügbar. Alle Tickets sind vorerst kostenlos.",
+    "notApplied": "Um kostenpflichtige Tickets zu verkaufen, teilen Sie uns mit, wer wohin ausgezahlt wird.",
+    "notAppliedAction": "Verkauf kostenpflichtiger Tickets beantragen",
+    "applicationSubmitted": "Wir prüfen Ihren Antrag auf den Verkauf kostenpflichtiger Tickets. Wir schreiben Ihnen, sobald entschieden ist.",
+    "applicationSubmittedAction": "Antrag ansehen",
+    "applicationDeclined": "Ihr Antrag auf den Verkauf kostenpflichtiger Tickets wurde nicht genehmigt. Sie können den Grund einsehen und erneut beantragen.",
+    "applicationDeclinedAction": "Grund ansehen",
+    "approvalRevoked": "Ihre Genehmigung zum Verkauf kostenpflichtiger Tickets wurde widerrufen. Bereits verkaufte Tickets bleiben gültig.",
+    "approvalRevokedAction": "Details ansehen",
+    "payoutAccountPending": "Sie sind genehmigt. Wir richten Ihr Auszahlungskonto bei Paystack ein; sobald es bereit ist, können Sie kostenpflichtige Tickets verkaufen.",
+    "payoutAccountPendingAction": "Auszahlungsdetails ansehen",
+    "countryOff": "Paystack ist für das Land Ihres Auszahlungskontos derzeit pausiert. Kostenlose Tickets funktionieren weiterhin.",
+    "owesMoney": "Sie schulden G-ventZ Geld aus Erstattungen oder Rückbuchungen und können daher keine neuen kostenpflichtigen Veranstaltungen veröffentlichen. Ihre bestehenden Veranstaltungen verkaufen weiter, womit der Betrag beglichen wird.",
+    "owesMoneyAction": "Offenen Betrag ansehen",
+    "suspended": "Ihr Konto ist gesperrt, daher können Sie keine kostenpflichtigen Tickets verkaufen."
+  },
+  "fees": {
+    "hostAbsorbs": {
+      "label": "Ich übernehme die Gebühren",
+      "hint": "Gäste zahlen den Ticketpreis. Die Gebühr von G-ventZ, die Mehrwertsteuer darauf und die Paystack-Gebühr werden von Ihrem Erlös abgezogen."
+    },
+    "guestPays": {
+      "label": "Gäste zahlen die Gebühren",
+      "hint": "Die Gebühren werden auf den Preis aufgeschlagen, sodass Sie den vollen Ticketpreis erhalten."
+    }
+  },
+  "payment": {
+    "nonRefundable": "Mir ist bekannt, dass Tickets nicht erstattet werden, außer die Veranstaltung wird abgesagt",
+    "organizer": "Verantwortlich für diese Veranstaltung ist der Veranstalter, nicht G-ventZ."
+  },
+  "refundStatus": {
+    "queued": "Erstattung in Warteschlange",
+    "processing": "Erstattung in Bearbeitung",
+    "refunded": "Erstattet",
+    "failed": "Erstattung fehlgeschlagen"
+  },
+  "applicationStatus": {
+    "none": "Nicht beantragt",
+    "submitted": "In Prüfung",
+    "approved": "Genehmigt",
+    "declined": "Abgelehnt",
+    "revoked": "Genehmigung widerrufen",
+    "payoutPending": "Auszahlungskonto ausstehend"
+  },
+  "emailCode": {
+    "noAccount": "Für diese E-Mail-Adresse gibt es noch kein Konto.",
+    "rateLimited": "Es wurden zu viele Codes angefordert. Warten Sie eine Minute und versuchen Sie es dann erneut.",
+    "captcha": "Die Roboterprüfung ist fehlgeschlagen. Versuchen Sie es erneut oder fahren Sie mit Google fort.",
+    "invalid": "Geben Sie eine gültige E-Mail-Adresse ein.",
+    "sendFailed": "Wir konnten gerade keinen Code senden. Versuchen Sie es gleich noch einmal.",
+    "tooManyTries": "Zu viele Versuche. Warten Sie eine Minute und fordern Sie dann einen neuen Code an.",
+    "wrongCode": "Dieser Code ist falsch oder abgelaufen. Versuchen Sie es erneut oder fordern Sie einen neuen an."
+  },
+  "mapsUrl": {
+    "hint": "Fügen Sie einen Google-Maps-Link ein (google.com/maps, maps.app.goo.gl oder share.google)."
+  },
+  "categories": {
+    "music": "Musik",
+    "conferences": "Konferenzen",
+    "tech": "Technik",
+    "faith": "Glaube",
+    "arts": "Kunst",
+    "food": "Essen & Trinken",
+    "sports": "Sport",
+    "business": "Business",
+    "nightlife": "Nachtleben",
+    "education": "Bildung",
+    "community": "Gemeinschaft",
+    "charity": "Wohltätigkeit",
+    "family": "Familie",
+    "other": "Sonstiges"
+  }
+}

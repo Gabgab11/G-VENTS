@@ -1,64 +1,65 @@
+import { getTranslations } from "next-intl/server";
 import type { components } from "@/lib/api/schema";
-import { formatMinor } from "@/lib/money";
-import { FEE_CHOICES, type FeeChoice } from "@/lib/payment-text";
+import { feeChoiceKey, type FeeChoice } from "@/lib/payment-text";
+import { getFormat } from "@/i18n/format-server";
 
 type Sales = components["schemas"]["EventSalesDto"];
 type Dispute = components["schemas"]["EventDisputeDto"];
 
 // Paid ticket sales for the event (M5 SalesPanel), per currency, from the API's ledger.
-export function SalesPanel({ sales, feeChoice }: { sales: Sales; feeChoice: FeeChoice }) {
+export async function SalesPanel({ sales, feeChoice }: { sales: Sales; feeChoice: FeeChoice }) {
+  const [t, root, format] = await Promise.all([getTranslations("dashboard.sales"), getTranslations(), getFormat()]);
   return (
     <section className="panel stack" aria-labelledby="sales-title">
       <div className="spread">
-        <div id="sales-title" className="panel-label">Paid ticket sales</div>
-        <span className="muted small">{FEE_CHOICES[feeChoice].label}</span>
+        <div id="sales-title" className="panel-label">{t("title")}</div>
+        <span className="muted small">{root(feeChoiceKey(feeChoice).labelKey)}</span>
       </div>
-      {sales.currencies.length === 0 && <p className="muted">No paid tickets sold yet.</p>}
+      {sales.currencies.length === 0 && <p className="muted">{t("none")}</p>}
       {sales.currencies.map((c) => {
-        const f = (n: number) => formatMinor(n, c.currency);
+        const f = (n: number) => format.money(n, c.currency);
+        const minus = (n: number) => t("minus", { amount: f(n) });
         return (
           <div className="stack" key={c.currency}>
             <div className="stats">
-              <div className="stat"><b>{c.ticketsSold}</b><span>Paid tickets sold</span></div>
-              <div className="stat"><b className="pay-money">{f(c.netMinor)}</b><span>You received</span></div>
+              <div className="stat"><b>{c.ticketsSold}</b><span>{t("ticketsSold")}</span></div>
+              <div className="stat"><b className="pay-money">{f(c.netMinor)}</b><span>{t("received")}</span></div>
             </div>
             <dl className="pay-ledger">
-              <dt>Guests paid ({c.ordersPaid} {c.ordersPaid === 1 ? "order" : "orders"})</dt><dd>{f(c.grossMinor)}</dd>
-              <dt>G-ventZ fees</dt><dd>− {f(c.feesMinor)}</dd>
-              {c.vatMinor > 0 && <><dt>VAT on fees</dt><dd>− {f(c.vatMinor)}</dd></>}
-              <dt>Paystack charges</dt><dd>− {f(c.providerChargesMinor)}</dd>
-              {c.debtRecoveredMinor > 0 && <><dt>Owed amounts taken from sales</dt><dd>− {f(c.debtRecoveredMinor)}</dd></>}
-              <dt className="pay-total">You received</dt><dd className="pay-total">{f(c.netMinor)}</dd>
-              {c.refundsMinor > 0 && <><dt>Refunded to guests</dt><dd>{f(c.refundsMinor)}</dd></>}
-              {c.debtMinor > 0 && <><dt>You owe G-ventZ (refunds and chargebacks)</dt><dd>{f(c.debtMinor)}</dd></>}
+              <dt>{t("guestsPaid", { count: c.ordersPaid })}</dt><dd>{f(c.grossMinor)}</dd>
+              <dt>{t("fees")}</dt><dd>{minus(c.feesMinor)}</dd>
+              {c.vatMinor > 0 && <><dt>{t("vat")}</dt><dd>{minus(c.vatMinor)}</dd></>}
+              <dt>{t("paystack")}</dt><dd>{minus(c.providerChargesMinor)}</dd>
+              {c.debtRecoveredMinor > 0 && <><dt>{t("debtRecovered")}</dt><dd>{minus(c.debtRecoveredMinor)}</dd></>}
+              <dt className="pay-total">{t("received")}</dt><dd className="pay-total">{f(c.netMinor)}</dd>
+              {c.refundsMinor > 0 && <><dt>{t("refunded")}</dt><dd>{f(c.refundsMinor)}</dd></>}
+              {c.debtMinor > 0 && <><dt>{t("owed")}</dt><dd>{f(c.debtMinor)}</dd></>}
             </dl>
           </div>
         );
       })}
       {(sales.refundsPending > 0 || sales.refundsFailed > 0) && (
         <p className="small">
-          {sales.refundsPending > 0 && <>{sales.refundsPending} {sales.refundsPending === 1 ? "refund is" : "refunds are"} still being processed. </>}
-          {sales.refundsFailed > 0 && <span className="error">{sales.refundsFailed} {sales.refundsFailed === 1 ? "refund" : "refunds"} failed; G-ventZ has been alerted and will follow up.</span>}
+          {sales.refundsPending > 0 && <>{t("refundsPending", { count: sales.refundsPending })}{" "}</>}
+          {sales.refundsFailed > 0 && <span className="error">{t("refundsFailed", { count: sales.refundsFailed })}</span>}
         </p>
       )}
-      <p className="muted small">Your share of each sale goes to your payout account through Paystack. When you refund a ticket, the guest gets their share back; G-ventZ&apos;s fee and Paystack&apos;s charge aren&apos;t returned, and your share is taken from your next sales.</p>
+      <p className="muted small">{t("shareNote")}</p>
     </section>
   );
 }
 
 // Open chargebacks on the event's orders (M5 DisputeBanner, DS1–DS3).
-export function DisputeBanner({ disputes }: { disputes: Dispute[] }) {
+export async function DisputeBanner({ disputes }: { disputes: Dispute[] }) {
   const open = disputes.filter((d) => d.status === "open");
   if (open.length === 0) return null;
+  const [t, format] = await Promise.all([getTranslations("dashboard.disputes"), getFormat()]);
   const total = new Map<string, number>();
   for (const d of open) total.set(d.currency, (total.get(d.currency) ?? 0) + d.amountMinor);
   return (
     <section className="pay-banner" role="alert" aria-labelledby="disputes-title">
-      <b id="disputes-title">{open.length === 1 ? "A guest's bank disputed a payment" : `${open.length} payments are disputed`} ({[...total].map(([c, n]) => formatMinor(n, c)).join(" · ")})</b>
-      <p className="small">
-        The tickets still work while it&apos;s looked into. We&apos;ve emailed you: reply with proof the guest got what they paid for (their ticket and check-in, messages with them, the event details).
-        If the dispute is lost, those tickets stop working and the amount is taken from your next sales.
-      </p>
+      <b id="disputes-title">{t("title", { count: open.length })} ({[...total].map(([c, n]) => format.money(n, c)).join(" · ")})</b>
+      <p className="small">{t("body")}</p>
     </section>
   );
 }

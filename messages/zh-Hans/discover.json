@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "title": "发现活动 · G-ventZ"
+  },
+  "online": "线上",
+  "allEvents": "全部活动",
+  "categoryEvents": "{category}活动",
+  "categoryEmpty": "{category}类别暂无即将举行的活动。<link>发起一个</link>。",
+  "noEvents": "暂无公开活动。<link>创建第一个</link>。",
+  "empty": {
+    "discover": "发现",
+    "title": "美好的相聚从这里开始",
+    "categoryTitle": "暂无{category}活动",
+    "text": "抢先一步：创建活动，并与宾客分享一个链接。",
+    "create": "创建活动"
+  },
+  "rails": {
+    "categories": "活动类别",
+    "soon": "即将举行",
+    "weekend": "本周末"
+  },
+  "rail": {
+    "previous": "上一组：{title}",
+    "next": "下一组：{title}"
+  },
+  "hero": {
+    "label": "精选活动",
+    "slide": "第 {position} 个，共 {count} 个：{title}",
+    "getTickets": "获取门票",
+    "share": "分享",
+    "shareOn": "分享到 {network}",
+    "shareText": "G-ventZ 上的 {title}",
+    "choose": "选择精选活动",
+    "show": "显示 {title}"
+  },
+  "inSentence": {
+    "music": "音乐",
+    "conferences": "会议",
+    "tech": "科技",
+    "faith": "信仰",
+    "arts": "艺术",
+    "food": "美食",
+    "sports": "体育",
+    "business": "商务",
+    "nightlife": "夜生活",
+    "education": "教育",
+    "community": "社区",
+    "charity": "公益",
+    "family": "家庭",
+    "other": "其他"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "title": "اكتشف الفعاليات · G-ventZ"
+  },
+  "online": "عبر الإنترنت",
+  "allEvents": "كل الفعاليات",
+  "categoryEvents": "فعاليات {category}",
+  "categoryEmpty": "لا شيء قادم في فئة {category} حتى الآن. <link>نظّم فعالية</link>.",
+  "noEvents": "لا توجد فعاليات عامة حتى الآن. <link>أنشئ أول فعالية</link>.",
+  "empty": {
+    "discover": "استكشف",
+    "title": "اللقاءات الجميلة تبدأ من هنا",
+    "categoryTitle": "لا توجد فعاليات {category} حتى الآن",
+    "text": "كن أول من يبدأ: أنشئ فعالية وشارك رابطًا واحدًا مع ضيوفك.",
+    "create": "أنشئ فعالية"
+  },
+  "rails": {
+    "categories": "فئات الفعاليات",
+    "soon": "قريبًا",
+    "weekend": "نهاية هذا الأسبوع"
+  },
+  "rail": {
+    "previous": "السابق: {title}",
+    "next": "التالي: {title}"
+  },
+  "hero": {
+    "label": "فعاليات مميزة",
+    "slide": "{position} من {count}: {title}",
+    "getTickets": "احصل على التذاكر",
+    "share": "مشاركة",
+    "shareOn": "شارك على {network}",
+    "shareText": "{title} على G-ventZ",
+    "choose": "اختر فعالية مميزة",
+    "show": "اعرض {title}"
+  },
+  "inSentence": {
+    "music": "الموسيقى",
+    "conferences": "المؤتمرات",
+    "tech": "التقنية",
+    "faith": "الإيمان",
+    "arts": "الفنون",
+    "food": "الطعام",
+    "sports": "الرياضة",
+    "business": "الأعمال",
+    "nightlife": "الحياة الليلية",
+    "education": "التعليم",
+    "community": "المجتمع",
+    "charity": "الخيرية",
+    "family": "العائلة",
+    "other": "أخرى"
+  }
+}

@@ -2,8 +2,11 @@ import type { components } from "@/lib/api/schema";
 import { isCategory } from "@/lib/categories";
 import { checkbox, field } from "@/lib/forms";
 import { isThemeKey } from "@/lib/themes";
-import { MAPS_URL_HINT, MAPS_URL_MAX, isGoogleMapsUrl } from "@/lib/maps-url";
+import { MAPS_URL_HINT_KEY, MAPS_URL_MAX, isGoogleMapsUrl } from "@/lib/maps-url";
 import { wholeUnitsToMinor } from "@/lib/money";
+import { createTranslator } from "next-intl";
+import createEventEn from "../../../../messages/en/createEvent.json";
+import sharedEn from "../../../../messages/en/shared.json";
 
 export type CreateEventBody = components["schemas"]["CreateEventDto"];
 
@@ -26,7 +29,13 @@ function local(date: string, time: string): string | null {
 /** The host may sell paid tickets, in this currency (their payout country's, business rules PR3). */
 export type PaidSetup = { currency: string } | null;
 
-const NOT_PAID = "Paid tickets aren't available yet. Make every ticket free for now.";
+/** A message function at the catalogue root (next-intl's `getTranslations()`, narrowed to what this needs). */
+export type Translate = (key: string, values?: Record<string, string | number>) => string;
+
+const english = createTranslator({ locale: "en", messages: { createEvent: createEventEn, shared: sharedEn } });
+/** The English messages, for callers that don't pass the reader's translator. */
+const ENGLISH: Translate = (key, values) => english(key as never, values as never);
+const V = "createEvent.validation";
 
 /** A typed price that isn't empty or zero ("0", "0,000"): the host means a paid ticket. */
 function isPriced(raw: string): boolean {
@@ -44,26 +53,27 @@ export function hasPaidPrice(formData: FormData): boolean {
  * must get right; the API enforces every event rule and answers with a message for users.
  * Prices are typed in whole units and sent as minor units in the host's payout currency (M5);
  * without `paid` any price is refused, never quietly saved as free (Change 2, D64).
+ * Messages are in English unless `t` (the reader's root translator) is given.
  */
-export function createEventBody(formData: FormData, paid: PaidSetup = null): CreateEventBody | { error: string } {
+export function createEventBody(formData: FormData, paid: PaidSetup = null, t: Translate = ENGLISH): CreateEventBody | { error: string } {
   const title = field(formData, "title", 140);
   const category = field(formData, "category");
-  if (title.length < 3) return { error: "Event name must be 3 to 140 characters." };
-  if (!isCategory(category)) return { error: "Choose a category." };
+  if (title.length < 3) return { error: t(`${V}.title`) };
+  if (!isCategory(category)) return { error: t(`${V}.category`) };
 
   const startsAt = local(field(formData, "date"), field(formData, "time"));
-  if (!startsAt) return { error: "Add a start date and time." };
+  if (!startsAt) return { error: t(`${V}.start`) };
   const endDate = field(formData, "end_date");
   const endTime = field(formData, "end_time");
   // End is required too, and must come after the start (same-format local times compare as strings).
   const endsAt = local(endDate, endTime);
-  if (!endsAt) return { error: "Add an end date and time." };
-  if (endsAt <= startsAt) return { error: "The end must be after the start." };
+  if (!endsAt) return { error: t(`${V}.end`) };
+  if (endsAt <= startsAt) return { error: t(`${V}.endAfterStart`) };
 
   const timeZone = field(formData, "time_zone", 64);
-  const location = locationInput(formData);
+  const location = locationInput(formData, t);
   if ("error" in location) return location;
-  if (location.kind === "online" && !timeZone) return { error: "Choose the event's time zone." };
+  if (location.kind === "online" && !timeZone) return { error: t(`${V}.timeZone`) };
 
   const names = formData.getAll("tier_name").map(String);
   const quantities = formData.getAll("tier_qty").map(String);
@@ -74,22 +84,22 @@ export function createEventBody(formData: FormData, paid: PaidSetup = null): Cre
     if (!name) continue;
     const raw = (quantities[i] ?? "").trim();
     const quantity = raw === "" ? null : Number(raw);
-    if (quantity !== null && (!Number.isInteger(quantity) || quantity <= 0)) return { error: `The quantity for "${name}" must be a whole number above 0.` };
+    if (quantity !== null && (!Number.isInteger(quantity) || quantity <= 0)) return { error: t(`${V}.quantity`, { name }) };
     const price = prices[i] ?? "";
     let priceMinor = 0;
     if (isPriced(price)) {
-      if (!paid) return { error: NOT_PAID };
+      if (!paid) return { error: t(`${V}.notPaid`) };
       const minor = wholeUnitsToMinor(price, paid.currency);
-      if (minor === null) return { error: `The price for "${name}" must be a whole number of ${paid.currency}, like 5000.` };
+      if (minor === null) return { error: t(`${V}.price`, { name, currency: paid.currency }) };
       priceMinor = minor;
     }
     ticketTypes.push({ name, priceMinor, ...(priceMinor > 0 && paid ? { currency: paid.currency } : {}), ...(quantity !== null ? { quantity } : {}) });
   }
-  if (ticketTypes.length === 0) return { error: "Add at least one ticket." };
-  if (ticketTypes.length > MAX_TIERS) return { error: `Add at most ${MAX_TIERS} ticket types.` };
+  if (ticketTypes.length === 0) return { error: t(`${V}.noTickets`) };
+  if (ticketTypes.length > MAX_TIERS) return { error: t(`${V}.maxTickets`, { max: MAX_TIERS }) };
 
   const limit = Number(field(formData, "per_buyer_limit") || "10");
-  if (!Number.isInteger(limit) || limit < 1 || limit > 10) return { error: "Choose a limit from 1 to 10 tickets per person." };
+  if (!Number.isInteger(limit) || limit < 1 || limit > 10) return { error: t(`${V}.perBuyer`) };
 
   const theme = field(formData, "cover_theme");
   const description = field(formData, "description");
@@ -119,10 +129,10 @@ export function createEventBody(formData: FormData, paid: PaidSetup = null): Cre
  * The venue part of the form (create and the dashboard's venue form): online, or a country with
  * an optional region and venue. Place details only count when they came together with the venue.
  */
-export function locationInput(formData: FormData): CreateEventBody["location"] | { error: string } {
+export function locationInput(formData: FormData, t: Translate = ENGLISH): CreateEventBody["location"] | { error: string } {
   if (checkbox(formData, "is_online")) return { kind: "online" };
   const countryCode = field(formData, "country_code", 2).toUpperCase();
-  if (!countryCode) return { error: "Choose a country from the list." };
+  if (!countryCode) return { error: t(`${V}.country`) };
   const venueName = field(formData, "venue", 300);
   const placeId = field(formData, "place_id", 300);
   const lat = coordinate(field(formData, "lat", 40), 90);
@@ -132,7 +142,7 @@ export function locationInput(formData: FormData): CreateEventBody["location"] |
   const city = place ? field(formData, "city", 120) : "";
   const address = place ? field(formData, "address", 300) : "";
   const mapsUrl = field(formData, "maps_url", MAPS_URL_MAX + 1);
-  if (mapsUrl && !isGoogleMapsUrl(mapsUrl)) return { error: MAPS_URL_HINT };
+  if (mapsUrl && !isGoogleMapsUrl(mapsUrl)) return { error: t(MAPS_URL_HINT_KEY) };
   return {
     kind: "venue",
     venueName,

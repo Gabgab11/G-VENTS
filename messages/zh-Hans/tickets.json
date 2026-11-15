@@ -1,0 +1,190 @@
+{
+  "ticket": {
+    "meta": {
+      "title": "您的门票 · G-ventZ"
+    },
+    "status": {
+      "eventCancelled": {
+        "title": "此活动已取消",
+        "body": "主办方已取消此活动，因此这张门票无法使用。"
+      },
+      "pending": {
+        "title": "等待主办方审核",
+        "body": "主办方会审核每位嘉宾。确认后，您的二维码将显示在这里。"
+      },
+      "waitlisted": {
+        "title": "您已在候补名单中",
+        "body": "活动目前已满。如有名额空出，此页面将变为您的门票。"
+      },
+      "declined": {
+        "title": "主办方未能接受此申请",
+        "body": "这张门票不能用于入场。"
+      },
+      "cancelled": {
+        "title": "这张门票已取消",
+        "body": "它已不能用于入场。"
+      },
+      "refunded": {
+        "title": "这张门票已退款",
+        "body": "它已不能用于入场。"
+      }
+    },
+    "checkIn": {
+      "checkedIn": {
+        "title": "已签到",
+        "body": "这位嘉宾已入场。祝您活动愉快！"
+      },
+      "alreadyUsed": {
+        "title": "已签到过",
+        "body": "请勿让这张门票重复入场。"
+      },
+      "notConfirmed": {
+        "title": "尚未确认",
+        "body": "主办方尚未批准这张门票。"
+      },
+      "waitlisted": {
+        "title": "在候补名单中",
+        "body": "这张门票还没有名额。"
+      },
+      "cancelled": {
+        "title": "无效",
+        "body": "这张门票已取消。"
+      },
+      "refunded": {
+        "title": "无效",
+        "body": "这张门票已退款。"
+      },
+      "failed": {
+        "title": "签到失败",
+        "body": "请刷新页面后重试。"
+      }
+    },
+    "ticketFor": "{title} 的门票",
+    "admitOne": "限一人入场",
+    "date": "日期",
+    "time": "时间",
+    "ticket": "门票",
+    "free": "免费",
+    "ofTotal": "第 {number} 张，共 {total} 张",
+    "where": "地点",
+    "guest": "嘉宾",
+    "notValid": "无效",
+    "noQr": "暂无二维码",
+    "hintValid": "请在入口出示此二维码。打印件同样有效。",
+    "hintPending": "请保存此链接。门票有变动时会自动更新。",
+    "stamp": "已签到",
+    "stampAt": "{time}",
+    "eventPage": "活动页面",
+    "staff": {
+      "label": "入口签到",
+      "already": "<b>已于 {time} 签到</b>。请勿让这张门票重复入场。",
+      "intro": "<b>您是此活动的工作人员。</b>请在入口为这位嘉宾签到。",
+      "button": "为 {name} 签到"
+    },
+    "foot": "这张门票属于 {name}。任何拥有此链接的人都能看到它，请只与您信任的人分享。",
+    "print": "打印或保存为 PDF"
+  },
+  "email": {
+    "label": "通过邮件发送门票",
+    "intro": "<b>通过邮件获取门票</b> 我们会将门票发送到 {email}，即您报名时使用的地址。",
+    "sent": "门票已在发送途中。请在一分钟后查看收件箱和垃圾邮件文件夹。",
+    "failed": "邮件发送失败，请重试。",
+    "confirmFirst": "请先勾选复选框，确认您的邮箱地址。",
+    "limit": "这张门票在过去一小时内已多次通过邮件发送，请稍后再试。",
+    "unavailable": "目前无法通过邮件发送这张门票。",
+    "lastFailed": "您上一封邮件未能送达。",
+    "confirm": "这是我的邮箱地址",
+    "tryAgain": "重试",
+    "send": "通过邮件发送门票"
+  },
+  "whatsapp": {
+    "label": "将门票发送到 WhatsApp",
+    "intro": "<b>在 WhatsApp 上获取门票</b> 输入您的 WhatsApp 号码，然后发送打开的消息。",
+    "numberLabel": "您的 WhatsApp 号码",
+    "open": "打开 WhatsApp",
+    "invalid": "请输入带国家代码的 WhatsApp 号码，例如 +234 801 234 5678。",
+    "unavailable": "目前无法通过 WhatsApp 发送，请使用门票链接。",
+    "message": "您好，G-ventZ，请发送我的 {title} 门票。\n门票代码：{code}\n门票链接：{url}"
+  },
+  "order": {
+    "meta": {
+      "title": "您的门票 · G-ventZ"
+    },
+    "headingIn": "报名成功",
+    "headingOrder": "您的订单",
+    "headingTickets": "您的门票",
+    "footCompleted": "我们也已将门票发送到您的账户邮箱。您的所有门票都在<link>我的门票</link>中。",
+    "foot": "您的所有门票都在<link>我的门票</link>中。"
+  },
+  "payment": {
+    "status": {
+      "awaitingPayment": {
+        "title": "等待您付款",
+        "body": "如果您刚刚付款，此页面会在几秒钟内自动更新。请勿重复付款。"
+      },
+      "completed": {
+        "title": "已付款",
+        "body": "您的付款已成功，门票如下。我们已将门票连同收据通过邮件发送给您。"
+      },
+      "expired": {
+        "title": "保留时间已过",
+        "body": "我们未在 10 分钟内收到您的付款，门票已重新开售。如有款项从您的账户扣除，将自动退回。"
+      },
+      "failed": {
+        "title": "付款未成功",
+        "body": "Paystack 无法完成付款。未扣除任何费用。"
+      },
+      "refunded": {
+        "title": "已退款",
+        "body": "此订单已退款。门票已失效。"
+      },
+      "partiallyRefunded": {
+        "title": "部分退款",
+        "body": "此订单中部分门票已退款；其余门票仍然有效。"
+      },
+      "disputed": {
+        "title": "付款存在争议",
+        "body": "您的银行通知我们此笔付款存在争议。在处理期间，您的门票仍然有效。"
+      },
+      "waitlisted": {
+        "title": "您已在候补名单中",
+        "body": "有名额空出时我们会发邮件通知您。届时您有 24 小时付款。"
+      }
+    },
+    "offerTitle": "名额已为您保留",
+    "offerBody": "请在 {time} 之前付款以获取门票；之后名额将转给下一位。",
+    "reference": "付款参考号",
+    "tryAgain": "使用 Paystack 重试",
+    "pay": "使用 Paystack 付款",
+    "payTotal": "使用 Paystack 付款 · {total}",
+    "startAgain": "重新开始",
+    "serviceFee": "服务费",
+    "includesVat": "（含增值税 {amount}）",
+    "total": "合计",
+    "paid": "已付款",
+    "paidAt": "付款时间：{time}",
+    "refunds": "退款",
+    "refundLine": "{amount} · {count, plural, other {# 张门票}}",
+    "refundCancelled": "活动已取消",
+    "refundLate": "保留时间结束后付款",
+    "refundsNote": "退款将退回您付款时使用的银行卡或账户。银行通常需要 5 到 10 个工作日。",
+    "held": "您的门票将保留 <b>{time}</b>。",
+    "checking": "正在向 Paystack 核实您的付款...",
+    "noAnswer": "Paystack 仍未回复。<button>再次检查</button>",
+    "opening": "正在打开 Paystack...",
+    "orderNotFound": "找不到此订单。",
+    "openFailed": "我们无法打开付款页面，请重试。"
+  },
+  "myTickets": {
+    "meta": {
+      "title": "我的门票 · G-ventZ"
+    },
+    "heading": "我的门票",
+    "which": "门票类别",
+    "upcoming": "即将开始",
+    "past": "已结束",
+    "emptyUpcoming": "暂无即将开始的活动门票。去“发现”看看吧。",
+    "emptyPast": "暂无已结束的活动。",
+    "loadMore": "加载更多"
+  }
+}

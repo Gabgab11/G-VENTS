@@ -66,3 +66,50 @@ export const APPLICATION_STATUS: Record<string, string> = {
   revoked: "Approval withdrawn",
   payout_pending: "Payout account pending",
 };
+
+// Message ids for the wording above (Change 3), for pages in the reader's language. The constants
+// above stay English for the admin dashboard. Ids are full (area included).
+
+const SELL_REASON_IDS: Record<SellReason, string> = {
+  payments_off: "paymentsOff",
+  not_applied: "notApplied",
+  application_submitted: "applicationSubmitted",
+  application_declined: "applicationDeclined",
+  approval_revoked: "approvalRevoked",
+  payout_account_pending: "payoutAccountPending",
+  country_off: "countryOff",
+  owes_money: "owesMoney",
+  suspended: "suspended",
+};
+
+/** Ids for sellReasonText(reason); a page calls t(key) with useTranslations()/getTranslations() at the root (no namespace). */
+export function sellReasonKey(reason: string | null | undefined): { key: string; actionKey?: string } {
+  const r: SellReason = reason && Object.hasOwn(SELL_REASONS, reason) ? (reason as SellReason) : "payments_off";
+  const id = `shared.sellReason.${SELL_REASON_IDS[r]}`;
+  return SELL_REASONS[r].action ? { key: id, actionKey: `${id}Action` } : { key: id };
+}
+
+const FEE_CHOICE_IDS: Record<FeeChoice, string> = { host_absorbs: "hostAbsorbs", guest_pays: "guestPays" };
+
+/** Ids for FEE_CHOICES[choice]; a page calls t(labelKey) / t(hintKey) with useTranslations()/getTranslations() at the root (no namespace). */
+export function feeChoiceKey(choice: FeeChoice): { labelKey: string; hintKey: string } {
+  const id = `shared.fees.${FEE_CHOICE_IDS[choice]}`;
+  return { labelKey: `${id}.label`, hintKey: `${id}.hint` };
+}
+
+/** Id for NON_REFUNDABLE_TEXT; a page calls t(NON_REFUNDABLE_KEY) with useTranslations()/getTranslations() at the root (no namespace). */
+export const NON_REFUNDABLE_KEY = "shared.payment.nonRefundable";
+/** Id for ORGANIZER_TEXT; a page calls t(ORGANIZER_KEY) with useTranslations()/getTranslations() at the root (no namespace). */
+export const ORGANIZER_KEY = "shared.payment.organizer";
+
+const camel = (s: string) => s.replace(/_([a-z])/g, (_, c: string) => c.toUpperCase());
+
+/** Id for REFUND_STATUS[status], or null when unknown; a page calls t(key) with useTranslations()/getTranslations() at the root (no namespace). */
+export function refundStatusKey(status: string): string | null {
+  return Object.hasOwn(REFUND_STATUS, status) ? `shared.refundStatus.${camel(status)}` : null;
+}
+
+/** Id for APPLICATION_STATUS[status], or null when unknown; a page calls t(key) with useTranslations()/getTranslations() at the root (no namespace). */
+export function applicationStatusKey(status: string): string | null {
+  return Object.hasOwn(APPLICATION_STATUS, status) ? `shared.applicationStatus.${camel(status)}` : null;
+}

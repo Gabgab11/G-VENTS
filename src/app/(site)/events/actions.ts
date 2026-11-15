@@ -2,21 +2,23 @@
 
 import { redirect } from "next/navigation";
 import { api, data } from "@/lib/api/server";
-import { apiMessage } from "@/lib/api/problem";
+import { getLocale, getTranslations } from "next-intl/server";
+import { problemMessage } from "@/lib/api/problem";
 import { requireUser } from "@/lib/auth";
 import { flyerFrom, uploadFlyer } from "@/lib/flyer";
 import { getAvailability } from "@/lib/payments";
-import { sellReasonText } from "@/lib/payment-text";
+import { sellReasonKey } from "@/lib/payment-text";
 import type { components } from "@/lib/api/schema";
 import { createEventBody, hasPaidPrice, type PaidSetup } from "./create-event-input";
 
 export type CreateEventState = { error?: string } | undefined;
 
+/** Message ids (createEvent.save.*) for the image problems. */
 const FLYER_PROBLEMS = {
-  flyer_missing: "Choose an image first.",
-  flyer_type: "Use a JPG, PNG, or WebP image for the event image.",
-  flyer_size: "The event image is larger than 5 MB. Please resize it and try again.",
-  flyer_unreadable: "We couldn't read that image. Please choose it again.",
+  flyer_missing: "flyerMissing",
+  flyer_type: "flyerType",
+  flyer_size: "flyerSize",
+  flyer_unreadable: "flyerUnreadable",
 } as const;
 
 // Creates the event through gventz-api (U6a). The API derives the time zone from the venue where
@@ -25,23 +27,24 @@ const FLYER_PROBLEMS = {
 // image fails, the event is kept and the host lands on its settings to try the image again.
 export async function createEvent(_prev: CreateEventState, formData: FormData): Promise<CreateEventState> {
   await requireUser("/events/new");
+  const t = await getTranslations();
   // Paid ticket types (M5): only when the API says this host can sell now, in their payout currency.
   let paid: PaidSetup = null;
   if (hasPaidPrice(formData)) {
     const me = (await getAvailability())?.me;
-    if (!me?.canSellPaid || !me.currency) return { error: sellReasonText(me?.reason).text };
+    if (!me?.canSellPaid || !me.currency) return { error: t(sellReasonKey(me?.reason).key) };
     paid = { currency: me.currency };
   }
-  const body = createEventBody(formData, paid);
+  const body = createEventBody(formData, paid, (key, values) => t(key, values));
   if ("error" in body) return { error: body.error };
   const flyer = flyerFrom(formData);
-  if (flyer && "problem" in flyer) return { error: FLYER_PROBLEMS[flyer.problem] };
+  if (flyer && "problem" in flyer) return { error: t(`createEvent.save.${FLYER_PROBLEMS[flyer.problem]}`) };
 
   let created: { id: string; slug: string };
   try {
     created = data(await (await api()).POST("/v1/events", { body }));
   } catch (error) {
-    return { error: apiMessage(error, "We couldn't save the event. Please try again.") };
+    return { error: problemMessage(error, await getTranslations("errors"), await getLocale(), t("createEvent.save.failed")) };
   }
 
   if (flyer) {
@@ -60,10 +63,11 @@ export type FeePreview = components["schemas"]["HostFeePreviewDto"];
 
 /** The live example next to a paid price (M5 TicketTypeEditor): what the guest pays and the host receives. */
 export async function previewFee(priceMinor: number, feeChoice: "host_absorbs" | "guest_pays"): Promise<FeePreview | { error: string }> {
-  if (!Number.isSafeInteger(priceMinor) || priceMinor <= 0) return { error: "Enter a price." };
+  const t = await getTranslations("createEvent.fee");
+  if (!Number.isSafeInteger(priceMinor) || priceMinor <= 0) return { error: t("enterPrice") };
   try {
     return data(await (await api()).POST("/v1/payments/fee-preview", { body: { priceMinor, feeChoice: feeChoice === "guest_pays" ? "guest_pays" : "host_absorbs" } }));
   } catch (error) {
-    return { error: apiMessage(error, "The fee example isn't available right now.") };
+    return { error: problemMessage(error, await getTranslations("errors"), await getLocale(), t("unavailable")) };
   }
 }

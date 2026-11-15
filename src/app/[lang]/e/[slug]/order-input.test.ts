@@ -28,15 +28,15 @@ describe("placeOrderBody", () => {
   });
 
   it("needs 1 to 10 tickets", () => {
-    expect(placeOrderBody(form([[`qty_${A}`, "0"]]))).toEqual({ error: "Choose at least one ticket." });
-    expect(placeOrderBody(form([[`qty_${A}`, "6"], [`qty_${B}`, "5"]]))).toEqual({ error: "Choose between 1 and 10 tickets." });
-    expect(placeOrderBody(form([["qty_not-a-uuid", "3"]]))).toEqual({ error: "Choose at least one ticket." });
+    expect(placeOrderBody(form([[`qty_${A}`, "0"]]))).toEqual({ error: "chooseTicket" });
+    expect(placeOrderBody(form([[`qty_${A}`, "6"], [`qty_${B}`, "5"]]))).toEqual({ error: "ticketRange" });
+    expect(placeOrderBody(form([["qty_not-a-uuid", "3"]]))).toEqual({ error: "chooseTicket" });
   });
 });
 
 describe("paidOrderBody (M5)", () => {
   it("needs the non-refundable tick, then sends it with the lines", () => {
-    expect(paidOrderBody(form([[`qty_${A}`, "2"]]))).toEqual({ error: expect.stringContaining("non-refundable") });
+    expect(paidOrderBody(form([[`qty_${A}`, "2"]]))).toEqual({ error: "nonRefundable" });
     expect(paidOrderBody(form([[`qty_${A}`, "2"], ["non_refundable", "on"]]))).toEqual({ lines: [{ ticketTypeId: A, quantity: 2 }], nonRefundableAccepted: true });
   });
   it("joins the waiting list only when asked", () => {
@@ -44,7 +44,7 @@ describe("paidOrderBody (M5)", () => {
     expect(paidOrderBody(form([[`qty_${A}`, "1"], ["non_refundable", "on"], ["join_waitlist", "false"]]))).not.toHaveProperty("joinWaitlist");
   });
   it("keeps the free-order checks", () => {
-    expect(paidOrderBody(form([["non_refundable", "on"]]))).toEqual({ error: "Choose at least one ticket." });
+    expect(paidOrderBody(form([["non_refundable", "on"]]))).toEqual({ error: "chooseTicket" });
   });
 });
 

@@ -2,7 +2,9 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Combobox from "@/components/Combobox";
-import { mainZones, zoneLabel, zoneOptions } from "@/lib/time-zones";
+import { useTranslations } from "next-intl";
+import { mainZones, zoneOptions } from "@/lib/time-zones";
+import { useFormat } from "@/i18n/format-hooks";
 
 // The event's time zone, shown rather than asked for. Most hosts never touch it: it comes from the
 // venue (its coordinates), from the country when the country has one zone, or from the host's
@@ -11,6 +13,7 @@ import { mainZones, zoneLabel, zoneOptions } from "@/lib/time-zones";
 // take it from the venue (CE3).
 
 export type ZoneContext = {
+  /** The country's name as shown, in the page's language. */
   countryName: string;
   /** The country's zones; one for most countries. */
   countryZones: string[];
@@ -19,6 +22,8 @@ export type ZoneContext = {
 };
 
 export default function TimeZoneField({ online, context }: { online: boolean; context: ZoneContext }) {
+  const t = useTranslations("createEvent.timeZone");
+  const format = useFormat();
   const [chosen, setChosen] = useState("");
   const [picking, setPicking] = useState(false);
   const [deviceZone, setDeviceZone] = useState("");
@@ -36,18 +41,18 @@ export default function TimeZoneField({ online, context }: { online: boolean; co
   const single = context.countryZones.length === 1 ? context.countryZones[0]! : null;
   const auto = online ? deviceZone : context.venueZone ?? single;
   const zone = chosen || auto || "";
-  const source = chosen ? "You chose this time zone."
-    : online ? "Your device's time zone. Guests see times in this zone."
-    : context.venueZone ? "From the venue's location."
-    : single ? `${context.countryName} uses one time zone.`
+  const source = chosen ? t("sourceChosen")
+    : online ? t("sourceDevice")
+    : context.venueZone ? t("sourceVenue")
+    : single ? t("sourceCountry", { country: context.countryName })
     : "";
   const posted = chosen || (online ? deviceZone : "");
 
   const options = useMemo(
-    () => (picking ? zoneOptions(context.countryZones).map((z) => ({ value: z, label: zoneLabel(z) })) : []),
-    [picking, context.countryZones],
+    () => (picking ? zoneOptions(context.countryZones).map((z) => ({ value: z, label: format.zone(z) })) : []),
+    [picking, context.countryZones, format],
   );
-  const name = (z: string) => (ready ? zoneLabel(z) : z.replace(/_/g, " "));
+  const name = (z: string) => (ready ? format.zone(z) : z.replace(/_/g, " "));
   // One per clock (the US's 29 zones become 7); every zone stays searchable under "Change".
   const clocks = useMemo(() => (ready ? mainZones(context.countryZones) : context.countryZones), [ready, context.countryZones]);
 
@@ -56,40 +61,40 @@ export default function TimeZoneField({ online, context }: { online: boolean; co
 
   return (
     <div className="field tz-field">
-      <span>Time zone</span>
+      <span>{t("label")}</span>
       {needsChoice && !picking ? (
         <>
-          <select className="input" value="" onChange={(e) => setChosen(e.target.value)} aria-label={`Time zone in ${context.countryName}`}>
-            <option value="" disabled>Choose the time zone</option>
+          <select className="input" value="" onChange={(e) => setChosen(e.target.value)} aria-label={t("inCountry", { country: context.countryName })}>
+            <option value="" disabled>{t("choose")}</option>
             {clocks.map((z) => <option key={z} value={z}>{name(z)}</option>)}
           </select>
-          <span className="muted small">{context.countryName} has several time zones. Pick the venue from the search and it&apos;s set for you, or choose one here.</span>
+          <span className="muted small">{t("several", { country: context.countryName })}</span>
         </>
       ) : picking ? (
         <>
           <Combobox
             name=""
-            label="Search a city or time zone"
+            label={t("searchLabel")}
             options={options}
             value={chosen || auto || ""}
             onChange={(z) => { setChosen(z); setPicking(false); }}
-            placeholder="Type a city, e.g. Lagos or London"
-            emptyText="No time zone matches"
+            placeholder={t("searchPlaceholder")}
+            emptyText={t("noMatch")}
           />
-          <button type="button" className="link-btn" onClick={() => setPicking(false)}>Cancel</button>
+          <button type="button" className="link-btn" onClick={() => setPicking(false)}>{t("cancel")}</button>
         </>
       ) : (
         <div className="tz-current">
           <span className="tz-name" aria-live="polite">{zone ? name(zone) : "…"}</span>
-          <button type="button" className="link-btn" onClick={() => setPicking(true)}>Change</button>
+          <button type="button" className="link-btn" onClick={() => setPicking(true)}>{t("change")}</button>
           {chosen && auto && chosen !== auto && (
             <button type="button" className="link-btn" onClick={() => setChosen("")}>
-              Use {online ? "my device's" : context.venueZone ? "the venue's" : "the country's"} time zone
+              {online ? t("useDevice") : context.venueZone ? t("useVenue") : t("useCountry")}
             </button>
           )}
         </div>
       )}
-      {!needsChoice && !picking && source && <span className="muted small">{source} Start and end times are in this zone.</span>}
+      {!needsChoice && !picking && source && <span className="muted small">{t("sourceLine", { source })}</span>}
       <input type="hidden" name="time_zone" value={posted} />
     </div>
   );

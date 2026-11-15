@@ -10,10 +10,12 @@ import { getDashboardTheme } from "./getTheme";
 import SellPaidCard from "./SellPaidCard";
 import { getAvailability, getMyHostApplication } from "@/lib/payments";
 import SiteHeader from "@/components/SiteHeader";
+import { getTranslations } from "next-intl/server";
 
 // The organizer's events from gventz-api: owned, or where they hold an accepted role.
 export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ deleted?: string; page?: string }> }) {
   await requireUser("/dashboard");
+  const t = await getTranslations("dashboard");
   const { deleted, page: rawPage } = await searchParams;
   const page = Math.max(1, Math.floor(Number(rawPage) || 1));
 
@@ -47,32 +49,32 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
       <SiteHeader actions={<><AccountLink className="site-account" /><SignOutButton /></>} />
       <div className="spread">
         <div>
-          <div className="eyebrow">Organizer</div>
-          <h1>Your events</h1>
+          <div className="eyebrow">{t("list.eyebrow")}</div>
+          <h1>{t("list.title")}</h1>
         </div>
         <div className="row-gap">
-          {me?.isStaff && <Link href="/admin" className="btn-ghost">G-ventZ admin</Link>}
-          <Link href="/events/new" className="btn-white">+ Create event</Link>
+          {me?.isStaff && <Link href="/admin" className="btn-ghost">{t("list.admin")}</Link>}
+          <Link href="/events/new" className="btn-white">{t("list.create")}</Link>
         </div>
       </div>
-      <p className="muted">Manage registrations, guests, and announcements. Private events open only by link. <Link href="/account/security" className="gold">Two-step sign-in</Link></p>
+      <p className="muted">{t.rich("list.intro", { link: (c) => <Link href="/account/security" className="gold">{c}</Link> })}</p>
 
-      {deleted === "1" && <p className="ok" role="status">Event deleted.</p>}
+      {deleted === "1" && <p className="ok" role="status">{t("list.deleted")}</p>}
 
       <SellPaidCard app={hostApp} paidOpen={!!availability?.paidTickets} />
 
       <ThemePanel current={theme} />
 
-      {rows.length === 0 && <p className="muted">You haven&apos;t created any events yet.</p>}
+      {rows.length === 0 && <p className="muted">{t("list.empty")}</p>}
       <div className="dash-list">
         {rows.map((e) => <EventRow key={e.id} event={e} />)}
       </div>
 
       {pages > 1 && (
-        <nav className="spread" aria-label="Event pages">
-          {page > 1 ? <Link href={`/dashboard?page=${page - 1}`} className="btn-small">← Previous</Link> : <span />}
-          <span className="muted small">Page {page} of {pages}</span>
-          {page < pages ? <Link href={`/dashboard?page=${page + 1}`} className="btn-small">Next →</Link> : <span />}
+        <nav className="spread" aria-label={t("list.pagesLabel")}>
+          {page > 1 ? <Link href={`/dashboard?page=${page - 1}`} className="btn-small">{t("pagination.previous")}</Link> : <span />}
+          <span className="muted small">{t("pagination.page", { page, pages })}</span>
+          {page < pages ? <Link href={`/dashboard?page=${page + 1}`} className="btn-small">{t("pagination.next")}</Link> : <span />}
         </nav>
       )}
     </main>

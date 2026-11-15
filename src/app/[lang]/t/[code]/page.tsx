@@ -1,7 +1,9 @@
-import type { Metadata } from "next";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { timezoneLabel } from "@/lib/dates";
+import { intlLocale, safeZone } from "@/lib/format";
+import type { Locale } from "@/i18n/languages";
 import { qrSvg } from "@/lib/qr";
 import { displayCode, getTicket, isTicketCode, ticketDate, ticketTime, type Ticket } from "@/lib/ticket";
 import { checkInFromTicket } from "./actions";
@@ -13,50 +15,65 @@ import { pageFonts } from "@/app/fonts";
 import SiteHeader from "@/components/SiteHeader";
 
 // Tickets are private to whoever holds the link.
-export const metadata: Metadata = {
-  title: "Your ticket · G-ventZ",
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang } = await params;
+  setRequestLocale(lang);
+  const t = await getTranslations("tickets.ticket");
+  return { title: t("meta.title"), robots: { index: false, follow: false } };
+}
 
-function statusNote(t: Ticket): { tone: "warn" | "ok" | ""; title: string; body: string } | null {
-  if (t.event.status === "cancelled") {
-    return { tone: "warn", title: "This event has been cancelled", body: "The host has cancelled this event, so this ticket can't be used." };
-  }
+/** A message id under tickets.ticket.status, with its tone. */
+function statusNote(t: Ticket): { tone: "warn" | "ok" | ""; id: string } | null {
+  if (t.event.status === "cancelled") return { tone: "warn", id: "eventCancelled" };
   switch (t.status) {
     case "pending":
-      return { tone: "", title: "Waiting for the host", body: "The host approves each guest. Your QR code appears here once you're confirmed." };
+      return { tone: "", id: "pending" };
     case "waitlisted":
-      return { tone: "", title: "You're on the waiting list", body: "The event is full right now. If a place opens, this page turns into your ticket." };
+      return { tone: "", id: "waitlisted" };
     case "declined":
-      return { tone: "warn", title: "The host couldn't accept this request", body: "This ticket can't be used to enter the event." };
+      return { tone: "warn", id: "declined" };
     case "cancelled":
-      return { tone: "warn", title: "This ticket was cancelled", body: "It can no longer be used to enter the event." };
+      return { tone: "warn", id: "cancelled" };
     case "refunded":
-      return { tone: "warn", title: "This ticket was refunded", body: "It can no longer be used to enter the event." };
+      return { tone: "warn", id: "refunded" };
     default:
       return null;
   }
 }
 
-/** What the door check-in redirect reports (the API's scan reasons). */
-const CHECK_IN: Record<string, { tone: "ok" | "warn"; title: string; body: string }> = {
-  checked_in: { tone: "ok", title: "Checked in", body: "This guest is in. Enjoy the event!" },
-  already_used: { tone: "warn", title: "Already checked in", body: "Don't let this ticket in twice." },
-  not_confirmed: { tone: "warn", title: "Not confirmed yet", body: "The host hasn't approved this ticket." },
-  waitlisted: { tone: "warn", title: "On the waiting list", body: "This ticket hasn't got a place yet." },
-  cancelled: { tone: "warn", title: "Not valid", body: "This ticket was cancelled." },
-  refunded: { tone: "warn", title: "Not valid", body: "This ticket was refunded." },
-  failed: { tone: "warn", title: "Couldn't check in", body: "Refresh the page and try again." },
+/** What the door check-in redirect reports (the API's scan reasons): message ids under tickets.ticket.checkIn. */
+const CHECK_IN: Record<string, { tone: "ok" | "warn"; id: string }> = {
+  checked_in: { tone: "ok", id: "checkedIn" },
+  already_used: { tone: "warn", id: "alreadyUsed" },
+  not_confirmed: { tone: "warn", id: "notConfirmed" },
+  waitlisted: { tone: "warn", id: "waitlisted" },
+  cancelled: { tone: "warn", id: "cancelled" },
+  refunded: { tone: "warn", id: "refunded" },
+  failed: { tone: "warn", id: "failed" },
 };
+
+/** The ticket's date and times in the page's language; English keeps ticketDate/ticketTime exactly. */
+function dateFormatter(lang: Locale, timeZone: string) {
+  const local = (iso: string, o: Intl.DateTimeFormatOptions) => {
+    const d = new Date(iso);
+    return Number.isNaN(d.getTime()) ? "" : d.toLocaleString(intlLocale(lang, "date"), { ...o, timeZone: safeZone(timeZone) });
+  };
+  return {
+    date: (iso: string) => (lang === "en" ? ticketDate(iso, timeZone) : local(iso, { weekday: "long", day: "numeric", month: "long", year: "numeric" })),
+    time: (iso: string) => (lang === "en" ? ticketTime(iso, timeZone) : local(iso, { hour: "2-digit", minute: "2-digit" })),
+  };
+}
 
 export default async function TicketPage({
   params,
   searchParams,
 }: {
-  params: Promise<{ code: string }>;
+  params: Promise<{ lang: string; code: string }>;
   searchParams: Promise<{ checkin?: string; email?: string }>;
 }) {
-  const { code: rawCode } = await params;
+  const { lang, code: rawCode } = await params;
+  setRequestLocale(lang);
+  const t = await getTranslations("tickets.ticket");
   const { checkin, email: emailState } = await searchParams;
   const code = rawCode.toLowerCase();
   if (!isTicketCode(code)) notFound();
@@ -65,15 +82,18 @@ export default async function TicketPage({
   if (!ticket) notFound();
 
   const { event } = ticket;
-  const note = statusNote(ticket);
-  const checkInNote = checkin ? CHECK_IN[checkin] ?? CHECK_IN.failed : null;
+  const noteId = statusNote(ticket);
+  const note = noteId ? { tone: noteId.tone, title: t(`status.${noteId.id}.title`), body: t(`status.${noteId.id}.body`) } : null;
+  const checkInId = checkin ? CHECK_IN[checkin] ?? CHECK_IN.failed! : null;
+  const checkInNote = checkInId ? { tone: checkInId.tone, title: t(`checkIn.${checkInId.id}.title`), body: t(`checkIn.${checkInId.id}.body`) } : null;
   const valid = ticket.status === "confirmed" && event.status !== "cancelled";
   const qr = valid ? qrSvg(ticket.qrPayload) : null;
   const tz = event.timeZone;
+  const { date: ticketDateIn, time: ticketTimeIn } = dateFormatter(lang as Locale, tz);
   const start = event.startsAt ?? `${event.startsAtLocal}:00Z`;
-  const endTime = event.endsAt ? ticketTime(event.endsAt, tz) : null;
-  const checkedInAt = ticket.checkedInAt ? ticketTime(ticket.checkedInAt, tz) : null;
-  const ofTotal = ticket.number && ticket.total && ticket.total > 1 ? ` · ${ticket.number} of ${ticket.total}` : "";
+  const endTime = event.endsAt ? ticketTimeIn(event.endsAt) : null;
+  const checkedInAt = ticket.checkedInAt ? ticketTimeIn(ticket.checkedInAt) : null;
+  const ofTotal = ticket.number && ticket.total && ticket.total > 1 ? ` · ${t("ofTotal", { number: ticket.number, total: ticket.total })}` : "";
 
   return (
     <main className={`tk ${pageFonts}`}>
@@ -88,38 +108,38 @@ export default async function TicketPage({
         <div className={`tk-note ${note.tone}`} role="status"><b>{note.title}</b>{note.body}</div>
       )}
 
-      <article className="tk-ticket" aria-label={`Ticket for ${event.title}`}>
+      <article className="tk-ticket" aria-label={t("ticketFor", { title: event.title })}>
         <div className="tk-main">
           <div className="tk-band">
             <div className="tk-band-row">
               <span className="tk-brand">G-vent<b>Z</b></span>
-              <span className="tk-admit">Admit one</span>
+              <span className="tk-admit">{t("admitOne")}</span>
             </div>
             <h1 className="tk-title">{event.title}</h1>
           </div>
 
           <div className="tk-details">
             <div className="tk-field">
-              <div className="tk-label">Date</div>
-              <div className="tk-value">{ticketDate(start, tz)}</div>
+              <div className="tk-label">{t("date")}</div>
+              <div className="tk-value">{ticketDateIn(start)}</div>
             </div>
             <div className="tk-field">
-              <div className="tk-label">Time</div>
+              <div className="tk-label">{t("time")}</div>
               <div className="tk-value">
-                {ticketTime(start, tz)}{endTime ? ` – ${endTime}` : ""}
+                {ticketTimeIn(start)}{endTime ? ` – ${endTime}` : ""}
                 <span className="tk-small"> ({timezoneLabel(tz)})</span>
               </div>
             </div>
             <div className="tk-field">
-              <div className="tk-label">Ticket</div>
-              <div className="tk-value">{ticket.ticketType} · Free{ofTotal}</div>
+              <div className="tk-label">{t("ticket")}</div>
+              <div className="tk-value">{ticket.ticketType} · {t("free")}{ofTotal}</div>
             </div>
             <div className="tk-field wide">
-              <div className="tk-label">Where</div>
+              <div className="tk-label">{t("where")}</div>
               <div className="tk-value">{event.where}</div>
             </div>
             <div className="tk-field wide">
-              <div className="tk-label">Guest</div>
+              <div className="tk-label">{t("guest")}</div>
               <div className="tk-value big">{ticket.displayName}</div>
             </div>
           </div>
@@ -129,19 +149,19 @@ export default async function TicketPage({
           {qr ? (
             <div className="tk-qr" dangerouslySetInnerHTML={{ __html: qr }} />
           ) : (
-            <div className="tk-void">{ticket.status === "confirmed" ? "Not valid" : "No QR code yet"}</div>
+            <div className="tk-void">{ticket.status === "confirmed" ? t("notValid") : t("noQr")}</div>
           )}
           <div className="tk-code">{displayCode(ticket.code)}</div>
-          <div className="tk-hint">{valid ? "Show this code at the door. A printout works too." : "Keep this link. It updates if your ticket changes."}</div>
+          <div className="tk-hint">{valid ? t("hintValid") : t("hintPending")}</div>
           {checkedInAt && (
-            <div className="tk-stamp">Checked in<small>at {checkedInAt}</small></div>
+            <div className="tk-stamp">{t("stamp")}<small>{t("stampAt", { time: checkedInAt })}</small></div>
           )}
         </div>
       </article>
 
       <div className="tk-actions">
         {valid && <PrintButton />}
-        <Link href={`/e/${event.slug}`} className="tk-btn tk-ghost">Event page</Link>
+        <Link href={`/e/${event.slug}`} className="tk-btn tk-ghost">{t("eventPage")}</Link>
       </div>
 
       {ticket.email && (
@@ -158,16 +178,16 @@ export default async function TicketPage({
       )}
 
       {ticket.canCheckIn && valid && (
-        <section className="tk-staff" aria-label="Door check-in">
+        <section className="tk-staff" aria-label={t("staff.label")}>
           {checkedInAt ? (
-            <p><b>Already checked in</b> at {checkedInAt}. Don&apos;t let this ticket in twice.</p>
+            <p>{t.rich("staff.already", { b: (c) => <b>{c}</b>, time: checkedInAt })}</p>
           ) : (
             <>
-              <p><b>You&apos;re staff for this event.</b> Check this guest in at the door.</p>
+              <p>{t.rich("staff.intro", { b: (c) => <b>{c}</b> })}</p>
               <form action={checkInFromTicket}>
                 <input type="hidden" name="code" value={ticket.code} />
                 <input type="hidden" name="event_id" value={event.id} />
-                <button type="submit" className="tk-btn tk-go">Check in {ticket.displayName.split(" ")[0]}</button>
+                <button type="submit" className="tk-btn tk-go">{t("staff.button", { name: ticket.displayName.split(" ")[0] ?? "" })}</button>
               </form>
             </>
           )}
@@ -175,7 +195,7 @@ export default async function TicketPage({
       )}
 
       <p className="tk-foot no-print">
-        This ticket belongs to {ticket.displayName}. Anyone with this link can see it, so only share it with people you trust.
+        {t("foot", { name: ticket.displayName })}
       </p>
     </main>
   );

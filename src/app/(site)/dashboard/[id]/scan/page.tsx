@@ -6,8 +6,12 @@ import { requireUser } from "@/lib/auth";
 import { isUuid } from "@/lib/forms";
 import BackLink from "@/components/BackLink";
 import Scanner from "./Scanner";
+import { getTranslations } from "next-intl/server";
 
-export const metadata: Metadata = { title: "Scan tickets · G-ventZ", robots: { index: false, follow: false } };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("dashboard.scan");
+  return { title: t("metaTitle"), robots: { index: false, follow: false } };
+}
 
 // The door scanner page. Only roles with guests.checkIn (owner, admin, editor, check-in staff);
 // everyone else gets a 404, as the API does.
@@ -24,11 +28,12 @@ export default async function ScanPage({ params }: { params: Promise<{ id: strin
     throw error;
   }
   if (!event.permissions.includes("guests.checkIn")) notFound();
+  const t = await getTranslations("dashboard.scan");
 
   return (
     <main className="wrap page">
-      <BackLink fallback={`/dashboard/${id}`} label="← Event" />
-      <h1>Scan tickets</h1>
+      <BackLink fallback={`/dashboard/${id}`} label={t("back")} />
+      <h1>{t("title")}</h1>
       <Scanner eventId={id} title={event.title} />
     </main>
   );

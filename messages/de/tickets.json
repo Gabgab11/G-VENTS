@@ -1,0 +1,190 @@
+{
+  "ticket": {
+    "meta": {
+      "title": "Ihr Ticket · G-ventZ"
+    },
+    "status": {
+      "eventCancelled": {
+        "title": "Diese Veranstaltung wurde abgesagt",
+        "body": "Der Gastgeber hat diese Veranstaltung abgesagt, daher kann dieses Ticket nicht verwendet werden."
+      },
+      "pending": {
+        "title": "Warten auf den Gastgeber",
+        "body": "Der Gastgeber bestätigt jeden Gast. Ihr QR-Code erscheint hier, sobald Sie bestätigt sind."
+      },
+      "waitlisted": {
+        "title": "Sie stehen auf der Warteliste",
+        "body": "Die Veranstaltung ist gerade voll. Wird ein Platz frei, wird diese Seite zu Ihrem Ticket."
+      },
+      "declined": {
+        "title": "Der Gastgeber konnte diese Anfrage nicht annehmen",
+        "body": "Mit diesem Ticket ist kein Einlass möglich."
+      },
+      "cancelled": {
+        "title": "Dieses Ticket wurde storniert",
+        "body": "Es berechtigt nicht mehr zum Einlass."
+      },
+      "refunded": {
+        "title": "Dieses Ticket wurde erstattet",
+        "body": "Es berechtigt nicht mehr zum Einlass."
+      }
+    },
+    "checkIn": {
+      "checkedIn": {
+        "title": "Eingecheckt",
+        "body": "Dieser Gast ist drin. Viel Spaß bei der Veranstaltung!"
+      },
+      "alreadyUsed": {
+        "title": "Bereits eingecheckt",
+        "body": "Lassen Sie dieses Ticket nicht zweimal hinein."
+      },
+      "notConfirmed": {
+        "title": "Noch nicht bestätigt",
+        "body": "Der Gastgeber hat dieses Ticket nicht bestätigt."
+      },
+      "waitlisted": {
+        "title": "Auf der Warteliste",
+        "body": "Dieses Ticket hat noch keinen Platz."
+      },
+      "cancelled": {
+        "title": "Ungültig",
+        "body": "Dieses Ticket wurde storniert."
+      },
+      "refunded": {
+        "title": "Ungültig",
+        "body": "Dieses Ticket wurde erstattet."
+      },
+      "failed": {
+        "title": "Check-in fehlgeschlagen",
+        "body": "Laden Sie die Seite neu und versuchen Sie es erneut."
+      }
+    },
+    "ticketFor": "Ticket für {title}",
+    "admitOne": "Einlass für eine Person",
+    "date": "Datum",
+    "time": "Uhrzeit",
+    "ticket": "Ticket",
+    "free": "Kostenlos",
+    "ofTotal": "{number} von {total}",
+    "where": "Ort",
+    "guest": "Gast",
+    "notValid": "Ungültig",
+    "noQr": "Noch kein QR-Code",
+    "hintValid": "Zeigen Sie diesen Code am Eingang. Ein Ausdruck funktioniert auch.",
+    "hintPending": "Bewahren Sie diesen Link auf. Er wird aktualisiert, wenn sich Ihr Ticket ändert.",
+    "stamp": "Eingecheckt",
+    "stampAt": "um {time}",
+    "eventPage": "Veranstaltungsseite",
+    "staff": {
+      "label": "Check-in am Eingang",
+      "already": "<b>Bereits eingecheckt</b> um {time}. Lassen Sie dieses Ticket nicht zweimal hinein.",
+      "intro": "<b>Sie gehören zum Team dieser Veranstaltung.</b> Checken Sie diesen Gast am Eingang ein.",
+      "button": "{name} einchecken"
+    },
+    "foot": "Dieses Ticket gehört {name}. Jeder mit diesem Link kann es sehen, teilen Sie es also nur mit Personen, denen Sie vertrauen.",
+    "print": "Drucken oder als PDF speichern"
+  },
+  "email": {
+    "label": "Ticket per E-Mail senden",
+    "intro": "<b>Ihr Ticket per E-Mail</b> Wir senden es an {email}, die Adresse, mit der Sie sich angemeldet haben.",
+    "sent": "Ihr Ticket ist unterwegs. Sehen Sie in einer Minute in Ihrem Posteingang und Spam-Ordner nach.",
+    "failed": "Wir konnten die E-Mail nicht senden. Bitte versuchen Sie es erneut.",
+    "confirmFirst": "Setzen Sie zuerst das Häkchen, um Ihre E-Mail-Adresse zu bestätigen.",
+    "limit": "Dieses Ticket wurde in dieser Stunde bereits mehrmals per E-Mail gesendet. Bitte versuchen Sie es später erneut.",
+    "unavailable": "Der E-Mail-Versand ist für dieses Ticket gerade nicht verfügbar.",
+    "lastFailed": "Ihre letzte E-Mail ist nicht angekommen.",
+    "confirm": "Das ist meine E-Mail-Adresse",
+    "tryAgain": "Erneut versuchen",
+    "send": "Ticket per E-Mail senden"
+  },
+  "whatsapp": {
+    "label": "Ticket an WhatsApp senden",
+    "intro": "<b>Ihr Ticket auf WhatsApp</b> Geben Sie Ihre WhatsApp-Nummer ein und senden Sie dann die Nachricht, die sich öffnet.",
+    "numberLabel": "Ihre WhatsApp-Nummer",
+    "open": "WhatsApp öffnen",
+    "invalid": "Geben Sie Ihre WhatsApp-Nummer mit Ländervorwahl ein, zum Beispiel +234 801 234 5678.",
+    "unavailable": "Der Versand über WhatsApp ist gerade nicht verfügbar. Verwenden Sie stattdessen den Ticketlink.",
+    "message": "Hallo G-ventZ, bitte senden Sie mir mein Ticket für {title}.\nTicketcode: {code}\nTicketlink: {url}"
+  },
+  "order": {
+    "meta": {
+      "title": "Ihre Tickets · G-ventZ"
+    },
+    "headingIn": "Sie sind dabei",
+    "headingOrder": "Ihre Bestellung",
+    "headingTickets": "Ihre Tickets",
+    "footCompleted": "Wir haben Ihre Tickets auch an die E-Mail-Adresse Ihres Kontos gesendet. Alle Ihre Tickets finden Sie unter <link>Meine Tickets</link>.",
+    "foot": "Alle Ihre Tickets finden Sie unter <link>Meine Tickets</link>."
+  },
+  "payment": {
+    "status": {
+      "awaitingPayment": {
+        "title": "Warten auf Ihre Zahlung",
+        "body": "Wenn Sie gerade bezahlt haben, aktualisiert sich diese Seite in wenigen Sekunden von selbst. Bezahlen Sie nicht zweimal."
+      },
+      "completed": {
+        "title": "Bezahlt",
+        "body": "Ihre Zahlung war erfolgreich, Ihre Tickets finden Sie unten. Wir haben sie Ihnen mit Ihrer Quittung per E-Mail gesendet."
+      },
+      "expired": {
+        "title": "Ihre Reservierung ist abgelaufen",
+        "body": "Ihre Zahlung ist nicht innerhalb von 10 Minuten eingegangen, daher sind die Tickets wieder im Verkauf. Wurde Geld abgebucht, erhalten Sie es automatisch zurück."
+      },
+      "failed": {
+        "title": "Zahlung fehlgeschlagen",
+        "body": "Paystack konnte die Zahlung nicht durchführen. Es wurde nichts abgebucht."
+      },
+      "refunded": {
+        "title": "Erstattet",
+        "body": "Diese Bestellung wurde erstattet. Die Tickets sind nicht mehr gültig."
+      },
+      "partiallyRefunded": {
+        "title": "Teilweise erstattet",
+        "body": "Einige Tickets dieser Bestellung wurden erstattet; die anderen sind weiterhin gültig."
+      },
+      "disputed": {
+        "title": "Zahlung angefochten",
+        "body": "Ihre Bank hat uns mitgeteilt, dass diese Zahlung angefochten wird. Ihre Tickets bleiben gültig, solange das geprüft wird."
+      },
+      "waitlisted": {
+        "title": "Sie stehen auf der Warteliste",
+        "body": "Wir schreiben Ihnen, wenn ein Platz frei wird. Sie haben dann 24 Stunden Zeit zum Bezahlen."
+      }
+    },
+    "offerTitle": "Ein Platz ist für Sie frei",
+    "offerBody": "Bezahlen Sie vor {time}, um Ihre Tickets zu erhalten; danach geht der Platz an die nächste Person.",
+    "reference": "Zahlungsreferenz",
+    "tryAgain": "Erneut mit Paystack versuchen",
+    "pay": "Mit Paystack bezahlen",
+    "payTotal": "Mit Paystack bezahlen · {total}",
+    "startAgain": "Neu beginnen",
+    "serviceFee": "Servicegebühr",
+    "includesVat": "(inkl. MwSt. {amount})",
+    "total": "Gesamt",
+    "paid": "Bezahlt",
+    "paidAt": "Bezahlt am {time}",
+    "refunds": "Erstattungen",
+    "refundLine": "{amount} · {count, plural, one {# Ticket} other {# Tickets}}",
+    "refundCancelled": "Veranstaltung abgesagt",
+    "refundLate": "nach Ablauf der Reservierung bezahlt",
+    "refundsNote": "Erstattungen gehen an die Karte oder das Konto, mit dem Sie bezahlt haben. Banken brauchen dafür meist 5 bis 10 Werktage.",
+    "held": "Ihre Tickets sind noch <b>{time}</b> reserviert.",
+    "checking": "Ihre Zahlung wird bei Paystack geprüft...",
+    "noAnswer": "Noch keine Antwort von Paystack. <button>Erneut prüfen</button>",
+    "opening": "Paystack wird geöffnet...",
+    "orderNotFound": "Diese Bestellung wurde nicht gefunden.",
+    "openFailed": "Wir konnten die Zahlungsseite nicht öffnen. Bitte versuchen Sie es erneut."
+  },
+  "myTickets": {
+    "meta": {
+      "title": "Meine Tickets · G-ventZ"
+    },
+    "heading": "Meine Tickets",
+    "which": "Welche Tickets",
+    "upcoming": "Bevorstehend",
+    "past": "Vergangen",
+    "emptyUpcoming": "Noch keine bevorstehenden Tickets. Finden Sie etwas unter Entdecken.",
+    "emptyPast": "Noch keine vergangenen Veranstaltungen.",
+    "loadMore": "Mehr laden"
+  }
+}

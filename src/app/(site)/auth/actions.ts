@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { safeNextPath } from "@/lib/redirect";
 import { syncLanguageAfterSignIn } from "@/i18n/sync";
@@ -11,14 +12,18 @@ import {
   isSixDigitCode,
   normalizeEmail,
   sendFailure,
+  sendFailureReasonKey,
   verifyFailure,
+  verifyFailureKey,
+  type AuthFailure,
   type AuthMode,
   type SendCodeResult,
   type VerifyCodeResult,
 } from "@/lib/email-code";
 
 // Sign-in runs on the server: the browser only talks to this site, never to Supabase (the CSP's
-// connect-src is 'self'). Supabase sets the session cookie through the server client.
+// connect-src is 'self'). Supabase sets the session cookie through the server client. Messages come
+// back already translated into the reader's language (shared.emailCode.*, auth.screen.*).
 
 export async function signOut() {
   const supabase = await createSupabaseServerClient();
@@ -34,7 +39,8 @@ export async function signOut() {
  */
 export async function sendEmailCode(input: { email: unknown; mode: unknown; captchaToken?: unknown }): Promise<SendCodeResult> {
   const email = normalizeEmail(input.email);
-  if (!email) return { ok: false, reason: "invalid", message: "Enter a valid email address." };
+  const t = await getTranslations();
+  if (!email) return { ok: false, reason: "invalid", message: t(sendFailureReasonKey("invalid")) };
   const mode: AuthMode = isAuthMode(input.mode) ? input.mode : "signin";
   const captchaToken = typeof input.captchaToken === "string" && input.captchaToken.length <= 4096 ? input.captchaToken : undefined;
 
@@ -46,16 +52,18 @@ export async function sendEmailCode(input: { email: unknown; mode: unknown; capt
   if (!error) return { ok: true };
   const failure = sendFailure(error, mode);
   if (failure.reason === "failed") console.error(`[auth] send code: ${error.status ?? "?"} ${error.code ?? "?"}`);
-  return failure;
+  return { ...failure, message: t(sendFailureReasonKey(failure.reason)) };
 }
 
 /** Checks the code. On success the session cookie is set and the email counts as verified. */
 export async function verifyEmailCode(input: { email: unknown; code: unknown }): Promise<VerifyCodeResult> {
   const email = normalizeEmail(input.email);
-  if (!email || !isSixDigitCode(input.code)) return verifyFailure({});
+  const t = await getTranslations();
+  const failed = (error: AuthFailure) => ({ ...verifyFailure(error), message: t(verifyFailureKey(error)) });
+  if (!email || !isSixDigitCode(input.code)) return failed({});
   const supabase = await createSupabaseServerClient();
   const { error } = await supabase.auth.verifyOtp({ email, token: input.code, type: "email" });
-  if (error) return verifyFailure(error);
+  if (error) return failed(error);
   await syncLanguageAfterSignIn();
   revalidatePath("/", "layout");
   return { ok: true };
@@ -72,6 +80,6 @@ export async function startGoogleSignIn(next: unknown): Promise<{ url: string } 
     provider: "google",
     options: { redirectTo: callback.toString(), skipBrowserRedirect: true },
   });
-  if (error || !data.url) return { error: "Google sign-in isn't available right now. Use your email instead." };
+  if (error || !data.url) return { error: (await getTranslations("auth.screen"))("googleUnavailable") };
   return { url: data.url };
 }

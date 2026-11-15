@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useActionState, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { payOrder, type PayState } from "./actions";
@@ -19,6 +20,7 @@ function left(ms: number): string {
  * the hold. Stops by itself once the status is final, since the page then renders without it.
  */
 export function PaymentWatcher({ holdExpiresAt }: { holdExpiresAt: string | null }) {
+  const t = useTranslations("tickets.payment");
   const router = useRouter();
   const deadline = holdExpiresAt ? Date.parse(holdExpiresAt) : null;
   const [now, setNow] = useState(() => Date.now());
@@ -36,24 +38,25 @@ export function PaymentWatcher({ holdExpiresAt }: { holdExpiresAt: string | null
   }, [router, watching]);
 
   if (deadline !== null && now < deadline) {
-    return <p className="pay-hold" role="timer" aria-live="off">Your tickets are held for <b>{left(deadline - now)}</b>.</p>;
+    return <p className="pay-hold" role="timer" aria-live="off">{t.rich("held", { b: (c) => <b>{c}</b>, time: left(deadline - now) })}</p>;
   }
-  if (watching) return <p className="muted small" aria-live="polite">Checking your payment with Paystack...</p>;
+  if (watching) return <p className="muted small" aria-live="polite">{t("checking")}</p>;
   return (
     <p className="muted small">
-      Still no answer from Paystack. <button type="button" className="link-btn gold" onClick={() => router.refresh()}>Check again</button>
+      {t.rich("noAnswer", { button: (c) => <button type="button" className="link-btn gold" onClick={() => router.refresh()}>{c}</button> })}
     </p>
   );
 }
 
 /** "Pay with Paystack" for an order the API says can be paid now (canPay). */
 export function PayButton({ orderId, label }: { orderId: string; label: string }) {
+  const t = useTranslations("tickets.payment");
   const [state, action, pending] = useActionState<PayState, FormData>(payOrder, undefined);
   return (
     <form action={action} className="stack">
       <input type="hidden" name="order_id" value={orderId} />
       {state?.error && <p className="error" role="alert">{state.error}</p>}
-      <button className="btn-white pay-cta" type="submit" disabled={pending}>{pending ? "Opening Paystack..." : label}</button>
+      <button className="btn-white pay-cta" type="submit" disabled={pending}>{pending ? t("opening") : label}</button>
     </form>
   );
 }

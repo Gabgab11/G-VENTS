@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { withAlternates } from "@/i18n/seo";
 import "./discover.css";
 import SiteHeader from "@/components/SiteHeader";
@@ -9,27 +10,33 @@ import { env } from "@/lib/env";
 import { themeBackground } from "@/lib/themes";
 import { pageFonts } from "@/app/fonts";
 import CategoryTiles from "./CategoryTiles";
-import EventTile, { placeOf, whenOf } from "./EventTile";
+import EventTile, { categoryLabel, placeOf, whenOf } from "./EventTile";
+import type { Locale } from "@/i18n/languages";
 import HeroCarousel, { type HeroSlide } from "./HeroCarousel";
 import Rail from "./Rail";
 
-export function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
-  return withAlternates(params, "/discover", { title: "Discover events · G-ventZ" });
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang } = await params;
+  setRequestLocale(lang);
+  const t = await getTranslations("discover");
+  return withAlternates(params, "/discover", { title: t("meta.title") });
 }
 
 const HERO_MAX = 6;
 const ROW_MAX = 12;
 const CATEGORY_ROWS = 6;
 
-function heroSlides(events: EventCard[]): HeroSlide[] {
+type T = Awaited<ReturnType<typeof getTranslations>>;
+
+function heroSlides(events: EventCard[], t: T, root: T, lang: Locale): HeroSlide[] {
   // Events with a flyer lead; the rest fill in, soonest first.
   const ordered = [...events.filter((e) => e.cover_url), ...events.filter((e) => !e.cover_url)].slice(0, HERO_MAX);
   return ordered.map((e) => ({
     slug: e.slug,
     title: e.title,
-    category: e.category,
-    when: whenOf(e),
-    place: placeOf(e),
+    category: categoryLabel(e.category, root),
+    when: whenOf(e, lang),
+    place: placeOf(e, t("online")),
     coverUrl: e.cover_url,
     background: themeBackground(e.cover_theme),
     shareUrl: `${env.siteUrl}/e/${e.slug}`,
@@ -47,12 +54,18 @@ function byCategory(events: EventCard[]): [Category, EventCard[]][] {
     .filter((row, _, rows) => rows.length > 1 || row[1].length < events.length);
 }
 
-export default async function DiscoverPage({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
+export default async function DiscoverPage({ params, searchParams }: { params: Promise<{ lang: string }>; searchParams: Promise<{ category?: string }> }) {
+  const { lang } = await params;
+  setRequestLocale(lang);
+  const t = await getTranslations("discover");
+  const root = await getTranslations();
   const sp = await searchParams;
   const category = isCategory(sp.category) ? sp.category : undefined;
   const events = await getFeaturedEvents(50, category);
   const weekend = events.filter((e) => startsThisWeekend(e.starts_at, e.timezone));
-  const slides = heroSlides(events);
+  const slides = heroSlides(events, t, root, lang as Locale);
+  const label = category ? categoryLabel(category, root) : undefined;
+  const inSentence = category ? t(`inSentence.${category.toLowerCase()}`) : undefined;
 
   return (
     <main className={`dc ${pageFonts}`}>
@@ -63,43 +76,43 @@ export default async function DiscoverPage({ searchParams }: { searchParams: Pro
       ) : (
         <section className="dc-hero dc-hero-empty">
           <div className="dc-slide-body">
-            <span className="dc-slide-cat">{category ?? "Discover"}</span>
-            <h1 className="dc-slide-title">{category ? `No ${category.toLowerCase()} events yet` : "Good gatherings start here"}</h1>
-            <p className="dc-slide-meta">Be the first: create an event and share one link with your guests.</p>
-            <div className="dc-slide-actions"><Link href="/events/new" className="dc-slide-cta">Create an event</Link></div>
+            <span className="dc-slide-cat">{label ?? t("empty.discover")}</span>
+            <h1 className="dc-slide-title">{inSentence ? t("empty.categoryTitle", { category: inSentence }) : t("empty.title")}</h1>
+            <p className="dc-slide-meta">{t("empty.text")}</p>
+            <div className="dc-slide-actions"><Link href="/events/new" className="dc-slide-cta">{t("empty.create")}</Link></div>
           </div>
         </section>
       )}
 
       <div className="dc-body">
-        <Rail title="Event categories" id="dc-cats-title" track="dc-cats">
+        <Rail title={t("rails.categories")} id="dc-cats-title" track="dc-cats">
           <CategoryTiles active={category} />
         </Rail>
 
         {category ? (
           <section aria-labelledby="dc-cat-events">
             <div className="dc-rail-head">
-              <h2 id="dc-cat-events">{category} events</h2>
-              <Link href="/discover" className="dc-link" scroll={false}>All events</Link>
+              <h2 id="dc-cat-events">{t("categoryEvents", { category: label! })}</h2>
+              <Link href="/discover" className="dc-link" scroll={false}>{t("allEvents")}</Link>
             </div>
             {events.length > 0 ? (
               <div className="dc-grid">{events.map((e) => <EventTile key={e.id} event={e} />)}</div>
             ) : (
-              <p className="dc-empty">Nothing coming up in {category.toLowerCase()} yet. <Link href="/events/new">Host one</Link>.</p>
+              <p className="dc-empty">{t.rich("categoryEmpty", { category: inSentence!, link: (c) => <Link href="/events/new">{c}</Link> })}</p>
             )}
           </section>
         ) : events.length > 0 ? (
           <>
-            <Rail title="Happening soon" id="dc-soon">{events.slice(0, ROW_MAX).map((e) => <EventTile key={e.id} event={e} />)}</Rail>
+            <Rail title={t("rails.soon")} id="dc-soon">{events.slice(0, ROW_MAX).map((e) => <EventTile key={e.id} event={e} />)}</Rail>
             {weekend.length > 0 && (
-              <Rail title="This weekend" id="dc-weekend">{weekend.slice(0, ROW_MAX).map((e) => <EventTile key={e.id} event={e} />)}</Rail>
+              <Rail title={t("rails.weekend")} id="dc-weekend">{weekend.slice(0, ROW_MAX).map((e) => <EventTile key={e.id} event={e} />)}</Rail>
             )}
             {byCategory(events).map(([c, list]) => (
-              <Rail key={c} title={c} id={`dc-row-${c.toLowerCase()}`}>{list.slice(0, ROW_MAX).map((e) => <EventTile key={e.id} event={e} />)}</Rail>
+              <Rail key={c} title={categoryLabel(c, root)} id={`dc-row-${c.toLowerCase()}`}>{list.slice(0, ROW_MAX).map((e) => <EventTile key={e.id} event={e} />)}</Rail>
             ))}
           </>
         ) : (
-          <p className="dc-empty">No public events yet. <Link href="/events/new">Create the first one</Link>.</p>
+          <p className="dc-empty">{t.rich("noEvents", { link: (c) => <Link href="/events/new">{c}</Link> })}</p>
         )}
       </div>
     </main>

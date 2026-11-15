@@ -14,6 +14,7 @@ import SiteHeader from "@/components/SiteHeader";
 import { api, data } from "@/lib/api/server";
 import type { components } from "@/lib/api/schema";
 import { DisputeBanner } from "./SalesPanel";
+import { getLocale, getTranslations } from "next-intl/server";
 
 type Sales = components["schemas"]["EventSalesDto"];
 
@@ -30,11 +31,11 @@ async function loadSales(event: Awaited<ReturnType<typeof requireEvent>>): Promi
 }
 
 const TABS = [
-  { key: "overview", label: "Overview" },
-  { key: "guests", label: "Guests" },
-  { key: "registration", label: "Registration" },
-  { key: "announcements", label: "Announcements" },
-  { key: "settings", label: "Settings" },
+  { key: "overview" },
+  { key: "guests" },
+  { key: "registration" },
+  { key: "announcements" },
+  { key: "settings" },
 ] as const;
 
 type TabKey = (typeof TABS)[number]["key"];
@@ -55,26 +56,27 @@ export default async function ManageEventPage({
 
   const sales = await loadSales(event);
   const url = `${env.siteUrl}/e/${event.slug}`;
-  const ok = messageFor(sp.ok);
-  const err = messageFor(sp.err);
-  const statusLabel = event.status === "draft" ? "Draft" : event.status === "cancelled" ? "Cancelled" : "Published";
+  const [t, errors, lang] = await Promise.all([getTranslations("dashboard"), getTranslations("errors"), getLocale()]);
+  const ok = messageFor(sp.ok, t, errors, lang);
+  const err = messageFor(sp.err, t, errors, lang);
+  const statusLabel = t(event.status === "draft" ? "status.draft" : event.status === "cancelled" ? "status.cancelled" : "status.published");
 
   return (
     <main className="wrap page wide stage-content">
       <ThemeStage theme={theme} />
       <SiteHeader back="/dashboard" />
       <h1>{event.title}</h1>
-      <p className="muted small">{statusLabel} · {event.visibility === "private" ? "Private" : "Public"} · You are {event.role}</p>
+      <p className="muted small">{statusLabel} · {t(event.visibility === "private" ? "visibility.private" : "visibility.public")} · {t("event.youAre", { role: event.role })}</p>
       {event.status === "published" && can(event, "guests.checkIn") && (
-        <p><Link href={`/dashboard/${id}/scan`} className="btn-grad">Scan tickets at the door</Link></p>
+        <p><Link href={`/dashboard/${id}/scan`} className="btn-grad">{t("event.scan")}</Link></p>
       )}
 
       {sales && <DisputeBanner disputes={sales.disputes} />}
 
-      <nav className="tabs" aria-label="Event sections">
-        {TABS.map((t) => (
-          <Link key={t.key} href={`/dashboard/${id}?tab=${t.key}`} className={tab === t.key ? "on" : ""}
-            aria-current={tab === t.key ? "page" : undefined}>{t.label}</Link>
+      <nav className="tabs" aria-label={t("event.tabsLabel")}>
+        {TABS.map((x) => (
+          <Link key={x.key} href={`/dashboard/${id}?tab=${x.key}`} className={tab === x.key ? "on" : ""}
+            aria-current={tab === x.key ? "page" : undefined}>{t(`event.tabs.${x.key}`)}</Link>
         ))}
       </nav>
 

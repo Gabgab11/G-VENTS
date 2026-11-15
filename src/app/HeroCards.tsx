@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import { getTranslations } from "next-intl/server";
 import { SHAPES, type ShapeName } from "./hero-shapes";
 
 // Cards that drift down from the top of the screen when the home page opens and
@@ -23,6 +24,7 @@ export type Card = {
   shape: ShapeName;
   words: [string] | [string, string];
   meta: string;
+  metaId?: "owambe" | "engagement" | "birthday" | "sendOff" | "naming"; // home.cards.*: the meta has words to translate
   tone: Tone;
   category: string; // Discover filter the card opens
   left: number;     // % across the page
@@ -35,19 +37,19 @@ export type Card = {
 
 // Bottom row first (they land first), then the cards that land on top of them.
 const CARDS: Card[] = [
-  { shape: "ticket", words: ["Traditional", "Engagement"], meta: "Enugu · December", tone: "lilac", category: "Family", left: -1, bottom: 0, tilt: -4, delay: 0.1, row: 1, phoneLeft: 2 },
-  { shape: "burst", words: ["Owambe"], meta: "Lagos · Saturday", tone: "sun", category: "Community", left: 12, bottom: 0, tilt: 8, delay: 0.5, row: 1, phoneLeft: 22 },
+  { shape: "ticket", words: ["Traditional", "Engagement"], meta: "Enugu · December", metaId: "engagement", tone: "lilac", category: "Family", left: -1, bottom: 0, tilt: -4, delay: 0.1, row: 1, phoneLeft: 2 },
+  { shape: "burst", words: ["Owambe"], meta: "Lagos · Saturday", metaId: "owambe", tone: "sun", category: "Community", left: 12, bottom: 0, tilt: 8, delay: 0.5, row: 1, phoneLeft: 22 },
   { shape: "pill", words: ["Outdooring"], meta: "Kumasi", tone: "mint", category: "Family", left: 23.5, bottom: 0, tilt: -6, delay: 0.9, row: 1 },
   { shape: "folder", words: ["Afrobeats", "Night"], meta: "Lagos · Island", tone: "paper", category: "Music", left: 33, bottom: 0, tilt: 3, delay: 0.3, row: 1 },
   { shape: "disc", words: ["Braai", "Day"], meta: "Cape Town", tone: "coral", category: "Food", left: 47, bottom: 0, tilt: -10, delay: 1.1, row: 1, phoneLeft: 41 },
   { shape: "arch", words: ["Sangeet", "Night"], meta: "Mumbai", tone: "rose", category: "Music", left: 57, bottom: 0, tilt: 4, delay: 0.6, row: 1 },
-  { shape: "bubble", words: ["Moji's", "Birthday"], meta: "Lekki · 8pm", tone: "ink", category: "Nightlife", left: 67, bottom: 0, tilt: -3, delay: 0.2, row: 1, phoneLeft: 55 },
+  { shape: "bubble", words: ["Moji's", "Birthday"], meta: "Lekki · 8pm", metaId: "birthday", tone: "ink", category: "Nightlife", left: 67, bottom: 0, tilt: -3, delay: 0.2, row: 1, phoneLeft: 55 },
   { shape: "shield", words: ["Quince-", "añera"], meta: "Mexico City", tone: "sky", category: "Family", left: 80, bottom: 0, tilt: 6, delay: 0.8, row: 1, phoneLeft: 69 },
   { shape: "hex", words: ["Detty", "December"], meta: "Accra", tone: "sun", category: "Nightlife", left: 90.5, bottom: 0, tilt: -5, delay: 0.4, row: 1, phoneLeft: 79.5 },
   { shape: "leaf", words: ["Festa", "Junina"], meta: "São Paulo", tone: "mint", category: "Food", left: 51, bottom: 140, tilt: 9, delay: 2.0, row: 2 },
-  { shape: "tag", words: ["Send-Off"], meta: "Abuja · Friday", tone: "paper", category: "Community", left: 61.5, bottom: 150, tilt: -8, delay: 2.3, row: 2 },
+  { shape: "tag", words: ["Send-Off"], meta: "Abuja · Friday", metaId: "sendOff", tone: "paper", category: "Community", left: 61.5, bottom: 150, tilt: -8, delay: 2.3, row: 2 },
   { shape: "squircle", words: ["Iftar", "Night"], meta: "Cairo", tone: "coral", category: "Faith", left: 74, bottom: 148, tilt: -7, delay: 1.8, row: 2 },
-  { shape: "card", words: ["Naming", "Ceremony"], meta: "Ibadan · Sunday", tone: "lilac", category: "Faith", left: 86, bottom: 150, tilt: 5, delay: 2.1, row: 2 },
+  { shape: "card", words: ["Naming", "Ceremony"], meta: "Ibadan · Sunday", metaId: "naming", tone: "lilac", category: "Faith", left: 86, bottom: 150, tilt: 5, delay: 2.1, row: 2 },
   { shape: "stamp", words: ["Mehndi"], meta: "Dubai", tone: "rose", category: "Arts", left: 79, bottom: 290, tilt: -4, delay: 2.9, row: 3 },
 ];
 
@@ -87,7 +89,8 @@ export function CardSvg({ card }: { card: Pick<Card, "shape" | "words" | "meta" 
   );
 }
 
-export default function HeroCards() {
+export default async function HeroCards() {
+  const t = await getTranslations("home.cards");
   return (
     // Decoration whose physics (HeroHover, HeroTilt) works in left-based coordinates: always laid
     // out left to right, also on Arabic pages.
@@ -116,7 +119,7 @@ export default function HeroCards() {
         return (
           <div key={`${card.shape}-${i}`} className={`hp-fall hp-row${card.row}`} style={style}>
             <div className="hp-card" aria-hidden="true">
-              <CardSvg card={card} />
+              <CardSvg card={card.metaId ? { ...card, meta: t(card.metaId) } : card} />
             </div>
           </div>
         );

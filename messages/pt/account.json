@@ -1,0 +1,159 @@
+{
+  "security": {
+    "metaTitle": "Login em duas etapas · G-ventZ",
+    "title": "Login em duas etapas",
+    "intro": "Uma segunda verificação depois do código enviado por e-mail, para áreas sensíveis. Obrigatório para a equipe da G-ventZ e recomendado para organizadores. Use uma <b>chave de acesso</b> (sua impressão digital, seu rosto ou o PIN do dispositivo) ou um <b>aplicativo autenticador</b>.",
+    "done": "O login em duas etapas está ativado e esta sessão está confirmada.",
+    "removed": "Removido.",
+    "removeFailed": "Não foi possível remover. Confirme que é você primeiro e tente novamente.",
+    "passkeyTitle": "Chave de acesso (recomendada)",
+    "passkeyHint": "Confirme com Touch ID, Face ID, Windows Hello, seu celular ou uma chave de segurança. Nada para digitar.",
+    "appTitle": "Aplicativo autenticador",
+    "confirmTitle": "Confirme que é você",
+    "confirmHint": "Use um dos seus métodos.",
+    "confirmHintContinue": "Use um dos seus métodos para continuar.",
+    "orCode": "Ou digite o código do seu aplicativo autenticador:",
+    "methodsTitle": "Seus métodos",
+    "passkeyName": "Chave de acesso",
+    "passkeyAdded": "· chave de acesso · adicionada em {date}",
+    "appName": "Aplicativo autenticador",
+    "appAdded": "· adicionado em {date}",
+    "remove": "Remover",
+    "removeLabel": "Remover {label}",
+    "removeLabelPasskey": "chave de acesso",
+    "removeLabelApp": "aplicativo autenticador",
+    "methodsNote": "Esta sessão está confirmada. Mantenha pelo menos dois métodos (por exemplo, uma chave de acesso e o aplicativo) para não perder o acesso se perder um dispositivo.",
+    "addPasskeyTitle": "Adicionar uma chave de acesso",
+    "addAppTitle": "Adicionar um aplicativo autenticador"
+  },
+  "mfa": {
+    "codeLabel": "Código de 6 dígitos",
+    "preparing": "Preparando…",
+    "setUp": "Configurar um aplicativo autenticador",
+    "step1": "Abra um aplicativo autenticador (Google Authenticator, Microsoft Authenticator, 1Password, Authy…).",
+    "step2": "Escaneie este código QR ou digite a chave abaixo.",
+    "step3": "Digite o código de 6 dígitos que o aplicativo mostra.",
+    "qrAlt": "Código QR para o seu aplicativo autenticador",
+    "key": "Chave: <code>{secret}</code>",
+    "checking": "Verificando…",
+    "turnOn": "Ativar o login em duas etapas",
+    "continue": "Continuar",
+    "errors": {
+      "generic": "Não funcionou. Tente novamente.",
+      "setupFailed": "Não foi possível configurar o login em duas etapas agora. Tente novamente.",
+      "enterCode": "Digite o código de 6 dígitos do seu aplicativo autenticador.",
+      "wrongCode": "Esse código está incorreto ou expirou. Tente o código atual.",
+      "setUpFirst": "Configure um aplicativo autenticador primeiro."
+    }
+  },
+  "passkey": {
+    "nameLabel": "Nome desta chave de acesso (opcional)",
+    "waiting": "Aguardando seu dispositivo…",
+    "add": "Adicionar uma chave de acesso",
+    "use": "Usar chave de acesso",
+    "useNamed": "Usar chave de acesso: {name}",
+    "unsupported": "Este navegador não é compatível com chaves de acesso. Use o aplicativo autenticador.",
+    "defaultName": "Chave de acesso",
+    "deviceName": "Chave de acesso do {device}",
+    "errors": {
+      "notCreated": "Nenhuma chave de acesso foi criada.",
+      "addCancelled": "Cancelado. Nada foi adicionado.",
+      "createFailed": "Este dispositivo não conseguiu criar uma chave de acesso. Tente outro dispositivo ou o aplicativo autenticador.",
+      "notUsed": "Nenhuma chave de acesso foi usada.",
+      "useCancelled": "Cancelado.",
+      "useFailed": "Essa chave de acesso não pôde ser usada neste dispositivo.",
+      "generic": "Não funcionou. Tente novamente.",
+      "disabled": "As chaves de acesso ainda não estão ativadas neste site.",
+      "notConfirmed": "Não foi possível confirmar essa chave de acesso. Tente novamente."
+    }
+  },
+  "payouts": {
+    "metaTitle": "Receber pagamentos · G-ventZ",
+    "title": "Receber pagamentos",
+    "intro": "Venda ingressos pagos na G-ventZ. Os convidados pagam com Paystack e a sua parte vai direto para a sua conta bancária.",
+    "ok": {
+      "submitted": "Solicitação enviada. Enviaremos um e-mail quando houver uma decisão.",
+      "payoutChanged": "Dados de repasse alterados. As vendas pagas ficam pausadas até a G-ventZ confirmar a nova conta; enviamos um e-mail para você."
+    },
+    "loadFailed": "Não conseguimos carregar seus dados de repasse. Atualize a página.",
+    "status": {
+      "title": "Ingressos pagos",
+      "canSell": "Você pode vender ingressos pagos",
+      "decisionReason": "<b>Motivo informado pela G-ventZ:</b> {reason}",
+      "name": "Nome",
+      "country": "País",
+      "countryValue": "{country} · vende em {currency}",
+      "applied": "Solicitado em",
+      "decided": "Decidido em",
+      "owed": "Você deve {amounts} à G-ventZ",
+      "owedJoin": "{first} e {second}",
+      "owedNote": "Esta é a sua parte de ingressos reembolsados ou de estornos perdidos. Ela é descontada automaticamente das suas próximas vendas pagas. Até que seja quitada, você não pode publicar novos eventos pagos; seus eventos atuais continuam vendendo."
+    },
+    "account": {
+      "title": "Conta de repasse",
+      "active": "Ativa",
+      "pending": "Em configuração",
+      "replaced": "Substituída",
+      "line": "{bank} · final {last4}",
+      "pendingNote": "A G-ventZ está configurando esta conta com a Paystack. Você poderá vender ingressos pagos quando ela estiver ativa.",
+      "change": "Alterar dados de repasse"
+    },
+    "apply": {
+      "title": "Solicitar a venda de ingressos pagos",
+      "again": "Solicitar novamente",
+      "closed": "Os ingressos pagos ainda não estão disponíveis na G-ventZ. Todos os ingressos são gratuitos por enquanto; volte em breve."
+    },
+    "signedIn": "Conectado como {email}. Dúvidas sobre dinheiro? Veja as <fees>taxas</fees> e os <refunds>reembolsos</refunds>.",
+    "form": {
+      "help": "Usamos estes dados para pagar você pela Paystack. Uma pessoa da G-ventZ analisa cada solicitação, normalmente em até dois dias úteis.",
+      "legalName": "Nome legal ou razão social",
+      "phone": "Número de telefone",
+      "country": "País onde você recebe",
+      "chooseCountry": "Escolha um país",
+      "countryOption": "{country} ({currency})",
+      "countryHint": "Você vende ingressos pagos apenas na moeda deste país.",
+      "document": "Documento de identidade oficial ou registro da empresa",
+      "documentHint": "JPG, PNG ou PDF, até 10 MB. Somente a equipe da G-ventZ pode vê-lo.",
+      "sending": "Enviando...",
+      "send": "Enviar solicitação",
+      "changeNote": "Para sua segurança, você confirmará que é você com o login em duas etapas. As vendas pagas ficam pausadas até a G-ventZ confirmar a nova conta, e avisaremos você por e-mail sobre a alteração.",
+      "saving": "Salvando...",
+      "change": "Alterar dados de repasse"
+    },
+    "bank": {
+      "bank": "Banco",
+      "chooseCountryFirst": "Escolha um país primeiro",
+      "loadingBanks": "Carregando bancos...",
+      "chooseBank": "Escolha seu banco",
+      "accountNumber": "Número da conta",
+      "checking": "Verificando...",
+      "check": "Verificar conta",
+      "accountName": "Titular da conta: <b>{name}</b>",
+      "cantCheck": "A Paystack não consegue verificar o titular das contas neste país. Confira o banco e o número com cuidado: os repasses vão exatamente para esta conta.",
+      "confirmNamed": "Esta é a conta certa ({name})",
+      "confirm": "Estes dados bancários estão corretos"
+    },
+    "errors": {
+      "chooseCountry": "Escolha um país primeiro.",
+      "sessionEnded": "Sua sessão terminou. Entre novamente.",
+      "sessionEndedApply": "Sua sessão terminou. Entre novamente para enviar a solicitação.",
+      "loadBanksFailed": "Não conseguimos carregar os bancos. Tente novamente.",
+      "bankAndNumber": "Escolha seu banco e digite o número da conta (apenas dígitos).",
+      "checkFailed": "Não conseguimos verificar esta conta. Tente novamente.",
+      "uploadFailed": "O documento não foi enviado. Tente novamente.",
+      "sendFailed": "Não conseguimos enviar sua solicitação. Tente novamente.",
+      "changeFailed": "Não conseguimos alterar seus dados de repasse. Tente novamente."
+    },
+    "input": {
+      "legalName": "Digite seu nome legal ou razão social.",
+      "phone": "Digite um número de telefone, como +234 801 234 5678.",
+      "country": "Escolha o país onde você recebe.",
+      "bank": "Escolha seu banco.",
+      "accountNumber": "Digite o número da conta: apenas dígitos.",
+      "confirmAccount": "Confirme que o titular da conta está correto.",
+      "documentMissing": "Adicione seu documento de identidade oficial ou o registro da sua empresa.",
+      "documentTooLarge": "O documento tem mais de 10 MB. Use um arquivo menor.",
+      "documentType": "Use um arquivo JPG, PNG ou PDF para o documento."
+    }
+  }
+}

@@ -1,0 +1,190 @@
+{
+  "ticket": {
+    "meta": {
+      "title": "Su entrada · G-ventZ"
+    },
+    "status": {
+      "eventCancelled": {
+        "title": "Este evento se ha cancelado",
+        "body": "El anfitrión canceló este evento, así que esta entrada no se puede usar."
+      },
+      "pending": {
+        "title": "Esperando al anfitrión",
+        "body": "El anfitrión aprueba a cada invitado. Su código QR aparecerá aquí cuando lo confirmen."
+      },
+      "waitlisted": {
+        "title": "Está en la lista de espera",
+        "body": "El evento está completo por ahora. Si se libera un lugar, esta página se convertirá en su entrada."
+      },
+      "declined": {
+        "title": "El anfitrión no pudo aceptar esta solicitud",
+        "body": "Esta entrada no se puede usar para entrar al evento."
+      },
+      "cancelled": {
+        "title": "Esta entrada se canceló",
+        "body": "Ya no se puede usar para entrar al evento."
+      },
+      "refunded": {
+        "title": "Esta entrada se reembolsó",
+        "body": "Ya no se puede usar para entrar al evento."
+      }
+    },
+    "checkIn": {
+      "checkedIn": {
+        "title": "Registrado",
+        "body": "Este invitado ya está dentro. ¡Disfrute del evento!"
+      },
+      "alreadyUsed": {
+        "title": "Ya registrado",
+        "body": "No deje entrar esta entrada dos veces."
+      },
+      "notConfirmed": {
+        "title": "Aún no confirmada",
+        "body": "El anfitrión no ha aprobado esta entrada."
+      },
+      "waitlisted": {
+        "title": "En lista de espera",
+        "body": "Esta entrada aún no tiene lugar."
+      },
+      "cancelled": {
+        "title": "No válida",
+        "body": "Esta entrada se canceló."
+      },
+      "refunded": {
+        "title": "No válida",
+        "body": "Esta entrada se reembolsó."
+      },
+      "failed": {
+        "title": "No se pudo registrar",
+        "body": "Actualice la página e inténtelo de nuevo."
+      }
+    },
+    "ticketFor": "Entrada para {title}",
+    "admitOne": "Admite a una persona",
+    "date": "Fecha",
+    "time": "Hora",
+    "ticket": "Entrada",
+    "free": "Gratis",
+    "ofTotal": "{number} de {total}",
+    "where": "Lugar",
+    "guest": "Invitado",
+    "notValid": "No válida",
+    "noQr": "Aún sin código QR",
+    "hintValid": "Muestre este código en la entrada. También sirve impreso.",
+    "hintPending": "Guarde este enlace. Se actualiza si su entrada cambia.",
+    "stamp": "Registrado",
+    "stampAt": "a las {time}",
+    "eventPage": "Página del evento",
+    "staff": {
+      "label": "Registro en la entrada",
+      "already": "<b>Ya registrado</b> a las {time}. No deje entrar esta entrada dos veces.",
+      "intro": "<b>Usted forma parte del equipo de este evento.</b> Registre a este invitado en la entrada.",
+      "button": "Registrar a {name}"
+    },
+    "foot": "Esta entrada pertenece a {name}. Cualquiera con este enlace puede verla, así que compártala solo con personas de confianza.",
+    "print": "Imprimir o guardar como PDF"
+  },
+  "email": {
+    "label": "Enviarme la entrada por correo",
+    "intro": "<b>Reciba su entrada por correo</b> La enviaremos a {email}, la dirección con la que se registró.",
+    "sent": "Su entrada está en camino. Revise su bandeja de entrada y la carpeta de spam en un minuto.",
+    "failed": "No pudimos enviar el correo. Inténtelo de nuevo.",
+    "confirmFirst": "Primero marque la casilla para confirmar su dirección de correo.",
+    "limit": "Esta entrada se ha enviado por correo varias veces en esta hora. Inténtelo más tarde.",
+    "unavailable": "El envío por correo no está disponible para esta entrada en este momento.",
+    "lastFailed": "Su último correo no se entregó.",
+    "confirm": "Esta es mi dirección de correo",
+    "tryAgain": "Intentar de nuevo",
+    "send": "Enviarme la entrada por correo"
+  },
+  "whatsapp": {
+    "label": "Enviar la entrada a WhatsApp",
+    "intro": "<b>Reciba su entrada por WhatsApp</b> Introduzca su número de WhatsApp y envíe el mensaje que se abre.",
+    "numberLabel": "Su número de WhatsApp",
+    "open": "Abrir WhatsApp",
+    "invalid": "Introduzca su número de WhatsApp con el código de país, por ejemplo +234 801 234 5678.",
+    "unavailable": "El envío por WhatsApp no está disponible ahora. Use el enlace de la entrada.",
+    "message": "Hola, G-ventZ: por favor, envíenme mi entrada para {title}.\nCódigo de la entrada: {code}\nEnlace de la entrada: {url}"
+  },
+  "order": {
+    "meta": {
+      "title": "Sus entradas · G-ventZ"
+    },
+    "headingIn": "¡Ya está dentro!",
+    "headingOrder": "Su pedido",
+    "headingTickets": "Sus entradas",
+    "footCompleted": "También enviamos sus entradas al correo de su cuenta. Todas sus entradas están en <link>Mis entradas</link>.",
+    "foot": "Todas sus entradas están en <link>Mis entradas</link>."
+  },
+  "payment": {
+    "status": {
+      "awaitingPayment": {
+        "title": "Esperando su pago",
+        "body": "Si acaba de pagar, esta página se actualizará sola en unos segundos. No pague dos veces."
+      },
+      "completed": {
+        "title": "Pagado",
+        "body": "Su pago se realizó y sus entradas están abajo. Se las enviamos por correo con su recibo."
+      },
+      "expired": {
+        "title": "Su reserva expiró",
+        "body": "No recibimos su pago en 10 minutos, así que las entradas volvieron a la venta. Si se cobró dinero de su cuenta, se devuelve automáticamente."
+      },
+      "failed": {
+        "title": "El pago no se completó",
+        "body": "Paystack no pudo procesar el pago. No se cobró nada."
+      },
+      "refunded": {
+        "title": "Reembolsado",
+        "body": "Este pedido se reembolsó. Las entradas ya no son válidas."
+      },
+      "partiallyRefunded": {
+        "title": "Reembolsado en parte",
+        "body": "Algunas entradas de este pedido se reembolsaron; las demás siguen siendo válidas."
+      },
+      "disputed": {
+        "title": "Pago en disputa",
+        "body": "Su banco nos informó que este pago está en disputa. Sus entradas siguen siendo válidas mientras se revisa."
+      },
+      "waitlisted": {
+        "title": "Está en la lista de espera",
+        "body": "Le avisaremos por correo si se libera un lugar. Entonces tendrá 24 horas para pagar."
+      }
+    },
+    "offerTitle": "Tiene un lugar",
+    "offerBody": "Pague antes del {time} para conseguir sus entradas; después, el lugar pasa a la siguiente persona.",
+    "reference": "Referencia del pago",
+    "tryAgain": "Intentar de nuevo con Paystack",
+    "pay": "Pagar con Paystack",
+    "payTotal": "Pagar con Paystack · {total}",
+    "startAgain": "Empezar de nuevo",
+    "serviceFee": "Cargo por servicio",
+    "includesVat": "(incluye IVA {amount})",
+    "total": "Total",
+    "paid": "Pagado",
+    "paidAt": "Pagado el {time}",
+    "refunds": "Reembolsos",
+    "refundLine": "{amount} · {count, plural, one {# entrada} other {# entradas}}",
+    "refundCancelled": "evento cancelado",
+    "refundLate": "pagado después de la reserva",
+    "refundsNote": "Los reembolsos vuelven a la tarjeta o cuenta con la que pagó. Los bancos suelen tardar de 5 a 10 días hábiles.",
+    "held": "Sus entradas están reservadas durante <b>{time}</b>.",
+    "checking": "Comprobando su pago con Paystack...",
+    "noAnswer": "Paystack aún no responde. <button>Comprobar de nuevo</button>",
+    "opening": "Abriendo Paystack...",
+    "orderNotFound": "No se encontró este pedido.",
+    "openFailed": "No pudimos abrir la página de pago. Inténtelo de nuevo."
+  },
+  "myTickets": {
+    "meta": {
+      "title": "Mis entradas · G-ventZ"
+    },
+    "heading": "Mis entradas",
+    "which": "Qué entradas",
+    "upcoming": "Próximas",
+    "past": "Pasadas",
+    "emptyUpcoming": "Aún no tiene entradas próximas. Encuentre algo en Descubrir.",
+    "emptyPast": "Aún no hay eventos pasados.",
+    "loadMore": "Cargar más"
+  }
+}

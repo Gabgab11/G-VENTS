@@ -1,14 +1,18 @@
 import Link from "next/link";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { withAlternates } from "@/i18n/seo";
+import { getFormat } from "@/i18n/format-server";
+import type { Locale } from "@/i18n/languages";
+import { intlLocale, safeZone } from "@/lib/format";
+import { categoryLabelKey, isCategory } from "@/lib/categories";
 import { notFound } from "next/navigation";
 import { api, data } from "@/lib/api/server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { themeBackground } from "@/lib/themes";
-import { eventDateParts } from "@/lib/dates";
+import { eventDateParts, timezoneLabel } from "@/lib/dates";
 import { getEventPage } from "@/lib/event-page";
 import OrderForm from "./OrderForm";
 import PaidOrderForm from "./PaidOrderForm";
-import { formatMinor } from "@/lib/money";
 import ThemeStage from "@/components/ThemeStage";
 import VenueMap, { directionsUrl } from "@/components/VenueMap";
 import SiteHeader from "@/components/SiteHeader";
@@ -20,8 +24,25 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   return withAlternates(params, `/e/${(await params).slug}`);
 }
 
-export default async function EventPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+/** The calendar tile and date line in the page's language; English keeps eventDateParts' exact output. */
+function dateParts(startsAt: string, endsAt: string | null, timeZone: string | null | undefined, lang: Locale) {
+  const en = eventDateParts(startsAt, endsAt, timeZone);
+  if (lang === "en") return { month: en.month, day: en.day, dateLine: en.dateLine };
+  const tz = safeZone(timeZone);
+  const fmt = (o: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat(intlLocale(lang, "date"), { ...o, timeZone: tz }).format(new Date(startsAt));
+  return {
+    month: fmt({ month: "short" }).toUpperCase(),
+    day: fmt({ day: "numeric" }),
+    dateLine: fmt({ weekday: "long", day: "numeric", month: "long", year: "numeric" }),
+  };
+}
+
+export default async function EventPage({ params }: { params: Promise<{ lang: string; slug: string }> }) {
+  const { lang, slug } = await params;
+  setRequestLocale(lang);
+  const t = await getTranslations("event");
+  const root = await getTranslations();
+  const format = await getFormat();
   const supabase = await createSupabaseServerClient();
   // The session cookie is enough to choose what to show; the API verifies the token on each call.
   const [{ data: { session } }, event] = await Promise.all([supabase.auth.getSession(), getEventPage(slug)]);
@@ -30,7 +51,10 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
   const signedIn = !!session;
   const me = signedIn ? await (await api()).GET("/v1/me").then(data).catch(() => null) : null;
 
-  const date = eventDateParts(event.startsAt, event.endsAt, event.timeZone);
+  const date = {
+    ...dateParts(event.startsAt, event.endsAt, event.timeZone, format.lang),
+    timeLine: t("page.timeLine", { range: format.range(event.startsAt, event.endsAt, event.timeZone), zone: timezoneLabel(safeZone(event.timeZone)) }),
+  };
   const back = encodeURIComponent(`/e/${event.slug}`);
   const signInHref = `/sign-in?next=${back}`;
   const signUpHref = `/sign-up?next=${back}`;
@@ -45,8 +69,8 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
   const bothKinds = canOrderFree && canOrderPaid;
   const loc = event.location;
   const venue = loc.kind === "venue";
-  const placeTitle = venue ? loc.venueName || loc.address || loc.city || "Venue" : "Online";
-  const placeLine = venue ? [loc.venueName ? loc.address : null, loc.city, loc.country].filter(Boolean).join(", ") : "The host shares the link with guests";
+  const placeTitle = venue ? loc.venueName || loc.address || loc.city || t("page.place.venue") : t("page.place.online");
+  const placeLine = venue ? [loc.venueName ? loc.address : null, loc.city, loc.country].filter(Boolean).join(", ") : t("page.place.onlineLine");
   const directions = directionsUrl(loc);
 
   return (
@@ -56,9 +80,9 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
 
       {(event.status !== "published" || event.canManage) && (
         <div className="ev-notices">
-          {event.status === "draft" && <p className="ev-notice">Draft. Only you and your team can see this page.</p>}
-          {event.status === "cancelled" && <p className="ev-notice ev-notice-warn">This event has been cancelled.</p>}
-          {event.canManage && <p className="ev-notice">You can edit this event. <Link href={`/dashboard/${event.id}`} className="gold">Manage event</Link></p>}
+          {event.status === "draft" && <p className="ev-notice">{t("page.notices.draft")}</p>}
+          {event.status === "cancelled" && <p className="ev-notice ev-notice-warn">{t("page.notices.cancelled")}</p>}
+          {event.canManage && <p className="ev-notice">{t.rich("page.notices.canManage", { link: (c) => <Link href={`/dashboard/${event.id}`} className="gold">{c}</Link> })}</p>}
         </div>
       )}
 
@@ -66,12 +90,12 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
         <aside className="ev-side">
           <div className={`ev-cover ${event.coverUrl ? "ev-cover-flyer" : ""}`} style={{ background: themeBackground(event.coverTheme) }}>
             {/* eslint-disable-next-line @next/next/no-img-element -- flyers come from Supabase Storage at arbitrary sizes */}
-            {event.coverUrl ? <img src={event.coverUrl} alt={`Flyer for ${event.title}`} /> : <span className="ev-cover-title">{event.title}</span>}
+            {event.coverUrl ? <img src={event.coverUrl} alt={t("page.coverAlt", { title: event.title })} /> : <span className="ev-cover-title">{event.title}</span>}
           </div>
 
           {event.hostName && (
             <div className="ev-side-block">
-              <div className="ev-label">Hosted by</div>
+              <div className="ev-label">{t("page.hostedBy")}</div>
               <div className="ev-host">
                 <span className="ev-avatar" aria-hidden="true">{event.hostName.trim().charAt(0).toUpperCase()}</span>
                 <span>{event.hostName}</span>
@@ -81,13 +105,13 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
 
           {event.attendeeCount !== null && event.attendeeCount > 0 && (
             <div className="ev-side-block">
-              <div className="ev-label">{event.attendeeCount} {event.attendeeCount === 1 ? "person" : "people"} going</div>
+              <div className="ev-label">{t("page.going", { count: event.attendeeCount })}</div>
             </div>
           )}
 
           <div className="ev-tags">
-            <span className="ev-tag">{event.category}</span>
-            {event.visibility === "private" && <span className="ev-tag">Private event</span>}
+            <span className="ev-tag">{isCategory(event.category) ? root(categoryLabelKey(event.category)) : event.category}</span>
+            {event.visibility === "private" && <span className="ev-tag">{t("page.privateEvent")}</span>}
           </div>
         </aside>
 
@@ -112,7 +136,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
               </div>
               <div>
                 <div className="ev-fact-title">
-                  {directions ? <a href={directions} target="_blank" rel="noopener noreferrer">{placeTitle} <span aria-hidden="true">↗</span></a> : placeTitle}
+                  {directions ? <a href={directions} target="_blank" rel="noopener noreferrer">{placeTitle} <span aria-hidden="true">{"↗"}</span></a> : placeTitle}
                 </div>
                 {placeLine && <div className="ev-fact-sub">{placeLine}</div>}
               </div>
@@ -120,49 +144,49 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
           </div>
 
           <section className="ev-card" aria-labelledby="tickets-title">
-            <div className="ev-card-head" id="tickets-title">{event.canManage ? "Your tickets on sale" : canOrder ? "Get tickets" : "Tickets"}</div>
+            <div className="ev-card-head" id="tickets-title">{event.canManage ? t("tickets.headManage") : canOrder ? t("tickets.headGet") : t("tickets.head")}</div>
             <div className="ev-card-body">
-              {event.status === "cancelled" && <p className="muted">This event was cancelled, so tickets are no longer available.</p>}
-              {event.status === "published" && !event.registrationOpen && <p className="muted">Registration for this event is closed.</p>}
+              {event.status === "cancelled" && <p className="muted">{t("tickets.cancelled")}</p>}
+              {event.status === "published" && !event.registrationOpen && <p className="muted">{t("tickets.closed")}</p>}
               {open && !canOrder && (
-                <p className="muted">Tickets for this event aren&apos;t on sale yet. Check back soon.</p>
+                <p className="muted">{t("tickets.notOnSale")}</p>
               )}
               {open && canOrderFree && paidTypes.length > 0 && !event.paidSalesOpen && !event.canManage && (
-                <p className="muted small">Paid tickets can&apos;t be bought right now. Check back soon.</p>
+                <p className="muted small">{t("tickets.paidUnavailable")}</p>
               )}
               {/* Hosts and their team see what's on sale and how it's going, not a ticket form for themselves. */}
               {event.canManage && (
                 <div className="ev-host">
                   <ul className="ev-host-types">
-                    {event.ticketTypes.map((t) => (
-                      <li key={t.id}>
-                        <span className="ev-host-name">{t.name}</span>
+                    {event.ticketTypes.map((tt) => (
+                      <li key={tt.id}>
+                        <span className="ev-host-name">{tt.name}</span>
                         <span className="muted small">
-                          {t.priceMinor === 0 ? "Free" : formatMinor(t.priceMinor, t.currency)} · {t.sold} taken{t.quantity !== null ? ` of ${t.quantity}` : ""}
+                          {tt.priceMinor === 0 ? t("host.free") : format.money(tt.priceMinor, tt.currency)} · {tt.quantity !== null ? t("host.takenOf", { sold: tt.sold, quantity: tt.quantity }) : t("host.taken", { sold: tt.sold })}
                         </span>
                       </li>
                     ))}
                   </ul>
-                  <p className="muted small">Guests see the ticket form here. You&apos;re managing this event, so you don&apos;t need a ticket.</p>
+                  <p className="muted small">{t("host.note")}</p>
                   <div className="ev-host-actions">
-                    <Link href={`/dashboard/${event.id}?tab=guests`} className="btn-grad ev-cta">See guests</Link>
-                    <Link href={`/dashboard/${event.id}`} className="btn-ghost ev-cta">Manage event</Link>
+                    <Link href={`/dashboard/${event.id}?tab=guests`} className="btn-grad ev-cta">{t("host.seeGuests")}</Link>
+                    <Link href={`/dashboard/${event.id}`} className="btn-ghost ev-cta">{t("host.manage")}</Link>
                   </div>
                 </div>
               )}
               {!event.canManage && canOrder && !signedIn && (
                 <div className="ev-signup">
-                  <p>Welcome! Create a free account or sign in to get your tickets. It takes a few seconds with Google or a 6-digit email code.</p>
-                  <Link href={signUpHref} className="btn-grad ev-cta">Get tickets</Link>
-                  <p className="muted small">Already have an account? <Link href={signInHref} className="gold">Sign in</Link></p>
+                  <p>{t("signUp.welcome")}</p>
+                  <Link href={signUpHref} className="btn-grad ev-cta">{t("signUp.cta")}</Link>
+                  <p className="muted small">{t.rich("signUp.haveAccount", { link: (c) => <Link href={signInHref} className="gold">{c}</Link> })}</p>
                 </div>
               )}
               {!event.canManage && signedIn && bothKinds && (
-                <p className="muted small">Free and paid tickets are separate orders. Get one kind, then come back for the other.</p>
+                <p className="muted small">{t("tickets.separateOrders")}</p>
               )}
               {!event.canManage && canOrderFree && signedIn && (
                 <section className="pay-kind" aria-labelledby={bothKinds ? "free-title" : undefined}>
-                  {bothKinds && <h3 className="pay-kind-title" id="free-title">Free tickets</h3>}
+                  {bothKinds && <h3 className="pay-kind-title" id="free-title">{t("tickets.freeTitle")}</h3>}
                   <OrderForm
                     eventId={event.id}
                     ticketTypes={freeTypes}
@@ -176,7 +200,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
               )}
               {!event.canManage && canOrderPaid && signedIn && (
                 <section className="pay-kind" aria-labelledby={bothKinds ? "paid-title" : undefined}>
-                  {bothKinds && <h3 className="pay-kind-title" id="paid-title">Paid tickets</h3>}
+                  {bothKinds && <h3 className="pay-kind-title" id="paid-title">{t("tickets.paidTitle")}</h3>}
                   <PaidOrderForm
                     eventId={event.id}
                     ticketTypes={paidTypes}
@@ -189,30 +213,30 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
                   />
                 </section>
               )}
-              {!event.canManage && event.requireApproval && canOrderFree && <p className="muted small">The host approves each request before tickets are issued.</p>}
+              {!event.canManage && event.requireApproval && canOrderFree && <p className="muted small">{t("tickets.approvalNote")}</p>}
             </div>
           </section>
 
           {event.description && (
             <section className="ev-section">
-              <h2 className="ev-h2">About</h2>
+              <h2 className="ev-h2">{t("page.about")}</h2>
               <p className="ev-desc">{event.description}</p>
             </section>
           )}
 
           {venue && directions && (
             <section className="ev-section">
-              <h2 className="ev-h2">Location</h2>
+              <h2 className="ev-h2">{t("page.location")}</h2>
               <div className="ev-fact-title">{placeTitle}</div>
               {placeLine && <div className="ev-fact-sub">{placeLine}</div>}
               <VenueMap location={loc} title={placeTitle} />
-              <a className="ev-directions" href={directions} target="_blank" rel="noopener noreferrer">Get directions ↗</a>
+              <a className="ev-directions" href={directions} target="_blank" rel="noopener noreferrer">{t("page.directions")}</a>
             </section>
           )}
 
           {event.refundPolicy && (
             <section className="ev-section">
-              <h2 className="ev-h2">Refunds</h2>
+              <h2 className="ev-h2">{t("page.refunds")}</h2>
               <p className="ev-desc muted">{event.refundPolicy}</p>
             </section>
           )}

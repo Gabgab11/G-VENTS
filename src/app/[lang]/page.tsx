@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { withAlternates } from "@/i18n/seo";
 import { getFeaturedEvents } from "@/lib/events";
 import AccountLink from "@/app/AccountLink";
@@ -220,7 +221,10 @@ export function generateMetadata({ params }: { params: Promise<{ lang: string }>
   return withAlternates(params, "/");
 }
 
-export default async function HomePage() {
+export default async function HomePage({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang } = await params;
+  setRequestLocale(lang);
+  const t = await getTranslations("home");
   const events = await featuredEvents();
 
   // The page is shared by every visitor, so it can't know who is signed in.
@@ -240,14 +244,14 @@ export default async function HomePage() {
       </header>
 
       <section className="hp-wrap hp-hero">
-        <span className="hp-pill">Create events in minutes</span>
-        <h1>Every celebration,<br /><span className="hp-hl">one place.</span></h1>
+        <span className="hp-pill">{t("hero.pill")}</span>
+        <h1>{t("hero.titleStart")}<br /><span className="hp-hl">{t("hero.titleHighlight")}</span></h1>
         <p className="hp-lede">
-          Owambe, outdooring, braai, sangeet or a Saturday birthday. Create your event, share one link, and let guests register from anywhere.
+          {t("hero.lede")}
         </p>
         <div className="hp-actions">
-          <Link href={createHref} className="hp-btn">Create your first event</Link>
-          <Link href="/discover" className="hp-ghost">Browse events</Link>
+          <Link href={createHref} className="hp-btn">{t("hero.createFirst")}</Link>
+          <Link href="/discover" className="hp-ghost">{t("hero.browse")}</Link>
         </div>
         <HeroTilt />
       </section>
@@ -255,28 +259,28 @@ export default async function HomePage() {
 
       <div className="hp-ticker" aria-hidden="true">
         <div className="hp-run">
-          {[...TICKER, ...TICKER].map((t, i) => <span key={i}>{t}</span>)}
+          {[...TICKER, ...TICKER].map((name, i) => <span key={i}>{name}</span>)}
         </div>
       </div>
 
       <section className="hp-wrap hp-section">
         {/* Same cards and row as Discover: the event's flyer (or colour style), name, place and date. */}
         {events.length > 0 ? (
-          <Rail title="Happening soon" id="hp-soon" more={{ href: "/discover", label: "See all events" }}>
+          <Rail title={t("soon.title")} id="hp-soon" more={{ href: "/discover", label: t("soon.seeAll") }}>
             {events.map((e) => <EventTile key={e.id} event={e} />)}
           </Rail>
         ) : (
           <p className="hp-empty">
-            No public events yet. <Link href={createHref}>Be the first to create one.</Link>
+            {t.rich("soon.empty", { link: (c) => <Link href={createHref}>{c}</Link> })}
           </p>
         )}
       </section>
 
       <section className="hp-closing">
-        <h2>Your guests are<br /><span className="hp-hl">already waiting.</span></h2>
+        <h2>{t("closing.titleStart")}<br /><span className="hp-hl">{t("closing.titleHighlight")}</span></h2>
         <div className="hp-actions" style={{ justifyContent: "center" }}>
-          <Link href="/discover" className="hp-ghost">Discover events</Link>
-          <Link href={createHref} className="hp-btn">Create an event free</Link>
+          <Link href="/discover" className="hp-ghost">{t("closing.discover")}</Link>
+          <Link href={createHref} className="hp-btn">{t("closing.create")}</Link>
         </div>
       </section>
 
@@ -286,16 +290,16 @@ export default async function HomePage() {
           <div className="hp-footer-main">
             <div className="hp-footer-brand">
               <Link href="/" className="hp-logo">G-vent<b>Z</b></Link>
-              <p>Good gatherings start here. Create an event, share one link, and bring everyone together.</p>
+              <p>{t("footer.tagline")}</p>
             </div>
-            <div><p className="hp-footer-title">Discover</p><nav className="hp-footer-links" aria-label="Discover"><Link href="/discover">All events</Link><Link href="/pricing">Pricing</Link><Link href="/events/new">Create event</Link></nav></div>
-            <div><p className="hp-footer-title">For hosts</p><nav className="hp-footer-links" aria-label="For hosts"><Link href="/events/new">Host an event</Link><Link href="/help">Help centre</Link><Link href="/refunds">Refunds</Link></nav></div>
-            <div><p className="hp-footer-title">Company</p><nav className="hp-footer-links" aria-label="Company"><Link href="/help">About G-ventZ</Link><Link href="/help">Contact</Link></nav></div>
-            <div><p className="hp-footer-title">Contact</p><div className="hp-footer-contact-group"><p className="hp-footer-contact-label">Support</p><Link href="/help">Visit help centre</Link></div><div className="hp-footer-contact-group"><p className="hp-footer-contact-label">For event hosts</p><Link href="/events/new">Get started</Link></div></div>
+            <div><p className="hp-footer-title">{t("footer.discover.title")}</p><nav className="hp-footer-links" aria-label={t("footer.discover.title")}><Link href="/discover">{t("footer.discover.allEvents")}</Link><Link href="/pricing">{t("footer.discover.pricing")}</Link><Link href="/events/new">{t("footer.discover.createEvent")}</Link></nav></div>
+            <div><p className="hp-footer-title">{t("footer.hosts.title")}</p><nav className="hp-footer-links" aria-label={t("footer.hosts.title")}><Link href="/events/new">{t("footer.hosts.host")}</Link><Link href="/help">{t("footer.hosts.help")}</Link><Link href="/refunds">{t("footer.hosts.refunds")}</Link></nav></div>
+            <div><p className="hp-footer-title">{t("footer.company.title")}</p><nav className="hp-footer-links" aria-label={t("footer.company.title")}><Link href="/help">{t("footer.company.about")}</Link><Link href="/help">{t("footer.company.contact")}</Link></nav></div>
+            <div><p className="hp-footer-title">{t("footer.contact.title")}</p><div className="hp-footer-contact-group"><p className="hp-footer-contact-label">{t("footer.contact.support")}</p><Link href="/help">{t("footer.contact.visitHelp")}</Link></div><div className="hp-footer-contact-group"><p className="hp-footer-contact-label">{t("footer.contact.forHosts")}</p><Link href="/events/new">{t("footer.contact.getStarted")}</Link></div></div>
           </div>
           <div className="hp-footer-bottom">
-            <div className="hp-footer-meta"><p>© {new Date().getFullYear()} G-ventZ</p><SocialLinks /><LanguageSwitcher className="lang-menu-up" /></div>
-            <nav className="hp-foot-legal" aria-label="Legal"><Link href="/terms">Terms</Link><Link href="/privacy">Privacy</Link></nav>
+            <div className="hp-footer-meta"><p>{`© ${new Date().getFullYear()} G-ventZ`}</p><SocialLinks /><LanguageSwitcher className="lang-menu-up" /></div>
+            <nav className="hp-foot-legal" aria-label={t("footer.legal.label")}><Link href="/terms">{t("footer.legal.terms")}</Link><Link href="/privacy">{t("footer.legal.privacy")}</Link></nav>
           </div>
         </div>
       </footer>

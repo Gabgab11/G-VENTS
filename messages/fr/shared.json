@@ -1,0 +1,150 @@
+{
+  "errorPage": {
+    "title": "Une erreur s'est produite",
+    "body": "Nous n'avons pas pu charger cette page. Veuillez réessayer dans un instant.",
+    "reference": "Référence : {digest}",
+    "retry": "Réessayer",
+    "home": "Retour à l'accueil"
+  },
+  "notFound": {
+    "title": "Page introuvable",
+    "body": "Cette page n'existe pas, ou vous n'y avez pas accès. Si quelqu'un vous a envoyé le lien d'un événement, vérifiez qu'il est complet.",
+    "discover": "Découvrir des événements",
+    "home": "Retour à l'accueil"
+  },
+  "loading": "Chargement…",
+  "legalDoc": {
+    "effective": "Date d'entrée en vigueur : {date}",
+    "terms": "Conditions",
+    "refunds": "Remboursements",
+    "pricing": "Tarifs",
+    "privacy": "Confidentialité"
+  },
+  "orderCard": {
+    "ticketsFor": "Billets pour {title}",
+    "tickets": "Billets",
+    "timeLine": "{range} · heure de {zone}",
+    "ticketNumber": "{number} sur {total}",
+    "checkedIn": "Entrée enregistrée",
+    "openTicket": "Ouvrir le billet",
+    "status": {
+      "completed": {
+        "title": "C'est confirmé",
+        "body": "Chaque billet a son propre code QR. Transférez chaque billet à l'invité concerné."
+      },
+      "pendingApproval": {
+        "title": "Demande reçue",
+        "body": "L'organisateur examine chaque demande. Nous vous enverrons vos billets par e-mail dès sa décision."
+      },
+      "waitlisted": {
+        "title": "Vous êtes sur la liste d'attente",
+        "body": "L'événement est complet pour le moment. Si des places se libèrent, l'organisateur peut faire entrer votre groupe."
+      },
+      "declined": {
+        "title": "Non acceptée cette fois",
+        "body": "L'organisateur n'a pas pu accepter cette demande."
+      },
+      "cancelled": {
+        "title": "Annulé",
+        "body": "Ces billets ne peuvent plus être utilisés."
+      },
+      "awaitingPayment": {
+        "title": "En attente de paiement",
+        "body": "Vos billets sont réservés pendant que vous payez avec Paystack."
+      },
+      "expired": {
+        "title": "Réservation expirée",
+        "body": "Le paiement n'a pas été effectué à temps : ces billets ont été remis en vente."
+      },
+      "failed": {
+        "title": "Échec du paiement",
+        "body": "Le paiement n'a pas abouti. Aucun montant n'a été débité."
+      },
+      "refunded": {
+        "title": "Remboursé",
+        "body": "Cette commande a été remboursée. Les billets ne sont plus valables."
+      },
+      "partiallyRefunded": {
+        "title": "Partiellement remboursé",
+        "body": "Certains billets ont été remboursés ; les autres restent valables."
+      },
+      "disputed": {
+        "title": "Paiement contesté",
+        "body": "Le paiement fait l'objet d'une contestation auprès de la banque. Vos billets restent valables pour l'instant."
+      }
+    }
+  },
+  "sellReason": {
+    "paymentsOff": "Les billets payants ne sont pas encore ouverts sur G-ventZ. Tous les billets sont gratuits pour le moment.",
+    "notApplied": "Pour vendre des billets payants, indiquez-nous qui est payé et où.",
+    "notAppliedAction": "Demander à vendre des billets payants",
+    "applicationSubmitted": "Nous examinons votre demande pour vendre des billets payants. Nous vous écrirons dès qu'une décision sera prise.",
+    "applicationSubmittedAction": "Voir votre demande",
+    "applicationDeclined": "Votre demande pour vendre des billets payants n'a pas été approuvée. Vous pouvez en voir la raison et refaire une demande.",
+    "applicationDeclinedAction": "Voir pourquoi",
+    "approvalRevoked": "Votre autorisation de vendre des billets payants a été retirée. Les billets déjà vendus restent valables.",
+    "approvalRevokedAction": "Voir les détails",
+    "payoutAccountPending": "Vous êtes approuvé. Nous configurons votre compte de versement avec Paystack ; vous pourrez vendre des billets payants dès qu'il sera prêt.",
+    "payoutAccountPendingAction": "Voir les détails du versement",
+    "countryOff": "Paystack est suspendu pour le pays de votre compte de versement en ce moment. Les billets gratuits fonctionnent toujours.",
+    "owesMoney": "Vous devez de l'argent à G-ventZ suite à des remboursements ou des rétrofacturations : vous ne pouvez donc pas publier de nouveaux événements payants. Vos événements existants continuent de se vendre, ce qui rembourse la somme.",
+    "owesMoneyAction": "Voir ce que vous devez",
+    "suspended": "Votre compte est suspendu : vous ne pouvez donc pas vendre de billets payants."
+  },
+  "fees": {
+    "hostAbsorbs": {
+      "label": "Je prends les frais à ma charge",
+      "hint": "Les invités paient le prix du billet. Les frais de G-ventZ, la TVA sur ces frais et les frais de Paystack sont déduits de ce que vous recevez."
+    },
+    "guestPays": {
+      "label": "Les invités paient les frais",
+      "hint": "Les frais s'ajoutent au prix : vous recevez donc l'intégralité du prix du billet."
+    }
+  },
+  "payment": {
+    "nonRefundable": "Je comprends que les billets ne sont pas remboursables, sauf si l'événement est annulé",
+    "organizer": "C'est l'organisateur, et non G-ventZ, qui est responsable de cet événement."
+  },
+  "refundStatus": {
+    "queued": "Remboursement en file d'attente",
+    "processing": "Remboursement en cours",
+    "refunded": "Remboursé",
+    "failed": "Échec du remboursement"
+  },
+  "applicationStatus": {
+    "none": "Aucune demande",
+    "submitted": "En cours d'examen",
+    "approved": "Approuvée",
+    "declined": "Refusée",
+    "revoked": "Autorisation retirée",
+    "payoutPending": "Compte de versement en attente"
+  },
+  "emailCode": {
+    "noAccount": "Il n'existe pas encore de compte pour cette adresse e-mail.",
+    "rateLimited": "Trop de codes ont été demandés. Patientez une minute, puis réessayez.",
+    "captcha": "La vérification anti-robot a échoué. Réessayez, ou continuez avec Google.",
+    "invalid": "Saisissez une adresse e-mail valide.",
+    "sendFailed": "Nous n'avons pas pu envoyer de code pour le moment. Réessayez dans un instant.",
+    "tooManyTries": "Trop de tentatives. Patientez une minute, puis demandez un nouveau code.",
+    "wrongCode": "Ce code est incorrect ou a expiré. Réessayez ou demandez-en un nouveau."
+  },
+  "mapsUrl": {
+    "hint": "Collez un lien Google Maps (google.com/maps, maps.app.goo.gl ou share.google)."
+  },
+  "categories": {
+    "music": "Musique",
+    "conferences": "Conférences",
+    "tech": "Tech",
+    "faith": "Spiritualité",
+    "arts": "Arts",
+    "food": "Gastronomie",
+    "sports": "Sport",
+    "business": "Affaires",
+    "nightlife": "Vie nocturne",
+    "education": "Éducation",
+    "community": "Communauté",
+    "charity": "Caritatif",
+    "family": "Famille",
+    "other": "Autre"
+  }
+}

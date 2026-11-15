@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "title": "Discover events · G-ventZ"
+  },
+  "online": "Online",
+  "allEvents": "All events",
+  "categoryEvents": "{category} events",
+  "categoryEmpty": "Nothing coming up in {category} yet. <link>Host one</link>.",
+  "noEvents": "No public events yet. <link>Create the first one</link>.",
+  "empty": {
+    "discover": "Discover",
+    "title": "Good gatherings start here",
+    "categoryTitle": "No {category} events yet",
+    "text": "Be the first: create an event and share one link with your guests.",
+    "create": "Create an event"
+  },
+  "rails": {
+    "categories": "Event categories",
+    "soon": "Happening soon",
+    "weekend": "This weekend"
+  },
+  "rail": {
+    "previous": "Previous: {title}",
+    "next": "Next: {title}"
+  },
+  "hero": {
+    "label": "Featured events",
+    "slide": "{position} of {count}: {title}",
+    "getTickets": "Get tickets",
+    "share": "Share",
+    "shareOn": "Share on {network}",
+    "shareText": "{title} on G-ventZ",
+    "choose": "Choose a featured event",
+    "show": "Show {title}"
+  },
+  "inSentence": {
+    "music": "music",
+    "conferences": "conferences",
+    "tech": "tech",
+    "faith": "faith",
+    "arts": "arts",
+    "food": "food",
+    "sports": "sports",
+    "business": "business",
+    "nightlife": "nightlife",
+    "education": "education",
+    "community": "community",
+    "charity": "charity",
+    "family": "family",
+    "other": "other"
+  }
+}

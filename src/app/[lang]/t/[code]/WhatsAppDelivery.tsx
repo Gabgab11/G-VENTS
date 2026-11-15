@@ -1,7 +1,8 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useState } from "react";
-import { normalizePhone, ticketWhatsAppMessage, whatsappLink } from "@/lib/whatsapp";
+import { normalizePhone, whatsappLink } from "@/lib/whatsapp";
 
 // Fallback delivery: the guest types their WhatsApp number, then WhatsApp opens
 // with a ready-made message to G-ventZ's business number. Nothing is sent by us,
@@ -17,18 +18,20 @@ export default function WhatsAppDelivery({
   displayCode: string;
   ticketUrl: string;
 }) {
+  const t = useTranslations("tickets.whatsapp");
   const [phone, setPhone] = useState("");
   const [error, setError] = useState("");
 
   function open() {
     const number = normalizePhone(phone);
     if (!number) {
-      setError("Enter your WhatsApp number with its country code, for example +234 801 234 5678.");
+      setError(t("invalid"));
       return;
     }
-    const link = whatsappLink(businessNumber, ticketWhatsAppMessage(eventTitle, displayCode, ticketUrl));
+    // The ready-made message is in the page's language (same lines as ticketWhatsAppMessage in English).
+    const link = whatsappLink(businessNumber, t("message", { title: eventTitle, code: displayCode, url: ticketUrl }));
     if (!link) {
-      setError("WhatsApp delivery isn't available right now. Use the ticket link instead.");
+      setError(t("unavailable"));
       return;
     }
     setError("");
@@ -36,9 +39,9 @@ export default function WhatsAppDelivery({
   }
 
   return (
-    <section className="tk-wa" aria-label="Send ticket to WhatsApp">
-      <p><b>Get your ticket on WhatsApp</b> Enter your WhatsApp number, then send the message that opens.</p>
-      <label className="tk-wa-label" htmlFor="tk-wa-phone">Your WhatsApp number</label>
+    <section className="tk-wa" aria-label={t("label")}>
+      <p>{t.rich("intro", { b: (c) => <b>{c}</b> })}</p>
+      <label className="tk-wa-label" htmlFor="tk-wa-phone">{t("numberLabel")}</label>
       <div className="tk-wa-row">
         <input
           id="tk-wa-phone"
@@ -52,7 +55,7 @@ export default function WhatsAppDelivery({
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? "tk-wa-error" : undefined}
         />
-        <button type="button" className="tk-btn tk-go" onClick={open}>Open WhatsApp</button>
+        <button type="button" className="tk-btn tk-go" onClick={open}>{t("open")}</button>
       </div>
       {error && <p id="tk-wa-error" className="tk-wa-error" role="alert">{error}</p>}
     </section>
