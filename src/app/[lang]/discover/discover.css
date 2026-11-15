@@ -33,7 +33,7 @@
 .dc-slide-poster img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .dc-slide-poster span { padding: 26px; font-family: var(--display); font-weight: 800; font-size: clamp(26px, 2.6vw, 40px); line-height: 1; letter-spacing: -0.02em; text-shadow: 0 2px 14px rgba(0,0,0,.3); }
 .dc-hero-empty { display: grid; align-items: center; padding: 0 var(--dc-gutter); background: radial-gradient(120% 120% at 85% 20%, #ff5a3c 0%, #b23a8f 38%, #2a1640 75%); }
-.dc-dots { position: absolute; z-index: 2; right: var(--dc-gutter); bottom: 26px; display: flex; gap: 8px; }
+.dc-dots { position: absolute; z-index: 2; inset-inline-end: var(--dc-gutter); bottom: 26px; display: flex; gap: 8px; }
 .dc-dots button { width: 34px; height: 20px; padding: 8px 0; border: 0; background: none; cursor: pointer; }
 .dc-dots button span { display: block; height: 4px; border-radius: 4px; background: rgba(255,255,255,.35); position: relative; overflow: hidden; }
 .dc-dots button.on span { background: rgba(255,255,255,.35); }
@@ -83,19 +83,19 @@
 .dc-tile-cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
 .dc-tile:hover .dc-tile-cover img { transform: scale(1.04); }
 .dc-tile-cover-title { padding: 18px; color: #fff; font-family: var(--display); font-weight: 800; font-size: 24px; line-height: 1.05; text-shadow: 0 2px 14px rgba(0,0,0,.3); overflow-wrap: anywhere; }
-.dc-tile-chip { position: absolute; top: 12px; left: 12px; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: rgba(20,16,12,.72); color: #ffc23d; backdrop-filter: blur(6px); }
+.dc-tile-chip { position: absolute; top: 12px; inset-inline-start: 12px; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: rgba(20,16,12,.72); color: #ffc23d; backdrop-filter: blur(6px); }
 .dc-tile-title { font-family: var(--display); font-weight: 700; font-size: 20px; letter-spacing: -0.01em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .dc-tile-meta { color: var(--muted); font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 @media (max-width: 900px) {
   .dc-slide { grid-template-columns: 1fr; align-content: end; padding-bottom: 64px; }
-  .dc-slide-poster { position: absolute; top: 24px; right: -8%; width: 52%; opacity: .55; }
+  .dc-slide-poster { position: absolute; top: 24px; inset-inline-end: -8%; width: 52%; opacity: .55; }
   .dc-slide::before { background: linear-gradient(0deg, rgba(10,8,14,.88) 0%, rgba(10,8,14,.5) 60%, rgba(10,8,14,.2) 100%); }
   .dc-rail-track { grid-auto-columns: min(46vw, 340px); }
 }
 @media (max-width: 640px) {
   .dc-hero { height: clamp(460px, 78vh, 620px); }
-  .dc-dots { left: var(--dc-gutter); right: auto; bottom: 22px; }
+  .dc-dots { inset-inline-start: var(--dc-gutter); inset-inline-end: auto; bottom: 22px; }
   .dc-rail-arrows { display: none; }
   .dc-rail-track { grid-auto-columns: min(78vw, 340px); gap: 16px; }
 }

@@ -54,3 +54,20 @@ export function apiMessage(error: unknown, fallback = GENERIC_MESSAGE): string {
   if (status === 503 && code !== "internal_error") return detail;
   return fallback;
 }
+
+/** A message function for the `errors` area (next-intl's `t`, narrowed to what this needs). */
+export type ErrorTranslator = { has(key: string): boolean; (key: string): string };
+
+/**
+ * The message for a failed call in the reader's language (FR-26, D70). English shows exactly what
+ * apiMessage shows (the API's own text). Other languages show the catalogue's translation of the
+ * problem's code (or of the first field error's code), and the API's English text only for codes
+ * the catalogue doesn't know yet. Problems we wouldn't show (5xx) still get the fallback.
+ */
+export function problemMessage(error: unknown, t: ErrorTranslator, lang: string, fallback = GENERIC_MESSAGE): string {
+  const english = apiMessage(error, fallback);
+  if (lang === "en" || !(error instanceof ApiError) || english === fallback) return english;
+  const { status, code, errors } = error.problem;
+  const key = status === 400 && errors?.length ? errors[0]!.code : code;
+  return key && t.has(key) ? t(key) : english;
+}

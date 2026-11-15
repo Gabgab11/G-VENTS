@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { withAlternates } from "@/i18n/seo";
 import { notFound } from "next/navigation";
 import { api, data } from "@/lib/api/server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
@@ -15,6 +16,10 @@ import SiteHeader from "@/components/SiteHeader";
 // The public event page from gventz-api (U6a), laid out like Luma: the cover and host on the left;
 // the date, place and tickets on the right; then the description and the venue map. The API decides
 // who may see drafts and whether the attendee count is shown; the order form is for signed-in visitors.
+export async function generateMetadata({ params }: { params: Promise<{ lang: string; slug: string }> }) {
+  return withAlternates(params, `/e/${(await params).slug}`);
+}
+
 export default async function EventPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const supabase = await createSupabaseServerClient();

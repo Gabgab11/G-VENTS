@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { formatMinor, wholeUnitsToMinor } from "@/lib/money";
-import { previewFee, type FeePreview } from "@/app/events/actions";
+import { previewFee, type FeePreview } from "@/app/(site)/events/actions";
 import type { FeeChoice } from "@/lib/payment-text";
 
 // The live example under a paid price (M5 TicketTypeEditor): what a guest pays for one ticket and

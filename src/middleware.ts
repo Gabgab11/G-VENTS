@@ -3,6 +3,9 @@ import { NextResponse, type NextRequest } from "next/server";
 import { env, supabaseSecretKey } from "@/lib/env";
 import { onCloudflare } from "@/lib/platform";
 import { authCookieOptions, forwardedIp, supabaseKeyAndHeaders } from "@/lib/supabase/options";
+import createIntlMiddleware from "next-intl/middleware";
+import { routing, isEnglishPrefixed, isPublicPath, splitPrefix } from "@/i18n/routing";
+import { LANGUAGE_COOKIE, LANGUAGE_HEADER, resolveLanguage } from "@/i18n/resolve";
 
 // Refreshes the signed-in session cookie so users stay logged in.
 // Visitors without a Supabase session cookie have nothing to refresh, so they skip the auth round trip.
@@ -32,23 +35,55 @@ export function httpsRedirect(request: NextRequest): NextResponse | null {
 }
 
 // Information pages: no session and no maintenance notice (they were outside the matcher before the
-// https redirect needed every page).
+// https redirect needed every page). Matched after any language prefix.
 const INFO_PAGE = /^\/(?:pricing|help|terms|privacy|refunds)/;
+
+// Per-language public pages (Change 3, W2): /fr/e/x is served from the [lang] tree; English has no
+// prefix and is rewritten to /en internally. No redirects by language (FR-24.3).
+const intl = createIntlMiddleware(routing);
+
+/**
+ * The language step (W2, W3). Public pages: next-intl's rewrite (or its redirect from /en/... to
+ * the unprefixed address). Other pages: the language chosen from cookie → Accept-Language →
+ * English, passed to the page in a request header (always overwritten, so it can't be spoofed).
+ */
+function withLanguage(request: NextRequest): { response: NextResponse; rebuild: () => NextResponse } {
+  const path = request.nextUrl.pathname;
+  if (isPublicPath(path) || isEnglishPrefixed(path)) {
+    const response = intl(request);
+    const rewrite = response.headers.get("x-middleware-rewrite");
+    return {
+      response,
+      // After the session refresh changed the request's cookies, forward them with the same rewrite.
+      rebuild: () => (rewrite ? NextResponse.rewrite(new URL(rewrite), { request }) : NextResponse.next({ request })),
+    };
+  }
+  const lang = resolveLanguage({ pathname: path, cookie: request.cookies.get(LANGUAGE_COOKIE)?.value, acceptLanguage: request.headers.get("accept-language") });
+  request.headers.set(LANGUAGE_HEADER, lang);
+  return { response: NextResponse.next({ request }), rebuild: () => NextResponse.next({ request }) };
+}
 
 export async function middleware(request: NextRequest) {
   const toHttps = httpsRedirect(request);
   if (toHttps) return toHttps;
-  if (INFO_PAGE.test(request.nextUrl.pathname)) return NextResponse.next();
+  const info = INFO_PAGE.test(splitPrefix(request.nextUrl.pathname).rest);
 
-  const bypass = process.env.MAINTENANCE_BYPASS;
-  const staff = !!bypass && bypass.length >= 16 && request.cookies.get("gventz_bypass")?.value === bypass;
-  if (process.env.MAINTENANCE_MODE === "1" && !staff) {
-    return new NextResponse(MAINTENANCE_HTML, { status: 503, headers: { "content-type": "text/html; charset=utf-8", "retry-after": "600", "cache-control": "no-store" } });
+  if (!info) {
+    const bypass = process.env.MAINTENANCE_BYPASS;
+    const staff = !!bypass && bypass.length >= 16 && request.cookies.get("gventz_bypass")?.value === bypass;
+    if (process.env.MAINTENANCE_MODE === "1" && !staff) {
+      return new NextResponse(MAINTENANCE_HTML, { status: 503, headers: { "content-type": "text/html; charset=utf-8", "retry-after": "600", "cache-control": "no-store" } });
+    }
   }
-  const hasSession = request.cookies.getAll().some((c) => c.name.startsWith("sb-"));
-  if (!hasSession) return NextResponse.next({ request });
 
-  let response = NextResponse.next({ request });
+  const language = withLanguage(request);
+  let response = language.response;
+  // A redirect (e.g. /en/discover → /discover) or a 404 for a switched-off language: nothing else to do.
+  if (response.status >= 300 && response.status < 400) return response;
+  if (info) return response;
+
+  const hasSession = request.cookies.getAll().some((c) => c.name.startsWith("sb-"));
+  if (!hasSession) return response;
 
   // Same key, forwarded IP and cookie flags as src/lib/supabase/server.ts: session refreshes are
   // rate-limited per IP too.
@@ -66,7 +101,7 @@ export async function middleware(request: NextRequest) {
       },
       setAll(cookiesToSet) {
         cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
-        response = NextResponse.next({ request });
+        response = language.rebuild();
         cookiesToSet.forEach(({ name, value, options }) =>
           response.cookies.set(name, value, options)
         );

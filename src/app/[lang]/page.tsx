@@ -1,13 +1,15 @@
 import Link from "next/link";
+import { withAlternates } from "@/i18n/seo";
 import { getFeaturedEvents } from "@/lib/events";
-import AccountLink from "./AccountLink";
-import HeroCards from "./HeroCards";
-import HeroTilt from "./HeroTilt";
-import HeroHover from "./HeroHover";
+import AccountLink from "@/app/AccountLink";
+import HeroCards from "@/app/HeroCards";
+import HeroTilt from "@/app/HeroTilt";
+import HeroHover from "@/app/HeroHover";
 import { pageFonts } from "@/app/fonts";
 import ColorModeToggle from "@/components/ColorModeToggle";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import SocialLinks from "@/components/SocialLinks";
-import FooterWordmark from "./FooterWordmark";
+import FooterWordmark from "@/app/FooterWordmark";
 import "./discover/discover.css";
 import Rail from "./discover/Rail";
 import EventTile from "./discover/EventTile";
@@ -68,7 +70,7 @@ const CSS = `
 .hp-stage .hp-hero { pointer-events: none; }
 .hp-stage .hp-hero > * { pointer-events: auto; }
 .hp-fall {
-  position: absolute; left: var(--left); bottom: calc(var(--bottom) * var(--s) * 1px);
+  position: absolute; inset-inline-start: var(--left); bottom: calc(var(--bottom) * var(--s) * 1px);
   width: calc(var(--w) * var(--s) * 1px); transform-origin: 50% 100%;
   transform: rotate(var(--tilt)); pointer-events: auto;
   animation: hp-drop var(--dur) ease-in-out var(--delay) both;
@@ -97,7 +99,7 @@ const CSS = `
 @media (max-width: 1099px) { .hp-stage { --s: 0.62; --band: 210px; } .hp-row3 { display: none; } }
 @media (max-width: 699px) {
   .hp-stage { --s: 0.46; --band: 104px; }
-  .hp-fall { left: var(--left-phone); }
+  .hp-fall { inset-inline-start: var(--left-phone); }
   .hp-row2, .hp-row3, .hp-fall:nth-child(3), .hp-fall:nth-child(4), .hp-fall:nth-child(6) { display: none; }
 }
 @media (max-width: 360px) { .hp-stage { --s: 0.4; --band: 92px; } }
@@ -148,7 +150,7 @@ const CSS = `
 @media (max-width: 640px) {
   .hp-hero { text-align: center; }
   .hp-hero h1 { letter-spacing: -2px; }
-  .hp-lede { margin-left: auto; margin-right: auto; }
+  .hp-lede { margin-inline-start: auto; margin-inline-end: auto; }
   .hp-hero .hp-actions { flex-direction: column; align-items: stretch; max-width: 340px; margin: 0 auto; }
   .hp-hero .hp-actions a { text-align: center; }
 }
@@ -179,7 +181,7 @@ const CSS = `
 .hp-footer .socials-soon { opacity:.45; cursor:default; }
 /* Big wordmark across the top of the footer, bold cream with the coral Z, fading out only at the very bottom.
    Letters rise into place one by one, driven by the scroll position (FooterWordmark.tsx). */
-.hp-footer-wordmark { overflow:hidden; white-space:nowrap; margin:0 calc(-1 * clamp(20px,5vw,64px)) clamp(8px,2vw,28px); padding:.06em clamp(12px,2vw,32px) 0; color:#f8f5ef; font-family:var(--display); font-size:clamp(140px,32vw,980px); font-weight:800; letter-spacing:-.07em; line-height:.8; text-align:left; -webkit-mask-image:linear-gradient(to bottom,#000 78%,transparent 100%); mask-image:linear-gradient(to bottom,#000 78%,transparent 100%); user-select:none; pointer-events:none; }
+.hp-footer-wordmark { overflow:hidden; white-space:nowrap; margin:0 calc(-1 * clamp(20px,5vw,64px)) clamp(8px,2vw,28px); padding:.06em clamp(12px,2vw,32px) 0; color:#f8f5ef; font-family:var(--display); font-size:clamp(140px,32vw,980px); font-weight:800; letter-spacing:-.07em; line-height:.8; text-align:start; -webkit-mask-image:linear-gradient(to bottom,#000 78%,transparent 100%); mask-image:linear-gradient(to bottom,#000 78%,transparent 100%); user-select:none; pointer-events:none; }
 .hp-footer-wordmark .wm-fit { display:inline-block; transform:none; transition:none; will-change:auto; }
 .hp-footer-wordmark span { display:inline-block; transform-origin:50% 100%; will-change:transform; transition:transform .5s cubic-bezier(.2,.8,.3,1); }
 .hp-footer-wordmark .wm-z { color:var(--coral); }
@@ -214,6 +216,10 @@ async function featuredEvents() {
   }
 }
 
+export function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
+  return withAlternates(params, "/");
+}
+
 export default async function HomePage() {
   const events = await featuredEvents();
 
@@ -230,7 +236,7 @@ export default async function HomePage() {
       <HeroHover />
       <header className="hp-top">
         <Link href="/" className="hp-logo">G-vent<b>Z</b></Link>
-        <div className="hp-top-actions"><ColorModeToggle /><AccountLink /></div>
+        <div className="hp-top-actions"><LanguageSwitcher /><ColorModeToggle /><AccountLink /></div>
       </header>
 
       <section className="hp-wrap hp-hero">
@@ -288,7 +294,7 @@ export default async function HomePage() {
             <div><p className="hp-footer-title">Contact</p><div className="hp-footer-contact-group"><p className="hp-footer-contact-label">Support</p><Link href="/help">Visit help centre</Link></div><div className="hp-footer-contact-group"><p className="hp-footer-contact-label">For event hosts</p><Link href="/events/new">Get started</Link></div></div>
           </div>
           <div className="hp-footer-bottom">
-            <div className="hp-footer-meta"><p>© {new Date().getFullYear()} G-ventZ</p><SocialLinks /></div>
+            <div className="hp-footer-meta"><p>© {new Date().getFullYear()} G-ventZ</p><SocialLinks /><LanguageSwitcher className="lang-menu-up" /></div>
             <nav className="hp-foot-legal" aria-label="Legal"><Link href="/terms">Terms</Link><Link href="/privacy">Privacy</Link></nav>
           </div>
         </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { signOut } from "@/app/auth/actions";
+import { signOut } from "@/app/(site)/auth/actions";
 
 // Signing out also drops ticket pages the service worker saved for offline use on this device.
 export default function SignOutButton() {

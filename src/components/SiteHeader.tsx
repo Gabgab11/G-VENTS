@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import AccountLink from "@/app/AccountLink";
 import BackLink from "@/components/BackLink";
 import ColorModeToggle from "@/components/ColorModeToggle";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 const NAV = [
   { href: "/discover", label: "Discover" },
@@ -33,6 +34,7 @@ export default function SiteHeader({
         ))}
       </nav>
       <div className="site-actions">
+        <LanguageSwitcher />
         <ColorModeToggle />
         {actions ?? <AccountLink className="site-account" />}
       </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import LocationFields from "@/app/events/new/LocationFields";
+import LocationFields from "@/app/(site)/events/new/LocationFields";
 import { updateVenue } from "./actions";
 
 // Replaces the venue as a whole (the API keeps nothing from the old one unless sent again).

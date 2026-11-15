@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { pageFonts } from "@/app/fonts";
-import { sendEmailCode, startGoogleSignIn, verifyEmailCode } from "@/app/auth/actions";
+import { sendEmailCode, startGoogleSignIn, verifyEmailCode } from "@/app/(site)/auth/actions";
 import type { AuthMode } from "@/lib/email-code";
 import { safeNextPath } from "@/lib/redirect";
 import BackLink from "@/components/BackLink";

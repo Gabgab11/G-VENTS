@@ -2,7 +2,7 @@
 
 import { startTransition, useActionState, useEffect, useRef, useState, type FormEvent } from "react";
 import { MAPS_URL_HINT, isGoogleMapsUrl } from "@/lib/maps-url";
-import { createEvent, type CreateEventState } from "@/app/events/actions";
+import { createEvent, type CreateEventState } from "@/app/(site)/events/actions";
 import { CATEGORIES } from "@/lib/categories";
 import { THEMES, themeBackground } from "@/lib/themes";
 import ThemeStage from "@/components/ThemeStage";

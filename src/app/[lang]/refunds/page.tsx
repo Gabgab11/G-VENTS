@@ -1,6 +1,9 @@
 import LegalDoc, { type LegalSection } from "@/components/LegalDoc";
+import { withAlternates } from "@/i18n/seo";
 
-export const metadata = { title: "Refund policy · G-ventZ" };
+export function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
+  return withAlternates(params, "/refunds", { title: "Refund policy · G-ventZ" });
+}
 
 const sections: LegalSection[] = [
   {

@@ -8,5 +8,8 @@ export default defineConfig({
   test: {
     environment: "node",
     include: ["src/**/*.test.ts"],
+    // next-intl imports "next/server" without an extension, which Node's ESM loader can't resolve;
+    // letting Vitest bundle it resolves the import as Next.js does.
+    server: { deps: { inline: ["next-intl"] } },
   },
 });

@@ -1,6 +1,6 @@
 import { headers } from "next/headers";
 import { requireUser } from "@/lib/auth";
-import { getDashboardTheme } from "@/app/dashboard/getTheme";
+import { getDashboardTheme } from "@/app/(site)/dashboard/getTheme";
 import { visitorCountry } from "@/lib/platform";
 import { getAvailability } from "@/lib/payments";
 import NewEventForm from "./NewEventForm";

@@ -9,7 +9,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
+    "lint": "eslint && node scripts/logical-css.mjs --check",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -29,6 +29,7 @@
     "@supabase/supabase-js": "^2.117.3",
     "jsqr": "1.4.0",
     "next": "15.5.28",
+    "next-intl": "4.14.9",
     "openapi-fetch": "0.17.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
@@ -36,12 +37,14 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@formatjs/icu-messageformat-parser": "3.5.22",
     "@opennextjs/cloudflare": "1.20.15",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.5.28",
+    "fast-check": "4.10.2",
     "openapi-typescript": "7.13.0",
     "typescript": "^5",
     "vitest": "^3",
@@ -50,6 +53,10 @@
   "overrides": {
     "next": {
       "postcss": "8.5.29"
-    }
+    },
+    "use-intl": "4.14.9",
+    "icu-minify": "4.14.9",
+    "intl-messageformat": "12.1.4",
+    "@formatjs/icu-messageformat-parser": "3.5.22"
   }
 }

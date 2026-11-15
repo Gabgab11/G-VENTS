@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { api, data } from "@/lib/api/server";
 import { ApiError, apiMessage } from "@/lib/api/problem";
 import { isUuid } from "@/lib/forms";
-import { isCheckoutUrl } from "@/app/e/[slug]/order-input";
+import { isCheckoutUrl } from "@/app/[lang]/e/[slug]/order-input";
 
 export type PayState = { error?: string } | undefined;
 

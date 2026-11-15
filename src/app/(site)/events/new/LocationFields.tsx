@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Combobox from "@/components/Combobox";
 import { orderedCountries } from "@/lib/locations";
-import { countryDetails, locatePlace, placeDetails, searchPlaces, type PlaceDetails, type Suggestion } from "@/app/events/places-actions";
+import { countryDetails, locatePlace, placeDetails, searchPlaces, type PlaceDetails, type Suggestion } from "@/app/(site)/events/places-actions";
 import type { CountryReference } from "@/lib/reference";
 import { MAPS_URL_HINT, MAPS_URL_MAX, isGoogleMapsUrl } from "@/lib/maps-url";
 import type { ZoneContext } from "./TimeZoneField";

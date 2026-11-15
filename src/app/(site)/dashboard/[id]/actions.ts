@@ -8,7 +8,7 @@ import { apiMessageFor } from "@/lib/api/messages";
 import { requireEvent } from "@/lib/auth";
 import { checkbox, field, isUuid } from "@/lib/forms";
 import { isThemeKey } from "@/lib/themes";
-import { locationInput } from "@/app/events/create-event-input";
+import { locationInput } from "@/app/(site)/events/create-event-input";
 import { MAPS_URL_HINT } from "@/lib/maps-url";
 import { flyerFrom, uploadFlyer as sendFlyer } from "@/lib/flyer";
 import type { MessageCode } from "./messages";

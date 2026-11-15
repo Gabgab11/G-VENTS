@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { safeNextPath } from "@/lib/redirect";
+import { syncLanguageAfterSignIn } from "@/i18n/sync";
 import {
   isAuthMode,
   isSixDigitCode,
@@ -55,6 +56,7 @@ export async function verifyEmailCode(input: { email: unknown; code: unknown }):
   const supabase = await createSupabaseServerClient();
   const { error } = await supabase.auth.verifyOtp({ email, token: input.code, type: "email" });
   if (error) return verifyFailure(error);
+  await syncLanguageAfterSignIn();
   revalidatePath("/", "layout");
   return { ok: true };
 }

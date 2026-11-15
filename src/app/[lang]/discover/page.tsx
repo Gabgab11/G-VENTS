@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { withAlternates } from "@/i18n/seo";
 import "./discover.css";
 import SiteHeader from "@/components/SiteHeader";
 import { getFeaturedEvents, type EventCard } from "@/lib/events";
@@ -12,7 +13,9 @@ import EventTile, { placeOf, whenOf } from "./EventTile";
 import HeroCarousel, { type HeroSlide } from "./HeroCarousel";
 import Rail from "./Rail";
 
-export const metadata = { title: "Discover events · G-ventZ" };
+export function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
+  return withAlternates(params, "/discover", { title: "Discover events · G-ventZ" });
+}
 
 const HERO_MAX = 6;
 const ROW_MAX = 12;
