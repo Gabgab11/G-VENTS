@@ -80,6 +80,8 @@ jobs:
           NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.STAGING_NEXT_PUBLIC_TURNSTILE_SITE_KEY }}
           NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY: ${{ vars.STAGING_NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY }}
           NEXT_PUBLIC_WHATSAPP_NUMBER: ${{ vars.STAGING_NEXT_PUBLIC_WHATSAPP_NUMBER }}
+          # Languages switched on (Change 3, D76): unset or "en" = English only, as before.
+          NEXT_PUBLIC_LANGUAGES: ${{ vars.STAGING_NEXT_PUBLIC_LANGUAGES }}
       # In the same job as the deploy on purpose: this job succeeds only when these pass, and
       # production checks for exactly that (tested-on-staging.sh).
       - name: Smoke test staging
@@ -240,6 +242,8 @@ jobs:
           NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.PRODUCTION_NEXT_PUBLIC_TURNSTILE_SITE_KEY }}
           NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY: ${{ vars.PRODUCTION_NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY }}
           NEXT_PUBLIC_WHATSAPP_NUMBER: ${{ vars.PRODUCTION_NEXT_PUBLIC_WHATSAPP_NUMBER }}
+          # Languages switched on (Change 3, D76): keep "en" until every language is reviewed.
+          NEXT_PUBLIC_LANGUAGES: ${{ vars.PRODUCTION_NEXT_PUBLIC_LANGUAGES }}
       - name: Smoke test production
         env:
           URL: ${{ vars.PRODUCTION_URL || steps.deploy.outputs.url }}
