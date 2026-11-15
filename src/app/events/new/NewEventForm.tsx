@@ -1,6 +1,6 @@
 "use client";
 
-import { startTransition, useActionState, useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { startTransition, useActionState, useEffect, useRef, useState, type FormEvent } from "react";
 import { MAPS_URL_HINT, isGoogleMapsUrl } from "@/lib/maps-url";
 import { createEvent, type CreateEventState } from "@/app/events/actions";
 import { CATEGORIES } from "@/lib/categories";
@@ -9,6 +9,7 @@ import ThemeStage from "@/components/ThemeStage";
 import MirrorBall from "@/components/MirrorBall";
 import LocationFields from "./LocationFields";
 import DateTimeWheel from "./DateTimeWheel";
+import TimeZoneField, { type ZoneContext } from "./TimeZoneField";
 import SiteHeader from "@/components/SiteHeader";
 import Link from "next/link";
 import { currencySymbol } from "@/lib/money";
@@ -44,9 +45,8 @@ export default function NewEventForm({
   const [visibility, setVisibility] = useState<"public" | "private">("public");
   const [isFree, setIsFree] = useState(true);
   const [online, setOnline] = useState(false);
-  // "" = let the API take the zone from the venue (coordinates, or a country with one zone).
-  const [timeZone, setTimeZone] = useState("");
-  const [browserZone, setBrowserZone] = useState("Africa/Lagos");
+  // The time zone follows the venue (TimeZoneField); LocationFields reports the country's zones and the venue's.
+  const [zoneContext, setZoneContext] = useState<ZoneContext>({ countryName: "", countryZones: [], venueZone: null });
   const [image, setImage] = useState<{ url: string; name: string } | null>(null);
   const [imageError, setImageError] = useState("");
   const imageInput = useRef<HTMLInputElement>(null);
@@ -72,8 +72,6 @@ export default function NewEventForm({
     setImage(null);
     setImageError("");
   }
-  const zones = useMemo(() => Intl.supportedValuesOf("timeZone"), []);
-  useEffect(() => setBrowserZone(Intl.DateTimeFormat().resolvedOptions().timeZone || "Africa/Lagos"), []);
 
   const [start, setStart] = useState({ date: "", time: "" });
   const [end, setEnd] = useState({ date: "", time: "" });
@@ -166,16 +164,7 @@ export default function NewEventForm({
                   invalid={attempted} onChange={setEnd} /></div>
             </div>
             {attempted && timesMissing && <p className="error">Add both a start and an end date and time.</p>}
-            <label className="field"><span>Time zone</span>
-              <select className="input" name="time_zone" value={online && !timeZone ? browserZone : timeZone} onChange={(e) => setTimeZone(e.target.value)}>
-                {!online && <option value="">From the venue</option>}
-                {zones.map((z) => <option key={z} value={z}>{z.replace(/_/g, " ")}</option>)}
-              </select></label>
-            <p className="muted small">
-              {online || timeZone
-                ? "Times are in the time zone above. Guests see them in the event's time zone."
-                : "Times are in the venue's local time. For countries with several time zones, pick the venue from the search or choose a zone."}
-            </p>
+            <TimeZoneField online={online} context={zoneContext} />
           </div>
 
           <div className="panel">
@@ -186,7 +175,7 @@ export default function NewEventForm({
               </div>
               <label className="switch"><input type="checkbox" name="is_online" checked={online} onChange={(e) => setOnline(e.target.checked)} /><span /></label>
             </div>
-            {!online && <LocationFields detectedCountry={detectedCountry} placesEnabled={placesEnabled} />}
+            {!online && <LocationFields detectedCountry={detectedCountry} placesEnabled={placesEnabled} onZoneContext={setZoneContext} />}
           </div>
 
           <div className="panel">

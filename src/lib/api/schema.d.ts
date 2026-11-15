@@ -23,7 +23,7 @@ export interface paths {
         head?: never;
         /**
          * Update my profile
-         * @description Changes only the fields sent: name, country, dashboard theme.
+         * @description Changes only the fields sent: name, country, dashboard theme, language (en, es, fr, de, zh-Hans, pt, ar; null clears it).
          */
         patch: operations["MeController_updateMe_v1"];
         trace?: never;
@@ -705,7 +705,7 @@ export interface paths {
         };
         /**
          * Venue search
-         * @description Suggestions in one country; region matches first. 60 a minute and 1,000 a day per user.
+         * @description Suggestions in one country; with a region, only places inside it, region matches first. 60 a minute and 1,000 a day per user.
          */
         get: operations["PlacesController_autocomplete_v1"];
         put?: never;
@@ -725,9 +725,29 @@ export interface paths {
         };
         /**
          * Venue details
-         * @description Address, city, country and coordinates for a picked suggestion (same session token).
+         * @description Address, city, state, country, coordinates and time zone for a picked suggestion (same session token).
          */
         get: operations["PlacesController_details_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/places/locate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Place a typed address
+         * @description The best match for a typed venue or address in the country (inside the region when given), with its state and time zone; `place` is null when nothing matches. Same limits as the search.
+         */
+        get: operations["PlacesController_locate_v1"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1519,6 +1539,11 @@ export interface components {
             /** @enum {string} */
             dashboardTheme: "minimal" | "sunset" | "ocean" | "forest" | "night" | "ember" | "blush" | "mint" | "lavender" | "christmas";
             /**
+             * @description The language chosen for the website and emails; null until chosen (Change 3)
+             * @enum {string|null}
+             */
+            language: "en" | "es" | "fr" | "de" | "zh-Hans" | "pt" | "ar" | null;
+            /**
              * @description aal2 when two-step sign-in was used for this session
              * @enum {string}
              */
@@ -1534,6 +1559,11 @@ export interface components {
             country?: string | null;
             /** @enum {string} */
             dashboardTheme?: "minimal" | "sunset" | "ocean" | "forest" | "night" | "ember" | "blush" | "mint" | "lavender" | "christmas";
+            /**
+             * @description One of en, es, fr, de, zh-Hans, pt, ar; null clears it
+             * @enum {string|null}
+             */
+            language?: "en" | "es" | "fr" | "de" | "zh-Hans" | "pt" | "ar" | null;
         };
         PlaceInputDto: {
             /** @example ChIJ5yQ8wTH1OxARr3hxS7yEvr0 */
@@ -2360,9 +2390,22 @@ export interface components {
             countryCode: string;
             lat: number | null;
             lng: number | null;
+            /**
+             * @description The place's state or region, spelled as in GET /v1/reference/countries/{code}/subdivisions
+             * @example Lagos
+             */
+            region: string | null;
+            /**
+             * @description IANA time zone at the place
+             * @example Africa/Lagos
+             */
+            timeZone: string | null;
         };
         PlaceDetailsResponse: {
             place: components["schemas"]["PlaceResponse"];
+        };
+        LocateResponse: {
+            place: components["schemas"]["PlaceResponse"] | null;
         };
         OverviewEventsDto: {
             total: number;
@@ -4817,6 +4860,36 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PlaceDetailsResponse"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PlacesController_locate_v1: {
+        parameters: {
+            query: {
+                q: string;
+                country: string;
+                region?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LocateResponse"];
                 };
             };
             /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
