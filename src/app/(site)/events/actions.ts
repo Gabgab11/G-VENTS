@@ -11,7 +11,8 @@ import { sellReasonKey } from "@/lib/payment-text";
 import type { components } from "@/lib/api/schema";
 import { createEventBody, hasPaidPrice, type PaidSetup } from "./create-event-input";
 
-export type CreateEventState = { error?: string } | undefined;
+/** `created`: the event exists and the browser still has to send its image (`image_pending`). */
+export type CreateEventState = { error?: string; created?: { id: string; next: string } } | undefined;
 
 /** Message ids (createEvent.save.*) for the image problems. */
 const FLYER_PROBLEMS = {
@@ -25,6 +26,10 @@ const FLYER_PROBLEMS = {
 // it can, checks every event rule, and answers with a message the form can show.
 // An event image, if chosen, is checked first and uploaded once the event exists (U5). If only the
 // image fails, the event is kept and the host lands on its settings to try the image again.
+// With JavaScript the form keeps the image out of this Server Action (Cloudflare's WAF blocks some
+// images sent to Server Actions, src/lib/same-origin.ts): it sends `image_pending`, gets
+// `created` back, and posts the image to /api/events/{id}/flyer itself. Without JavaScript the
+// image still comes here.
 export async function createEvent(_prev: CreateEventState, formData: FormData): Promise<CreateEventState> {
   await requireUser("/events/new");
   const t = await getTranslations();
@@ -47,6 +52,8 @@ export async function createEvent(_prev: CreateEventState, formData: FormData): 
     return { error: problemMessage(error, await getTranslations("errors"), await getLocale(), t("createEvent.save.failed")) };
   }
 
+  const next = body.publish ? `/e/${created.slug}` : "/dashboard";
+  if (!flyer && formData.get("image_pending") === "1") return { created: { id: created.id, next } };
   if (flyer) {
     try {
       await uploadFlyer(created.id, flyer.file, flyer.contentType);
@@ -56,7 +63,7 @@ export async function createEvent(_prev: CreateEventState, formData: FormData): 
       redirect(`/dashboard/${created.id}?tab=settings&err=flyer_after_create`);
     }
   }
-  redirect(body.publish ? `/e/${created.slug}` : "/dashboard");
+  redirect(next);
 }
 
 export type FeePreview = components["schemas"]["HostFeePreviewDto"];

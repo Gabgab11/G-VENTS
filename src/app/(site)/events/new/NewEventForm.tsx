@@ -1,6 +1,7 @@
 "use client";
 
 import { startTransition, useActionState, useEffect, useRef, useState, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { MAPS_URL_HINT_KEY, isGoogleMapsUrl } from "@/lib/maps-url";
 import { createEvent, type CreateEventState } from "@/app/(site)/events/actions";
@@ -53,6 +54,28 @@ export default function NewEventForm({
   const [image, setImage] = useState<{ url: string; name: string } | null>(null);
   const [imageError, setImageError] = useState("");
   const imageInput = useRef<HTMLInputElement>(null);
+  // The chosen image, held back from the Server Action and sent to the flyer route once the event
+  // exists (Cloudflare's WAF blocks some images sent to Server Actions, src/lib/same-origin.ts).
+  const pendingImage = useRef<File | null>(null);
+  const [sendingImage, setSendingImage] = useState(false);
+  const router = useRouter();
+  useEffect(() => {
+    const created = state?.created;
+    if (!created) return;
+    const file = pendingImage.current;
+    pendingImage.current = null;
+    setSendingImage(true);
+    void (async () => {
+      let ok = !file;
+      if (file) {
+        const body = new FormData();
+        body.set("flyer", file);
+        const res = await fetch(`/api/events/${created.id}/flyer`, { method: "POST", body, headers: { Accept: "application/json" } }).catch(() => null);
+        ok = !!res?.ok;
+      }
+      router.push(ok ? created.next : `/dashboard/${created.id}?tab=settings&err=flyer_after_create`);
+    })();
+  }, [state, router]);
   useEffect(() => () => { if (image) URL.revokeObjectURL(image.url); }, [image]);
 
   function chooseImage(file: File | undefined) {
@@ -98,6 +121,14 @@ export default function NewEventForm({
     if (timesMissing || badMaps) return;
     const submitter = (e.nativeEvent as SubmitEvent).submitter;
     const data = new FormData(form, submitter instanceof HTMLButtonElement ? submitter : null);
+    const file = data.get("flyer");
+    data.delete("flyer");
+    if (file instanceof File && file.size > 0) {
+      pendingImage.current = file;
+      data.set("image_pending", "1");
+    } else {
+      pendingImage.current = null;
+    }
     startTransition(() => formAction(data));
   }
 
@@ -291,9 +322,9 @@ export default function NewEventForm({
           {state?.error && <p className="error" role="alert">{state.error}</p>}
 
           <div className="publish-bar">
-            <button className="btn-ghost" type="submit" name="intent" value="draft" disabled={pending}>{t("form.saveDraft")}</button>
-            <button className="btn-grad" type="submit" name="intent" value="publish" disabled={pending}>
-              {pending ? t("form.creating") : t("form.create")}
+            <button className="btn-ghost" type="submit" name="intent" value="draft" disabled={pending || sendingImage}>{t("form.saveDraft")}</button>
+            <button className="btn-grad" type="submit" name="intent" value="publish" disabled={pending || sendingImage}>
+              {pending || sendingImage ? t("form.creating") : t("form.create")}
             </button>
           </div>
         </section>
