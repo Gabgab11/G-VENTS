@@ -46,7 +46,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
   return (
     <main className="wrap page wide stage-content">
       <ThemeStage theme={theme} />
-      <SiteHeader actions={<><AccountLink className="site-account" /><SignOutButton /></>} />
+      <SiteHeader actions={<><AccountLink className="site-account" withSignOut /><SignOutButton className="sign-out-wide" /></>} />
       <div className="spread">
         <div>
           <div className="eyebrow">{t("list.eyebrow")}</div>

@@ -636,10 +636,13 @@ input, select, textarea, button { max-width: 100%; min-width: 0; }
 .account-menu-list { position: absolute; inset-inline-end: 0; top: calc(100% + 8px); z-index: 50; min-width: 240px; display: grid; padding: 6px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); box-shadow: 0 12px 32px rgb(0 0 0 / 0.28); }
 .account-menu-list a { color: var(--text); text-decoration: none; font-size: 14px; font-weight: 600; padding: 10px 12px; border-radius: 10px; white-space: nowrap; }
 .account-menu-list a:hover, .account-menu-list a:focus-visible { background: var(--bg); }
+.account-menu-list .account-menu-item { display: block; width: 100%; text-align: start; background: none; border: 0; cursor: pointer; color: var(--text); font: inherit; font-size: 14px; font-weight: 600; padding: 10px 12px; border-radius: 10px; white-space: nowrap; }
+.account-menu-list .account-menu-item:hover, .account-menu-list .account-menu-item:focus-visible { background: var(--bg); }
 .account-menu-list .account-menu-phone { display: none; }
 @media (max-width: 640px) {
   .account-admin, .account-dash { display: none; }
   .account-menu-list .account-menu-phone { display: block; }
+  .sign-out-wide { display: none; }
 }
 @media (max-width: 720px) {
   .site-top { flex-wrap: wrap; }
