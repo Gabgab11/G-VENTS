@@ -164,7 +164,7 @@
     "paid": "المدفوع",
     "paidAt": "دُفع في {time}",
     "refunds": "المبالغ المستردة",
-    "refundLine": "{amount} · {count, plural, zero {لا تذاكر} one {تذكرة واحدة} two {تذكرتان} few {# تذاكر} many {# تذكرة} other {# تذكرة}}",
+    "refundLine": "{amount} · {count, plural, zero {لا تذاكر} one {تذكرة واحدة} two {تذكرتان} few {{count, number, ::group-off} تذاكر} many {{count, number, ::group-off} تذكرة} other {{count, number, ::group-off} تذكرة}}",
     "refundCancelled": "أُلغيت الفعالية",
     "refundLate": "دُفع بعد انتهاء الحجز",
     "refundsNote": "تُعاد المبالغ المستردة إلى البطاقة أو الحساب الذي دفعت منه. تستغرق المصارف عادةً من 5 إلى 10 أيام عمل.",

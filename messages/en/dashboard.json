@@ -24,7 +24,7 @@
     "private": "Private"
   },
   "eventRow": {
-    "registered": "{count, plural, other {# registered}}",
+    "registered": "{count, plural, other {{count, number, ::group-off} registered}}",
     "visibilityOf": "Visibility of {title}",
     "showCount": "Show attendee count",
     "publish": "Publish",
@@ -98,7 +98,7 @@
     "none": "No paid tickets sold yet.",
     "ticketsSold": "Paid tickets sold",
     "received": "You received",
-    "guestsPaid": "Guests paid ({count, plural, one {# order} other {# orders}})",
+    "guestsPaid": "Guests paid ({count, plural, one {{count, number, ::group-off} order} other {{count, number, ::group-off} orders}})",
     "fees": "G-ventZ fees",
     "vat": "VAT on fees",
     "paystack": "Paystack charges",
@@ -106,12 +106,12 @@
     "refunded": "Refunded to guests",
     "owed": "You owe G-ventZ (refunds and chargebacks)",
     "minus": "− {amount}",
-    "refundsPending": "{count, plural, one {# refund is} other {# refunds are}} still being processed.",
-    "refundsFailed": "{count, plural, one {# refund} other {# refunds}} failed; G-ventZ has been alerted and will follow up.",
+    "refundsPending": "{count, plural, one {{count, number, ::group-off} refund is} other {{count, number, ::group-off} refunds are}} still being processed.",
+    "refundsFailed": "{count, plural, one {{count, number, ::group-off} refund} other {{count, number, ::group-off} refunds}} failed; G-ventZ has been alerted and will follow up.",
     "shareNote": "Your share of each sale goes to your payout account through Paystack. When you refund a ticket, the guest gets their share back; G-ventZ's fee and Paystack's charge aren't returned, and your share is taken from your next sales."
   },
   "disputes": {
-    "title": "{count, plural, one {A guest's bank disputed a payment} other {# payments are disputed}}",
+    "title": "{count, plural, one {A guest's bank disputed a payment} other {{count, number, ::group-off} payments are disputed}}",
     "body": "The tickets still work while it's looked into. We've emailed you: reply with proof the guest got what they paid for (their ticket and check-in, messages with them, the event details). If the dispute is lost, those tickets stop working and the amount is taken from your next sales."
   },
   "guests": {
@@ -129,7 +129,7 @@
     "recentlyCheckedIn": "Recently checked in",
     "show": "Show",
     "requests": "Requests waiting for you",
-    "tickets": "{count, plural, one {# ticket} other {# tickets}}",
+    "tickets": "{count, plural, one {{count, number, ::group-off} ticket} other {{count, number, ::group-off} tickets}}",
     "approve": "Approve",
     "messagePlaceholder": "Message (optional)",
     "messageTo": "Message to {name}",
@@ -212,7 +212,7 @@
     "saveDraft": "Save draft",
     "title": "Announcements",
     "none": "None yet.",
-    "send": "Send to {count, plural, one {# guest} other {# guests}}",
+    "send": "Send to {count, plural, one {{count, number, ::group-off} guest} other {{count, number, ::group-off} guests}}",
     "draft": "Draft",
     "sent": "Sent",
     "sending": "Sending",
@@ -249,7 +249,7 @@
   },
   "delete": {
     "warning": "Deleting removes the event, its page, every ticket and registration, its questions and its flyer. This can't be undone.",
-    "guests": "{count, plural, one {# guest is} other {# guests are}} registered. Their tickets and ticket links will stop working, and they won't be told automatically. If guests still need to know, cancel the event instead.",
+    "guests": "{count, plural, one {{count, number, ::group-off} guest is} other {{count, number, ::group-off} guests are}} registered. Their tickets and ticket links will stop working, and they won't be told automatically. If guests still need to know, cancel the event instead.",
     "nobody": "Nobody has registered yet.",
     "typeToConfirm": "Type <b>{title}</b> to confirm",
     "deleting": "Deleting…",
@@ -312,7 +312,7 @@
     "metaTitle": "Scan tickets · G-ventZ",
     "back": "← Event",
     "title": "Scan tickets",
-    "deviceCount": "{count, plural, other {# checked in on this device}}",
+    "deviceCount": "{count, plural, other {{count, number, ::group-off} checked in on this device}}",
     "cameraPreview": "Camera preview",
     "cameraError": "The camera isn't available. Allow camera access in your browser settings, or type the code below.",
     "codePlaceholder": "Or type the ticket code",

@@ -164,7 +164,7 @@
     "paid": "Bezahlt",
     "paidAt": "Bezahlt am {time}",
     "refunds": "Erstattungen",
-    "refundLine": "{amount} · {count, plural, one {# Ticket} other {# Tickets}}",
+    "refundLine": "{amount} · {count, plural, one {{count, number, ::group-off} Ticket} other {{count, number, ::group-off} Tickets}}",
     "refundCancelled": "Veranstaltung abgesagt",
     "refundLate": "nach Ablauf der Reservierung bezahlt",
     "refundsNote": "Erstattungen gehen an die Karte oder das Konto, mit dem Sie bezahlt haben. Banken brauchen dafür meist 5 bis 10 Werktage.",

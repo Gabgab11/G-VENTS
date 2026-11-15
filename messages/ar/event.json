@@ -7,7 +7,7 @@
     },
     "coverAlt": "ملصق {title}",
     "hostedBy": "يستضيفها",
-    "going": "{count, plural, zero {لا أحد سيحضر} one {شخص واحد سيحضر} two {شخصان سيحضران} few {# أشخاص سيحضرون} many {# شخصًا سيحضرون} other {# شخص سيحضرون}}",
+    "going": "{count, plural, zero {لا أحد سيحضر} one {شخص واحد سيحضر} two {شخصان سيحضران} few {{count, number, ::group-off} أشخاص سيحضرون} many {{count, number, ::group-off} شخصًا سيحضرون} other {{count, number, ::group-off} شخص سيحضرون}}",
     "privateEvent": "فعالية خاصة",
     "timeLine": "{range} · بتوقيت {zone}",
     "place": {
@@ -61,10 +61,10 @@
     "soldOut": "نفدت",
     "free": "مجانية",
     "howMany": "عدد تذاكر {name}",
-    "limit": "{count, plural, zero {لا تذاكر للشخص الواحد.} one {تذكرة واحدة كحد أقصى للشخص الواحد.} two {تذكرتان كحد أقصى للشخص الواحد.} few {حتى # تذاكر للشخص الواحد.} many {حتى # تذكرة للشخص الواحد.} other {حتى # تذكرة للشخص الواحد.}}",
+    "limit": "{count, plural, zero {لا تذاكر للشخص الواحد.} one {تذكرة واحدة كحد أقصى للشخص الواحد.} two {تذكرتان كحد أقصى للشخص الواحد.} few {حتى {count, number, ::group-off} تذاكر للشخص الواحد.} many {حتى {count, number, ::group-off} تذكرة للشخص الواحد.} other {حتى {count, number, ::group-off} تذكرة للشخص الواحد.}}",
     "pending": "جارٍ الحصول على تذاكرك...",
-    "request": "{count, plural, zero {اطلب التذاكر} one {اطلب تذكرة} two {اطلب تذكرتين} few {اطلب # تذاكر} many {اطلب # تذكرة} other {اطلب # تذكرة}}",
-    "get": "{count, plural, zero {احصل على التذاكر} one {احصل على التذكرة} two {احصل على تذكرتين} few {احصل على # تذاكر} many {احصل على # تذكرة} other {احصل على # تذكرة}}"
+    "request": "{count, plural, zero {اطلب التذاكر} one {اطلب تذكرة} two {اطلب تذكرتين} few {اطلب {count, number, ::group-off} تذاكر} many {اطلب {count, number, ::group-off} تذكرة} other {اطلب {count, number, ::group-off} تذكرة}}",
+    "get": "{count, plural, zero {احصل على التذاكر} one {احصل على التذكرة} two {احصل على تذكرتين} few {احصل على {count, number, ::group-off} تذاكر} many {احصل على {count, number, ::group-off} تذكرة} other {احصل على {count, number, ::group-off} تذكرة}}"
   },
   "paid": {
     "legend": "تذاكر مدفوعة",

@@ -7,7 +7,7 @@
     },
     "coverAlt": "Flyer for {title}",
     "hostedBy": "Hosted by",
-    "going": "{count, plural, one {# person going} other {# people going}}",
+    "going": "{count, plural, one {{count, number, ::group-off} person going} other {{count, number, ::group-off} people going}}",
     "privateEvent": "Private event",
     "timeLine": "{range} · {zone} time",
     "place": {
@@ -61,10 +61,10 @@
     "soldOut": "Sold out",
     "free": "Free",
     "howMany": "How many {name} tickets",
-    "limit": "Up to {count, plural, one {# ticket} other {# tickets}} per person.",
+    "limit": "Up to {count, plural, one {{count, number, ::group-off} ticket} other {{count, number, ::group-off} tickets}} per person.",
     "pending": "Getting your tickets...",
-    "request": "{count, plural, one {Request a ticket} other {Request # tickets}}",
-    "get": "{count, plural, one {Get ticket} other {Get # tickets}}"
+    "request": "{count, plural, one {Request a ticket} other {Request {count, number, ::group-off} tickets}}",
+    "get": "{count, plural, one {Get ticket} other {Get {count, number, ::group-off} tickets}}"
   },
   "paid": {
     "legend": "Paid tickets",

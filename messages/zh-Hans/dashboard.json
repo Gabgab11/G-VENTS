@@ -24,7 +24,7 @@
     "private": "私密"
   },
   "eventRow": {
-    "registered": "{count, plural, other {已报名 # 人}}",
+    "registered": "{count, plural, other {已报名 {count, number, ::group-off} 人}}",
     "visibilityOf": "{title} 的可见性",
     "showCount": "显示参加人数",
     "publish": "发布",
@@ -98,7 +98,7 @@
     "none": "尚未售出付费门票。",
     "ticketsSold": "已售付费门票",
     "received": "您已收到",
-    "guestsPaid": "来宾支付（{count, plural, other {# 笔订单}}）",
+    "guestsPaid": "来宾支付（{count, plural, other {{count, number, ::group-off} 笔订单}}）",
     "fees": "G-ventZ 费用",
     "vat": "费用增值税",
     "paystack": "Paystack 手续费",
@@ -106,12 +106,12 @@
     "refunded": "已退给来宾",
     "owed": "您欠 G-ventZ 的款项（退款和拒付）",
     "minus": "− {amount}",
-    "refundsPending": "{count, plural, other {# 笔退款仍在处理中。}}",
-    "refundsFailed": "{count, plural, other {# 笔退款失败}}；G-ventZ 已收到提醒并会跟进。",
+    "refundsPending": "{count, plural, other {{count, number, ::group-off} 笔退款仍在处理中。}}",
+    "refundsFailed": "{count, plural, other {{count, number, ::group-off} 笔退款失败}}；G-ventZ 已收到提醒并会跟进。",
     "shareNote": "您在每笔销售中的份额会通过 Paystack 转入您的收款账户。退款时，来宾会拿回您的份额；G-ventZ 的费用和 Paystack 的手续费不予退还，您的份额将从之后的销售中扣除。"
   },
   "disputes": {
-    "title": "{count, plural, other {# 笔付款被争议}}",
+    "title": "{count, plural, other {{count, number, ::group-off} 笔付款被争议}}",
     "body": "调查期间门票仍然有效。我们已给您发送邮件：请回复证明来宾已获得所付费的内容（门票和签到记录、与其的沟通、活动详情）。如果争议败诉，这些门票将失效，金额将从您之后的销售中扣除。"
   },
   "guests": {
@@ -129,7 +129,7 @@
     "recentlyCheckedIn": "最近签到",
     "show": "显示",
     "requests": "等待您处理的申请",
-    "tickets": "{count, plural, other {# 张门票}}",
+    "tickets": "{count, plural, other {{count, number, ::group-off} 张门票}}",
     "approve": "批准",
     "messagePlaceholder": "留言（可选）",
     "messageTo": "给 {name} 的留言",
@@ -212,7 +212,7 @@
     "saveDraft": "保存草稿",
     "title": "公告",
     "none": "暂无。",
-    "send": "{count, plural, other {发送给 # 位来宾}}",
+    "send": "{count, plural, other {发送给 {count, number, ::group-off} 位来宾}}",
     "draft": "草稿",
     "sent": "已发送",
     "sending": "发送中",
@@ -249,7 +249,7 @@
   },
   "delete": {
     "warning": "删除将移除活动、活动页面、所有门票和报名、问题以及海报。此操作无法撤销。",
-    "guests": "{count, plural, other {已有 # 位来宾报名}}。他们的门票和门票链接将失效，且不会自动通知他们。如果仍需告知来宾，请改为取消活动。",
+    "guests": "{count, plural, other {已有 {count, number, ::group-off} 位来宾报名}}。他们的门票和门票链接将失效，且不会自动通知他们。如果仍需告知来宾，请改为取消活动。",
     "nobody": "还没有人报名。",
     "typeToConfirm": "输入 <b>{title}</b> 以确认",
     "deleting": "正在删除…",
@@ -312,7 +312,7 @@
     "metaTitle": "扫描门票 · G-ventZ",
     "back": "← 活动",
     "title": "扫描门票",
-    "deviceCount": "{count, plural, other {本设备已签到 # 人}}",
+    "deviceCount": "{count, plural, other {本设备已签到 {count, number, ::group-off} 人}}",
     "cameraPreview": "相机预览",
     "cameraError": "相机不可用。请在浏览器设置中允许访问相机，或在下方输入票码。",
     "codePlaceholder": "或输入票码",

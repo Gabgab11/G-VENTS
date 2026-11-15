@@ -7,7 +7,7 @@
     },
     "coverAlt": "Affiche de {title}",
     "hostedBy": "Organisé par",
-    "going": "{count, plural, one {# personne y va} other {# personnes y vont}}",
+    "going": "{count, plural, one {{count, number, ::group-off} personne y va} other {{count, number, ::group-off} personnes y vont}}",
     "privateEvent": "Événement privé",
     "timeLine": "{range} · heure de {zone}",
     "place": {
@@ -61,10 +61,10 @@
     "soldOut": "Complet",
     "free": "Gratuit",
     "howMany": "Combien de billets {name}",
-    "limit": "Jusqu'à {count, plural, one {# billet} other {# billets}} par personne.",
+    "limit": "Jusqu'à {count, plural, one {{count, number, ::group-off} billet} other {{count, number, ::group-off} billets}} par personne.",
     "pending": "Obtention de vos billets...",
-    "request": "{count, plural, one {Demander un billet} other {Demander # billets}}",
-    "get": "{count, plural, one {Obtenir le billet} other {Obtenir # billets}}"
+    "request": "{count, plural, one {Demander un billet} other {Demander {count, number, ::group-off} billets}}",
+    "get": "{count, plural, one {Obtenir le billet} other {Obtenir {count, number, ::group-off} billets}}"
   },
   "paid": {
     "legend": "Billets payants",

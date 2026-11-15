@@ -164,7 +164,7 @@
     "paid": "已付款",
     "paidAt": "付款时间：{time}",
     "refunds": "退款",
-    "refundLine": "{amount} · {count, plural, other {# 张门票}}",
+    "refundLine": "{amount} · {count, plural, other {{count, number, ::group-off} 张门票}}",
     "refundCancelled": "活动已取消",
     "refundLate": "保留时间结束后付款",
     "refundsNote": "退款将退回您付款时使用的银行卡或账户。银行通常需要 5 到 10 个工作日。",

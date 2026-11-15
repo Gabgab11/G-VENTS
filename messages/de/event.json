@@ -7,7 +7,7 @@
     },
     "coverAlt": "Flyer für {title}",
     "hostedBy": "Veranstaltet von",
-    "going": "{count, plural, one {# Person nimmt teil} other {# Personen nehmen teil}}",
+    "going": "{count, plural, one {{count, number, ::group-off} Person nimmt teil} other {{count, number, ::group-off} Personen nehmen teil}}",
     "privateEvent": "Private Veranstaltung",
     "timeLine": "{range} · Ortszeit {zone}",
     "place": {
@@ -61,10 +61,10 @@
     "soldOut": "Ausverkauft",
     "free": "Kostenlos",
     "howMany": "Wie viele {name}-Tickets",
-    "limit": "Bis zu {count, plural, one {# Ticket} other {# Tickets}} pro Person.",
+    "limit": "Bis zu {count, plural, one {{count, number, ::group-off} Ticket} other {{count, number, ::group-off} Tickets}} pro Person.",
     "pending": "Ihre Tickets werden geholt...",
-    "request": "{count, plural, one {Ein Ticket anfragen} other {# Tickets anfragen}}",
-    "get": "{count, plural, one {Ticket holen} other {# Tickets holen}}"
+    "request": "{count, plural, one {Ein Ticket anfragen} other {{count, number, ::group-off} Tickets anfragen}}",
+    "get": "{count, plural, one {Ticket holen} other {{count, number, ::group-off} Tickets holen}}"
   },
   "paid": {
     "legend": "Kostenpflichtige Tickets",

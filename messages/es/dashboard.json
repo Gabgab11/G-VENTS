@@ -24,7 +24,7 @@
     "private": "Privado"
   },
   "eventRow": {
-    "registered": "{count, plural, one {# inscrito} other {# inscritos}}",
+    "registered": "{count, plural, one {{count, number, ::group-off} inscrito} other {{count, number, ::group-off} inscritos}}",
     "visibilityOf": "Visibilidad de {title}",
     "showCount": "Mostrar número de asistentes",
     "publish": "Publicar",
@@ -98,7 +98,7 @@
     "none": "Aún no se ha vendido ninguna entrada de pago.",
     "ticketsSold": "Entradas de pago vendidas",
     "received": "Usted recibió",
-    "guestsPaid": "Pagado por invitados ({count, plural, one {# pedido} other {# pedidos}})",
+    "guestsPaid": "Pagado por invitados ({count, plural, one {{count, number, ::group-off} pedido} other {{count, number, ::group-off} pedidos}})",
     "fees": "Comisiones de G-ventZ",
     "vat": "IVA sobre comisiones",
     "paystack": "Cargos de Paystack",
@@ -106,12 +106,12 @@
     "refunded": "Reembolsado a invitados",
     "owed": "Usted debe a G-ventZ (reembolsos y contracargos)",
     "minus": "− {amount}",
-    "refundsPending": "{count, plural, one {# reembolso sigue} other {# reembolsos siguen}} en proceso.",
-    "refundsFailed": "{count, plural, one {# reembolso falló} other {# reembolsos fallaron}}; G-ventZ ha sido avisado y hará el seguimiento.",
+    "refundsPending": "{count, plural, one {{count, number, ::group-off} reembolso sigue} other {{count, number, ::group-off} reembolsos siguen}} en proceso.",
+    "refundsFailed": "{count, plural, one {{count, number, ::group-off} reembolso falló} other {{count, number, ::group-off} reembolsos fallaron}}; G-ventZ ha sido avisado y hará el seguimiento.",
     "shareNote": "Su parte de cada venta va a su cuenta de cobro a través de Paystack. Cuando reembolsa una entrada, el invitado recupera su parte; la comisión de G-ventZ y el cargo de Paystack no se devuelven, y su parte se descuenta de sus próximas ventas."
   },
   "disputes": {
-    "title": "{count, plural, one {El banco de un invitado disputó un pago} other {# pagos están en disputa}}",
+    "title": "{count, plural, one {El banco de un invitado disputó un pago} other {{count, number, ::group-off} pagos están en disputa}}",
     "body": "Las entradas siguen funcionando mientras se revisa. Le hemos enviado un correo: responda con pruebas de que el invitado recibió lo que pagó (su entrada y su registro de acceso, los mensajes con él, los detalles del evento). Si se pierde la disputa, esas entradas dejan de funcionar y el importe se descuenta de sus próximas ventas."
   },
   "guests": {
@@ -129,7 +129,7 @@
     "recentlyCheckedIn": "Acceso registrado recientemente",
     "show": "Mostrar",
     "requests": "Solicitudes pendientes de su respuesta",
-    "tickets": "{count, plural, one {# entrada} other {# entradas}}",
+    "tickets": "{count, plural, one {{count, number, ::group-off} entrada} other {{count, number, ::group-off} entradas}}",
     "approve": "Aprobar",
     "messagePlaceholder": "Mensaje (opcional)",
     "messageTo": "Mensaje para {name}",
@@ -212,7 +212,7 @@
     "saveDraft": "Guardar borrador",
     "title": "Anuncios",
     "none": "Ninguno todavía.",
-    "send": "Enviar a {count, plural, one {# invitado} other {# invitados}}",
+    "send": "Enviar a {count, plural, one {{count, number, ::group-off} invitado} other {{count, number, ::group-off} invitados}}",
     "draft": "Borrador",
     "sent": "Enviado",
     "sending": "Enviando",
@@ -249,7 +249,7 @@
   },
   "delete": {
     "warning": "Al eliminarlo se borran el evento, su página, cada entrada e inscripción, sus preguntas y su cartel. Esto no se puede deshacer.",
-    "guests": "{count, plural, one {# invitado está inscrito} other {# invitados están inscritos}}. Sus entradas y enlaces de entrada dejarán de funcionar, y no se les avisará automáticamente. Si los invitados aún deben saberlo, cancele el evento en su lugar.",
+    "guests": "{count, plural, one {{count, number, ::group-off} invitado está inscrito} other {{count, number, ::group-off} invitados están inscritos}}. Sus entradas y enlaces de entrada dejarán de funcionar, y no se les avisará automáticamente. Si los invitados aún deben saberlo, cancele el evento en su lugar.",
     "nobody": "Nadie se ha inscrito todavía.",
     "typeToConfirm": "Escriba <b>{title}</b> para confirmar",
     "deleting": "Eliminando…",
@@ -312,7 +312,7 @@
     "metaTitle": "Escanear entradas · G-ventZ",
     "back": "← Evento",
     "title": "Escanear entradas",
-    "deviceCount": "{count, plural, one {# acceso registrado en este dispositivo} other {# accesos registrados en este dispositivo}}",
+    "deviceCount": "{count, plural, one {{count, number, ::group-off} acceso registrado en este dispositivo} other {{count, number, ::group-off} accesos registrados en este dispositivo}}",
     "cameraPreview": "Vista previa de la cámara",
     "cameraError": "La cámara no está disponible. Permita el acceso a la cámara en la configuración del navegador o escriba el código abajo.",
     "codePlaceholder": "O escriba el código de la entrada",

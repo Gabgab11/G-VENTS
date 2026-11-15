@@ -164,7 +164,7 @@
     "paid": "Pago",
     "paidAt": "Pago em {time}",
     "refunds": "Reembolsos",
-    "refundLine": "{amount} · {count, plural, one {# ingresso} other {# ingressos}}",
+    "refundLine": "{amount} · {count, plural, one {{count, number, ::group-off} ingresso} other {{count, number, ::group-off} ingressos}}",
     "refundCancelled": "evento cancelado",
     "refundLate": "pago após o fim da reserva",
     "refundsNote": "Os reembolsos voltam para o cartão ou a conta usados no pagamento. Os bancos costumam levar de 5 a 10 dias úteis.",

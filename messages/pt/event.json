@@ -7,7 +7,7 @@
     },
     "coverAlt": "Cartaz de {title}",
     "hostedBy": "Organizado por",
-    "going": "{count, plural, one {# pessoa vai} other {# pessoas vão}}",
+    "going": "{count, plural, one {{count, number, ::group-off} pessoa vai} other {{count, number, ::group-off} pessoas vão}}",
     "privateEvent": "Evento privado",
     "timeLine": "{range} · horário de {zone}",
     "place": {
@@ -61,10 +61,10 @@
     "soldOut": "Esgotado",
     "free": "Grátis",
     "howMany": "Quantos ingressos {name}",
-    "limit": "Até {count, plural, one {# ingresso} other {# ingressos}} por pessoa.",
+    "limit": "Até {count, plural, one {{count, number, ::group-off} ingresso} other {{count, number, ::group-off} ingressos}} por pessoa.",
     "pending": "Garantindo seus ingressos...",
-    "request": "{count, plural, one {Solicitar um ingresso} other {Solicitar # ingressos}}",
-    "get": "{count, plural, one {Garantir ingresso} other {Garantir # ingressos}}"
+    "request": "{count, plural, one {Solicitar um ingresso} other {Solicitar {count, number, ::group-off} ingressos}}",
+    "get": "{count, plural, one {Garantir ingresso} other {Garantir {count, number, ::group-off} ingressos}}"
   },
   "paid": {
     "legend": "Ingressos pagos",

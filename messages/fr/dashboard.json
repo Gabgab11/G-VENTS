@@ -24,7 +24,7 @@
     "private": "Privé"
   },
   "eventRow": {
-    "registered": "{count, plural, one {# inscrit} other {# inscrits}}",
+    "registered": "{count, plural, one {{count, number, ::group-off} inscrit} other {{count, number, ::group-off} inscrits}}",
     "visibilityOf": "Visibilité de {title}",
     "showCount": "Afficher le nombre de participants",
     "publish": "Publier",
@@ -98,7 +98,7 @@
     "none": "Aucun billet payant vendu pour l'instant.",
     "ticketsSold": "Billets payants vendus",
     "received": "Vous avez reçu",
-    "guestsPaid": "Payé par les invités ({count, plural, one {# commande} other {# commandes}})",
+    "guestsPaid": "Payé par les invités ({count, plural, one {{count, number, ::group-off} commande} other {{count, number, ::group-off} commandes}})",
     "fees": "Frais G-ventZ",
     "vat": "TVA sur les frais",
     "paystack": "Frais Paystack",
@@ -106,12 +106,12 @@
     "refunded": "Remboursé aux invités",
     "owed": "Vous devez à G-ventZ (remboursements et rétrofacturations)",
     "minus": "− {amount}",
-    "refundsPending": "{count, plural, one {# remboursement est} other {# remboursements sont}} encore en cours de traitement.",
-    "refundsFailed": "{count, plural, one {# remboursement a échoué} other {# remboursements ont échoué}} ; G-ventZ a été alerté et assurera le suivi.",
+    "refundsPending": "{count, plural, one {{count, number, ::group-off} remboursement est} other {{count, number, ::group-off} remboursements sont}} encore en cours de traitement.",
+    "refundsFailed": "{count, plural, one {{count, number, ::group-off} remboursement a échoué} other {{count, number, ::group-off} remboursements ont échoué}} ; G-ventZ a été alerté et assurera le suivi.",
     "shareNote": "Votre part de chaque vente est versée sur votre compte de versement via Paystack. Quand vous remboursez un billet, l'invité récupère votre part ; les frais de G-ventZ et de Paystack ne sont pas restitués, et votre part est déduite de vos prochaines ventes."
   },
   "disputes": {
-    "title": "{count, plural, one {La banque d'un invité a contesté un paiement} other {# paiements sont contestés}}",
+    "title": "{count, plural, one {La banque d'un invité a contesté un paiement} other {{count, number, ::group-off} paiements sont contestés}}",
     "body": "Les billets restent valables pendant l'examen. Nous vous avons envoyé un e-mail : répondez avec la preuve que l'invité a reçu ce qu'il a payé (son billet et son enregistrement, vos échanges, les détails de l'événement). Si la contestation est perdue, ces billets ne fonctionnent plus et le montant est déduit de vos prochaines ventes."
   },
   "guests": {
@@ -129,7 +129,7 @@
     "recentlyCheckedIn": "Enregistrés récemment",
     "show": "Afficher",
     "requests": "Demandes en attente de votre réponse",
-    "tickets": "{count, plural, one {# billet} other {# billets}}",
+    "tickets": "{count, plural, one {{count, number, ::group-off} billet} other {{count, number, ::group-off} billets}}",
     "approve": "Approuver",
     "messagePlaceholder": "Message (facultatif)",
     "messageTo": "Message à {name}",
@@ -212,7 +212,7 @@
     "saveDraft": "Enregistrer le brouillon",
     "title": "Annonces",
     "none": "Aucune pour l'instant.",
-    "send": "Envoyer à {count, plural, one {# invité} other {# invités}}",
+    "send": "Envoyer à {count, plural, one {{count, number, ::group-off} invité} other {{count, number, ::group-off} invités}}",
     "draft": "Brouillon",
     "sent": "Envoyée",
     "sending": "Envoi en cours",
@@ -249,7 +249,7 @@
   },
   "delete": {
     "warning": "La suppression retire l'événement, sa page, chaque billet et inscription, ses questions et son affiche. Cette action est irréversible.",
-    "guests": "{count, plural, one {# invité est inscrit} other {# invités sont inscrits}}. Leurs billets et liens de billets cesseront de fonctionner, et ils ne seront pas prévenus automatiquement. Si les invités doivent être informés, annulez plutôt l'événement.",
+    "guests": "{count, plural, one {{count, number, ::group-off} invité est inscrit} other {{count, number, ::group-off} invités sont inscrits}}. Leurs billets et liens de billets cesseront de fonctionner, et ils ne seront pas prévenus automatiquement. Si les invités doivent être informés, annulez plutôt l'événement.",
     "nobody": "Personne ne s'est encore inscrit.",
     "typeToConfirm": "Saisissez <b>{title}</b> pour confirmer",
     "deleting": "Suppression…",
@@ -312,7 +312,7 @@
     "metaTitle": "Scanner les billets · G-ventZ",
     "back": "← Événement",
     "title": "Scanner les billets",
-    "deviceCount": "{count, plural, one {# enregistré sur cet appareil} other {# enregistrés sur cet appareil}}",
+    "deviceCount": "{count, plural, one {{count, number, ::group-off} enregistré sur cet appareil} other {{count, number, ::group-off} enregistrés sur cet appareil}}",
     "cameraPreview": "Aperçu de la caméra",
     "cameraError": "La caméra n'est pas disponible. Autorisez l'accès à la caméra dans les réglages de votre navigateur, ou saisissez le code ci-dessous.",
     "codePlaceholder": "Ou saisissez le code du billet",

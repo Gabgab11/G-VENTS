@@ -164,7 +164,7 @@
     "paid": "Payé",
     "paidAt": "Payé le {time}",
     "refunds": "Remboursements",
-    "refundLine": "{amount} · {count, plural, one {# billet} other {# billets}}",
+    "refundLine": "{amount} · {count, plural, one {{count, number, ::group-off} billet} other {{count, number, ::group-off} billets}}",
     "refundCancelled": "événement annulé",
     "refundLate": "payé après la fin de la réservation",
     "refundsNote": "Les remboursements reviennent sur la carte ou le compte utilisé pour payer. Les banques mettent généralement 5 à 10 jours ouvrés.",

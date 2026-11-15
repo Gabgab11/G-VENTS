@@ -24,7 +24,7 @@
     "private": "خاصة"
   },
   "eventRow": {
-    "registered": "{count, plural, zero {لا مسجّلين} one {مسجّل واحد} two {مسجّلان} few {# مسجّلين} many {# مسجّلًا} other {# مسجّل}}",
+    "registered": "{count, plural, zero {لا مسجّلين} one {مسجّل واحد} two {مسجّلان} few {{count, number, ::group-off} مسجّلين} many {{count, number, ::group-off} مسجّلًا} other {{count, number, ::group-off} مسجّل}}",
     "visibilityOf": "ظهور {title}",
     "showCount": "إظهار عدد الحضور",
     "publish": "نشر",
@@ -98,7 +98,7 @@
     "none": "لم تُبَع أي تذاكر مدفوعة بعد.",
     "ticketsSold": "التذاكر المدفوعة المبيعة",
     "received": "ما استلمته",
-    "guestsPaid": "ما دفعه الضيوف ({count, plural, zero {لا طلبات} one {طلب واحد} two {طلبان} few {# طلبات} many {# طلبًا} other {# طلب}})",
+    "guestsPaid": "ما دفعه الضيوف ({count, plural, zero {لا طلبات} one {طلب واحد} two {طلبان} few {{count, number, ::group-off} طلبات} many {{count, number, ::group-off} طلبًا} other {{count, number, ::group-off} طلب}})",
     "fees": "رسوم G-ventZ",
     "vat": "ضريبة القيمة المضافة على الرسوم",
     "paystack": "رسوم Paystack",
@@ -106,12 +106,12 @@
     "refunded": "مُسترد للضيوف",
     "owed": "مستحق عليك لـ G-ventZ (استردادات واعتراضات على الدفع)",
     "minus": "− {amount}",
-    "refundsPending": "{count, plural, zero {لا استردادات قيد المعالجة.} one {استرداد واحد لا يزال قيد المعالجة.} two {استردادان لا يزالان قيد المعالجة.} few {# استردادات لا تزال قيد المعالجة.} many {# استردادًا لا يزال قيد المعالجة.} other {# استرداد لا يزال قيد المعالجة.}}",
-    "refundsFailed": "{count, plural, zero {لا استردادات فاشلة} one {فشل استرداد واحد} two {فشل استردادان} few {فشلت # استردادات} many {فشل # استردادًا} other {فشل # استرداد}}؛ تم تنبيه G-ventZ وسيتابع الأمر.",
+    "refundsPending": "{count, plural, zero {لا استردادات قيد المعالجة.} one {استرداد واحد لا يزال قيد المعالجة.} two {استردادان لا يزالان قيد المعالجة.} few {{count, number, ::group-off} استردادات لا تزال قيد المعالجة.} many {{count, number, ::group-off} استردادًا لا يزال قيد المعالجة.} other {{count, number, ::group-off} استرداد لا يزال قيد المعالجة.}}",
+    "refundsFailed": "{count, plural, zero {لا استردادات فاشلة} one {فشل استرداد واحد} two {فشل استردادان} few {فشلت {count, number, ::group-off} استردادات} many {فشل {count, number, ::group-off} استردادًا} other {فشل {count, number, ::group-off} استرداد}}؛ تم تنبيه G-ventZ وسيتابع الأمر.",
     "shareNote": "تذهب حصتك من كل عملية بيع إلى حساب الدفعات الخاص بك عبر Paystack. عندما تسترد ثمن تذكرة، يستعيد الضيف حصتك؛ ولا تُعاد رسوم G-ventZ ولا رسوم Paystack، وتُخصم حصتك من مبيعاتك التالية."
   },
   "disputes": {
-    "title": "{count, plural, zero {لا مدفوعات معترض عليها} one {اعترض بنك أحد الضيوف على دفعة} two {دفعتان معترض عليهما} few {# دفعات معترض عليها} many {# دفعة معترض عليها} other {# دفعة معترض عليها}}",
+    "title": "{count, plural, zero {لا مدفوعات معترض عليها} one {اعترض بنك أحد الضيوف على دفعة} two {دفعتان معترض عليهما} few {{count, number, ::group-off} دفعات معترض عليها} many {{count, number, ::group-off} دفعة معترض عليها} other {{count, number, ::group-off} دفعة معترض عليها}}",
     "body": "تظل التذاكر صالحة أثناء التحقق. أرسلنا إليك بريدًا إلكترونيًا: ردّ بما يثبت أن الضيف حصل على ما دفع مقابله (تذكرته وتسجيل حضوره، والرسائل معه، وتفاصيل الفعالية). إذا خُسر الاعتراض، تتوقف هذه التذاكر عن العمل ويُخصم المبلغ من مبيعاتك التالية."
   },
   "guests": {
@@ -129,7 +129,7 @@
     "recentlyCheckedIn": "سجّلوا الحضور مؤخرًا",
     "show": "عرض",
     "requests": "طلبات بانتظارك",
-    "tickets": "{count, plural, zero {لا تذاكر} one {تذكرة واحدة} two {تذكرتان} few {# تذاكر} many {# تذكرة} other {# تذكرة}}",
+    "tickets": "{count, plural, zero {لا تذاكر} one {تذكرة واحدة} two {تذكرتان} few {{count, number, ::group-off} تذاكر} many {{count, number, ::group-off} تذكرة} other {{count, number, ::group-off} تذكرة}}",
     "approve": "موافقة",
     "messagePlaceholder": "رسالة (اختيارية)",
     "messageTo": "رسالة إلى {name}",
@@ -212,7 +212,7 @@
     "saveDraft": "حفظ المسودة",
     "title": "الإعلانات",
     "none": "لا شيء بعد.",
-    "send": "{count, plural, zero {إرسال إلى لا أحد} one {إرسال إلى ضيف واحد} two {إرسال إلى ضيفين} few {إرسال إلى # ضيوف} many {إرسال إلى # ضيفًا} other {إرسال إلى # ضيف}}",
+    "send": "{count, plural, zero {إرسال إلى لا أحد} one {إرسال إلى ضيف واحد} two {إرسال إلى ضيفين} few {إرسال إلى {count, number, ::group-off} ضيوف} many {إرسال إلى {count, number, ::group-off} ضيفًا} other {إرسال إلى {count, number, ::group-off} ضيف}}",
     "draft": "مسودة",
     "sent": "أُرسل",
     "sending": "جارٍ الإرسال",
@@ -249,7 +249,7 @@
   },
   "delete": {
     "warning": "يؤدي الحذف إلى إزالة الفعالية وصفحتها وكل تذكرة وتسجيل وأسئلتها وملصقها. لا يمكن التراجع عن ذلك.",
-    "guests": "{count, plural, zero {لا ضيوف مسجّلين} one {ضيف واحد مسجّل} two {ضيفان مسجّلان} few {# ضيوف مسجّلين} many {# ضيفًا مسجّلًا} other {# ضيف مسجّل}}. ستتوقف تذاكرهم وروابط تذاكرهم عن العمل، ولن يتم إبلاغهم تلقائيًا. إذا كان الضيوف لا يزالون بحاجة إلى المعرفة، فألغِ الفعالية بدلًا من ذلك.",
+    "guests": "{count, plural, zero {لا ضيوف مسجّلين} one {ضيف واحد مسجّل} two {ضيفان مسجّلان} few {{count, number, ::group-off} ضيوف مسجّلين} many {{count, number, ::group-off} ضيفًا مسجّلًا} other {{count, number, ::group-off} ضيف مسجّل}}. ستتوقف تذاكرهم وروابط تذاكرهم عن العمل، ولن يتم إبلاغهم تلقائيًا. إذا كان الضيوف لا يزالون بحاجة إلى المعرفة، فألغِ الفعالية بدلًا من ذلك.",
     "nobody": "لم يسجّل أحد بعد.",
     "typeToConfirm": "اكتب <b>{title}</b> للتأكيد",
     "deleting": "جارٍ الحذف…",
@@ -312,7 +312,7 @@
     "metaTitle": "مسح التذاكر · G-ventZ",
     "back": "→ الفعالية",
     "title": "مسح التذاكر",
-    "deviceCount": "{count, plural, zero {لم يُسجَّل حضور أحد على هذا الجهاز} one {تسجيل حضور واحد على هذا الجهاز} two {تسجيلا حضور على هذا الجهاز} few {# تسجيلات حضور على هذا الجهاز} many {# تسجيل حضور على هذا الجهاز} other {# تسجيل حضور على هذا الجهاز}}",
+    "deviceCount": "{count, plural, zero {لم يُسجَّل حضور أحد على هذا الجهاز} one {تسجيل حضور واحد على هذا الجهاز} two {تسجيلا حضور على هذا الجهاز} few {{count, number, ::group-off} تسجيلات حضور على هذا الجهاز} many {{count, number, ::group-off} تسجيل حضور على هذا الجهاز} other {{count, number, ::group-off} تسجيل حضور على هذا الجهاز}}",
     "cameraPreview": "معاينة الكاميرا",
     "cameraError": "الكاميرا غير متاحة. اسمح بالوصول إلى الكاميرا في إعدادات المتصفح، أو اكتب الرمز أدناه.",
     "codePlaceholder": "أو اكتب رمز التذكرة",

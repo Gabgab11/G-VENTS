@@ -4,21 +4,60 @@
       "title": "Your ticket · G-ventZ"
     },
     "status": {
-      "eventCancelled": { "title": "This event has been cancelled", "body": "The host has cancelled this event, so this ticket can't be used." },
-      "pending": { "title": "Waiting for the host", "body": "The host approves each guest. Your QR code appears here once you're confirmed." },
-      "waitlisted": { "title": "You're on the waiting list", "body": "The event is full right now. If a place opens, this page turns into your ticket." },
-      "declined": { "title": "The host couldn't accept this request", "body": "This ticket can't be used to enter the event." },
-      "cancelled": { "title": "This ticket was cancelled", "body": "It can no longer be used to enter the event." },
-      "refunded": { "title": "This ticket was refunded", "body": "It can no longer be used to enter the event." }
+      "eventCancelled": {
+        "title": "This event has been cancelled",
+        "body": "The host has cancelled this event, so this ticket can't be used."
+      },
+      "pending": {
+        "title": "Waiting for the host",
+        "body": "The host approves each guest. Your QR code appears here once you're confirmed."
+      },
+      "waitlisted": {
+        "title": "You're on the waiting list",
+        "body": "The event is full right now. If a place opens, this page turns into your ticket."
+      },
+      "declined": {
+        "title": "The host couldn't accept this request",
+        "body": "This ticket can't be used to enter the event."
+      },
+      "cancelled": {
+        "title": "This ticket was cancelled",
+        "body": "It can no longer be used to enter the event."
+      },
+      "refunded": {
+        "title": "This ticket was refunded",
+        "body": "It can no longer be used to enter the event."
+      }
     },
     "checkIn": {
-      "checkedIn": { "title": "Checked in", "body": "This guest is in. Enjoy the event!" },
-      "alreadyUsed": { "title": "Already checked in", "body": "Don't let this ticket in twice." },
-      "notConfirmed": { "title": "Not confirmed yet", "body": "The host hasn't approved this ticket." },
-      "waitlisted": { "title": "On the waiting list", "body": "This ticket hasn't got a place yet." },
-      "cancelled": { "title": "Not valid", "body": "This ticket was cancelled." },
-      "refunded": { "title": "Not valid", "body": "This ticket was refunded." },
-      "failed": { "title": "Couldn't check in", "body": "Refresh the page and try again." }
+      "checkedIn": {
+        "title": "Checked in",
+        "body": "This guest is in. Enjoy the event!"
+      },
+      "alreadyUsed": {
+        "title": "Already checked in",
+        "body": "Don't let this ticket in twice."
+      },
+      "notConfirmed": {
+        "title": "Not confirmed yet",
+        "body": "The host hasn't approved this ticket."
+      },
+      "waitlisted": {
+        "title": "On the waiting list",
+        "body": "This ticket hasn't got a place yet."
+      },
+      "cancelled": {
+        "title": "Not valid",
+        "body": "This ticket was cancelled."
+      },
+      "refunded": {
+        "title": "Not valid",
+        "body": "This ticket was refunded."
+      },
+      "failed": {
+        "title": "Couldn't check in",
+        "body": "Refresh the page and try again."
+      }
     },
     "ticketFor": "Ticket for {title}",
     "admitOne": "Admit one",
@@ -79,14 +118,38 @@
   },
   "payment": {
     "status": {
-      "awaitingPayment": { "title": "Waiting for your payment", "body": "If you've just paid, this page updates by itself in a few seconds. Don't pay twice." },
-      "completed": { "title": "Paid", "body": "Your payment went through and your tickets are below. We've emailed them with your receipt." },
-      "expired": { "title": "Your hold ran out", "body": "We didn't get your payment within 10 minutes, so the tickets went back on sale. If money left your account, it's returned automatically." },
-      "failed": { "title": "Payment didn't go through", "body": "Paystack couldn't take the payment. Nothing was charged." },
-      "refunded": { "title": "Refunded", "body": "This order was refunded. The tickets no longer work." },
-      "partiallyRefunded": { "title": "Partly refunded", "body": "Some tickets in this order were refunded; the others still work." },
-      "disputed": { "title": "Payment disputed", "body": "Your bank told us this payment is disputed. Your tickets still work while it's looked into." },
-      "waitlisted": { "title": "You're on the waiting list", "body": "We'll email you if a place frees up. You'll then have 24 hours to pay." }
+      "awaitingPayment": {
+        "title": "Waiting for your payment",
+        "body": "If you've just paid, this page updates by itself in a few seconds. Don't pay twice."
+      },
+      "completed": {
+        "title": "Paid",
+        "body": "Your payment went through and your tickets are below. We've emailed them with your receipt."
+      },
+      "expired": {
+        "title": "Your hold ran out",
+        "body": "We didn't get your payment within 10 minutes, so the tickets went back on sale. If money left your account, it's returned automatically."
+      },
+      "failed": {
+        "title": "Payment didn't go through",
+        "body": "Paystack couldn't take the payment. Nothing was charged."
+      },
+      "refunded": {
+        "title": "Refunded",
+        "body": "This order was refunded. The tickets no longer work."
+      },
+      "partiallyRefunded": {
+        "title": "Partly refunded",
+        "body": "Some tickets in this order were refunded; the others still work."
+      },
+      "disputed": {
+        "title": "Payment disputed",
+        "body": "Your bank told us this payment is disputed. Your tickets still work while it's looked into."
+      },
+      "waitlisted": {
+        "title": "You're on the waiting list",
+        "body": "We'll email you if a place frees up. You'll then have 24 hours to pay."
+      }
     },
     "offerTitle": "A place is yours",
     "offerBody": "Pay before {time} to get your tickets; after that the place goes to the next person.",
@@ -101,7 +164,7 @@
     "paid": "Paid",
     "paidAt": "Paid {time}",
     "refunds": "Refunds",
-    "refundLine": "{amount} · {count, plural, one {# ticket} other {# tickets}}",
+    "refundLine": "{amount} · {count, plural, one {{count, number, ::group-off} ticket} other {{count, number, ::group-off} tickets}}",
     "refundCancelled": "event cancelled",
     "refundLate": "paid after the hold",
     "refundsNote": "Refunds go back to the card or account you paid with. Banks usually take 5 to 10 working days.",

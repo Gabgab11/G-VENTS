@@ -24,7 +24,7 @@
     "private": "Privat"
   },
   "eventRow": {
-    "registered": "{count, plural, one {# angemeldet} other {# angemeldet}}",
+    "registered": "{count, plural, one {{count, number, ::group-off} angemeldet} other {{count, number, ::group-off} angemeldet}}",
     "visibilityOf": "Sichtbarkeit von {title}",
     "showCount": "Teilnehmerzahl anzeigen",
     "publish": "Veröffentlichen",
@@ -98,7 +98,7 @@
     "none": "Noch keine kostenpflichtigen Tickets verkauft.",
     "ticketsSold": "Verkaufte kostenpflichtige Tickets",
     "received": "Sie haben erhalten",
-    "guestsPaid": "Von Gästen bezahlt ({count, plural, one {# Bestellung} other {# Bestellungen}})",
+    "guestsPaid": "Von Gästen bezahlt ({count, plural, one {{count, number, ::group-off} Bestellung} other {{count, number, ::group-off} Bestellungen}})",
     "fees": "G-ventZ-Gebühren",
     "vat": "MwSt. auf Gebühren",
     "paystack": "Paystack-Gebühren",
@@ -106,12 +106,12 @@
     "refunded": "An Gäste erstattet",
     "owed": "Sie schulden G-ventZ (Erstattungen und Rückbuchungen)",
     "minus": "− {amount}",
-    "refundsPending": "{count, plural, one {# Erstattung wird} other {# Erstattungen werden}} noch bearbeitet.",
-    "refundsFailed": "{count, plural, one {# Erstattung ist} other {# Erstattungen sind}} fehlgeschlagen; G-ventZ wurde benachrichtigt und kümmert sich darum.",
+    "refundsPending": "{count, plural, one {{count, number, ::group-off} Erstattung wird} other {{count, number, ::group-off} Erstattungen werden}} noch bearbeitet.",
+    "refundsFailed": "{count, plural, one {{count, number, ::group-off} Erstattung ist} other {{count, number, ::group-off} Erstattungen sind}} fehlgeschlagen; G-ventZ wurde benachrichtigt und kümmert sich darum.",
     "shareNote": "Ihr Anteil an jedem Verkauf geht über Paystack auf Ihr Auszahlungskonto. Wenn Sie ein Ticket erstatten, erhält der Gast Ihren Anteil zurück; die Gebühr von G-ventZ und die Gebühr von Paystack werden nicht erstattet, und Ihr Anteil wird von Ihren nächsten Verkäufen abgezogen."
   },
   "disputes": {
-    "title": "{count, plural, one {Die Bank eines Gastes hat eine Zahlung angefochten} other {# Zahlungen werden angefochten}}",
+    "title": "{count, plural, one {Die Bank eines Gastes hat eine Zahlung angefochten} other {{count, number, ::group-off} Zahlungen werden angefochten}}",
     "body": "Die Tickets bleiben gültig, während der Fall geprüft wird. Wir haben Ihnen eine E-Mail geschickt: Antworten Sie mit Nachweisen, dass der Gast erhalten hat, wofür er bezahlt hat (sein Ticket und Check-in, Nachrichten mit ihm, die Event-Details). Geht die Anfechtung verloren, werden diese Tickets ungültig und der Betrag wird von Ihren nächsten Verkäufen abgezogen."
   },
   "guests": {
@@ -129,7 +129,7 @@
     "recentlyCheckedIn": "Zuletzt eingecheckt",
     "show": "Anzeigen",
     "requests": "Anfragen, die auf Sie warten",
-    "tickets": "{count, plural, one {# Ticket} other {# Tickets}}",
+    "tickets": "{count, plural, one {{count, number, ::group-off} Ticket} other {{count, number, ::group-off} Tickets}}",
     "approve": "Annehmen",
     "messagePlaceholder": "Nachricht (optional)",
     "messageTo": "Nachricht an {name}",
@@ -212,7 +212,7 @@
     "saveDraft": "Entwurf speichern",
     "title": "Ankündigungen",
     "none": "Noch keine.",
-    "send": "An {count, plural, one {# Gast} other {# Gäste}} senden",
+    "send": "An {count, plural, one {{count, number, ::group-off} Gast} other {{count, number, ::group-off} Gäste}} senden",
     "draft": "Entwurf",
     "sent": "Gesendet",
     "sending": "Wird gesendet",
@@ -249,7 +249,7 @@
   },
   "delete": {
     "warning": "Beim Löschen werden das Event, seine Seite, jedes Ticket und jede Anmeldung, seine Fragen und sein Flyer entfernt. Das kann nicht rückgängig gemacht werden.",
-    "guests": "{count, plural, one {# Gast ist} other {# Gäste sind}} angemeldet. Ihre Tickets und Ticket-Links werden ungültig, und sie werden nicht automatisch benachrichtigt. Wenn Gäste es noch erfahren müssen, sagen Sie das Event stattdessen ab.",
+    "guests": "{count, plural, one {{count, number, ::group-off} Gast ist} other {{count, number, ::group-off} Gäste sind}} angemeldet. Ihre Tickets und Ticket-Links werden ungültig, und sie werden nicht automatisch benachrichtigt. Wenn Gäste es noch erfahren müssen, sagen Sie das Event stattdessen ab.",
     "nobody": "Es hat sich noch niemand angemeldet.",
     "typeToConfirm": "Geben Sie <b>{title}</b> zur Bestätigung ein",
     "deleting": "Wird gelöscht…",
@@ -312,7 +312,7 @@
     "metaTitle": "Tickets scannen · G-ventZ",
     "back": "← Event",
     "title": "Tickets scannen",
-    "deviceCount": "{count, plural, one {# auf diesem Gerät eingecheckt} other {# auf diesem Gerät eingecheckt}}",
+    "deviceCount": "{count, plural, one {{count, number, ::group-off} auf diesem Gerät eingecheckt} other {{count, number, ::group-off} auf diesem Gerät eingecheckt}}",
     "cameraPreview": "Kameravorschau",
     "cameraError": "Die Kamera ist nicht verfügbar. Erlauben Sie den Kamerazugriff in Ihren Browsereinstellungen oder geben Sie den Code unten ein.",
     "codePlaceholder": "Oder Ticketcode eingeben",
