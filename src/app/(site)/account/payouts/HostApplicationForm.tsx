@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useActionState, useState } from "react";
+import { startTransition, useActionState, useState, type FormEvent } from "react";
 import { useFormat } from "@/i18n/format-hooks";
 import { PAYOUT_COUNTRIES, isPayoutCountry, type PayoutCountry } from "@/lib/payment-text";
 import { applyToSell, changePayout, type FormState } from "./actions";
@@ -17,9 +17,38 @@ export function HostApplicationForm({ countries, defaults }: { countries: Payout
   const [state, action, pending] = useActionState<FormState, FormData>(applyToSell, undefined);
   const [country, setCountry] = useState<PayoutCountry | null>(countries.length === 1 ? countries[0]! : null);
   const [docError, setDocError] = useState("");
+  const tAccount = useTranslations("account");
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState("");
+
+  // The document goes to a route handler first and only its path to the Server Action: Cloudflare's
+  // WAF blocks some files sent to Server Actions (src/lib/same-origin.ts). `action` stays for
+  // submits before JavaScript loads.
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (docError) return;
+    setUploadError("");
+    const data = new FormData(e.currentTarget);
+    const file = data.get("document");
+    data.delete("document");
+    if (file instanceof File && file.size > 0) {
+      setUploading(true);
+      const body = new FormData();
+      body.set("document", file);
+      const res = await fetch("/api/me/host-application/document", { method: "POST", body, headers: { Accept: "application/json" } }).catch(() => null);
+      const reply = (await res?.json().catch(() => null)) as { path?: string; error?: string } | null;
+      setUploading(false);
+      if (!res?.ok || !reply?.path) {
+        setUploadError(tAccount(reply?.error ?? "payouts.errors.uploadFailed"));
+        return;
+      }
+      data.set("document_path", reply.path);
+    }
+    startTransition(() => action(data));
+  }
 
   return (
-    <form action={action} className="form stack" aria-describedby="apply-help">
+    <form action={action} onSubmit={onSubmit} className="form stack" aria-describedby="apply-help">
       <p id="apply-help" className="muted small">
         {t("form.help")}
       </p>
@@ -46,8 +75,9 @@ export function HostApplicationForm({ countries, defaults }: { countries: Payout
         <small id="doc-hint" className="muted">{t("form.documentHint")}</small></label>
       {docError && <p className="error" role="alert">{docError}</p>}
 
+      {uploadError && <p className="error" role="alert">{uploadError}</p>}
       {state?.error && <p className="error" role="alert">{state.error}</p>}
-      <button className="btn-grad" type="submit" disabled={pending || !!docError}>{pending ? t("form.sending") : t("form.send")}</button>
+      <button className="btn-grad" type="submit" disabled={pending || uploading || !!docError}>{pending || uploading ? t("form.sending") : t("form.send")}</button>
     </form>
   );
 }

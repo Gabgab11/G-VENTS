@@ -60,18 +60,26 @@ export async function applyToSell(_prev: FormState, formData: FormData): Promise
   const t = await getTranslations("account");
   const body = applicationBody(formData);
   if ("error" in body) return { error: t(body.error) };
-  const doc = documentFrom(formData);
-  if ("error" in doc) return { error: t(doc.error) };
+  // With JavaScript the form uploads the document first, to /api/me/host-application/document (a
+  // route handler: Cloudflare's WAF blocks some files sent to Server Actions, src/lib/same-origin.ts),
+  // and sends its path here. Without JavaScript the file still comes here. The API checks the path.
+  const uploadedPath = typeof formData.get("document_path") === "string" ? String(formData.get("document_path")).trim() : "";
+  const doc = uploadedPath ? null : documentFrom(formData);
+  if (doc && "error" in doc) return { error: t(doc.error) };
 
   try {
     const client = await api();
-    const upload = data(await client.POST("/v1/me/host-application/document-upload-url", { body: { contentType: doc.contentType, sizeBytes: doc.file.size } }));
-    const put = await fetch(upload.uploadUrl, { method: "PUT", body: Buffer.from(await doc.file.arrayBuffer()), headers: { "content-type": doc.contentType } }).catch(() => null);
-    if (!put?.ok) {
-      console.error(`[payouts] document upload to storage failed: ${put?.status ?? "network"}`);
-      return { error: t("payouts.errors.uploadFailed") };
+    let documentPath = uploadedPath;
+    if (doc) {
+      const upload = data(await client.POST("/v1/me/host-application/document-upload-url", { body: { contentType: doc.contentType, sizeBytes: doc.file.size } }));
+      const put = await fetch(upload.uploadUrl, { method: "PUT", body: Buffer.from(await doc.file.arrayBuffer()), headers: { "content-type": doc.contentType } }).catch(() => null);
+      if (!put?.ok) {
+        console.error(`[payouts] document upload to storage failed: ${put?.status ?? "network"}`);
+        return { error: t("payouts.errors.uploadFailed") };
+      }
+      documentPath = upload.path;
     }
-    await client.POST("/v1/me/host-application", { body: { ...body, documentPath: upload.path } });
+    await client.POST("/v1/me/host-application", { body: { ...body, documentPath } });
   } catch (error) {
     if (sessionEnded(error)) return { error: t("payouts.errors.sessionEndedApply") };
     return { error: await failure(error, t("payouts.errors.sendFailed")) };

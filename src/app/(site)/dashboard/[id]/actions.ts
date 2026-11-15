@@ -11,7 +11,6 @@ import { isThemeKey } from "@/lib/themes";
 import { locationInput } from "@/app/(site)/events/create-event-input";
 import { MAPS_URL_HINT_KEY } from "@/lib/maps-url";
 import { getTranslations } from "next-intl/server";
-import { flyerFrom, uploadFlyer as sendFlyer } from "@/lib/flyer";
 import type { MessageCode } from "./messages";
 
 // Dashboard actions through gventz-api (U6b). The API checks the caller's role and every rule;
@@ -161,26 +160,7 @@ export async function updateVenue(formData: FormData) {
   done(id, "settings", "venue_saved");
 }
 
-// The file goes on to Supabase Storage through a signed URL from the API (src/lib/flyer.ts, U5).
-export async function uploadFlyer(formData: FormData) {
-  const id = await eventIdFrom(formData);
-  const flyer = flyerFrom(formData);
-  if (!flyer) fail(id, "settings", "flyer_missing");
-  if ("problem" in flyer) fail(id, "settings", flyer.problem);
-  // API errors go through call() for their message; a failed storage upload is logged here.
-  let stored = true;
-  await call(id, "settings", async () => {
-    try {
-      await sendFlyer(id, flyer.file, flyer.contentType);
-    } catch (error) {
-      if (error instanceof ApiError) throw error;
-      console.error(`[dashboard] ${(error as Error).message}`);
-      stored = false;
-    }
-  });
-  if (!stored) fail(id, "settings");
-  done(id, "settings", "flyer_uploaded");
-}
+// Uploading a flyer is a route handler, not an action: src/app/api/events/[id]/flyer/route.ts.
 
 export async function removeFlyer(formData: FormData) {
   const id = await eventIdFrom(formData);

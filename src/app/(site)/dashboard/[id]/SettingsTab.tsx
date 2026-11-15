@@ -4,7 +4,7 @@ import { can, type EventDashboard } from "@/lib/auth";
 import { whereText } from "@/lib/event-page";
 import { visitorCountry } from "@/lib/platform";
 import { THEMES, themeBackground } from "@/lib/themes";
-import { cancelEvent, removeFlyer, updateEventDetails, updateEventTheme, uploadFlyer } from "./actions";
+import { cancelEvent, removeFlyer, updateEventDetails, updateEventTheme } from "./actions";
 import DeleteEventForm from "./DeleteEventForm";
 import VenueForm from "./VenueForm";
 import { getTranslations } from "next-intl/server";
@@ -43,8 +43,9 @@ export default async function SettingsTab({ event: e }: { event: EventDashboard 
             {/* eslint-disable-next-line @next/next/no-img-element -- flyers come from Supabase Storage at arbitrary sizes */}
             {e.coverUrl ? <img src={e.coverUrl} alt={t("settings.flyerAlt")} /> : <span className="muted small">{t("settings.noFlyer")}</span>}
           </div>
-          <form action={uploadFlyer} className="row-form">
-            <input type="hidden" name="event_id" value={id} />
+          {/* A plain form post to a route handler, not a Server Action: Cloudflare's WAF blocks some
+              images sent to Server Actions (src/lib/same-origin.ts). */}
+          <form action={`/api/events/${id}/flyer`} method="post" encType="multipart/form-data" className="row-form">
             <input className="input" type="file" name="flyer" accept="image/jpeg,image/png,image/webp" required />
             <button className="btn-white" type="submit">{t("settings.uploadFlyer")}</button>
           </form>
