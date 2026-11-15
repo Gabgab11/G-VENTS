@@ -101,8 +101,6 @@ Names only below; values never go in the repo. "Exists" is as of 2026-11-07.
 | variable | `PRODUCTION_NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY` | no | optional | `production` |
 | variable | `STAGING_NEXT_PUBLIC_WHATSAPP_NUMBER` | no | optional; WhatsApp fallback number | `staging` |
 | variable | `PRODUCTION_NEXT_PUBLIC_WHATSAPP_NUMBER` | no | optional | `production` |
-| variable | `STAGING_NEXT_PUBLIC_LANGUAGES` | no | optional; languages switched on, from `en,es,fr,de,zh-Hans,pt,ar` (unset = English only); compiled in at build time, so redeploy after changing it | `staging` |
-| variable | `PRODUCTION_NEXT_PUBLIC_LANGUAGES` | no | optional; keep unset or `en` until every language has passed native review (Change 3, D76) | `production` |
 | variable | `STAGING_MAINTENANCE_MODE` | no | optional; `1` = maintenance page from the next deploy | `staging` |
 | variable | `PRODUCTION_MAINTENANCE_MODE` | no | optional | `production` |
 | variable | `STAGING_URL` | no | optional; smoke-test this origin (e.g. `https://staging.gventz.com`) instead of `workers.dev` | `staging` |
