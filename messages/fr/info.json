@@ -1,0 +1,108 @@
+{
+  "pricing": {
+    "meta": {
+      "title": "Tarifs · G-ventZ"
+    },
+    "hero": {
+      "eyebrow": "Tarifs",
+      "title": "Des tarifs simples qui évoluent avec vos événements",
+      "text": "Créez des événements gratuitement. Vous ne payez des frais de plateforme que lorsque vous vendez des billets payants."
+    },
+    "currency": {
+      "choose": "Choisir la devise",
+      "usd": "USD",
+      "ngn": "Naira",
+      "gbp": "GBP",
+      "eur": "EUR",
+      "ghs": "Cedi",
+      "kes": "Shilling",
+      "zar": "Rand"
+    },
+    "plan": {
+      "starter": "Pour les organisateurs qui débutent avec des événements gratuits.",
+      "pro": "Pour les organisateurs réguliers qui organisent des événements chaque mois.",
+      "business": "Pour les organisations qui gèrent de grands événements ou plusieurs événements.",
+      "popular": "Le plus populaire",
+      "perMonth": "/ mois",
+      "fee": "Frais de plateforme sur les billets payants : {fee} %",
+      "signUpFree": "Inscription gratuite",
+      "comingSoon": "Bientôt disponible"
+    },
+    "features": {
+      "unlimitedEvents": "Création d’événements illimitée",
+      "freeTickets": "Vente de billets gratuits",
+      "promoCodes": "Codes promo",
+      "qrCheckIn": "Billets avec code QR et enregistrement des invités",
+      "basicAnalytics": "Statistiques de base et rappels par e-mail",
+      "standardPages": "Pages d’événement standard",
+      "teamOne": "1 membre d’équipe",
+      "everythingStarter": "Tout ce qu’offre Starter",
+      "advancedAnalytics": "Statistiques avancées",
+      "advancedReminders": "Rappels par e-mail avancés",
+      "customizablePages": "Pages d’événement personnalisables",
+      "teamFive": "5 membres d’équipe",
+      "prioritySupport": "Assistance prioritaire",
+      "optionalDomain": "Domaine personnalisé en option",
+      "everythingPro": "Tout ce qu’offre Pro",
+      "brandedPages": "Pages d’événement entièrement à votre image",
+      "teamFifteen": "15 membres d’équipe",
+      "customDomain": "Domaine personnalisé",
+      "apiAccess": "Accès à l’API"
+    },
+    "example": {
+      "title": "À quoi ressemblent les frais",
+      "text": "Exemple : un organisateur vend {quantity} billets à {price} chacun.",
+      "sales": "Ventes de billets",
+      "starter": "Frais Starter (3 %)",
+      "pro": "Frais Pro (1,5 %) + prix mensuel",
+      "business": "Frais Business (0,5 %) + prix mensuel",
+      "note": "Les frais du prestataire de paiement sont séparés et s’appliquent à tous les forfaits."
+    },
+    "compare": {
+      "title": "Comparer toutes les fonctionnalités",
+      "feature": "Fonctionnalité",
+      "monthlyPrice": "Prix mensuel",
+      "features": {
+        "eventCreation": "Création d’événements",
+        "freeTickets": "Vente de billets gratuits",
+        "platformFee": "Frais de plateforme sur les billets payants",
+        "analytics": "Statistiques d’événement",
+        "promoCodes": "Codes promo",
+        "customPages": "Pages d’événement personnalisées",
+        "attendeeManagement": "Gestion des participants",
+        "qrTickets": "Billets avec code QR",
+        "checkIn": "Enregistrement des invités",
+        "emailReminders": "Rappels par e-mail",
+        "teamMembers": "Membres d’équipe",
+        "exportData": "Export des données des participants",
+        "prioritySupport": "Assistance prioritaire",
+        "customDomain": "Domaine personnalisé",
+        "apiAccess": "Accès à l’API"
+      },
+      "values": {
+        "unlimited": "Illimité",
+        "free": "Gratuit",
+        "basic": "De base",
+        "advanced": "Avancé",
+        "yes": "Oui",
+        "no": "Non",
+        "standard": "Standard",
+        "customizable": "Personnalisable",
+        "fullyBranded": "Entièrement à votre image",
+        "optional": "En option"
+      }
+    },
+    "links": {
+      "terms": "Conditions",
+      "refunds": "Remboursements",
+      "privacy": "Confidentialité"
+    }
+  },
+  "help": {
+    "meta": {
+      "title": "Aide · G-ventZ"
+    },
+    "title": "Aide",
+    "text": "Invités : contactez l’organisateur de l’événement auquel vous êtes inscrit. Organisateurs : gérez vos événements depuis votre tableau de bord."
+  }
+}

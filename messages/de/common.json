@@ -1,0 +1,33 @@
+{
+  "brand": {
+    "home": "G-ventZ Startseite"
+  },
+  "nav": {
+    "main": "Hauptmenü",
+    "discover": "Entdecken",
+    "pricing": "Preise",
+    "createEvent": "Event erstellen",
+    "back": "Zurück"
+  },
+  "account": {
+    "signIn": "Anmelden",
+    "signOut": "Abmelden",
+    "dashboard": "Dashboard",
+    "admin": "Admin",
+    "account": "Konto",
+    "platformAdmin": "G-ventZ-Verwaltung",
+    "security": "Zwei-Schritt-Anmeldung und Passkeys",
+    "payouts": "Auszahlungen"
+  },
+  "language": {
+    "label": "Sprache",
+    "choose": "Sprache wählen",
+    "current": "Aktuelle Sprache: {name}",
+    "hint": "Diese Seite gibt es auch auf {name}.",
+    "hintSwitch": "Zu {name} wechseln",
+    "hintDismiss": "Nein, danke"
+  },
+  "errors": {
+    "generic": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
+  }
+}

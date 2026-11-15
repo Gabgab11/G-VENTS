@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "title": "Descubra eventos · G-ventZ"
+  },
+  "online": "En línea",
+  "allEvents": "Todos los eventos",
+  "categoryEvents": "Eventos de {category}",
+  "categoryEmpty": "Todavía no hay nada próximo en {category}. <link>Organice uno</link>.",
+  "noEvents": "Todavía no hay eventos públicos. <link>Cree el primero</link>.",
+  "empty": {
+    "discover": "Descubrir",
+    "title": "Los buenos encuentros empiezan aquí",
+    "categoryTitle": "Todavía no hay eventos de {category}",
+    "text": "Sea el primero: cree un evento y comparta un solo enlace con sus invitados.",
+    "create": "Crear un evento"
+  },
+  "rails": {
+    "categories": "Categorías de eventos",
+    "soon": "Próximamente",
+    "weekend": "Este fin de semana"
+  },
+  "rail": {
+    "previous": "Anterior: {title}",
+    "next": "Siguiente: {title}"
+  },
+  "hero": {
+    "label": "Eventos destacados",
+    "slide": "{position} de {count}: {title}",
+    "getTickets": "Conseguir entradas",
+    "share": "Compartir",
+    "shareOn": "Compartir en {network}",
+    "shareText": "{title} en G-ventZ",
+    "choose": "Elija un evento destacado",
+    "show": "Mostrar {title}"
+  },
+  "inSentence": {
+    "music": "música",
+    "conferences": "conferencias",
+    "tech": "tecnología",
+    "faith": "fe",
+    "arts": "arte",
+    "food": "gastronomía",
+    "sports": "deportes",
+    "business": "negocios",
+    "nightlife": "vida nocturna",
+    "education": "educación",
+    "community": "comunidad",
+    "charity": "beneficencia",
+    "family": "familia",
+    "other": "otros"
+  }
+}

@@ -1,13 +1,17 @@
+"use client";
+
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 import AccountLink from "@/app/AccountLink";
 import BackLink from "@/components/BackLink";
 import ColorModeToggle from "@/components/ColorModeToggle";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 const NAV = [
-  { href: "/discover", label: "Discover" },
-  { href: "/pricing", label: "Pricing" },
-  { href: "/events/new", label: "Create event" },
+  { href: "/discover", label: "discover" },
+  { href: "/pricing", label: "pricing" },
+  { href: "/events/new", label: "createEvent" },
 ] as const;
 
 // The header on every page except the home page (which has its own): a back arrow, the logo (home),
@@ -23,16 +27,18 @@ export default function SiteHeader({
   current?: (typeof NAV)[number]["href"];
   actions?: ReactNode;
 }) {
+  const t = useTranslations("common");
   return (
     <header className="site-top">
       {back !== false && <BackLink fallback={back} label="←" />}
-      <Link href="/" className="site-logo" aria-label="G-ventZ home">G-vent<b>Z</b></Link>
-      <nav className="site-nav" aria-label="Main">
+      <Link href="/" className="site-logo" aria-label={t("brand.home")}>G-vent<b>Z</b></Link>
+      <nav className="site-nav" aria-label={t("nav.main")}>
         {NAV.map((n) => (
-          <Link key={n.href} href={n.href} aria-current={current === n.href ? "page" : undefined}>{n.label}</Link>
+          <Link key={n.href} href={n.href} aria-current={current === n.href ? "page" : undefined}>{t(`nav.${n.label}`)}</Link>
         ))}
       </nav>
       <div className="site-actions">
+        <LanguageSwitcher />
         <ColorModeToggle />
         {actions ?? <AccountLink className="site-account" />}
       </div>

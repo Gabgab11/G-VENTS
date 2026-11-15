@@ -72,3 +72,31 @@ describe("https redirect", () => {
     expect((await at("http://localhost:3000/e/x")).status).toBe(503);
   });
 });
+
+describe("language (Change 3, W2/W3)", () => {
+  const at = (path: string, headers: Record<string, string> = {}) => new NextRequest(`http://localhost:3000${path}`, { headers });
+
+  it("serves English public pages at their unprefixed address, from the [lang] tree", async () => {
+    for (const path of ["/", "/discover", "/e/afro-night", "/pricing"]) {
+      const res = await middleware(at(path));
+      expect(res.status, path).toBe(200);
+      expect(new URL(res.headers.get("x-middleware-rewrite")!).pathname, path).toBe(path === "/" ? "/en" : `/en${path}`);
+    }
+  });
+
+  it("sends /en/... to the unprefixed address, never by browser language (FR-24.3)", async () => {
+    const res = await middleware(at("/en/discover"));
+    expect([307, 308]).toContain(res.status);
+    expect(new URL(res.headers.get("location")!).pathname).toBe("/discover");
+    const french = await middleware(at("/discover", { "accept-language": "fr-FR,fr;q=0.9" }));
+    expect(french.status).toBe(200);
+  });
+
+  it("gives other pages the chosen language in a header the visitor can't set", async () => {
+    const res = await middleware(at("/sign-in", { "x-gventz-lang": "ar", cookie: "gventz_lang=fr" }));
+    expect(res.status).toBe(200);
+    // Only English is switched on in tests, so a French cookie or a forged header still means English.
+    expect(res.headers.get("x-middleware-request-x-gventz-lang")).toBe("en");
+    expect(res.headers.get("x-middleware-rewrite")).toBeNull();
+  });
+});

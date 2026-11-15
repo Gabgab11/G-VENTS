@@ -1,0 +1,33 @@
+{
+  "brand": {
+    "home": "الصفحة الرئيسية لـ G-ventZ"
+  },
+  "nav": {
+    "main": "القائمة الرئيسية",
+    "discover": "استكشف",
+    "pricing": "الأسعار",
+    "createEvent": "أنشئ فعالية",
+    "back": "رجوع"
+  },
+  "account": {
+    "signIn": "تسجيل الدخول",
+    "signOut": "تسجيل الخروج",
+    "dashboard": "لوحة التحكم",
+    "admin": "الإدارة",
+    "account": "الحساب",
+    "platformAdmin": "إدارة G-ventZ",
+    "security": "تسجيل الدخول بخطوتين ومفاتيح المرور",
+    "payouts": "المدفوعات"
+  },
+  "language": {
+    "label": "اللغة",
+    "choose": "اختر لغة",
+    "current": "اللغة الحالية: {name}",
+    "hint": "هذه الصفحة متوفرة أيضًا بـ{name}.",
+    "hintSwitch": "التبديل إلى {name}",
+    "hintDismiss": "لا، شكرًا"
+  },
+  "errors": {
+    "generic": "حدث خطأ ما. يُرجى المحاولة مرة أخرى."
+  }
+}

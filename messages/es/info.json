@@ -1,0 +1,108 @@
+{
+  "pricing": {
+    "meta": {
+      "title": "Precios · G-ventZ"
+    },
+    "hero": {
+      "eyebrow": "Precios",
+      "title": "Precios sencillos que crecen con sus eventos",
+      "text": "Cree eventos gratis. Solo paga una comisión de plataforma cuando vende entradas de pago."
+    },
+    "currency": {
+      "choose": "Elegir moneda",
+      "usd": "USD",
+      "ngn": "Naira",
+      "gbp": "GBP",
+      "eur": "EUR",
+      "ghs": "Cedi",
+      "kes": "Chelín",
+      "zar": "Rand"
+    },
+    "plan": {
+      "starter": "Para organizadores que empiezan con eventos gratuitos.",
+      "pro": "Para organizadores habituales con eventos cada mes.",
+      "business": "Para organizaciones con eventos grandes o múltiples.",
+      "popular": "Más popular",
+      "perMonth": "/ mes",
+      "fee": "Comisión de plataforma en entradas de pago: {fee} %",
+      "signUpFree": "Regístrese gratis",
+      "comingSoon": "Próximamente"
+    },
+    "features": {
+      "unlimitedEvents": "Creación ilimitada de eventos",
+      "freeTickets": "Venta de entradas gratuitas",
+      "promoCodes": "Códigos promocionales",
+      "qrCheckIn": "Entradas con código QR y registro de entrada de invitados",
+      "basicAnalytics": "Analíticas básicas y recordatorios por correo",
+      "standardPages": "Páginas de evento estándar",
+      "teamOne": "1 miembro del equipo",
+      "everythingStarter": "Todo lo de Starter",
+      "advancedAnalytics": "Analíticas avanzadas",
+      "advancedReminders": "Recordatorios por correo avanzados",
+      "customizablePages": "Páginas de evento personalizables",
+      "teamFive": "5 miembros del equipo",
+      "prioritySupport": "Soporte prioritario",
+      "optionalDomain": "Dominio propio opcional",
+      "everythingPro": "Todo lo de Pro",
+      "brandedPages": "Páginas de evento con su marca completa",
+      "teamFifteen": "15 miembros del equipo",
+      "customDomain": "Dominio propio",
+      "apiAccess": "Acceso a la API"
+    },
+    "example": {
+      "title": "Así se ven las comisiones",
+      "text": "Ejemplo: un organizador vende {quantity} entradas a {price} cada una.",
+      "sales": "Venta de entradas",
+      "starter": "Comisión Starter (3 %)",
+      "pro": "Comisión Pro (1,5 %) + precio mensual",
+      "business": "Comisión Business (0,5 %) + precio mensual",
+      "note": "Los cargos del proveedor de pagos son aparte y se aplican en todos los planes."
+    },
+    "compare": {
+      "title": "Comparar todas las funciones",
+      "feature": "Función",
+      "monthlyPrice": "Precio mensual",
+      "features": {
+        "eventCreation": "Creación de eventos",
+        "freeTickets": "Venta de entradas gratuitas",
+        "platformFee": "Comisión de plataforma en entradas de pago",
+        "analytics": "Analíticas del evento",
+        "promoCodes": "Códigos promocionales",
+        "customPages": "Páginas de evento personalizadas",
+        "attendeeManagement": "Gestión de asistentes",
+        "qrTickets": "Entradas con código QR",
+        "checkIn": "Registro de entrada de invitados",
+        "emailReminders": "Recordatorios por correo",
+        "teamMembers": "Miembros del equipo",
+        "exportData": "Exportar datos de asistentes",
+        "prioritySupport": "Soporte prioritario",
+        "customDomain": "Dominio propio",
+        "apiAccess": "Acceso a la API"
+      },
+      "values": {
+        "unlimited": "Ilimitado",
+        "free": "Gratis",
+        "basic": "Básico",
+        "advanced": "Avanzado",
+        "yes": "Sí",
+        "no": "No",
+        "standard": "Estándar",
+        "customizable": "Personalizable",
+        "fullyBranded": "Con su marca completa",
+        "optional": "Opcional"
+      }
+    },
+    "links": {
+      "terms": "Términos",
+      "refunds": "Reembolsos",
+      "privacy": "Privacidad"
+    }
+  },
+  "help": {
+    "meta": {
+      "title": "Ayuda · G-ventZ"
+    },
+    "title": "Ayuda",
+    "text": "Invitados: contacten con el organizador del evento en el que se registraron. Organizadores: gestionen sus eventos desde su panel."
+  }
+}

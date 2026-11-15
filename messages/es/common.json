@@ -1,0 +1,33 @@
+{
+  "brand": {
+    "home": "Inicio de G-ventZ"
+  },
+  "nav": {
+    "main": "Principal",
+    "discover": "Descubrir",
+    "pricing": "Precios",
+    "createEvent": "Crear evento",
+    "back": "Atrás"
+  },
+  "account": {
+    "signIn": "Iniciar sesión",
+    "signOut": "Cerrar sesión",
+    "dashboard": "Panel",
+    "admin": "Admin",
+    "account": "Cuenta",
+    "platformAdmin": "Administración de G-ventZ",
+    "security": "Verificación en dos pasos y llaves de acceso",
+    "payouts": "Pagos"
+  },
+  "language": {
+    "label": "Idioma",
+    "choose": "Elige un idioma",
+    "current": "Idioma actual: {name}",
+    "hint": "Esta página también está disponible en {name}.",
+    "hintSwitch": "Cambiar a {name}",
+    "hintDismiss": "No, gracias"
+  },
+  "errors": {
+    "generic": "Algo salió mal. Inténtalo de nuevo."
+  }
+}

@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import createNextIntlPlugin from "next-intl/plugin";
 import { securityHeaders } from "./src/lib/csp";
 
 // Vercel always serves https; elsewhere (local `next start`) follow the site URL.
@@ -9,6 +10,8 @@ const nextConfig: NextConfig = {
     // Raised for flyer uploads (5 MB image plus form overhead). Next.js applies this to
     // every server action; the other actions cap their own input sizes in src/lib/forms.ts.
     serverActions: { bodySizeLimit: "6mb" },
+    // Two root layouts (public pages per language, and the rest) share no not-found page (Change 3).
+    globalNotFound: true,
   },
   async headers() {
     return [
@@ -19,4 +22,7 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+// next-intl: per-request language and messages (src/i18n/request.ts).
+const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
+
+export default withNextIntl(nextConfig);

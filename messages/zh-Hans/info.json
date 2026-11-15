@@ -1,0 +1,108 @@
+{
+  "pricing": {
+    "meta": {
+      "title": "价格 · G-ventZ"
+    },
+    "hero": {
+      "eyebrow": "价格",
+      "title": "简单的价格，随您的活动一起成长",
+      "text": "免费创建活动。只有在销售付费门票时，您才需支付平台服务费。"
+    },
+    "currency": {
+      "choose": "选择货币",
+      "usd": "USD",
+      "ngn": "奈拉",
+      "gbp": "GBP",
+      "eur": "EUR",
+      "ghs": "塞地",
+      "kes": "先令",
+      "zar": "兰特"
+    },
+    "plan": {
+      "starter": "适合刚开始举办免费活动的主办方。",
+      "pro": "适合每月定期举办活动的主办方。",
+      "business": "适合举办大型或多场活动的机构。",
+      "popular": "最受欢迎",
+      "perMonth": "/ 月",
+      "fee": "付费门票平台服务费：{fee}%",
+      "signUpFree": "免费注册",
+      "comingSoon": "即将推出"
+    },
+    "features": {
+      "unlimitedEvents": "无限创建活动",
+      "freeTickets": "免费门票发放",
+      "promoCodes": "优惠码",
+      "qrCheckIn": "QR 码门票和宾客签到",
+      "basicAnalytics": "基础数据分析和邮件提醒",
+      "standardPages": "标准活动页面",
+      "teamOne": "1 名团队成员",
+      "everythingStarter": "包含 Starter 的全部功能",
+      "advancedAnalytics": "高级数据分析",
+      "advancedReminders": "高级邮件提醒",
+      "customizablePages": "可自定义的活动页面",
+      "teamFive": "5 名团队成员",
+      "prioritySupport": "优先支持",
+      "optionalDomain": "可选自定义域名",
+      "everythingPro": "包含 Pro 的全部功能",
+      "brandedPages": "完全品牌化的活动页面",
+      "teamFifteen": "15 名团队成员",
+      "customDomain": "自定义域名",
+      "apiAccess": "API 访问"
+    },
+    "example": {
+      "title": "费用示例",
+      "text": "示例：一位主办方以每张 {price} 的价格售出 {quantity} 张门票。",
+      "sales": "门票销售额",
+      "starter": "Starter 服务费（3%）",
+      "pro": "Pro 服务费（1.5%）+ 月费",
+      "business": "Business 服务费（0.5%）+ 月费",
+      "note": "支付服务商的费用另计，适用于所有方案。"
+    },
+    "compare": {
+      "title": "比较全部功能",
+      "feature": "功能",
+      "monthlyPrice": "月费",
+      "features": {
+        "eventCreation": "创建活动",
+        "freeTickets": "免费门票发放",
+        "platformFee": "付费门票平台服务费",
+        "analytics": "活动数据分析",
+        "promoCodes": "优惠码",
+        "customPages": "自定义活动页面",
+        "attendeeManagement": "参与者管理",
+        "qrTickets": "QR 码门票",
+        "checkIn": "宾客签到",
+        "emailReminders": "邮件提醒",
+        "teamMembers": "团队成员",
+        "exportData": "导出参与者数据",
+        "prioritySupport": "优先支持",
+        "customDomain": "自定义域名",
+        "apiAccess": "API 访问"
+      },
+      "values": {
+        "unlimited": "无限",
+        "free": "免费",
+        "basic": "基础",
+        "advanced": "高级",
+        "yes": "是",
+        "no": "否",
+        "standard": "标准",
+        "customizable": "可自定义",
+        "fullyBranded": "完全品牌化",
+        "optional": "可选"
+      }
+    },
+    "links": {
+      "terms": "条款",
+      "refunds": "退款",
+      "privacy": "隐私"
+    }
+  },
+  "help": {
+    "meta": {
+      "title": "帮助 · G-ventZ"
+    },
+    "title": "帮助",
+    "text": "宾客：请联系您报名的活动的主办方。主办方：请在您的控制台中管理活动。"
+  }
+}

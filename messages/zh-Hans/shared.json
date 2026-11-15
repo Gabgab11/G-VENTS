@@ -1,0 +1,150 @@
+{
+  "errorPage": {
+    "title": "出错了",
+    "body": "无法加载此页面。请稍后重试。",
+    "reference": "参考编号：{digest}",
+    "retry": "重试",
+    "home": "返回首页"
+  },
+  "notFound": {
+    "title": "找不到页面",
+    "body": "此页面不存在，或您无权访问。如果有人给您发送了活动链接，请检查链接是否完整。",
+    "discover": "发现活动",
+    "home": "返回首页"
+  },
+  "loading": "正在加载…",
+  "legalDoc": {
+    "effective": "生效日期：{date}",
+    "terms": "条款",
+    "refunds": "退款",
+    "pricing": "价格",
+    "privacy": "隐私"
+  },
+  "orderCard": {
+    "ticketsFor": "{title} 的门票",
+    "tickets": "门票",
+    "timeLine": "{range} · {zone}时间",
+    "ticketNumber": "第 {number} 张，共 {total} 张",
+    "checkedIn": "已签到",
+    "openTicket": "打开门票",
+    "status": {
+      "completed": {
+        "title": "报名成功",
+        "body": "每张门票都有自己的二维码（QR）。请将门票转发给对应的嘉宾。"
+      },
+      "pendingApproval": {
+        "title": "已收到申请",
+        "body": "主办方会审核每个申请。一旦主办方做出决定，我们会通过电子邮件发送您的门票。"
+      },
+      "waitlisted": {
+        "title": "您已在候补名单中",
+        "body": "活动目前已满。如有名额空出，主办方可以将您的团体加入。"
+      },
+      "declined": {
+        "title": "本次未被接受",
+        "body": "主办方无法接受此申请。"
+      },
+      "cancelled": {
+        "title": "已取消",
+        "body": "这些门票已无法使用。"
+      },
+      "awaitingPayment": {
+        "title": "等待付款",
+        "body": "在您通过 Paystack 付款期间，门票会为您保留。"
+      },
+      "expired": {
+        "title": "保留已过期",
+        "body": "付款未能按时完成，这些门票已重新开售。"
+      },
+      "failed": {
+        "title": "付款失败",
+        "body": "付款未成功。未产生任何扣款。"
+      },
+      "refunded": {
+        "title": "已退款",
+        "body": "此订单已退款。门票已失效。"
+      },
+      "partiallyRefunded": {
+        "title": "部分退款",
+        "body": "部分门票已退款；其余门票仍然有效。"
+      },
+      "disputed": {
+        "title": "付款有争议",
+        "body": "该付款正在与银行进行争议处理。您的门票目前仍然有效。"
+      }
+    }
+  },
+  "sellReason": {
+    "paymentsOff": "G-ventZ 尚未开放付费门票。目前所有门票均免费。",
+    "notApplied": "要出售付费门票，请告诉我们收款人和收款地点。",
+    "notAppliedAction": "申请出售付费门票",
+    "applicationSubmitted": "我们正在审核您出售付费门票的申请。有结果后我们会发邮件通知您。",
+    "applicationSubmittedAction": "查看您的申请",
+    "applicationDeclined": "您出售付费门票的申请未获批准。您可以查看原因并重新申请。",
+    "applicationDeclinedAction": "查看原因",
+    "approvalRevoked": "您出售付费门票的资格已被撤销。已售出的门票仍然有效。",
+    "approvalRevokedAction": "查看详情",
+    "payoutAccountPending": "您已获批准。我们正在通过 Paystack 设置您的收款账户；账户就绪后即可出售付费门票。",
+    "payoutAccountPendingAction": "查看收款详情",
+    "countryOff": "Paystack 目前在您的收款国家/地区暂停服务。免费门票仍可正常使用。",
+    "owesMoney": "由于退款或拒付，您欠 G-ventZ 款项，因此无法发布新的付费活动。您现有的活动会继续售票，用于偿还欠款。",
+    "owesMoneyAction": "查看欠款",
+    "suspended": "您的账户已被暂停，因此无法出售付费门票。"
+  },
+  "fees": {
+    "hostAbsorbs": {
+      "label": "由我承担费用",
+      "hint": "嘉宾支付票价。G-ventZ 的服务费、相应增值税和 Paystack 的手续费将从您的收入中扣除。"
+    },
+    "guestPays": {
+      "label": "由嘉宾支付费用",
+      "hint": "费用会加在票价之上，因此您将收到全额票价。"
+    }
+  },
+  "payment": {
+    "nonRefundable": "我了解门票不可退款，除非活动取消",
+    "organizer": "本活动由组织者负责，而非 G-ventZ。"
+  },
+  "refundStatus": {
+    "queued": "退款排队中",
+    "processing": "退款处理中",
+    "refunded": "已退款",
+    "failed": "退款失败"
+  },
+  "applicationStatus": {
+    "none": "未申请",
+    "submitted": "审核中",
+    "approved": "已批准",
+    "declined": "已拒绝",
+    "revoked": "资格已撤销",
+    "payoutPending": "收款账户待设置"
+  },
+  "emailCode": {
+    "noAccount": "此邮箱尚未注册账户。",
+    "rateLimited": "请求验证码的次数过多。请等待一分钟后再试。",
+    "captcha": "人机验证未通过。请重试，或使用 Google 继续。",
+    "invalid": "请输入有效的电子邮件地址。",
+    "sendFailed": "目前无法发送验证码。请稍后重试。",
+    "tooManyTries": "尝试次数过多。请等待一分钟后再申请新的验证码。",
+    "wrongCode": "验证码错误或已过期。请重试或申请新的验证码。"
+  },
+  "mapsUrl": {
+    "hint": "请粘贴 Google 地图链接（google.com/maps、maps.app.goo.gl 或 share.google）。"
+  },
+  "categories": {
+    "music": "音乐",
+    "conferences": "会议",
+    "tech": "科技",
+    "faith": "信仰",
+    "arts": "艺术",
+    "food": "美食",
+    "sports": "体育",
+    "business": "商业",
+    "nightlife": "夜生活",
+    "education": "教育",
+    "community": "社区",
+    "charity": "慈善",
+    "family": "家庭",
+    "other": "其他"
+  }
+}

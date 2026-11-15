@@ -1,83 +1,63 @@
 "use client";
 
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import {
   CURRENCY_CODES, CURRENCY_INFO, PRICES, EXAMPLE_TICKET, EXAMPLE_QUANTITY, money, type CurrencyCode,
 } from "@/lib/currency";
 import SiteHeader from "@/components/SiteHeader";
 
+// Plan names are product names and stay as they are; descriptions, features and buttons are in
+// messages/*/info.json (info.pricing.*).
 const PLANS = [
   {
     id: "starter" as const,
     name: "Starter",
-    desc: "For organizers getting started with free events.",
     fee: 3,
-    feats: [
-      "Unlimited event creation",
-      "Free ticket sales",
-      "Promo codes",
-      "QR code tickets and guest check-in",
-      "Basic analytics and email reminders",
-      "Standard event pages",
-      "1 team member",
-    ],
+    feats: ["unlimitedEvents", "freeTickets", "promoCodes", "qrCheckIn", "basicAnalytics", "standardPages", "teamOne"],
     href: "/sign-up?next=/events/new",
-    cta: "Sign up free",
+    cta: "signUpFree",
     featured: false,
   },
   {
     id: "pro" as const,
     name: "Pro",
-    desc: "For regular organizers running events every month.",
     fee: 1.5,
-    feats: [
-      "Everything in Starter",
-      "Advanced analytics",
-      "Advanced email reminders",
-      "Customizable event pages",
-      "5 team members",
-      "Priority support",
-      "Optional custom domain",
-    ],
+    feats: ["everythingStarter", "advancedAnalytics", "advancedReminders", "customizablePages", "teamFive", "prioritySupport", "optionalDomain"],
     href: null,
-    cta: "Coming soon",
+    cta: "comingSoon",
     featured: true,
   },
   {
     id: "business" as const,
     name: "Business",
-    desc: "For organizations running large or multiple events.",
     fee: 0.5,
-    feats: [
-      "Everything in Pro",
-      "Fully branded event pages",
-      "15 team members",
-      "Custom domain",
-      "API access",
-    ],
+    feats: ["everythingPro", "brandedPages", "teamFifteen", "customDomain", "apiAccess"],
     href: null,
-    cta: "Coming soon",
+    cta: "comingSoon",
     featured: false,
   },
 ];
 
+// Feature (an id under info.pricing.compare.features), then Starter, Pro, Business: an id under
+// info.pricing.compare.values, or a number shown as it is.
 const ROWS: [string, string, string, string][] = [
-  ["Event creation", "Unlimited", "Unlimited", "Unlimited"],
-  ["Free ticket sales", "Free", "Free", "Free"],
-  ["Platform fee on paid tickets", "3%", "1.5%", "0.5%"],
-  ["Event analytics", "Basic", "Advanced", "Advanced"],
-  ["Promo codes", "Yes", "Yes", "Yes"],
-  ["Custom event pages", "Standard", "Customizable", "Fully branded"],
-  ["Attendee management", "Yes", "Yes", "Yes"],
-  ["QR code tickets", "Yes", "Yes", "Yes"],
-  ["Guest check-in", "Yes", "Yes", "Yes"],
-  ["Email reminders", "Basic", "Advanced", "Advanced"],
-  ["Team members", "1", "5", "15"],
-  ["Export attendee data", "Yes", "Yes", "Yes"],
-  ["Priority support", "No", "Yes", "Yes"],
-  ["Custom domain", "No", "Optional", "Yes"],
-  ["API access", "No", "No", "Yes"],
+  ["eventCreation", "unlimited", "unlimited", "unlimited"],
+  ["freeTickets", "free", "free", "free"],
+  ["platformFee", "3%", "1.5%", "0.5%"],
+  ["analytics", "basic", "advanced", "advanced"],
+  ["promoCodes", "yes", "yes", "yes"],
+  ["customPages", "standard", "customizable", "fullyBranded"],
+  ["attendeeManagement", "yes", "yes", "yes"],
+  ["qrTickets", "yes", "yes", "yes"],
+  ["checkIn", "yes", "yes", "yes"],
+  ["emailReminders", "basic", "advanced", "advanced"],
+  ["teamMembers", "1", "5", "15"],
+  ["exportData", "yes", "yes", "yes"],
+  ["prioritySupport", "no", "yes", "yes"],
+  ["customDomain", "no", "optional", "yes"],
+  ["apiAccess", "no", "no", "yes"],
 ];
 
 function priceOf(id: "starter" | "pro" | "business", code: CurrencyCode): number {
@@ -86,7 +66,9 @@ function priceOf(id: "starter" | "pro" | "business", code: CurrencyCode): number
 }
 
 export default function PricingPlans() {
+  const t = useTranslations("info.pricing");
   const [code, setCode] = useState<CurrencyCode>("USD");
+  const value = (v: string) => (/^\d/.test(v) ? v : t(`compare.values.${v}`));
   const ticket = EXAMPLE_TICKET[code];
   const sales = ticket * EXAMPLE_QUANTITY;
 
@@ -95,12 +77,12 @@ export default function PricingPlans() {
       <SiteHeader current="/pricing" />
 
       <header className="pr-hero">
-        <div className="pr-eyebrow">Pricing</div>
-        <h1>Simple pricing that grows with your events</h1>
-        <p>Create events for free. You only pay a platform fee when you sell paid tickets.</p>
+        <div className="pr-eyebrow">{t("hero.eyebrow")}</div>
+        <h1>{t("hero.title")}</h1>
+        <p>{t("hero.text")}</p>
       </header>
 
-      <div className="cur-switch" role="group" aria-label="Choose currency">
+      <div className="cur-switch" role="group" aria-label={t("currency.choose")}>
         {CURRENCY_CODES.map((c) => (
           <button
             key={c}
@@ -109,7 +91,7 @@ export default function PricingPlans() {
             aria-pressed={code === c}
             onClick={() => setCode(c)}
           >
-            {CURRENCY_INFO[c].label}
+            {t.has(`currency.${c.toLowerCase()}`) ? t(`currency.${c.toLowerCase()}`) : CURRENCY_INFO[c].label}
           </button>
         ))}
       </div>
@@ -119,21 +101,21 @@ export default function PricingPlans() {
           const amount = priceOf(p.id, code);
           return (
             <article key={p.id} className={`pr-card ${p.featured ? "featured" : ""}`}>
-              {p.featured && <span className="pr-badge">Most popular</span>}
+              {p.featured && <span className="pr-badge">{t("plan.popular")}</span>}
               <div className="pr-name">{p.name}</div>
-              <div className="pr-desc">{p.desc}</div>
+              <div className="pr-desc">{t(`plan.${p.id}`)}</div>
               <div className="pr-price">
                 {money(amount, code)}
-                <span>/ month</span>
+                <span>{t("plan.perMonth")}</span>
               </div>
-              <div className="pr-fee">Platform fee on paid tickets: {p.fee}%</div>
+              <div className="pr-fee">{t("plan.fee", { fee: p.fee })}</div>
               <ul className="pr-list">
-                {p.feats.map((f) => <li key={f}>{f}</li>)}
+                {p.feats.map((f) => <li key={f}>{t(`features.${f}`)}</li>)}
               </ul>
               {p.href ? (
-                <Link href={p.href} className="pr-cta primary">{p.cta}</Link>
+                <Link href={p.href} className="pr-cta primary">{t(`plan.${p.cta}`)}</Link>
               ) : (
-                <span className="pr-cta off" aria-disabled="true">{p.cta}</span>
+                <span className="pr-cta off" aria-disabled="true">{t(`plan.${p.cta}`)}</span>
               )}
             </article>
           );
@@ -141,42 +123,40 @@ export default function PricingPlans() {
       </div>
 
       <section className="pr-example">
-        <h2>What fees look like</h2>
+        <h2>{t("example.title")}</h2>
         <p className="muted small">
-          Example: an organizer sells {EXAMPLE_QUANTITY} tickets at {money(ticket, code)} each.
+          {t("example.text", { quantity: String(EXAMPLE_QUANTITY), price: money(ticket, code) })}
         </p>
-        <div className="row"><span>Ticket sales</span><b>{money(sales, code)}</b></div>
-        <div className="row"><span>Starter fee (3%)</span><b>{money(sales * 0.03, code)}</b></div>
-        <div className="row"><span>Pro fee (1.5%) + monthly price</span><b>{money(sales * 0.015, code)} + {money(PRICES[code].pro, code)}</b></div>
-        <div className="row"><span>Business fee (0.5%) + monthly price</span><b>{money(sales * 0.005, code)} + {money(PRICES[code].business, code)}</b></div>
-        <p className="muted small">Payment provider charges are separate and apply on every plan.</p>
+        <div className="row"><span>{t("example.sales")}</span><b>{money(sales, code)}</b></div>
+        <div className="row"><span>{t("example.starter")}</span><b>{money(sales * 0.03, code)}</b></div>
+        <div className="row"><span>{t("example.pro")}</span><b>{money(sales * 0.015, code)} + {money(PRICES[code].pro, code)}</b></div>
+        <div className="row"><span>{t("example.business")}</span><b>{money(sales * 0.005, code)} + {money(PRICES[code].business, code)}</b></div>
+        <p className="muted small">{t("example.note")}</p>
       </section>
 
       <details className="pr-compare">
-        <summary>Compare all features</summary>
+        <summary>{t("compare.title")}</summary>
         <div className="table-scroll">
           <table className="plan-table">
             <thead>
               <tr>
-                <th>Feature</th>
-                <th>Starter</th>
-                <th>Pro</th>
-                <th>Business</th>
+                <th>{t("compare.feature")}</th>
+                {PLANS.map((p) => <th key={p.id}>{p.name}</th>)}
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>Monthly price</td>
+                <td>{t("compare.monthlyPrice")}</td>
                 <td>{money(0, code)}</td>
                 <td>{money(PRICES[code].pro, code)}</td>
                 <td>{money(PRICES[code].business, code)}</td>
               </tr>
               {ROWS.map(([feature, a, b, c]) => (
                 <tr key={feature}>
-                  <td>{feature}</td>
-                  <td>{a}</td>
-                  <td>{b}</td>
-                  <td>{c}</td>
+                  <td>{t(`compare.features.${feature}`)}</td>
+                  <td>{value(a)}</td>
+                  <td>{value(b)}</td>
+                  <td>{value(c)}</td>
                 </tr>
               ))}
             </tbody>
@@ -185,7 +165,7 @@ export default function PricingPlans() {
       </details>
 
       <p className="meta">
-        <Link href="/terms">Terms</Link> · <Link href="/refunds">Refunds</Link> · <Link href="/privacy">Privacy</Link>
+        <Link href="/terms">{t("links.terms")}</Link> · <Link href="/refunds">{t("links.refunds")}</Link> · <Link href="/privacy">{t("links.privacy")}</Link>
       </p>
     </main>
   );

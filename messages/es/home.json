@@ -1,0 +1,62 @@
+{
+  "hero": {
+    "pill": "Cree eventos en minutos",
+    "titleStart": "Todas las celebraciones,",
+    "titleHighlight": "en un solo lugar.",
+    "lede": "Owambe, outdooring, braai, sangeet o un cumpleaños un sábado. Cree su evento, comparta un enlace y deje que los invitados se registren desde cualquier lugar.",
+    "createFirst": "Cree su primer evento",
+    "browse": "Explorar eventos",
+    "tiltPlay": "Incline para jugar",
+    "tiltStop": "Dejar de inclinar"
+  },
+  "cards": {
+    "owambe": "Lagos · sábado",
+    "engagement": "Enugu · diciembre",
+    "birthday": "Lekki · 8 p. m.",
+    "sendOff": "Abuja · viernes",
+    "naming": "Ibadan · domingo"
+  },
+  "soon": {
+    "title": "Próximamente",
+    "seeAll": "Ver todos los eventos",
+    "empty": "Aún no hay eventos públicos. <link>Sea el primero en crear uno.</link>"
+  },
+  "closing": {
+    "titleStart": "Sus invitados",
+    "titleHighlight": "ya están esperando.",
+    "discover": "Descubrir eventos",
+    "create": "Cree un evento gratis"
+  },
+  "footer": {
+    "tagline": "Los buenos encuentros empiezan aquí. Cree un evento, comparta un enlace y reúna a todos.",
+    "discover": {
+      "title": "Descubrir",
+      "allEvents": "Todos los eventos",
+      "pricing": "Precios",
+      "createEvent": "Crear evento"
+    },
+    "hosts": {
+      "title": "Para anfitriones",
+      "host": "Organice un evento",
+      "help": "Centro de ayuda",
+      "refunds": "Reembolsos"
+    },
+    "company": {
+      "title": "Empresa",
+      "about": "Acerca de G-ventZ",
+      "contact": "Contacto"
+    },
+    "contact": {
+      "title": "Contacto",
+      "support": "Soporte",
+      "visitHelp": "Visite el centro de ayuda",
+      "forHosts": "Para anfitriones de eventos",
+      "getStarted": "Empezar"
+    },
+    "legal": {
+      "label": "Legal",
+      "terms": "Términos",
+      "privacy": "Privacidad"
+    }
+  }
+}

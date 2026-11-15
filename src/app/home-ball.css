@@ -48,7 +48,7 @@
 .legal h2 { font-size: 20px; font-weight: 800; margin: 26px 0 8px; line-height: 1.25; }
 .legal p, .legal li { font-size: 16px; line-height: 1.65; color: var(--text); }
 .legal p { margin-bottom: 10px; }
-.legal ul { padding-left: 20px; display: grid; gap: 6px; margin-bottom: 10px; }
+.legal ul { padding-inline-start: 20px; display: grid; gap: 6px; margin-bottom: 10px; }
 .legal .meta { font-size: 14px; color: var(--muted); margin: 6px 0 14px; }
 .legal .meta a { color: var(--gold); font-weight: 600; }
 
@@ -61,11 +61,11 @@
 .pr-grid { display: grid; grid-template-columns: 1fr; gap: 18px; margin: 34px 0 28px; }
 .pr-card { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: 26px; display: flex; flex-direction: column; gap: 14px; }
 .pr-card.featured { border: 1.5px solid var(--gold); background: linear-gradient(170deg, rgba(224,67,143,.14), rgba(242,163,58,.08) 55%, transparent), var(--surface); box-shadow: 0 20px 60px rgba(240,96,79,.18); }
-.pr-badge { position: absolute; top: -13px; left: 26px; background: var(--grad); color: #141414; font-size: 12px; font-weight: 800; padding: 6px 12px; border-radius: 999px; }
+.pr-badge { position: absolute; top: -13px; inset-inline-start: 26px; background: var(--grad); color: #141414; font-size: 12px; font-weight: 800; padding: 6px 12px; border-radius: 999px; }
 .pr-name { font-size: 18px; font-weight: 800; }
 .pr-desc { color: var(--muted); font-size: 14px; line-height: 1.5; }
 .pr-price { font-size: 44px; font-weight: 800; letter-spacing: -.03em; line-height: 1; }
-.pr-price span { font-size: 15px; color: var(--muted); font-weight: 600; letter-spacing: 0; margin-left: 6px; }
+.pr-price span { font-size: 15px; color: var(--muted); font-weight: 600; letter-spacing: 0; margin-inline-start: 6px; }
 .pr-fee { font-size: 14px; background: var(--surface-hi); border-radius: 12px; padding: 10px 12px; }
 .pr-list { list-style: none; padding: 0; display: grid; gap: 10px; font-size: 15px; margin: 4px 0; }
 .pr-list li { display: flex; gap: 10px; line-height: 1.4; }
@@ -85,7 +85,7 @@
 /* ---------- Shared tables (used by pricing) ---------- */
 .table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 16px; margin: 18px 0 24px; -webkit-overflow-scrolling: touch; }
 .plan-table { width: 100%; min-width: 520px; border-collapse: collapse; font-size: 15px; }
-.plan-table th, .plan-table td { padding: 12px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.plan-table th, .plan-table td { padding: 12px 14px; border-bottom: 1px solid var(--line); text-align: start; vertical-align: top; }
 .plan-table th { font-weight: 800; background: var(--surface-hi); }
 
 @media (min-width: 700px) {
@@ -138,7 +138,7 @@
   top: 0;
   width: 52px;
   height: 70px;
-  margin-left: -26px;
+  margin-inline-start: -26px;
   border-radius: 14px;
   display: grid;
   place-items: center;

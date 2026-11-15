@@ -1,0 +1,33 @@
+{
+  "brand": {
+    "home": "G-ventZ home"
+  },
+  "nav": {
+    "main": "Main",
+    "discover": "Discover",
+    "pricing": "Pricing",
+    "createEvent": "Create event",
+    "back": "Back"
+  },
+  "account": {
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "dashboard": "Dashboard",
+    "admin": "Admin",
+    "account": "Account",
+    "platformAdmin": "G-ventZ admin",
+    "security": "Two-step sign-in & passkeys",
+    "payouts": "Payouts"
+  },
+  "language": {
+    "label": "Language",
+    "choose": "Choose a language",
+    "current": "Current language: {name}",
+    "hint": "This page is also available in {name}.",
+    "hintSwitch": "Switch to {name}",
+    "hintDismiss": "No thanks"
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again."
+  }
+}

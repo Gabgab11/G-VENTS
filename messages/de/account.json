@@ -1,0 +1,159 @@
+{
+  "security": {
+    "metaTitle": "Zwei-Schritt-Anmeldung · G-ventZ",
+    "title": "Zwei-Schritt-Anmeldung",
+    "intro": "Eine zweite Prüfung nach Ihrem E-Mail-Code, für sensible Bereiche. Pflicht für G-ventZ-Mitarbeitende und empfohlen für Veranstalter. Verwenden Sie einen <b>Passkey</b> (Ihren Fingerabdruck, Ihr Gesicht oder die PIN Ihres Geräts) oder eine <b>Authenticator-App</b>.",
+    "done": "Die Zwei-Schritt-Anmeldung ist aktiviert und diese Sitzung ist bestätigt.",
+    "removed": "Entfernt.",
+    "removeFailed": "Das konnte nicht entfernt werden. Bestätigen Sie zuerst, dass Sie es sind, und versuchen Sie es dann erneut.",
+    "passkeyTitle": "Passkey (empfohlen)",
+    "passkeyHint": "Bestätigen Sie mit Touch ID, Face ID, Windows Hello, Ihrem Telefon oder einem Sicherheitsschlüssel. Keine Eingabe nötig.",
+    "appTitle": "Authenticator-App",
+    "confirmTitle": "Bestätigen Sie, dass Sie es sind",
+    "confirmHint": "Verwenden Sie eine Ihrer Methoden.",
+    "confirmHintContinue": "Verwenden Sie eine Ihrer Methoden, um fortzufahren.",
+    "orCode": "Oder geben Sie den Code aus Ihrer Authenticator-App ein:",
+    "methodsTitle": "Ihre Methoden",
+    "passkeyName": "Passkey",
+    "passkeyAdded": "· Passkey · hinzugefügt am {date}",
+    "appName": "Authenticator-App",
+    "appAdded": "· hinzugefügt am {date}",
+    "remove": "Entfernen",
+    "removeLabel": "{label} entfernen",
+    "removeLabelPasskey": "Passkey",
+    "removeLabelApp": "Authenticator-App",
+    "methodsNote": "Diese Sitzung ist bestätigt. Behalten Sie mindestens zwei Methoden (zum Beispiel einen Passkey und die App), damit Sie sich nicht aussperren, wenn Sie ein Gerät verlieren.",
+    "addPasskeyTitle": "Passkey hinzufügen",
+    "addAppTitle": "Authenticator-App hinzufügen"
+  },
+  "mfa": {
+    "codeLabel": "6-stelliger Code",
+    "preparing": "Wird vorbereitet…",
+    "setUp": "Authenticator-App einrichten",
+    "step1": "Öffnen Sie eine Authenticator-App (Google Authenticator, Microsoft Authenticator, 1Password, Authy…).",
+    "step2": "Scannen Sie diesen QR-Code oder geben Sie den Schlüssel unten ein.",
+    "step3": "Geben Sie den 6-stelligen Code ein, den die App anzeigt.",
+    "qrAlt": "QR-Code für Ihre Authenticator-App",
+    "key": "Schlüssel: <code>{secret}</code>",
+    "checking": "Wird geprüft…",
+    "turnOn": "Zwei-Schritt-Anmeldung aktivieren",
+    "continue": "Weiter",
+    "errors": {
+      "generic": "Das hat nicht funktioniert. Bitte versuchen Sie es erneut.",
+      "setupFailed": "Die Zwei-Schritt-Anmeldung konnte gerade nicht eingerichtet werden. Bitte versuchen Sie es erneut.",
+      "enterCode": "Geben Sie den 6-stelligen Code aus Ihrer Authenticator-App ein.",
+      "wrongCode": "Dieser Code ist falsch oder abgelaufen. Versuchen Sie den aktuellen.",
+      "setUpFirst": "Richten Sie zuerst eine Authenticator-App ein."
+    }
+  },
+  "passkey": {
+    "nameLabel": "Name für diesen Passkey (optional)",
+    "waiting": "Warten auf Ihr Gerät…",
+    "add": "Passkey hinzufügen",
+    "use": "Passkey verwenden",
+    "useNamed": "Passkey verwenden: {name}",
+    "unsupported": "Dieser Browser unterstützt keine Passkeys. Verwenden Sie stattdessen die Authenticator-App.",
+    "defaultName": "Passkey",
+    "deviceName": "{device}-Passkey",
+    "errors": {
+      "notCreated": "Es wurde kein Passkey erstellt.",
+      "addCancelled": "Abgebrochen. Es wurde nichts hinzugefügt.",
+      "createFailed": "Dieses Gerät konnte keinen Passkey erstellen. Versuchen Sie ein anderes Gerät oder die Authenticator-App.",
+      "notUsed": "Es wurde kein Passkey verwendet.",
+      "useCancelled": "Abgebrochen.",
+      "useFailed": "Dieser Passkey konnte auf diesem Gerät nicht verwendet werden.",
+      "generic": "Das hat nicht funktioniert. Bitte versuchen Sie es erneut.",
+      "disabled": "Passkeys sind für diese Website noch nicht aktiviert.",
+      "notConfirmed": "Dieser Passkey konnte nicht bestätigt werden. Bitte versuchen Sie es erneut."
+    }
+  },
+  "payouts": {
+    "metaTitle": "Auszahlungen · G-ventZ",
+    "title": "Auszahlungen erhalten",
+    "intro": "Verkaufen Sie kostenpflichtige Tickets auf G-ventZ. Gäste zahlen mit Paystack und Ihr Anteil geht direkt auf Ihr Bankkonto.",
+    "ok": {
+      "submitted": "Antrag gesendet. Wir schreiben Ihnen eine E-Mail, sobald entschieden ist.",
+      "payoutChanged": "Auszahlungsdaten geändert. Kostenpflichtige Verkäufe pausieren, bis G-ventZ das neue Konto bestätigt; wir haben Ihnen eine E-Mail geschickt."
+    },
+    "loadFailed": "Wir konnten Ihre Auszahlungsdaten nicht laden. Bitte laden Sie die Seite neu.",
+    "status": {
+      "title": "Kostenpflichtige Tickets",
+      "canSell": "Sie können kostenpflichtige Tickets verkaufen",
+      "decisionReason": "<b>Begründung von G-ventZ:</b> {reason}",
+      "name": "Name",
+      "country": "Land",
+      "countryValue": "{country} · verkauft in {currency}",
+      "applied": "Beantragt",
+      "decided": "Entschieden",
+      "owed": "Sie schulden G-ventZ {amounts}",
+      "owedJoin": "{first} und {second}",
+      "owedNote": "Das ist Ihr Anteil an erstatteten Tickets oder verlorenen Rückbuchungen. Er wird automatisch von Ihren nächsten kostenpflichtigen Verkäufen abgezogen. Bis er beglichen ist, können Sie keine neuen kostenpflichtigen Events veröffentlichen; Ihre bestehenden Events werden weiter verkauft."
+    },
+    "account": {
+      "title": "Auszahlungskonto",
+      "active": "Aktiv",
+      "pending": "Wird eingerichtet",
+      "replaced": "Ersetzt",
+      "line": "{bank} · endet auf {last4}",
+      "pendingNote": "G-ventZ richtet dieses Konto bei Paystack ein. Sie können kostenpflichtige Tickets verkaufen, sobald es aktiv ist.",
+      "change": "Auszahlungsdaten ändern"
+    },
+    "apply": {
+      "title": "Verkauf kostenpflichtiger Tickets beantragen",
+      "again": "Erneut beantragen",
+      "closed": "Kostenpflichtige Tickets sind auf G-ventZ noch nicht verfügbar. Alle Tickets sind vorerst kostenlos; schauen Sie bald wieder vorbei."
+    },
+    "signedIn": "Angemeldet als {email}. Fragen zum Geld? Siehe <fees>Gebühren</fees> und <refunds>Erstattungen</refunds>.",
+    "form": {
+      "help": "Wir verwenden diese Angaben, um Sie über Paystack zu bezahlen. Eine Person bei G-ventZ prüft jeden Antrag, in der Regel innerhalb von zwei Werktagen.",
+      "legalName": "Rechtlicher Name oder Firmenname",
+      "phone": "Telefonnummer",
+      "country": "Land, in dem Sie ausgezahlt werden",
+      "chooseCountry": "Land auswählen",
+      "countryOption": "{country} ({currency})",
+      "countryHint": "Sie verkaufen kostenpflichtige Tickets nur in der Währung dieses Landes.",
+      "document": "Amtlicher Ausweis oder Handelsregisterauszug",
+      "documentHint": "JPG, PNG oder PDF, bis zu 10 MB. Nur G-ventZ-Mitarbeitende können es sehen.",
+      "sending": "Wird gesendet...",
+      "send": "Antrag senden",
+      "changeNote": "Zu Ihrer Sicherheit bestätigen Sie mit der Zwei-Schritt-Anmeldung, dass Sie es sind. Kostenpflichtige Verkäufe pausieren, bis G-ventZ das neue Konto bestätigt, und wir informieren Sie per E-Mail über die Änderung.",
+      "saving": "Wird gespeichert...",
+      "change": "Auszahlungsdaten ändern"
+    },
+    "bank": {
+      "bank": "Bank",
+      "chooseCountryFirst": "Wählen Sie zuerst ein Land",
+      "loadingBanks": "Banken werden geladen...",
+      "chooseBank": "Wählen Sie Ihre Bank",
+      "accountNumber": "Kontonummer",
+      "checking": "Wird geprüft...",
+      "check": "Konto prüfen",
+      "accountName": "Kontoinhaber: <b>{name}</b>",
+      "cantCheck": "Paystack kann in diesem Land keine Kontoinhaber prüfen. Prüfen Sie Bank und Nummer sorgfältig: Auszahlungen gehen genau auf dieses Konto.",
+      "confirmNamed": "Das ist das richtige Konto ({name})",
+      "confirm": "Diese Bankdaten sind richtig"
+    },
+    "errors": {
+      "chooseCountry": "Wählen Sie zuerst ein Land.",
+      "sessionEnded": "Ihre Sitzung ist abgelaufen. Melden Sie sich erneut an.",
+      "sessionEndedApply": "Ihre Sitzung ist abgelaufen. Melden Sie sich erneut an, um den Antrag zu stellen.",
+      "loadBanksFailed": "Wir konnten die Banken nicht laden. Bitte versuchen Sie es erneut.",
+      "bankAndNumber": "Wählen Sie Ihre Bank und geben Sie die Kontonummer ein (nur Ziffern).",
+      "checkFailed": "Wir konnten dieses Konto nicht prüfen. Bitte versuchen Sie es erneut.",
+      "uploadFailed": "Das Dokument wurde nicht hochgeladen. Bitte versuchen Sie es erneut.",
+      "sendFailed": "Wir konnten Ihren Antrag nicht senden. Bitte versuchen Sie es erneut.",
+      "changeFailed": "Wir konnten Ihre Auszahlungsdaten nicht ändern. Bitte versuchen Sie es erneut."
+    },
+    "input": {
+      "legalName": "Geben Sie Ihren rechtlichen Namen oder Firmennamen ein.",
+      "phone": "Geben Sie eine Telefonnummer ein, etwa +234 801 234 5678.",
+      "country": "Wählen Sie das Land, in dem Sie ausgezahlt werden.",
+      "bank": "Wählen Sie Ihre Bank.",
+      "accountNumber": "Geben Sie die Kontonummer ein: nur Ziffern.",
+      "confirmAccount": "Bestätigen Sie, dass der Kontoinhaber stimmt.",
+      "documentMissing": "Fügen Sie Ihren amtlichen Ausweis oder Ihren Handelsregisterauszug hinzu.",
+      "documentTooLarge": "Das Dokument ist größer als 10 MB. Bitte verwenden Sie eine kleinere Datei.",
+      "documentType": "Verwenden Sie für das Dokument eine JPG-, PNG- oder PDF-Datei."
+    }
+  }
+}

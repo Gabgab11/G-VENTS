@@ -1,15 +1,9 @@
 // Money on the website (M5). Amounts are integer minor units (kobo, pesewas, cents) plus an ISO 4217
 // currency, never floats: the only conversions are whole units typed by a host → minor units, and
 // minor units → text for display. Pure, so server and client components can both use it.
+import { formatMoney, minorDigits } from "./format";
 
-/** The currency's number of decimals (NGN 2, JPY 0), from Intl; 2 when unknown. */
-export function minorDigits(currency: string): number {
-  try {
-    return new Intl.NumberFormat("en", { style: "currency", currency }).resolvedOptions().maximumFractionDigits ?? 2;
-  } catch {
-    return 2;
-  }
-}
+export { minorDigits } from "./format";
 
 /**
  * A price typed in whole units ("5000", "5,000", " 5 000 ") → minor units (500000 for NGN).
@@ -30,15 +24,9 @@ export function minorToWholeUnits(amountMinor: number, currency: string): string
   return Number.isInteger(amountMinor) && amountMinor % factor === 0 ? String(amountMinor / factor) : "";
 }
 
-/** Integer minor units → "₦2,500.00", using the currency's own number of decimals. */
+/** Integer minor units → "₦2,500.00", using the currency's own number of decimals (English; see format.ts for other languages). */
 export function formatMinor(amountMinor: number, currency: string): string {
-  try {
-    const fmt = new Intl.NumberFormat("en-NG", { style: "currency", currency });
-    const digits = fmt.resolvedOptions().maximumFractionDigits ?? 2;
-    return fmt.format(amountMinor / 10 ** digits);
-  } catch {
-    return `${currency} ${(amountMinor / 100).toFixed(2)}`;
-  }
+  return formatMoney(amountMinor, currency, "en");
 }
 
 /** The currency's symbol as the site shows it ("₦", "GH₵", "KSh", "R"); the code when unknown. */

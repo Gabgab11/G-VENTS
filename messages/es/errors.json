@@ -1,0 +1,219 @@
+{
+  "admin": {
+    "host_not_found": "No se encontró el organizador.",
+    "range_invalid": "Elija un inicio anterior al final.",
+    "range_too_long": "Elija un periodo más corto.",
+    "reason_invalid": "Indique un motivo de 3 a 500 caracteres."
+  },
+  "announcement": {
+    "already_sent": "Este anuncio ya se envió.",
+    "event_draft": "Publique el evento antes de enviar anuncios.",
+    "event_limit": "Ya envió todos los anuncios que su plan permite para este evento.",
+    "event_started": "Los anuncios solo se pueden enviar antes de que empiece el evento.",
+    "no_recipients": "Nadie en este público puede recibir correos todavía.",
+    "not_found": "No se encontró este anuncio.",
+    "segment_invalid": "Elija quién recibe este anuncio.",
+    "unsubscribe_unknown": "Este enlace para darse de baja no es válido."
+  },
+  "auth": {
+    "anonymous_not_allowed": "Inicie sesión con su correo o con Google para continuar.",
+    "invalid_token": "Su sesión no es válida. Inicie sesión de nuevo.",
+    "mfa_required": "Confirme con su aplicación de autenticación para continuar.",
+    "required": "Inicie sesión para continuar.",
+    "token_expired": "Su sesión ha caducado. Inicie sesión de nuevo."
+  },
+  "conflict": {
+    "duplicate": "Esto ya existe."
+  },
+  "db": {
+    "busy": "Tenemos mucha actividad en este momento. Inténtelo de nuevo en un momento."
+  },
+  "event": {
+    "already_cancelled": "Este evento ya está cancelado.",
+    "buyer_limit_invalid": "Elija un límite de 1 a 10 entradas por persona.",
+    "cancel_confirm": "Confirme que desea cancelar este evento.",
+    "cancelled": "Este evento se canceló.",
+    "capacity_invalid": "La capacidad debe ser un número entero de 1 a 1.000.000, o quedar vacía para no tener límite.",
+    "category_invalid": "Elija una categoría.",
+    "country_invalid": "Elija un país de la lista.",
+    "currency_invalid": "Use un código de moneda de tres letras, como NGN o USD.",
+    "currency_mixed": "Todos los tipos de entrada deben usar la misma moneda.",
+    "currency_not_payout": "Las entradas de pago se venden en la moneda de sus pagos.",
+    "delete_confirm": "Escriba el nombre del evento exactamente para confirmar.",
+    "description_length": "La descripción puede tener como máximo 5.000 caracteres.",
+    "end_before_start": "El final debe ser posterior al inicio.",
+    "forbidden": "No tiene permiso para hacer eso en este evento.",
+    "has_paid_registrations": "Los eventos con entradas de pago no se pueden eliminar.",
+    "host_owes_money": "Usted debe dinero a G-ventZ por reembolsos, así que no puede publicar nuevos eventos de pago hasta saldarlo con sus ventas.",
+    "location_invalid": "Revise los datos del lugar e inténtelo de nuevo.",
+    "not_found": "No se encontró el evento.",
+    "not_published": "Este evento no está publicado.",
+    "paid_not_allowed": "Las entradas de pago llegarán pronto.",
+    "paid_tickets_unsupported": "Las entradas de pago aún no están disponibles.",
+    "payout_account_required": "Conecte una cuenta de pagos antes de publicar entradas de pago.",
+    "price_invalid": "Los precios de las entradas deben ser importes enteros de 0 o más.",
+    "refund_policy_length": "La política de reembolso puede tener como máximo 2.000 caracteres.",
+    "region_invalid": "Elija un estado o región de la lista.",
+    "sales_window_invalid": "El fin de la venta de un tipo de entrada debe ser posterior a su inicio.",
+    "slug_unavailable": "No pudimos crear un enlace para este evento. Inténtelo de nuevo.",
+    "ticket_name_invalid": "Los nombres de las entradas deben tener de 1 a 80 caracteres.",
+    "ticket_quantity_invalid": "Las cantidades de entradas deben ser números enteros mayores que 0.",
+    "ticket_types_count": "Añada entre 1 y 20 tipos de entrada.",
+    "time_invalid": "Use una fecha y hora válidas.",
+    "time_not_in_zone": "Esa hora no existe en esta zona horaria por el cambio de hora. Elija otra hora.",
+    "time_zone_required": "Elija la zona horaria del evento.",
+    "title_length": "El nombre del evento debe tener de 3 a 140 caracteres."
+  },
+  "export": {
+    "busy": "Ya hay una exportación en curso. Inténtelo de nuevo en un minuto."
+  },
+  "flyer": {
+    "not_uploaded": "Suba primero la imagen.",
+    "path_invalid": "Ese archivo no pertenece a este evento.",
+    "size": "Los flyers pueden pesar como máximo 5 MB.",
+    "storage_unavailable": "La subida de flyers no está disponible ahora. Inténtelo de nuevo en breve.",
+    "type": "Use una imagen JPEG, PNG o WebP."
+  },
+  "host": {
+    "already_suspended": "Este organizador ya está suspendido.",
+    "cannot_suspend_self": "No puede suspender su propia cuenta.",
+    "not_suspended": "Este organizador no está suspendido.",
+    "suspended": "Esta cuenta de organizador está suspendida, por lo que no puede crear, publicar ni editar eventos. Contacte con el soporte de G-ventZ."
+  },
+  "host_application": {
+    "document_invalid": "Primero suba su documento de identidad o de empresa (JPG, PNG o PDF, máximo 10 MB).",
+    "document_too_large": "El documento puede pesar como máximo 10 MB.",
+    "exists": "Ya tiene una solicitud en curso o aprobada.",
+    "invalid": "Revise los datos de la solicitud e inténtelo de nuevo.",
+    "not_approved": "Esta solicitud no está aprobada.",
+    "not_found": "No se encontró la solicitud.",
+    "not_submitted": "Ya se tomó una decisión sobre esta solicitud.",
+    "reason_invalid": "Indique un motivo de 3 a 500 caracteres."
+  },
+  "invalid": {
+    "constraint": "Este cambio no está permitido."
+  },
+  "money": {
+    "currency_mismatch": "No se pueden combinar importes en monedas distintas.",
+    "negative": "El resultado no puede ser menor que cero."
+  },
+  "order": {
+    "answer_invalid": "Elija una de las opciones en cada pregunta.",
+    "answer_required": "Responda las preguntas obligatorias.",
+    "busy": "Mucha gente está consiguiendo entradas ahora mismo. Inténtelo de nuevo.",
+    "buyer_limit": "Ha alcanzado el número de entradas que una persona puede conseguir para este evento.",
+    "buyer_name_required": "Escriba su nombre completo.",
+    "guest_name_invalid": "Los nombres de los invitados deben tener de 2 a 120 caracteres.",
+    "host_suspended": "Este evento no admite inscripciones en este momento.",
+    "mixed_free_paid": "Las entradas gratuitas y las de pago son pedidos separados. Consiga primero las gratuitas y luego las de pago.",
+    "non_refundable_required": "Marque \"Entiendo que las entradas no son reembolsables, salvo si se cancela el evento\" para continuar.",
+    "not_enough_places": "No quedan suficientes plazas para tantas entradas.",
+    "not_enough_tickets": "No quedan suficientes entradas de ese tipo.",
+    "not_found": "No se encontró el pedido.",
+    "not_open": "Este evento no está abierto a inscripciones.",
+    "not_paid_types": "Elija solo tipos de entrada de pago; las entradas gratuitas son un pedido aparte.",
+    "not_payable": "Este pedido ya no se puede pagar. Inicie un pedido nuevo.",
+    "not_pending": "Ya se tomó una decisión sobre esta solicitud.",
+    "paid_not_supported": "Las entradas de pago se compran por separado: use el pago para las entradas de pago.",
+    "paid_sales_closed": "Ahora mismo no se pueden comprar entradas de pago para este evento.",
+    "price_too_low": "El precio de esta entrada es inferior a sus comisiones.",
+    "quantity_invalid": "Elija entre 1 y 10 entradas.",
+    "sales_ended": "La venta de entradas ha terminado.",
+    "sales_not_started": "La venta de entradas aún no ha empezado.",
+    "sold_out": "Ese tipo de entrada está agotado.",
+    "ticket_type_unavailable": "Ese tipo de entrada no está disponible.",
+    "transition_not_allowed": "Este pedido no se puede cambiar de esa forma."
+  },
+  "payment": {
+    "forbidden": "No tiene permiso para hacer eso.",
+    "own_application": "Otro miembro del equipo debe revisar su propia solicitud o cuenta de pagos.",
+    "provider_unavailable": "No pudimos conectar con el servicio de pago. Inténtelo de nuevo."
+  },
+  "payout": {
+    "account_unresolved": "El banco no encontró esta cuenta. Revise el banco y el número de cuenta.",
+    "country_unavailable": "Paystack aún no está disponible en este país.",
+    "not_approved": "Podrá cambiar los datos de pago cuando se le apruebe para vender entradas de pago.",
+    "not_pending": "No hay ninguna cuenta de pagos pendiente de crear."
+  },
+  "places": {
+    "bad_request": "Revise la búsqueda e inténtelo de nuevo.",
+    "not_configured": "La búsqueda de lugares aún no está configurada.",
+    "unavailable": "La búsqueda de lugares no está disponible ahora. Escriba la dirección."
+  },
+  "profile": {
+    "unavailable": "No se pudo cargar su perfil. Contacte con el soporte."
+  },
+  "question": {
+    "kind_invalid": "Elija un tipo de pregunta.",
+    "label_length": "Las preguntas deben tener de 1 a 200 caracteres.",
+    "limit": "Un evento puede tener como máximo 30 preguntas.",
+    "not_found": "No se encontró la pregunta.",
+    "options_count": "Añada al menos 2 opciones distintas."
+  },
+  "rate_limit": {
+    "exceeded": "Demasiadas solicitudes. Espere un momento e inténtelo de nuevo."
+  },
+  "reference": {
+    "country_not_found": "No se encontró el país.",
+    "time_zone_not_found": "No se encontró ninguna zona horaria para ese lugar."
+  },
+  "refund": {
+    "needs_approval": "Este reembolso supera lo que su equipo puede enviar por su cuenta en este momento. Contacte con el soporte de G-ventZ y lo revisaremos.",
+    "not_refundable": "Esta entrada no se puede reembolsar: no es una entrada de pago confirmada o ya se reembolsó."
+  },
+  "registration": {
+    "already_registered": "Ya tiene una entrada para este evento.",
+    "closed": "La inscripción para este evento está cerrada."
+  },
+  "request": {
+    "malformed": "No se pudo leer la solicitud.",
+    "method_not_allowed": "Este método no está permitido aquí.",
+    "too_large": "La solicitud es demasiado grande.",
+    "unsupported_media_type": "Envíe el cuerpo de la solicitud en JSON."
+  },
+  "resource": {
+    "not_found": "No hay nada en esta dirección."
+  },
+  "route": {
+    "not_found": "No hay nada en esta dirección."
+  },
+  "service": {
+    "busy": "Tenemos mucha actividad en este momento. Inténtelo de nuevo en un momento."
+  },
+  "settings": {
+    "delay_invalid": "El plazo de liquidación debe ser un número entero de días hábiles de 0 a 30.",
+    "fee_currency_invalid": "Use un código de moneda de tres letras, como NGN o USD.",
+    "fee_invalid": "Introduzca una comisión válida.",
+    "provider_not_configured": "Este proveedor de pagos aún no está configurado para este entorno.",
+    "vat_invalid": "El tipo de IVA va en puntos básicos: un número entero de 0 a 10000 (100%)."
+  },
+  "staff": {
+    "already_member": "Esta persona ya forma parte del equipo de G-ventZ.",
+    "cannot_remove_self": "No puede quitarse a sí mismo del equipo de G-ventZ.",
+    "email_invalid": "Introduzca un correo electrónico válido.",
+    "email_unconfirmed": "Confirme su correo electrónico antes de aceptar una invitación al equipo.",
+    "invite_exists": "Este correo ya tiene una invitación abierta.",
+    "invite_not_found": "No hay ninguna invitación abierta con este id.",
+    "last_member": "No se puede quitar al último miembro del equipo de G-ventZ.",
+    "no_invite": "No hay ninguna invitación al equipo abierta para su correo electrónico.",
+    "not_found": "Este correo no pertenece al equipo de G-ventZ."
+  },
+  "storage": {
+    "unavailable": "El almacenamiento de archivos no está disponible. Inténtelo de nuevo."
+  },
+  "ticket": {
+    "email_limit": "Esta entrada se ha enviado por correo varias veces en esta hora. Inténtelo de nuevo más tarde.",
+    "email_unavailable": "No pudimos enviar el correo en este momento. Inténtelo de nuevo.",
+    "not_found": "No se encontró la entrada."
+  },
+  "validation": {
+    "failed": "Algunos campos no son válidos."
+  },
+  "waitlist": {
+    "empty": "No hay nadie en la lista de espera.",
+    "none_fits": "El siguiente grupo de la lista de espera necesita más plazas de las que hay libres."
+  },
+  "webhook": {
+    "signature_invalid": "Firma no válida."
+  }
+}

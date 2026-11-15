@@ -1,0 +1,277 @@
+{
+  "notice": "This is a translation for convenience; <link>the English version</link> is the one that applies.",
+  "terms": {
+    "metaTitle": "Terms of use · G-ventZ",
+    "title": "Terms of Service",
+    "sections": {
+      "introduction": {
+        "title": "Introduction",
+        "p1": "Welcome to G-ventZ.",
+        "p2": "These Terms of Service govern your access to and use of our website, applications, event management tools, ticketing services, and related features.",
+        "p3": "G-ventZ provides a platform that enables users to create, publish, discover, manage, and promote events, register attendees, and sell tickets.",
+        "p4": "By creating an account or using our services, you agree to these Terms. If you do not agree, you must discontinue using the platform."
+      },
+      "eligibilityAndAccounts": {
+        "title": "Eligibility and Accounts",
+        "p1": "You must have the legal capacity to enter into a binding agreement to use our services.",
+        "p2": "You agree to:",
+        "b1": "Provide accurate and complete registration information.",
+        "b2": "Keep your login credentials secure.",
+        "b3": "Maintain accurate information about your events.",
+        "b4": "Notify us promptly of unauthorized access to your account.",
+        "b5": "Accept responsibility for activities conducted through your account, subject to applicable law.",
+        "a1": "We reserve the right to restrict or suspend accounts that violate these Terms."
+      },
+      "eventOrganizers": {
+        "title": "Event Organizers",
+        "p1": "Event organizers are responsible for the events they publish and manage through our platform.",
+        "p2": "Organizers must:",
+        "b1": "Provide accurate event descriptions, dates, locations, schedules, and ticket prices.",
+        "b2": "Obtain all permits, licenses, and authorizations required for their events.",
+        "b3": "Ensure their events comply with applicable laws.",
+        "b4": "Clearly disclose event-specific rules and refund conditions.",
+        "b5": "Deliver the events and services advertised to attendees.",
+        "b6": "Handle attendee inquiries, complaints, cancellations, and applicable refunds.",
+        "b7": "Avoid misleading advertising, fraudulent ticket sales, and unauthorized use of intellectual property.",
+        "a1": "Organizers must not use the platform to facilitate illegal activities, fraudulent transactions, or prohibited events."
+      },
+      "attendeesAndTicketPurchases": {
+        "title": "Attendees and Ticket Purchases",
+        "p1": "Attendees are responsible for reviewing event information before purchasing tickets.",
+        "p2": "A ticket purchase creates a transaction between the attendee and the relevant event organizer, subject to the applicable payment arrangements and consumer protection laws.",
+        "p3": "Tickets may be subject to event-specific restrictions, admission conditions, identification requirements, or transfer limitations.",
+        "p4": "We do not guarantee admission where an attendee violates an event's published entry requirements."
+      },
+      "platformFeesAndPayments": {
+        "title": "Platform Fees and Payments",
+        "p1": "Creating an account and publishing free events may be available without charge.",
+        "p2": "Paid ticket sales may attract platform fees, payment processing charges, subscription fees, or other clearly disclosed charges.",
+        "p3": "Applicable fees will be presented before the relevant transaction is completed.",
+        "p4": "Payment processing may be provided by third-party payment service providers. Their terms and policies may also apply.",
+        "p5": "Organizers are responsible for ensuring their payment and payout information is accurate and for complying with applicable tax and reporting obligations.",
+        "p6": "We may update our pricing with reasonable notice. Changes will not retroactively alter fees already charged on completed transactions."
+      },
+      "payouts": {
+        "title": "Payouts",
+        "p1": "Ticket proceeds will be paid to eligible organizers according to the applicable payout schedule and payment provider requirements.",
+        "p2": "Payouts may be delayed where additional verification is required, a transaction is disputed, fraud is suspected, a refund is pending, or applicable law requires a restriction.",
+        "p3": "We may maintain reasonable reserves where permitted by law and our payment processing agreements.",
+        "p4": "We will not intentionally withhold funds without a legitimate contractual, legal, security, or payment-processing reason."
+      },
+      "cancellationsAndRefunds": {
+        "title": "Cancellations and Refunds",
+        "p1": "Event organizers must clearly disclose their refund policy before attendees purchase tickets.",
+        "p2": "Refund requests will be handled according to the event's published policy, these Terms, and applicable law.",
+        "p3": "If an event is cancelled, the organizer must communicate the cancellation promptly and issue refunds where required by law or the applicable event policy.",
+        "p4": "Refunds may take several business days to appear, depending on the payment provider and the attendee's financial institution.",
+        "p5": "Platform fees and payment processing fees will be treated according to the applicable fee disclosure, payment provider rules, and legal requirements.",
+        "p6": "Nothing in this section removes any mandatory refund or consumer rights available under applicable law."
+      },
+      "prohibitedActivities": {
+        "title": "Prohibited Activities",
+        "p1": "You may not:",
+        "b1": "Create fraudulent or misleading events.",
+        "b2": "Sell counterfeit, unauthorized, or invalid tickets.",
+        "b3": "Manipulate ticket sales or payment systems.",
+        "b4": "Circumvent platform fees or security controls.",
+        "b5": "Collect personal information unlawfully.",
+        "b6": "Send unsolicited marketing communications in violation of applicable law.",
+        "b7": "Upload malicious software or attempt unauthorized access to our systems.",
+        "b8": "Infringe another person's intellectual property.",
+        "b9": "Use the platform for unlawful discrimination, harassment, fraud, or other prohibited conduct.",
+        "a1": "We may remove content, cancel listings, restrict features, or suspend accounts where reasonably necessary to enforce these Terms or comply with the law."
+      },
+      "intellectualProperty": {
+        "title": "Intellectual Property",
+        "p1": "You retain ownership of the content you own and upload to the platform.",
+        "p2": "By publishing event content, you grant G-ventZ a limited, non-exclusive, worldwide, royalty-free license to host, reproduce, display, and distribute that content as reasonably necessary to operate, promote, and provide the services you request.",
+        "p3": "You represent that you have the rights and permissions necessary to upload and use your content.",
+        "p4": "Our software, branding, interface, and original platform materials remain our property or the property of our licensors."
+      },
+      "privacy": {
+        "title": "Privacy",
+        "p1": "Our collection and use of personal information are governed by our Privacy Policy.",
+        "p2": "Organizers must process attendee information lawfully and use it only for permitted event administration, communications, and other disclosed purposes.",
+        "p3": "Organizers must obtain any consent required before using attendee information for unrelated marketing."
+      },
+      "thirdPartyServices": {
+        "title": "Third-Party Services",
+        "p1": "Our platform may integrate with payment processors, analytics providers, email services, identity verification tools, and other third-party services.",
+        "p2": "We are not responsible for independent third-party services beyond the responsibilities imposed on us by applicable law or our agreements with those providers.",
+        "p3": "Your use of those services may be subject to additional terms."
+      },
+      "serviceAvailability": {
+        "title": "Service Availability",
+        "p1": "We aim to provide a reliable service but do not guarantee uninterrupted access.",
+        "p2": "Maintenance, technical issues, security incidents, or circumstances beyond our reasonable control may temporarily affect availability.",
+        "p3": "We will take reasonable steps to restore affected services."
+      },
+      "limitationOfLiability": {
+        "title": "Limitation of Liability",
+        "p1": "To the extent permitted by applicable law, G-ventZ is not responsible for losses arising solely from an organizer's failure to deliver an event, inaccurate event information supplied by an organizer, or disputes between organizers and attendees.",
+        "p2": "Nothing in these Terms excludes liability that cannot legally be excluded, including applicable consumer rights and liability for fraud or intentional misconduct.",
+        "p3": "Any other limitation of liability will apply only to the extent permitted by applicable law."
+      },
+      "accountSuspensionAndTermination": {
+        "title": "Account Suspension and Termination",
+        "p1": "You may stop using the platform at any time.",
+        "p2": "We may suspend or terminate access where you materially breach these Terms, engage in fraud, create a security risk, or where suspension is necessary to comply with law.",
+        "p3": "Where reasonably possible, we will explain the reason for suspension and provide an opportunity to resolve the issue.",
+        "p4": "Outstanding payment, refund, and legal obligations may survive termination."
+      },
+      "changesToTheseTerms": {
+        "title": "Changes to These Terms",
+        "p1": "We may update these Terms from time to time.",
+        "p2": "Material changes will be communicated through the platform, by email, or through another appropriate method.",
+        "p3": "The revised Terms will state their effective date."
+      },
+      "governingLaw": {
+        "title": "Governing Law",
+        "p1": "These Terms are governed by the laws of Nigeria, subject to mandatory legal protections applicable to users.",
+        "p2": "Any dispute will be handled by the competent courts or dispute resolution bodies determined under applicable law."
+      },
+      "contact": {
+        "title": "Contact",
+        "p1": "For questions about these Terms, contact:",
+        "p2": "Platform: G-ventZ",
+        "p3": "Email: support@gventz.com"
+      }
+    }
+  },
+  "privacy": {
+    "metaTitle": "Privacy Policy · G-ventZ",
+    "title": "Privacy Policy",
+    "effective": "To be confirmed",
+    "intro": "This policy is being drafted. The full text will be published before paid tickets launch.",
+    "toBeWritten": "To be written.",
+    "sections": {
+      "introduction": {
+        "title": "Introduction",
+        "p1": "This Privacy Policy will explain how G-ventZ collects, uses and protects your personal information when you use our website, apps and ticketing services."
+      },
+      "informationWeCollect": {
+        "title": "Information We Collect",
+        "b1": "Account details (name, email address)",
+        "b2": "Event and registration details",
+        "b3": "Tickets and check-in records",
+        "b4": "Device and usage information"
+      },
+      "howWeUseYourInformation": {
+        "title": "How We Use Your Information"
+      },
+      "sharingWithEventHosts": {
+        "title": "Sharing With Event Hosts"
+      },
+      "thirdPartyServices": {
+        "title": "Third-Party Services"
+      },
+      "cookiesAndLocalStorage": {
+        "title": "Cookies and Local Storage"
+      },
+      "dataRetention": {
+        "title": "Data Retention"
+      },
+      "yourRights": {
+        "title": "Your Rights"
+      },
+      "security": {
+        "title": "Security"
+      },
+      "children": {
+        "title": "Children"
+      },
+      "changesToThisPolicy": {
+        "title": "Changes to This Policy"
+      },
+      "contactUs": {
+        "title": "Contact Us"
+      }
+    }
+  },
+  "refunds": {
+    "metaTitle": "Refund policy · G-ventZ",
+    "title": "Refund and Cancellation Policy",
+    "sections": {
+      "overview": {
+        "title": "Overview",
+        "p1": "This Refund and Cancellation Policy explains how refund requests are handled for events published through G-ventZ.",
+        "p2": "Our platform provides tools for organizers to publish events, sell tickets, and manage registrations. Unless expressly stated otherwise, event organizers are responsible for delivering their events and administering event-specific refunds.",
+        "p3": "This policy is subject to applicable consumer protection laws."
+      },
+      "eventSpecificRefundPolicies": {
+        "title": "Event-Specific Refund Policies",
+        "p1": "Each organizer must establish a refund policy for their event.",
+        "p2": "The applicable policy should be displayed before a ticket purchase and may specify:",
+        "b1": "Whether tickets are refundable.",
+        "b2": "The deadline for requesting a refund.",
+        "b3": "Whether cancellations are eligible for full or partial refunds.",
+        "b4": "Whether tickets can be transferred to another person.",
+        "b5": "Any permitted administrative deductions.",
+        "b6": "How to submit a refund request.",
+        "a1": "Attendees should review the event's refund policy before completing a purchase.",
+        "a2": "No event-specific policy may override mandatory rights under applicable law."
+      },
+      "attendeeInitiatedRefundRequests": {
+        "title": "Attendee-Initiated Refund Requests",
+        "p1": "If an attendee can no longer attend an event, they should contact the organizer or submit a refund request through the available platform tools.",
+        "p2": "Refund eligibility will be assessed under the published event policy and applicable law.",
+        "p3": "Unless the event policy or applicable law provides otherwise, organizers may decline voluntary refund requests for reasons such as a change of personal plans or failure to attend."
+      },
+      "cancelledEvents": {
+        "title": "Cancelled Events",
+        "p1": "If an organizer cancels an event, the organizer must notify affected attendees promptly.",
+        "p2": "Where a refund is required by law or the applicable event policy, the organizer must arrange the appropriate refund.",
+        "p3": "Any legally required refund must not be denied solely because an event's policy states that tickets are non-refundable."
+      },
+      "postponedOrRescheduledEvents": {
+        "title": "Postponed or Rescheduled Events",
+        "p1": "If an event is postponed or rescheduled, the organizer must inform ticket holders of the new arrangements.",
+        "p2": "Refund eligibility will depend on the event policy and applicable law, including any rights triggered by a material change to the event."
+      },
+      "duplicateOrIncorrectPayments": {
+        "title": "Duplicate or Incorrect Payments",
+        "p1": "If you believe you were charged more than once for the same order or charged incorrectly, contact support with your order reference and relevant transaction details.",
+        "p2": "We will investigate the issue and coordinate with the organizer or payment provider as appropriate.",
+        "p3": "Verified duplicate charges will be addressed in accordance with applicable payment rules and law."
+      },
+      "processingRefunds": {
+        "title": "Processing Refunds",
+        "p1": "Approved refunds will generally be returned through the original payment method where supported.",
+        "p2": "The time required for the funds to appear in your account depends on the payment provider and your financial institution.",
+        "p3": "We will communicate any material delay or additional information required to process the refund."
+      },
+      "platformAndProcessingFees": {
+        "title": "Platform and Processing Fees",
+        "p1": "Any platform or payment processing fees associated with a refund will be handled according to the fee terms disclosed at checkout, the applicable payment provider's rules, and applicable law.",
+        "p2": "We will not retain or deduct fees where doing so would violate mandatory legal requirements."
+      },
+      "subscriptionRefunds": {
+        "title": "Subscription Refunds",
+        "p1": "Fees paid for optional organizer subscriptions are generally non-refundable once the relevant billing period has begun, except where required by law or where we determine that a refund is appropriate because of a billing error or another exceptional circumstance.",
+        "p2": "Cancelling a subscription stops future renewals but does not automatically refund previous payments."
+      },
+      "fraudAndUnauthorizedTransactions": {
+        "title": "Fraud and Unauthorized Transactions",
+        "p1": "If you suspect that a ticket purchase or payment was unauthorized, contact us promptly.",
+        "p2": "We may request relevant transaction information and coordinate with the payment provider to investigate.",
+        "p3": "Nothing in this section limits any rights you may have under applicable payment or consumer protection laws."
+      },
+      "howToRequestARefund": {
+        "title": "How to Request a Refund",
+        "p1": "Contact the event organizer using the contact information on the event page.",
+        "p2": "For payment-processing issues, duplicate charges, or platform-related problems, contact:",
+        "p3": "Support Email: support@gventz.com",
+        "p4": "Please include your order reference, event name, purchase date, and a description of the issue. Do not send your full payment card number or security code."
+      },
+      "policyUpdates": {
+        "title": "Policy Updates",
+        "p1": "We may update this policy from time to time. The effective date will be revised when changes are published."
+      },
+      "contact": {
+        "title": "Contact",
+        "p1": "Platform: G-ventZ",
+        "p2": "Email: support@gventz.com"
+      }
+    }
+  }
+}

@@ -1,0 +1,219 @@
+{
+  "admin": {
+    "host_not_found": "未找到主办方。",
+    "range_invalid": "请选择早于结束时间的开始时间。",
+    "range_too_long": "请选择更短的时间段。",
+    "reason_invalid": "请填写 3 到 500 个字符的原因。"
+  },
+  "announcement": {
+    "already_sent": "此公告已发送。",
+    "event_draft": "请先发布活动，再发送公告。",
+    "event_limit": "您已发送完您的套餐允许此活动发送的全部公告。",
+    "event_started": "公告只能在活动开始前发送。",
+    "no_recipients": "此受众中暂时没有人可以接收电子邮件。",
+    "not_found": "找不到此公告。",
+    "segment_invalid": "请选择此公告的接收对象。",
+    "unsubscribe_unknown": "此退订链接无效。"
+  },
+  "auth": {
+    "anonymous_not_allowed": "请使用电子邮件或 Google 登录以继续。",
+    "invalid_token": "您的会话无效。请重新登录。",
+    "mfa_required": "请使用您的身份验证器应用确认以继续。",
+    "required": "请登录以继续。",
+    "token_expired": "您的会话已过期。请重新登录。"
+  },
+  "conflict": {
+    "duplicate": "此项已存在。"
+  },
+  "db": {
+    "busy": "我们现在非常繁忙。请稍后再试。"
+  },
+  "event": {
+    "already_cancelled": "此活动已取消。",
+    "buyer_limit_invalid": "请选择每人 1 到 10 张票的上限。",
+    "cancel_confirm": "请确认您要取消此活动。",
+    "cancelled": "此活动已被取消。",
+    "capacity_invalid": "容量必须是 1 到 1,000,000 之间的整数，留空则表示不限。",
+    "category_invalid": "请选择一个类别。",
+    "country_invalid": "请从列表中选择国家或地区。",
+    "currency_invalid": "请使用三个字母的货币代码，例如 NGN 或 USD。",
+    "currency_mixed": "所有票种必须使用相同的货币。",
+    "currency_not_payout": "付费门票以您的结算货币出售。",
+    "delete_confirm": "请准确输入活动名称以确认。",
+    "description_length": "描述最多 5,000 个字符。",
+    "end_before_start": "结束时间必须晚于开始时间。",
+    "forbidden": "您无权对此活动执行该操作。",
+    "has_paid_registrations": "包含付费门票的活动无法删除。",
+    "host_owes_money": "您因退款欠 G-ventZ 款项，在用销售收入还清之前无法发布新的付费活动。",
+    "location_invalid": "请检查场地信息后重试。",
+    "not_found": "未找到活动。",
+    "not_published": "此活动尚未发布。",
+    "paid_not_allowed": "付费门票即将推出。",
+    "paid_tickets_unsupported": "付费门票暂不可用。",
+    "payout_account_required": "发布付费门票前，请先绑定结算账户。",
+    "price_invalid": "票价必须是 0 或以上的整数金额。",
+    "refund_policy_length": "退款政策最多 2,000 个字符。",
+    "region_invalid": "请从列表中选择州或地区。",
+    "sales_window_invalid": "票种的停售时间必须晚于开售时间。",
+    "slug_unavailable": "我们无法为此活动创建链接。请重试。",
+    "ticket_name_invalid": "票种名称必须为 1 到 80 个字符。",
+    "ticket_quantity_invalid": "门票数量必须是大于 0 的整数。",
+    "ticket_types_count": "请添加 1 到 20 个票种。",
+    "time_invalid": "请使用有效的日期和时间。",
+    "time_not_in_zone": "由于时钟调整，该时间在此时区中不存在。请选择其他时间。",
+    "time_zone_required": "请选择活动的时区。",
+    "title_length": "活动名称必须为 3 到 140 个字符。"
+  },
+  "export": {
+    "busy": "已有导出正在进行。请一分钟后再试。"
+  },
+  "flyer": {
+    "not_uploaded": "请先上传图片。",
+    "path_invalid": "该上传文件不属于此活动。",
+    "size": "海报最大为 5 MB。",
+    "storage_unavailable": "海报上传暂不可用。请稍后再试。",
+    "type": "请使用 JPEG、PNG 或 WebP 图片。"
+  },
+  "host": {
+    "already_suspended": "此主办方已被停用。",
+    "cannot_suspend_self": "您不能停用自己的账户。",
+    "not_suspended": "此主办方未被停用。",
+    "suspended": "此主办方账户已被停用，因此无法创建、发布或编辑其活动。请联系 G-ventZ 客服。"
+  },
+  "host_application": {
+    "document_invalid": "请先上传您的身份证件或企业文件（JPG、PNG 或 PDF，最大 10 MB）。",
+    "document_too_large": "文件最大为 10 MB。",
+    "exists": "您已有一份处理中或已批准的申请。",
+    "invalid": "请检查申请信息后重试。",
+    "not_approved": "此申请未获批准。",
+    "not_found": "未找到申请。",
+    "not_submitted": "此申请已有处理结果。",
+    "reason_invalid": "请填写 3 到 500 个字符的原因。"
+  },
+  "invalid": {
+    "constraint": "不允许此更改。"
+  },
+  "money": {
+    "currency_mismatch": "不同货币的金额无法合并。",
+    "negative": "结果不能小于零。"
+  },
+  "order": {
+    "answer_invalid": "请为每个问题选择一个选项。",
+    "answer_required": "请回答必答问题。",
+    "busy": "现在有很多人正在领取门票。请重试。",
+    "buyer_limit": "您已达到每人可获取此活动门票的数量上限。",
+    "buyer_name_required": "请输入您的全名。",
+    "guest_name_invalid": "嘉宾姓名必须为 2 到 120 个字符。",
+    "host_suspended": "此活动目前不接受报名。",
+    "mixed_free_paid": "免费门票和付费门票需分开下单。请先领取免费门票，再购买付费门票。",
+    "non_refundable_required": "请勾选“我了解门票不可退款，活动取消的情况除外”以继续。",
+    "not_enough_places": "剩余名额不足以容纳这么多门票。",
+    "not_enough_tickets": "该票种的剩余门票不足。",
+    "not_found": "未找到订单。",
+    "not_open": "此活动未开放报名。",
+    "not_paid_types": "请只选择付费票种；免费门票需单独下单。",
+    "not_payable": "此订单已无法支付。请重新下单。",
+    "not_pending": "此请求已有处理结果。",
+    "paid_not_supported": "付费门票需单独购买：请通过结账购买付费门票。",
+    "paid_sales_closed": "此活动的付费门票目前无法购买。",
+    "price_too_low": "此票价低于其所含费用。",
+    "quantity_invalid": "请选择 1 到 10 张门票。",
+    "sales_ended": "门票销售已结束。",
+    "sales_not_started": "门票尚未开售。",
+    "sold_out": "该票种已售罄。",
+    "ticket_type_unavailable": "该票种不可用。",
+    "transition_not_allowed": "此订单无法以这种方式更改。"
+  },
+  "payment": {
+    "forbidden": "您无权执行此操作。",
+    "own_application": "您本人的申请或结算账户必须由其他工作人员审核。",
+    "provider_unavailable": "无法连接支付服务。请重试。"
+  },
+  "payout": {
+    "account_unresolved": "银行找不到此账户。请检查银行和账号。",
+    "country_unavailable": "Paystack 暂不支持此国家或地区。",
+    "not_approved": "获准销售付费门票后，您才能更改结算信息。",
+    "not_pending": "没有等待创建的结算账户。"
+  },
+  "places": {
+    "bad_request": "请检查搜索内容后重试。",
+    "not_configured": "地点搜索尚未设置。",
+    "unavailable": "地点搜索暂不可用。请直接输入地址。"
+  },
+  "profile": {
+    "unavailable": "无法加载您的个人资料。请联系客服。"
+  },
+  "question": {
+    "kind_invalid": "请选择问题类型。",
+    "label_length": "问题必须为 1 到 200 个字符。",
+    "limit": "一个活动最多可有 30 个问题。",
+    "not_found": "未找到问题。",
+    "options_count": "请至少添加 2 个不同的选项。"
+  },
+  "rate_limit": {
+    "exceeded": "请求过多。请稍候再试。"
+  },
+  "reference": {
+    "country_not_found": "未找到国家或地区。",
+    "time_zone_not_found": "未找到该地点的时区。"
+  },
+  "refund": {
+    "needs_approval": "此退款超出了您的团队目前可自行发放的额度。请联系 G-ventZ 客服，我们会进行审核。",
+    "not_refundable": "此门票无法退款：它不是已确认的付费门票，或已经退款。"
+  },
+  "registration": {
+    "already_registered": "您已有此活动的门票。",
+    "closed": "此活动的报名已截止。"
+  },
+  "request": {
+    "malformed": "无法读取该请求。",
+    "method_not_allowed": "此处不允许使用该方法。",
+    "too_large": "请求过大。",
+    "unsupported_media_type": "请以 JSON 格式发送请求正文。"
+  },
+  "resource": {
+    "not_found": "此地址没有任何内容。"
+  },
+  "route": {
+    "not_found": "此地址没有任何内容。"
+  },
+  "service": {
+    "busy": "我们现在非常繁忙。请稍后再试。"
+  },
+  "settings": {
+    "delay_invalid": "结算延迟必须是 0 到 30 之间的整数个工作日。",
+    "fee_currency_invalid": "请使用三个字母的货币代码，例如 NGN 或 USD。",
+    "fee_invalid": "请输入有效的费用。",
+    "provider_not_configured": "此支付服务商尚未在此环境中设置。",
+    "vat_invalid": "增值税率以基点表示：0 到 10000 之间的整数（100%）。"
+  },
+  "staff": {
+    "already_member": "此人已是 G-ventZ 工作人员。",
+    "cannot_remove_self": "您不能将自己从 G-ventZ 工作人员中移除。",
+    "email_invalid": "请输入有效的电子邮件地址。",
+    "email_unconfirmed": "接受工作人员邀请前，请先确认您的电子邮件地址。",
+    "invite_exists": "此电子邮件已有一个待处理的邀请。",
+    "invite_not_found": "没有与此 ID 对应的待处理邀请。",
+    "last_member": "无法移除最后一名 G-ventZ 工作人员。",
+    "no_invite": "您的电子邮件地址没有待处理的工作人员邀请。",
+    "not_found": "此电子邮件不属于 G-ventZ 工作人员。"
+  },
+  "storage": {
+    "unavailable": "文件存储不可用。请重试。"
+  },
+  "ticket": {
+    "email_limit": "此门票在一小时内已多次通过电子邮件发送。请稍后再试。",
+    "email_unavailable": "我们暂时无法发送电子邮件。请重试。",
+    "not_found": "未找到门票。"
+  },
+  "validation": {
+    "failed": "部分字段无效。"
+  },
+  "waitlist": {
+    "empty": "候补名单上没有人。",
+    "none_fits": "候补名单上的下一组所需名额多于剩余名额。"
+  },
+  "webhook": {
+    "signature_invalid": "签名无效。"
+  }
+}

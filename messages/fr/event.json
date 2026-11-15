@@ -1,0 +1,98 @@
+{
+  "page": {
+    "notices": {
+      "draft": "Brouillon. Seuls vous et votre équipe pouvez voir cette page.",
+      "cancelled": "Cet événement a été annulé.",
+      "canManage": "Vous pouvez modifier cet événement. <link>Gérer l'événement</link>"
+    },
+    "coverAlt": "Affiche de {title}",
+    "hostedBy": "Organisé par",
+    "going": "{count, plural, one {{count, number, ::group-off} personne y va} other {{count, number, ::group-off} personnes y vont}}",
+    "privateEvent": "Événement privé",
+    "timeLine": "{range} · heure de {zone}",
+    "place": {
+      "venue": "Lieu",
+      "online": "En ligne",
+      "onlineLine": "L'hôte partage le lien avec les invités"
+    },
+    "about": "À propos",
+    "location": "Lieu",
+    "directions": "Itinéraire ↗",
+    "refunds": "Remboursements"
+  },
+  "tickets": {
+    "headManage": "Vos billets en vente",
+    "headGet": "Obtenir des billets",
+    "head": "Billets",
+    "cancelled": "Cet événement a été annulé, les billets ne sont donc plus disponibles.",
+    "closed": "Les inscriptions à cet événement sont closes.",
+    "notOnSale": "Les billets de cet événement ne sont pas encore en vente. Revenez bientôt.",
+    "paidUnavailable": "Les billets payants ne peuvent pas être achetés pour le moment. Revenez bientôt.",
+    "separateOrders": "Les billets gratuits et payants sont des commandes distinctes. Prenez un type, puis revenez pour l'autre.",
+    "freeTitle": "Billets gratuits",
+    "paidTitle": "Billets payants",
+    "approvalNote": "L'hôte approuve chaque demande avant l'émission des billets."
+  },
+  "host": {
+    "free": "Gratuit",
+    "taken": "{sold} pris",
+    "takenOf": "{sold} pris sur {quantity}",
+    "note": "Les invités voient ici le formulaire de billets. Vous gérez cet événement, vous n'avez donc pas besoin de billet.",
+    "seeGuests": "Voir les invités",
+    "manage": "Gérer l'événement"
+  },
+  "signUp": {
+    "welcome": "Bienvenue ! Créez un compte gratuit ou connectez-vous pour obtenir vos billets. Cela prend quelques secondes avec Google ou un code à 6 chiffres reçu par e-mail.",
+    "cta": "Obtenir des billets",
+    "haveAccount": "Vous avez déjà un compte ? <link>Se connecter</link>"
+  },
+  "guest": {
+    "name": "Votre nom complet",
+    "email": "E-mail",
+    "emailNote": "Tous vos billets sont envoyés à l'adresse e-mail de votre compte.",
+    "othersLegend": "Noms pour les autres billets (facultatif ; vous pouvez transférer chaque billet)",
+    "ticketNumber": "Billet {number}",
+    "namePlaceholder": "Nom de l'invité",
+    "choose": "Choisir",
+    "socialPlaceholder": "@pseudo ou lien du profil"
+  },
+  "order": {
+    "legend": "Billets",
+    "soldOut": "Complet",
+    "free": "Gratuit",
+    "howMany": "Combien de billets {name}",
+    "limit": "Jusqu'à {count, plural, one {{count, number, ::group-off} billet} other {{count, number, ::group-off} billets}} par personne.",
+    "pending": "Obtention de vos billets...",
+    "request": "{count, plural, one {Demander un billet} other {Demander {count, number, ::group-off} billets}}",
+    "get": "{count, plural, one {Obtenir le billet} other {Obtenir {count, number, ::group-off} billets}}"
+  },
+  "paid": {
+    "legend": "Billets payants",
+    "soldOutWaitlist": "Complet · liste d'attente",
+    "serviceFee": "Frais de service",
+    "includesVat": "(dont TVA {amount})",
+    "total": "Total",
+    "feesIncluded": "Les frais sont inclus dans le prix.",
+    "subtotal": "Billets",
+    "workingFee": "Calcul des frais de service...",
+    "workingTotal": "Calcul du total...",
+    "waitlistNote": "Ce billet est complet. Inscrivez-vous sur la liste d'attente et nous vous écrirons si une place se libère ; vous aurez alors 24 heures pour payer.",
+    "refundPolicy": "Politique de remboursement :",
+    "joining": "Inscription...",
+    "opening": "Ouverture de Paystack...",
+    "join": "Rejoindre la liste d'attente",
+    "pay": "Payer avec Paystack",
+    "payTotal": "Payer avec Paystack · {total}",
+    "payNote": "Vous paierez sur la page sécurisée de Paystack. Vos billets sont réservés pendant 10 minutes."
+  },
+  "errors": {
+    "eventNotFound": "Cet événement est introuvable.",
+    "sessionEnded": "Votre session a expiré. Reconnectez-vous pour obtenir des billets.",
+    "orderFailed": "Nous n'avons pas pu obtenir vos billets. Veuillez réessayer.",
+    "quoteFailed": "Nous n'avons pas pu calculer le total. Veuillez réessayer.",
+    "paymentFailed": "Nous n'avons pas pu lancer votre paiement. Veuillez réessayer.",
+    "chooseTicket": "Choisissez au moins un billet.",
+    "ticketRange": "Choisissez entre 1 et 10 billets.",
+    "nonRefundable": "Cochez « {text} » pour continuer."
+  }
+}

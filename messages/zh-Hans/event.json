@@ -1,0 +1,98 @@
+{
+  "page": {
+    "notices": {
+      "draft": "草稿。只有您和您的团队可以看到此页面。",
+      "cancelled": "此活动已取消。",
+      "canManage": "您可以编辑此活动。<link>管理活动</link>"
+    },
+    "coverAlt": "{title} 的海报",
+    "hostedBy": "主办方",
+    "going": "{count, plural, other {{count, number, ::group-off} 人参加}}",
+    "privateEvent": "私密活动",
+    "timeLine": "{range} · {zone}时间",
+    "place": {
+      "venue": "场地",
+      "online": "线上",
+      "onlineLine": "主办方会将链接发给嘉宾"
+    },
+    "about": "活动介绍",
+    "location": "地点",
+    "directions": "查看路线 ↗",
+    "refunds": "退款"
+  },
+  "tickets": {
+    "headManage": "您在售的门票",
+    "headGet": "获取门票",
+    "head": "门票",
+    "cancelled": "此活动已取消，门票不再提供。",
+    "closed": "此活动的报名已截止。",
+    "notOnSale": "此活动的门票尚未开售，请稍后再来。",
+    "paidUnavailable": "目前无法购买付费门票，请稍后再来。",
+    "separateOrders": "免费门票和付费门票需分开下单。先获取一种，再回来获取另一种。",
+    "freeTitle": "免费门票",
+    "paidTitle": "付费门票",
+    "approvalNote": "主办方会先审核每个申请，再发放门票。"
+  },
+  "host": {
+    "free": "免费",
+    "taken": "已领取 {sold}",
+    "takenOf": "已领取 {sold} / {quantity}",
+    "note": "嘉宾在此处看到门票表单。您正在管理此活动，因此无需门票。",
+    "seeGuests": "查看嘉宾",
+    "manage": "管理活动"
+  },
+  "signUp": {
+    "welcome": "欢迎！创建免费账户或登录即可获取门票。使用 Google 或 6 位邮箱验证码，只需几秒钟。",
+    "cta": "获取门票",
+    "haveAccount": "已有账户？<link>登录</link>"
+  },
+  "guest": {
+    "name": "您的全名",
+    "email": "邮箱",
+    "emailNote": "您的所有门票都会发送到您的账户邮箱。",
+    "othersLegend": "其他门票的姓名（可选；每张门票都可以转发）",
+    "ticketNumber": "门票 {number}",
+    "namePlaceholder": "嘉宾姓名",
+    "choose": "请选择",
+    "socialPlaceholder": "@用户名或主页链接"
+  },
+  "order": {
+    "legend": "门票",
+    "soldOut": "已售罄",
+    "free": "免费",
+    "howMany": "{name} 门票数量",
+    "limit": "每人最多 {count, plural, other {{count, number, ::group-off} 张门票}}。",
+    "pending": "正在获取您的门票...",
+    "request": "{count, plural, other {申请 {count, number, ::group-off} 张门票}}",
+    "get": "{count, plural, other {获取 {count, number, ::group-off} 张门票}}"
+  },
+  "paid": {
+    "legend": "付费门票",
+    "soldOutWaitlist": "已售罄 · 候补名单",
+    "serviceFee": "服务费",
+    "includesVat": "（含增值税 {amount}）",
+    "total": "合计",
+    "feesIncluded": "费用已包含在价格中。",
+    "subtotal": "门票",
+    "workingFee": "正在计算服务费...",
+    "workingTotal": "正在计算合计...",
+    "waitlistNote": "该门票已售罄。加入候补名单，有名额空出时我们会发邮件通知您；届时您有 24 小时付款。",
+    "refundPolicy": "退款政策：",
+    "joining": "正在加入...",
+    "opening": "正在打开 Paystack...",
+    "join": "加入候补名单",
+    "pay": "使用 Paystack 付款",
+    "payTotal": "使用 Paystack 付款 · {total}",
+    "payNote": "您将在 Paystack 的安全页面付款。您的门票将保留 10 分钟。"
+  },
+  "errors": {
+    "eventNotFound": "找不到此活动。",
+    "sessionEnded": "您的会话已结束。请重新登录以获取门票。",
+    "orderFailed": "我们无法为您获取门票，请重试。",
+    "quoteFailed": "我们无法计算合计金额，请重试。",
+    "paymentFailed": "我们无法发起您的付款，请重试。",
+    "chooseTicket": "请至少选择一张门票。",
+    "ticketRange": "请选择 1 到 10 张门票。",
+    "nonRefundable": "请勾选“{text}”以继续。"
+  }
+}

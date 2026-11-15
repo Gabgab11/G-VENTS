@@ -1,0 +1,62 @@
+{
+  "hero": {
+    "pill": "Create events in minutes",
+    "titleStart": "Every celebration,",
+    "titleHighlight": "one place.",
+    "lede": "Owambe, outdooring, braai, sangeet or a Saturday birthday. Create your event, share one link, and let guests register from anywhere.",
+    "createFirst": "Create your first event",
+    "browse": "Browse events",
+    "tiltPlay": "Tilt to play",
+    "tiltStop": "Stop tilting"
+  },
+  "cards": {
+    "owambe": "Lagos · Saturday",
+    "engagement": "Enugu · December",
+    "birthday": "Lekki · 8pm",
+    "sendOff": "Abuja · Friday",
+    "naming": "Ibadan · Sunday"
+  },
+  "soon": {
+    "title": "Happening soon",
+    "seeAll": "See all events",
+    "empty": "No public events yet. <link>Be the first to create one.</link>"
+  },
+  "closing": {
+    "titleStart": "Your guests are",
+    "titleHighlight": "already waiting.",
+    "discover": "Discover events",
+    "create": "Create an event free"
+  },
+  "footer": {
+    "tagline": "Good gatherings start here. Create an event, share one link, and bring everyone together.",
+    "discover": {
+      "title": "Discover",
+      "allEvents": "All events",
+      "pricing": "Pricing",
+      "createEvent": "Create event"
+    },
+    "hosts": {
+      "title": "For hosts",
+      "host": "Host an event",
+      "help": "Help centre",
+      "refunds": "Refunds"
+    },
+    "company": {
+      "title": "Company",
+      "about": "About G-ventZ",
+      "contact": "Contact"
+    },
+    "contact": {
+      "title": "Contact",
+      "support": "Support",
+      "visitHelp": "Visit help centre",
+      "forHosts": "For event hosts",
+      "getStarted": "Get started"
+    },
+    "legal": {
+      "label": "Legal",
+      "terms": "Terms",
+      "privacy": "Privacy"
+    }
+  }
+}

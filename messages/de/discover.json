@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "title": "Events entdecken · G-ventZ"
+  },
+  "online": "Online",
+  "allEvents": "Alle Events",
+  "categoryEvents": "Events: {category}",
+  "categoryEmpty": "In der Kategorie {category} steht noch nichts an. <link>Veranstalten Sie eins</link>.",
+  "noEvents": "Noch keine öffentlichen Events. <link>Erstellen Sie das erste</link>.",
+  "empty": {
+    "discover": "Entdecken",
+    "title": "Gute Begegnungen beginnen hier",
+    "categoryTitle": "Noch keine Events in der Kategorie {category}",
+    "text": "Machen Sie den Anfang: Erstellen Sie ein Event und teilen Sie einen einzigen Link mit Ihren Gästen.",
+    "create": "Event erstellen"
+  },
+  "rails": {
+    "categories": "Event-Kategorien",
+    "soon": "Demnächst",
+    "weekend": "Dieses Wochenende"
+  },
+  "rail": {
+    "previous": "Zurück: {title}",
+    "next": "Weiter: {title}"
+  },
+  "hero": {
+    "label": "Ausgewählte Events",
+    "slide": "{position} von {count}: {title}",
+    "getTickets": "Tickets sichern",
+    "share": "Teilen",
+    "shareOn": "Auf {network} teilen",
+    "shareText": "{title} auf G-ventZ",
+    "choose": "Ausgewähltes Event wählen",
+    "show": "{title} anzeigen"
+  },
+  "inSentence": {
+    "music": "Musik",
+    "conferences": "Konferenzen",
+    "tech": "Tech",
+    "faith": "Glaube",
+    "arts": "Kunst",
+    "food": "Essen & Trinken",
+    "sports": "Sport",
+    "business": "Business",
+    "nightlife": "Nachtleben",
+    "education": "Bildung",
+    "community": "Gemeinschaft",
+    "charity": "Wohltätigkeit",
+    "family": "Familie",
+    "other": "Sonstiges"
+  }
+}
