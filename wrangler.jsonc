@@ -34,7 +34,10 @@
       "vars": {
         "APP_ENV": "staging",
         "API_URL": "https://api-staging.gventz.com",
-        "NEXT_PUBLIC_SITE_URL": "https://staging.gventz.com"
+        "NEXT_PUBLIC_SITE_URL": "https://staging.gventz.com",
+        // Languages switched on (Change 3): all seven on staging for review. Production has none
+        // here, so it stays English until every language has passed native review (D76).
+        "NEXT_PUBLIC_LANGUAGES": "en,es,fr,de,zh-Hans,pt,ar"
       },
       "r2_buckets": [{ "binding": "NEXT_INC_CACHE_R2_BUCKET", "bucket_name": "gventz-web-cache-staging" }],
       "durable_objects": {

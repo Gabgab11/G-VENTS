@@ -42,9 +42,9 @@ describe("resolveLanguage (W3, FR-23)", () => {
     expect(r("/e/x", null, null)).toBe("en");
   });
 
-  it("the admin dashboard is always English", () => {
-    expect(r("/admin", "fr", "fr")).toBe("en");
-    expect(r("/admin/orders", "ar", null)).toBe("en");
+  it("admin follows the chosen language too (one layout for every signed-in page; admin's own text is English)", () => {
+    expect(r("/admin", "fr", "fr")).toBe("fr");
+    expect(r("/admin/orders", "ar", null)).toBe("ar");
   });
 
   it("always answers a switched-on language (PBT)", () => {
