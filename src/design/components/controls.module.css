@@ -1,0 +1,36 @@
+/* Shared look for Input, Textarea and Select. */
+.control {
+  width: 100%;
+  min-height: var(--control-height);
+  padding-block: 0;
+  padding-inline: var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+.control::placeholder { color: var(--color-text-muted); opacity: 1; }
+.control:focus-visible,
+.control:focus { outline: 2px solid var(--color-focus); outline-offset: 0; border-color: transparent; }
+.control[aria-invalid="true"] { border-color: var(--color-danger); }
+.control:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.textarea { min-height: 96px; padding-block: var(--space-2); resize: vertical; }
+
+.selectWrap { position: relative; display: block; width: 100%; }
+.select { appearance: none; padding-inline-end: var(--space-10); cursor: pointer; }
+.chevron {
+  position: absolute;
+  inset-inline-end: var(--space-3);
+  inset-block-start: 50%;
+  translate: 0 -50%;
+  width: 20px;
+  height: 20px;
+  color: var(--color-text-muted);
+  pointer-events: none;
+}

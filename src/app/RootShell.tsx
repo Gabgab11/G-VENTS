@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
+import "@/design/tokens.css";
 import "./globals.css";
 import "./home-ball.css";
 import { COLOR_MODE_SCRIPT } from "@/lib/color-mode";
@@ -18,6 +19,7 @@ const manrope = localFont({
   src: "../../node_modules/@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2",
   weight: "200 800",
   display: "swap",
+  variable: "--font-sans-face",
 });
 
 export const baseMetadata: Metadata = {
@@ -42,7 +44,7 @@ export const baseViewport: Viewport = {
 export default function RootShell({ lang, children }: { lang: Locale; children: React.ReactNode }) {
   return (
     // suppressHydrationWarning: the colour-mode script sets data-theme on <html> before React loads.
-    <html lang={LANGUAGE_INFO[lang].hreflang} dir={dirOf(lang)} className={`${manrope.className} ${display.variable}`} suppressHydrationWarning>
+    <html lang={LANGUAGE_INFO[lang].hreflang} dir={dirOf(lang)} className={`${manrope.className} ${manrope.variable} ${display.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: COLOR_MODE_SCRIPT }} />
       </head>

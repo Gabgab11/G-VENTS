@@ -57,6 +57,9 @@ export default function ThemeStage({ theme }: { theme: string }) {
     if (theme === "minimal" || !isThemeKey(theme)) return;
     const style = document.documentElement.style;
     const vars: Record<string, string> = {
+      // Design tokens (src/design/tokens.css) and their legacy names, so old and new components follow the style.
+      "--color-bg": t.bg, "--color-surface": t.surface, "--color-surface-raised": t.surfaceHi,
+      "--color-border": t.line, "--color-text": t.text, "--color-text-muted": t.muted, "--grad-brand": t.grad,
       "--bg": t.bg, "--surface": t.surface, "--surface-hi": t.surfaceHi,
       "--line": t.line, "--text": t.text, "--muted": t.muted, "--grad": t.grad,
     };

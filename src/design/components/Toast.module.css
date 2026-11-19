@@ -1,0 +1,65 @@
+.viewport {
+  position: fixed;
+  inset-block-end: 0;
+  inset-inline-end: 0;
+  z-index: var(--z-toast);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 400px;
+  max-width: 100vw;
+  margin: 0;
+  padding: var(--space-4);
+  list-style: none;
+  outline: none;
+}
+.toast {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: var(--space-3);
+  align-items: start;
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  box-shadow: var(--shadow-2);
+}
+.toast[data-state="open"] { animation: enter var(--duration-base) var(--ease-out); }
+.toast[data-state="closed"] { animation: leave var(--duration-fast) var(--ease-out) forwards; }
+.toast[data-swipe="move"] { transform: translateX(var(--radix-toast-swipe-move-x)); }
+.toast[data-swipe="cancel"] { transform: translateX(0); transition: transform var(--duration-base) var(--ease-out); }
+.toast[data-swipe="end"] { animation: leave var(--duration-fast) var(--ease-out) forwards; }
+
+.icon { flex: none; }
+.info .icon { color: var(--color-info); }
+.success .icon { color: var(--color-success); }
+.warning .icon { color: var(--color-warning); }
+.danger .icon { color: var(--color-danger); }
+
+.title { font-size: var(--text-label); line-height: var(--leading-label); font-weight: var(--weight-bold); }
+.description { margin-block-start: var(--space-1); font-size: var(--text-body-sm); line-height: var(--leading-body-sm); color: var(--color-text-soft); }
+.close {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  margin: calc(var(--space-1) * -1);
+  border: 0;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+.close:hover { background: var(--color-surface); color: var(--color-text); }
+.close:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+
+@keyframes enter { from { opacity: 0; transform: translateY(var(--space-2)); } to { opacity: 1; transform: none; } }
+@keyframes leave { from { opacity: 1; } to { opacity: 0; } }
+
+@media (max-width: 639px) {
+  .viewport { width: 100%; inset-inline-start: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .toast[data-state="open"], .toast[data-state="closed"], .toast[data-swipe="end"] { animation: none; }
+}
