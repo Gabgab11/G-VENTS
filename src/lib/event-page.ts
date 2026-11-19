@@ -1,5 +1,6 @@
 import "server-only";
 
+import { cache } from "react";
 import { api, data } from "@/lib/api/server";
 import { ApiError } from "@/lib/api/problem";
 import type { components } from "@/lib/api/schema";
@@ -20,6 +21,12 @@ export async function getEventPage(slug: string): Promise<EventPage | null> {
     throw error;
   }
 }
+
+/**
+ * The same, once per request: generateMetadata and the page share one API call (React `cache`). The
+ * metadata calls notFound() for an unknown slug, which resolves before the page streams, so it is a 404.
+ */
+export const loadEventPage = cache(getEventPage);
 
 /** "Venue · City · Country", or "Online". */
 export function whereText(location: EventPage["location"]): string {

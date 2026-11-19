@@ -146,5 +146,20 @@
     "charity": "Benéfico",
     "family": "Familia",
     "other": "Otros"
+  },
+  "price": { "free": "Gratis", "from": "Desde {price}" },
+  "share": {
+    "share": "Compartir",
+    "title": "Compartir este evento",
+    "close": "Cerrar",
+    "email": "Correo electrónico",
+    "copy": "Copiar enlace",
+    "copied": "Enlace copiado",
+    "copyManual": "El enlace está seleccionado; cópielo desde aquí.",
+    "linkLabel": "Enlace del evento",
+    "poster": "Póster con código QR",
+    "posterScan": "Escanee para abrir el evento",
+    "posterFailed": "No se pudo crear el póster. Inténtelo de nuevo.",
+    "preview": "Vista previa de la tarjeta para compartir"
   }
 }

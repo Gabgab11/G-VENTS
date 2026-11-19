@@ -5,13 +5,14 @@
   "nav": {
     "main": "Principal",
     "discover": "Descobrir",
-    "pricing": "Preços",
-    "createEvent": "Criar evento",
+    "myTickets": "Meus ingressos",
+    "hostEvent": "Organizar um evento",
     "back": "Voltar",
     "menu": "Menu",
     "closeMenu": "Fechar menu"
   },
   "account": {
+    "myTickets": "Meus ingressos",
     "signIn": "Entrar",
     "signOut": "Sair",
     "dashboard": "Painel",

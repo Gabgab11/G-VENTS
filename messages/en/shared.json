@@ -107,5 +107,20 @@
     "charity": "Charity",
     "family": "Family",
     "other": "Other"
+  },
+  "price": { "free": "Free", "from": "From {price}" },
+  "share": {
+    "share": "Share",
+    "title": "Share this event",
+    "close": "Close",
+    "email": "Email",
+    "copy": "Copy link",
+    "copied": "Link copied",
+    "copyManual": "The link is selected; copy it from here.",
+    "linkLabel": "Event link",
+    "poster": "QR poster",
+    "posterScan": "Scan to open the event",
+    "posterFailed": "Couldn't make the poster. Please try again.",
+    "preview": "Preview of the share card"
   }
 }

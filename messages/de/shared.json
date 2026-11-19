@@ -146,5 +146,20 @@
     "charity": "Wohltätigkeit",
     "family": "Familie",
     "other": "Sonstiges"
+  },
+  "price": { "free": "Kostenlos", "from": "Ab {price}" },
+  "share": {
+    "share": "Teilen",
+    "title": "Diese Veranstaltung teilen",
+    "close": "Schließen",
+    "email": "E-Mail",
+    "copy": "Link kopieren",
+    "copied": "Link kopiert",
+    "copyManual": "Der Link ist markiert; kopieren Sie ihn hier.",
+    "linkLabel": "Link zur Veranstaltung",
+    "poster": "QR-Poster",
+    "posterScan": "Scannen, um die Veranstaltung zu öffnen",
+    "posterFailed": "Das Poster konnte nicht erstellt werden. Bitte versuchen Sie es erneut.",
+    "preview": "Vorschau der Teilen-Karte"
   }
 }

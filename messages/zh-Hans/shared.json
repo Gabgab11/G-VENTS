@@ -146,5 +146,20 @@
     "charity": "慈善",
     "family": "家庭",
     "other": "其他"
+  },
+  "price": { "free": "免费", "from": "{price} 起" },
+  "share": {
+    "share": "分享",
+    "title": "分享此活动",
+    "close": "关闭",
+    "email": "电子邮件",
+    "copy": "复制链接",
+    "copied": "链接已复制",
+    "copyManual": "链接已选中，请在此处复制。",
+    "linkLabel": "活动链接",
+    "poster": "二维码海报",
+    "posterScan": "扫码打开活动",
+    "posterFailed": "无法生成海报，请重试。",
+    "preview": "分享卡片预览"
   }
 }
