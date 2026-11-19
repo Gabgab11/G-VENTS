@@ -8,6 +8,7 @@ import ServiceWorker from "@/components/ServiceWorker";
 import AuthFloor from "@/components/AuthFloor";
 import { LANGUAGE_INFO, dirOf, type Locale } from "@/i18n/languages";
 import { display } from "./fonts";
+import { env } from "@/lib/env";
 
 // The document both root layouts share (Change 3, I2): public pages ([lang]) and the rest ((site))
 // each have a root layout so public pages can stay static per language, but render this same shell.
@@ -22,10 +23,20 @@ const manrope = localFont({
   variable: "--font-sans-face",
 });
 
+// Shared by every page unless it sets its own: the site's name as the title, absolute URLs from
+// NEXT_PUBLIC_SITE_URL, and the site's share card (Change 4, Step 5) for the home page, Discover and
+// other pages without their own card. Event pages set their own card; ticket pages set none.
 export const baseMetadata: Metadata = {
-  title: "G-vents: events from everywhere",
+  metadataBase: new URL(env.siteUrl),
+  title: "G-ventZ",
   description: "Create, sell tickets for, and run events anywhere in the world.",
   applicationName: "G-ventZ",
+  openGraph: {
+    type: "website",
+    siteName: "G-ventZ",
+    images: [{ url: "/api/og/site", width: 1200, height: 630, alt: "G-ventZ" }],
+  },
+  twitter: { card: "summary_large_image", images: ["/api/og/site"] },
   // Home-screen app on iPhone: full screen, light status bar text over the dark header.
   appleWebApp: { capable: true, title: "G-ventZ", statusBarStyle: "black-translucent" },
   formatDetection: { telephone: false },

@@ -10,6 +10,12 @@ import { CARD_HEIGHT, CARD_WIDTH, cardCacheControl, cardDateLine, cardLanguage, 
 import { EventCard } from "../../card";
 import { cardFonts } from "../../fonts";
 import { flyer } from "../../flyer";
+import type discoverEn from "../../../../../../messages/en/discover.json";
+import type eventEn from "../../../../../../messages/en/event.json";
+import type sharedEn from "../../../../../../messages/en/shared.json";
+
+/** The message areas the card uses, typed from English (every language has the same keys). */
+type CardMessages = { discover: typeof discoverEn; event: typeof eventEn; shared: typeof sharedEn };
 
 // The event's share card (Change 4, FR-29.1, D81): /api/og/e/{slug}?v={updatedAt}&lang={lang}.
 // 1200×630 PNG with the flyer (or the cover style), title, date, place, price, host and wordmark.
@@ -38,7 +44,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
   if (!event) return notFound();
 
   const [messages, flyerUrl] = await Promise.all([loadMessages(lang), flyer(event.coverUrl)]);
-  const t = createTranslator({ locale: lang, messages });
+  const t = createTranslator({ locale: lang, messages: messages as unknown as CardMessages });
   const theme = getTheme(event.coverTheme);
   const title = fitTitle(event.title);
   const place = cardPlace(event.location, t("discover.online"));

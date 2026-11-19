@@ -26,7 +26,7 @@ const DISPLAY = "Bricolage, Bricolage Ext, Arabic";
  * A line (or wrapping paragraph) of text. Text with Arabic is laid out piece by piece (bidiPieces),
  * right to left when the paragraph is right-to-left, because the renderer has no bidi algorithm.
  */
-function Line({ text, style, align }: { text: string; style: CSSProperties; align: "start" | "end" }) {
+function Line({ text, style, align, wrap = true }: { text: string; style: CSSProperties; align: "start" | "end"; wrap?: boolean }) {
   const { rtl, pieces } = bidiPieces(text);
   const size = typeof style.fontSize === "number" ? style.fontSize : 24;
   const justify = (align === "end") !== rtl ? "flex-end" : "flex-start";
@@ -35,9 +35,10 @@ function Line({ text, style, align }: { text: string; style: CSSProperties; alig
   }
   // Arabic letters join: no negative letter spacing on them.
   return (
-    <div style={{ ...style, display: "flex", flexDirection: rtl ? "row-reverse" : "row", flexWrap: "wrap", justifyContent: justify, alignContent: "flex-start", letterSpacing: 0 }}>
+    <div style={{ ...style, display: "flex", flexDirection: rtl ? "row-reverse" : "row", flexWrap: wrap ? "wrap" : "nowrap", justifyContent: justify, alignContent: "flex-start", letterSpacing: 0 }}>
       {pieces.map((piece, i) => (
-        <span key={i} style={{ display: "flex", marginLeft: rtl ? size * 0.24 : 0, marginRight: rtl ? 0 : size * 0.24 }}>
+        // Right-aligned in its box: the renderer measures Arabic words a little wider than it draws them.
+        <span key={i} style={{ display: "flex", flexShrink: 0, justifyContent: rtl ? "flex-end" : "flex-start", textAlign: rtl ? "right" : "left", marginLeft: rtl && i < pieces.length - 1 ? size * 0.24 : 0, marginRight: !rtl && i < pieces.length - 1 ? size * 0.24 : 0 }}>
           {piece}
         </span>
       ))}
@@ -109,15 +110,18 @@ export function EventCard(p: EventCardProps) {
           {p.place ? <Line text={p.place} align={align} style={{ fontSize: 28, color: MUTED, marginTop: 22, width: "100%" }} /> : null}
         </div>
         <div style={{ display: "flex", flexDirection: "column", alignItems: items, width: "100%" }}>
-          <div style={{ display: "flex", flexDirection: p.rtl ? "row-reverse" : "row", alignItems: "center", marginBottom: 28 }}>
-            <Line text={p.price} align={align} style={{ backgroundColor: CORAL, color: TONE_INK, fontFamily: DISPLAY, fontSize: 30, fontWeight: 800, padding: "10px 24px", borderRadius: 999 }} />
-            {p.host ? (
-              <div style={{ display: "flex", flexDirection: p.rtl ? "row-reverse" : "row", fontSize: 24, color: MUTED, marginLeft: p.rtl ? 0 : 22, marginRight: p.rtl ? 22 : 0, maxWidth: 330 }}>
-                <Line text={p.host.label} align={align} style={{ fontSize: 24, marginLeft: p.rtl ? 7 : 0, marginRight: p.rtl ? 0 : 7 }} />
-                <Line text={p.host.name} align={align} style={{ fontSize: 24, fontWeight: 700, color: SOFT }} />
-              </div>
-            ) : null}
-          </div>
+          {p.host ? (
+            <div style={{ display: "flex", flexDirection: p.rtl ? "row-reverse" : "row", fontSize: 24, color: MUTED, marginBottom: 18, maxWidth: "100%" }}>
+              <Line text={p.host.label} align={align} wrap={false} style={{ fontSize: 24, marginLeft: p.rtl ? 7 : 0, marginRight: p.rtl ? 0 : 7, flexShrink: 0 }} />
+              <Line text={p.host.name} align={align} wrap={false} style={{ fontSize: 24, fontWeight: 700, color: SOFT, overflow: "hidden" }} />
+            </div>
+          ) : null}
+          <Line
+            text={p.price}
+            align={align}
+            wrap={false}
+            style={{ backgroundColor: CORAL, color: TONE_INK, fontFamily: DISPLAY, fontSize: 30, fontWeight: 800, padding: "10px 24px", borderRadius: 999, marginBottom: 30 }}
+          />
           <Wordmark size={40} />
         </div>
       </div>
