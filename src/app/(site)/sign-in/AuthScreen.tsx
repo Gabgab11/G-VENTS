@@ -1,5 +1,6 @@
 "use client";
 
+import { markLeavingSignIn } from "@/lib/auth-floor";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
@@ -52,6 +53,7 @@ export default function AuthScreen({ mode, art }: { mode: AuthMode; art: ReactNo
     setBusy(true);
     const result = await startGoogleSignIn(nextPath()).catch(() => ({ error: t("googleUnavailable") }));
     if ("url" in result) {
+      markLeavingSignIn();
       window.location.href = result.url;
       return;
     }
@@ -87,7 +89,9 @@ export default function AuthScreen({ mode, art }: { mode: AuthMode; art: ReactNo
     );
     setBusy(false);
     if (!result.ok) return setError(result.message);
-    window.location.href = nextPath();
+    markLeavingSignIn();
+    // replace, not a new entry: the sign-in page doesn't stay in this tab's history.
+    window.location.replace(nextPath());
   }
 
   return (

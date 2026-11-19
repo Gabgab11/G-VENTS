@@ -4,6 +4,7 @@ import "./globals.css";
 import "./home-ball.css";
 import { COLOR_MODE_SCRIPT } from "@/lib/color-mode";
 import ServiceWorker from "@/components/ServiceWorker";
+import AuthFloor from "@/components/AuthFloor";
 import { LANGUAGE_INFO, dirOf, type Locale } from "@/i18n/languages";
 import { display } from "./fonts";
 
@@ -48,6 +49,7 @@ export default function RootShell({ lang, children }: { lang: Locale; children: 
       <body>
         {children}
         <ServiceWorker />
+        <AuthFloor />
       </body>
     </html>
   );
