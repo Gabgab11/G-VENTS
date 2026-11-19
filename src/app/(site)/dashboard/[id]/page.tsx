@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { can, requireEvent } from "@/lib/auth";
 import { env } from "@/lib/env";
 import ThemeStage from "@/components/ThemeStage";
@@ -15,6 +14,7 @@ import { api, data } from "@/lib/api/server";
 import type { components } from "@/lib/api/schema";
 import { DisputeBanner } from "./SalesPanel";
 import { getLocale, getTranslations } from "next-intl/server";
+import { Button, TabLink, TabLinks } from "@/design";
 
 type Sales = components["schemas"]["EventSalesDto"];
 
@@ -68,17 +68,16 @@ export default async function ManageEventPage({
       <h1>{event.title}</h1>
       <p className="muted small">{statusLabel} · {t(event.visibility === "private" ? "visibility.private" : "visibility.public")} · {t("event.youAre", { role: event.role })}</p>
       {event.status === "published" && can(event, "guests.checkIn") && (
-        <p><Link href={`/dashboard/${id}/scan`} className="btn-grad">{t("event.scan")}</Link></p>
+        <p><Button href={`/dashboard/${id}/scan`} variant="accent">{t("event.scan")}</Button></p>
       )}
 
       {sales && <DisputeBanner disputes={sales.disputes} />}
 
-      <nav className="tabs" aria-label={t("event.tabsLabel")}>
+      <TabLinks aria-label={t("event.tabsLabel")}>
         {TABS.map((x) => (
-          <Link key={x.key} href={`/dashboard/${id}?tab=${x.key}`} className={tab === x.key ? "on" : ""}
-            aria-current={tab === x.key ? "page" : undefined}>{t(`event.tabs.${x.key}`)}</Link>
+          <TabLink key={x.key} href={`/dashboard/${id}?tab=${x.key}`} active={tab === x.key}>{t(`event.tabs.${x.key}`)}</TabLink>
         ))}
-      </nav>
+      </TabLinks>
 
       <ThemePanel current={theme} />
 

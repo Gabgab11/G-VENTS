@@ -6,6 +6,7 @@ import { requireUser } from "@/lib/auth";
 import { siteOrigin } from "@/lib/ticket";
 import OrderCard from "@/components/OrderCard";
 import SiteHeader from "@/components/SiteHeader";
+import { Button } from "@/design";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("tickets.myTickets");
@@ -39,7 +40,7 @@ export default async function MyTicketsPage({ searchParams }: { searchParams: Pr
       )}
 
       {page.nextCursor && (
-        <Link className="btn-ghost" href={`/my-tickets?when=${when}&cursor=${encodeURIComponent(page.nextCursor)}`}>{t("loadMore")}</Link>
+        <Button variant="secondary" href={`/my-tickets?when=${when}&cursor=${encodeURIComponent(page.nextCursor)}`}>{t("loadMore")}</Button>
       )}
     </main>
   );

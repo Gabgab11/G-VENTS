@@ -8,6 +8,8 @@ import { cancelEvent, removeFlyer, updateEventDetails, updateEventTheme } from "
 import DeleteEventForm from "./DeleteEventForm";
 import VenueForm from "./VenueForm";
 import { getTranslations } from "next-intl/server";
+import { Button, Card, Checkbox, Field, Input, Select, Textarea } from "@/design";
+import styles from "../dashboard.module.css";
 
 // Event settings from the dashboard response (gventz-api); every change goes through the API.
 export default async function SettingsTab({ event: e }: { event: EventDashboard }) {
@@ -22,21 +24,21 @@ export default async function SettingsTab({ event: e }: { event: EventDashboard 
   return (
     <div className="stack">
       {edit && (
-        <section className="panel">
+        <Card as="section">
           <div className="panel-label">{t("settings.styleTitle")}</div>
           <p className="muted small">{t("settings.styleHint")}</p>
-          <form action={updateEventTheme} className="row-form">
+          <form action={updateEventTheme} className={styles.rowForm}>
             <input type="hidden" name="event_id" value={id} />
-            <select className="input" name="cover_theme" defaultValue={e.coverTheme ?? "minimal"}>
+            <Select name="cover_theme" defaultValue={e.coverTheme ?? "minimal"} aria-label={t("settings.styleTitle")}>
               {Object.entries(THEMES).map(([k, theme]) => <option key={k} value={k}>{t.has(`themes.${k}`) ? t(`themes.${k}`) : theme.label}</option>)}
-            </select>
-            <button className="btn-white" type="submit">{t("settings.saveStyle")}</button>
+            </Select>
+            <Button variant="primary" type="submit">{t("settings.saveStyle")}</Button>
           </form>
-        </section>
+        </Card>
       )}
 
       {can(e, "flyer.manage") && (
-        <section className="panel">
+        <Card as="section">
           <div className="panel-label">{t("settings.flyerTitle")}</div>
           <p className="muted small">{t("settings.flyerHint")}</p>
           <div className="flyer-preview" style={{ background: themeBackground(e.coverTheme) }}>
@@ -45,9 +47,9 @@ export default async function SettingsTab({ event: e }: { event: EventDashboard 
           </div>
           {/* A plain form post to a route handler, not a Server Action: Cloudflare's WAF blocks some
               images sent to Server Actions (src/lib/same-origin.ts). */}
-          <form action={`/api/events/${id}/flyer`} method="post" encType="multipart/form-data" className="row-form">
-            <input className="input" type="file" name="flyer" accept="image/jpeg,image/png,image/webp" required />
-            <button className="btn-white" type="submit">{t("settings.uploadFlyer")}</button>
+          <form action={`/api/events/${id}/flyer`} method="post" encType="multipart/form-data" className={styles.rowForm}>
+            <Input type="file" name="flyer" accept="image/jpeg,image/png,image/webp" required />
+            <Button variant="primary" type="submit">{t("settings.uploadFlyer")}</Button>
           </form>
           {e.coverUrl && (
             <form action={removeFlyer}>
@@ -55,43 +57,40 @@ export default async function SettingsTab({ event: e }: { event: EventDashboard 
               <button className="link-btn" type="submit">{t("settings.removeFlyer")}</button>
             </form>
           )}
-        </section>
+        </Card>
       )}
 
       {edit && (
-        <section className="panel">
+        <Card as="section">
           <div className="panel-label">{t("settings.detailsTitle")}</div>
           <form action={updateEventDetails} className="form">
             <input type="hidden" name="event_id" value={id} />
-            <label className="field"><span>{t("settings.name")}</span>
-              <input className="input" name="title" defaultValue={e.title} required minLength={3} maxLength={140} /></label>
-            <label className="field"><span>{t("settings.about")}</span>
-              <textarea className="input" name="description" rows={5} defaultValue={e.description ?? ""} /></label>
-            <label className="field"><span>{t("settings.whoCanFind")}</span>
-              <select className="input" name="visibility" defaultValue={e.visibility}>
+            <Field label={t("settings.name")}>
+              <Input name="title" defaultValue={e.title} required minLength={3} maxLength={140} /></Field>
+            <Field label={t("settings.about")}>
+              <Textarea name="description" rows={5} defaultValue={e.description ?? ""} /></Field>
+            <Field label={t("settings.whoCanFind")}>
+              <Select name="visibility" defaultValue={e.visibility}>
                 <option value="public">{t("settings.public")}</option>
                 <option value="private">{t("settings.private")}</option>
-              </select></label>
-            <label className="field"><span>{t("settings.refundPolicy")}</span>
-              <textarea className="input" name="refund_policy" rows={3} defaultValue={e.refundPolicy ?? ""} /></label>
-            <label className="check">
-              <input type="checkbox" name="notify_registration" defaultChecked={e.notifyRegistration} />
-              <span>{t("settings.notify")}</span>
-            </label>
-            <button className="btn-white" type="submit">{t("settings.saveDetails")}</button>
+              </Select></Field>
+            <Field label={t("settings.refundPolicy")}>
+              <Textarea name="refund_policy" rows={3} defaultValue={e.refundPolicy ?? ""} /></Field>
+            <Checkbox name="notify_registration" defaultChecked={e.notifyRegistration} label={t("settings.notify")} />
+            <Button variant="primary" type="submit">{t("settings.saveDetails")}</Button>
           </form>
-        </section>
+        </Card>
       )}
 
       {edit && (
-        <section className="panel">
+        <Card as="section">
           <div className="panel-label">{t("settings.venue")}</div>
           <VenueForm eventId={id} current={e.location.kind === "online" ? t("settings.online") : whereText(e.location)} mapsUrl={e.location.kind === "venue" ? (e.location.mapsUrl ?? null) : null} detectedCountry={detectedCountry} />
-        </section>
+        </Card>
       )}
 
       {can(e, "event.cancel") && (
-        <section className="panel danger">
+        <Card as="section" className={styles.warn}>
           <div className="panel-label">{t("settings.cancelTitle")}</div>
           {e.status === "cancelled" ? (
             <p className="muted small">{t("settings.cancelled")}</p>
@@ -99,22 +98,22 @@ export default async function SettingsTab({ event: e }: { event: EventDashboard 
             <form action={cancelEvent} className="form">
               <input type="hidden" name="event_id" value={id} />
               <p className="muted small">{t("settings.cancelHint")}</p>
-              <label className="check"><input type="checkbox" name="confirm" value="yes" /> <span>{t("settings.cancelConfirm")}</span></label>
-              <button className="btn-danger" type="submit">{t("settings.cancelButton")}</button>
+              <Checkbox name="confirm" value="yes" label={t("settings.cancelConfirm")} />
+              <Button variant="danger" type="submit">{t("settings.cancelButton")}</Button>
             </form>
           )}
-        </section>
+        </Card>
       )}
 
       {del && (
-        <section className="panel danger">
+        <Card as="section" className={styles.warn}>
           <div className="panel-label">{t("settings.deleteTitle")}</div>
           {del.paidCount > 0 ? (
             <p className="muted small">{t("settings.deletePaid")}</p>
           ) : (
             <DeleteEventForm id={id} title={e.title} guests={del.guestCount} />
           )}
-        </section>
+        </Card>
       )}
     </div>
   );

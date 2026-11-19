@@ -17,6 +17,8 @@ import Link from "next/link";
 import { currencySymbol } from "@/lib/money";
 import { FEE_CHOICES, feeChoiceKey, sellReasonKey, type FeeChoice } from "@/lib/payment-text";
 import FeeExample from "./FeeExample";
+import { Button, Card, Field, Input, Select, Switch, Textarea } from "@/design";
+import styles from "./NewEventForm.module.css";
 
 type Tier = { id: number; name: string; price: string; qty: string };
 
@@ -154,7 +156,7 @@ export default function NewEventForm({
             <div className="cover-title">{title || t("form.coverTitle")}</div>
           </div>
 
-          <div className="panel">
+          <Card>
             <div className="panel-label">{t("form.image.label")}</div>
             <p className="muted small">{t("form.image.help")}</p>
             <input ref={imageInput} id="event-image" className="sr-only" type="file" name="flyer"
@@ -166,9 +168,9 @@ export default function NewEventForm({
             {image && <p className="muted small image-name">{image.name}</p>}
             {imageError && <p className="error" role="alert">{imageError}</p>}
             {!image && <p className="muted small">{t("form.image.none")}</p>}
-          </div>
+          </Card>
 
-          <div className="panel">
+          <Card>
             <div className="panel-label">{t("form.coverStyle")}</div>
             <div className="theme-grid">
               {Object.entries(THEMES).map(([key, th]) => {
@@ -182,7 +184,7 @@ export default function NewEventForm({
               })}
             </div>
             <input type="hidden" name="cover_theme" value={theme} />
-          </div>
+          </Card>
         </aside>
 
         {/* RIGHT: details */}
@@ -190,7 +192,7 @@ export default function NewEventForm({
           <input className="title-input" name="title" value={title} onChange={(e) => setTitle(e.target.value)}
             placeholder={t("form.eventName")} maxLength={140} required />
 
-          <div className="panel">
+          <Card>
             <div className="panel-label">{t("form.when.label")}</div>
             <div className="row2">
               <div className="field"><span>{t("form.when.starts")} <b className="req">*</b></span>
@@ -202,29 +204,31 @@ export default function NewEventForm({
             </div>
             {attempted && timesMissing && <p className="error">{t("form.when.missing")}</p>}
             <TimeZoneField online={online} context={zoneContext} />
-          </div>
+          </Card>
 
-          <div className="panel">
+          <Card>
             <div className="option">
               <div>
-                <div className="option-title">{t("online.title")}</div>
-                <div className="muted small">{t("online.help")}</div>
+                <div className="option-title" id="opt-online">{t("online.title")}</div>
+                <div className="muted small" id="opt-online-help">{t("online.help")}</div>
               </div>
-              <label className="switch"><input type="checkbox" name="is_online" checked={online} onChange={(e) => setOnline(e.target.checked)} /><span /></label>
+              <Switch name="is_online" checked={online} onCheckedChange={setOnline} aria-labelledby="opt-online" aria-describedby="opt-online-help" />
             </div>
             {!online && <LocationFields detectedCountry={detectedCountry} placesEnabled={placesEnabled} onZoneContext={setZoneContext} />}
-          </div>
+          </Card>
 
-          <div className="panel">
-            <label className="field"><span>{t("form.category")}</span>
-              <select className="input" name="category" defaultValue="Music">
+          <Card>
+            <Field label={t("form.category")}>
+              <Select name="category" defaultValue="Music">
                 {CATEGORIES.map((c) => <option key={c} value={c}>{root(categoryLabelKey(c))}</option>)}
-              </select></label>
-            <label className="field"><span>{t("form.about")}</span>
-              <textarea className="input" name="description" rows={6} placeholder={t("form.aboutPlaceholder")} /></label>
-          </div>
+              </Select>
+            </Field>
+            <Field label={t("form.about")}>
+              <Textarea name="description" rows={6} placeholder={t("form.aboutPlaceholder")} />
+            </Field>
+          </Card>
 
-          <div className="panel">
+          <Card>
             <div className="panel-label">{t("form.tickets.label")}</div>
             <div className="ticket-type" role="group" aria-label={t("form.tickets.kind")}>
               <button type="button" className={isFree ? "on" : ""} aria-pressed={isFree} onClick={() => { setIsFree(true); setTiers((list) => list.map((x) => ({ ...x, price: "0" }))); }}>{t("form.tickets.free")}</button>
@@ -255,17 +259,20 @@ export default function NewEventForm({
             )}
             <input type="hidden" name="fee_choice" value={feeChoice} />
             {tiers.map((tier) => (
-              <div className="tier-card" key={tier.id}>
+              <Card key={tier.id} className={styles.tier}>
                 <div className="row2">
-                  <label className="field"><span>{t("form.tickets.name")}</span>
-                    <input className="input" name="tier_name" value={tier.name} onChange={(e) => updateTier(tier.id, "name", e.target.value)} /></label>
-                  <label className="field"><span>{t("form.tickets.quantity")}</span>
-                    <input className="input" name="tier_qty" inputMode="numeric" value={tier.qty} onChange={(e) => updateTier(tier.id, "qty", e.target.value)} /></label>
+                  <Field label={t("form.tickets.name")}>
+                    <Input name="tier_name" value={tier.name} onChange={(e) => updateTier(tier.id, "name", e.target.value)} />
+                  </Field>
+                  <Field label={t("form.tickets.quantity")}>
+                    <Input name="tier_qty" inputMode="numeric" value={tier.qty} onChange={(e) => updateTier(tier.id, "qty", e.target.value)} />
+                  </Field>
                 </div>
                 {!isFree && (
                   <>
-                    <label className="field"><span>{t("form.tickets.price", { symbol: currencySymbol(paidCurrency) })}</span>
-                      <input className="input" name="tier_price" inputMode="numeric" placeholder={t("form.tickets.pricePlaceholder")} value={tier.price} onChange={(e) => updateTier(tier.id, "price", e.target.value)} /></label>
+                    <Field label={t("form.tickets.price", { symbol: currencySymbol(paidCurrency) })}>
+                      <Input name="tier_price" inputMode="numeric" placeholder={t("form.tickets.pricePlaceholder")} value={tier.price} onChange={(e) => updateTier(tier.id, "price", e.target.value)} />
+                    </Field>
                     <FeeExample price={tier.price} currency={paidCurrency} feeChoice={feeChoice} />
                   </>
                 )}
@@ -273,16 +280,17 @@ export default function NewEventForm({
                 {tiers.length > 1 && (
                   <button type="button" className="link-btn" onClick={() => setTiers((x) => x.filter((y) => y.id !== tier.id))}>{t("form.tickets.remove")}</button>
                 )}
-              </div>
+              </Card>
             ))}
-            <button type="button" className="btn-ghost" onClick={() => setTiers((x) => [...x, { id: nextId++, name: "", price: isFree ? "0" : "", qty: "" }])}>{t("form.tickets.add")}</button>
-            <label className="field"><span>{t("form.tickets.perPerson")}</span>
-              <select className="input" name="per_buyer_limit" defaultValue="10">
+            <Button variant="secondary" onClick={() => setTiers((x) => [...x, { id: nextId++, name: "", price: isFree ? "0" : "", qty: "" }])}>{t("form.tickets.add")}</Button>
+            <Field label={t("form.tickets.perPerson")}>
+              <Select name="per_buyer_limit" defaultValue="10">
                 {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => <option key={n} value={n}>{n}</option>)}
-              </select></label>
-          </div>
+              </Select>
+            </Field>
+          </Card>
 
-          <div className="panel">
+          <Card>
             <div className="panel-label">{t("form.options.label")}</div>
 
             <div className="option">
@@ -299,33 +307,34 @@ export default function NewEventForm({
 
             <div className="option">
               <div>
-                <div className="option-title">{t("form.options.attendeeCount")}</div>
-                <div className="muted small">{t("form.options.attendeeCountHelp")}</div>
+                <div className="option-title" id="opt-count">{t("form.options.attendeeCount")}</div>
+                <div className="muted small" id="opt-count-help">{t("form.options.attendeeCountHelp")}</div>
               </div>
-              <label className="switch"><input type="checkbox" name="show_attendee_count" defaultChecked /><span /></label>
+              <Switch name="show_attendee_count" defaultChecked aria-labelledby="opt-count" aria-describedby="opt-count-help" />
             </div>
 
             <div className="option">
               <div>
-                <div className="option-title">{t("form.options.approval")}</div>
-                <div className="muted small">{t("form.options.approvalHelp")}</div>
+                <div className="option-title" id="opt-approval">{t("form.options.approval")}</div>
+                <div className="muted small" id="opt-approval-help">{t("form.options.approvalHelp")}</div>
               </div>
-              <label className="switch"><input type="checkbox" name="require_approval" /><span /></label>
+              <Switch name="require_approval" aria-labelledby="opt-approval" aria-describedby="opt-approval-help" />
             </div>
 
-            <label className="field"><span>{t("form.options.refundPolicy")}</span>
-              <textarea className="input" name="refund_policy" rows={3} placeholder={t("form.options.refundPolicyPlaceholder")} /></label>
+            <Field label={t("form.options.refundPolicy")}>
+              <Textarea name="refund_policy" rows={3} placeholder={t("form.options.refundPolicyPlaceholder")} />
+            </Field>
             {!isFree && <p className="muted small">{t("form.options.paidRefundNote")}</p>}
-          </div>
+          </Card>
 
           {mapsError && <p className="error" role="alert">{mapsError}</p>}
           {state?.error && <p className="error" role="alert">{state.error}</p>}
 
           <div className="publish-bar">
-            <button className="btn-ghost" type="submit" name="intent" value="draft" disabled={pending || sendingImage}>{t("form.saveDraft")}</button>
-            <button className="btn-grad" type="submit" name="intent" value="publish" disabled={pending || sendingImage}>
+            <Button variant="secondary" className={styles.publishButton} type="submit" name="intent" value="draft" disabled={pending || sendingImage}>{t("form.saveDraft")}</Button>
+            <Button variant="accent" className={styles.publishButton} type="submit" name="intent" value="publish" disabled={pending || sendingImage}>
               {pending || sendingImage ? t("form.creating") : t("form.create")}
-            </button>
+            </Button>
           </div>
         </section>
       </form>

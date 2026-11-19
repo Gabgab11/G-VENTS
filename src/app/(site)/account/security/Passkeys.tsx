@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { creationOptionsFromJSON, credentialToJSON, requestOptionsFromJSON } from "@/lib/webauthn-json";
+import { Button, Field, Input } from "@/design";
 import { finishPasskey, startPasskeyEnroll, startPasskeyVerify } from "./passkey-actions";
 
 function cancelled(e: unknown): boolean {
@@ -45,11 +46,11 @@ export function AddPasskey({ next }: { next: string }) {
   if (supported === false) return <p className="muted small">{t("unsupported")}</p>;
   return (
     <div className="stack">
-      <label className="field"><span>{t("nameLabel")}</span>
-        <input className="input" value={name} onChange={(e) => setName(e.target.value)} maxLength={60} placeholder={defaultName(t)} />
-      </label>
+      <Field label={t("nameLabel")}>
+        <Input value={name} onChange={(e) => setName(e.target.value)} maxLength={60} placeholder={defaultName(t)} />
+      </Field>
       {error && <p className="error" role="alert">{error}</p>}
-      <button type="button" className="btn-white" onClick={add} disabled={busy || supported === null}>{busy ? t("waiting") : t("add")}</button>
+      <Button variant="primary" onClick={add} disabled={busy || supported === null}>{busy ? t("waiting") : t("add")}</Button>
     </div>
   );
 }
@@ -84,7 +85,7 @@ export function UsePasskey({ factorId, name, next }: { factorId: string; name: s
   return (
     <div className="stack">
       {error && <p className="error" role="alert">{error}</p>}
-      <button type="button" className="btn-grad" onClick={use} disabled={busy || supported === null}>{busy ? t("waiting") : name ? t("useNamed", { name }) : t("use")}</button>
+      <Button variant="accent" onClick={use} disabled={busy || supported === null}>{busy ? t("waiting") : name ? t("useNamed", { name }) : t("use")}</Button>
     </div>
   );
 }

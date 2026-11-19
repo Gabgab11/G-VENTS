@@ -8,10 +8,19 @@ import { intlLocale } from "@/lib/format";
 import { getAvailability, getMyHostApplication } from "@/lib/payments";
 import { applicationStatusKey, isPayoutCountry, sellReasonKey } from "@/lib/payment-text";
 import { HostApplicationForm, PayoutChangeForm } from "./HostApplicationForm";
+import { Badge, Banner, Card, type BadgeTone } from "@/design";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("account.payouts");
   return { title: t("metaTitle"), robots: { index: false } };
+}
+
+/** Badge tone for the application's status (approved and able to sell is "ok"). */
+function statusTone(status: string): BadgeTone {
+  if (status === "ok" || status === "approved") return "success";
+  if (status === "submitted") return "warning";
+  if (status === "declined" || status === "revoked") return "danger";
+  return "neutral";
 }
 
 const OK: Record<string, string> = {
@@ -42,14 +51,14 @@ export default async function PayoutsPage({ searchParams }: { searchParams: Prom
       <h1>{t("title")}</h1>
       <p className="muted">{t("intro")}</p>
 
-      {ok && <p className="ok-note" role="status">{ok}</p>}
+      {ok && <Banner tone="success" title={ok} />}
       {!app && <p className="error" role="alert">{t("loadFailed")}</p>}
 
       {app && app.status !== "none" && (
-        <section className="panel stack" aria-labelledby="pay-status">
+        <Card as="section" aria-labelledby="pay-status">
           <div className="spread">
             <div id="pay-status" className="panel-label">{t("status.title")}</div>
-            <span className={`pay-pill ${app.canSellPaid ? "ok" : app.status}`}>{app.canSellPaid ? t("status.canSell") : statusKey ? root(statusKey) : app.status}</span>
+            <Badge tone={statusTone(app.canSellPaid ? "ok" : app.status)}>{app.canSellPaid ? t("status.canSell") : statusKey ? root(statusKey) : app.status}</Badge>
           </div>
           {reason && <p className="muted">{root(reason.key)}</p>}
           {app.decisionReason && (app.status === "declined" || app.status === "revoked") && (
@@ -67,14 +76,14 @@ export default async function PayoutsPage({ searchParams }: { searchParams: Prom
               <p className="muted small">{t("status.owedNote")}</p>
             </div>
           )}
-        </section>
+        </Card>
       )}
 
       {app && payout && (
-        <section className="panel stack" aria-labelledby="pay-account">
+        <Card as="section" aria-labelledby="pay-account">
           <div className="spread">
             <div id="pay-account" className="panel-label">{t("account.title")}</div>
-            <span className={`pay-pill ${payout.status === "active" ? "ok" : "submitted"}`}>{payout.status === "active" ? t("account.active") : payout.status === "pending" ? t("account.pending") : t("account.replaced")}</span>
+            <Badge tone={payout.status === "active" ? "success" : "warning"}>{payout.status === "active" ? t("account.active") : payout.status === "pending" ? t("account.pending") : t("account.replaced")}</Badge>
           </div>
           <p>{t("account.line", { bank: payout.bankName ?? payout.bankCode, last4: payout.accountNumberLast4 })}{payout.accountName ? ` · ${payout.accountName}` : ""}</p>
           {payout.status === "pending" && <p className="muted small">{t("account.pendingNote")}</p>}
@@ -84,18 +93,18 @@ export default async function PayoutsPage({ searchParams }: { searchParams: Prom
               <PayoutChangeForm country={payout.country} />
             </details>
           )}
-        </section>
+        </Card>
       )}
 
       {app && canApply && (
-        <section className="panel stack" aria-labelledby="pay-apply">
+        <Card as="section" aria-labelledby="pay-apply">
           <div id="pay-apply" className="panel-label">{app.status === "declined" ? t("apply.again") : t("apply.title")}</div>
           {countries.length === 0 ? (
             <p className="muted">{t("apply.closed")}</p>
           ) : (
             <HostApplicationForm countries={countries} defaults={{ legalName: app.legalName ?? "", phone: app.phone ?? "" }} />
           )}
-        </section>
+        </Card>
       )}
 
       <p className="muted small">

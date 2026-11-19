@@ -1,5 +1,6 @@
 import { can, type EventDashboard } from "@/lib/auth";
 import { getTranslations } from "next-intl/server";
+import { Button, Card, Checkbox, Field, Input, Select, Textarea } from "@/design";
 import { addQuestion, deleteQuestion } from "./actions";
 
 // Question kinds, in the order the form offers them (labels: dashboard.registration.kinds.*).
@@ -13,7 +14,7 @@ export default async function RegistrationTab({ event, url }: { event: EventDash
   const kindLabel = (kind: string) => (KINDS.includes(kind) ? t(`kinds.${kind}`) : kind);
   return (
     <div className="stack">
-      <section className="panel">
+      <Card as="section">
         <div className="panel-label">{t("guestsFillIn")}</div>
         <div className="q-row"><b>{t("name")}</b><span className="muted small">{t("required")}</span></div>
         <div className="q-row"><b>{t("email")}</b><span className="muted small">{t("accountEmail")}</span></div>
@@ -33,25 +34,25 @@ export default async function RegistrationTab({ event, url }: { event: EventDash
             </span>
           </div>
         ))}
-      </section>
+      </Card>
 
       {manage && (
-        <section className="panel">
+        <Card as="section">
           <div className="panel-label">{t("addTitle")}</div>
           <form action={addQuestion} className="form">
             <input type="hidden" name="event_id" value={id} />
-            <label className="field"><span>{t("question")}</span>
-              <input className="input" name="label" maxLength={200} placeholder={t("questionPlaceholder")} /></label>
-            <label className="field"><span>{t("type")}</span>
-              <select className="input" name="kind" defaultValue="text">
+            <Field label={t("question")}>
+              <Input name="label" maxLength={200} placeholder={t("questionPlaceholder")} /></Field>
+            <Field label={t("type")}>
+              <Select name="kind" defaultValue="text">
                 {KINDS.map((k) => <option key={k} value={k}>{kindLabel(k)}</option>)}
-              </select></label>
-            <label className="field"><span>{t("options")}</span>
-              <textarea className="input" name="options" rows={3} placeholder={t("optionsPlaceholder")} /></label>
-            <label className="check"><input type="checkbox" name="required" /> <span>{t("required")}</span></label>
-            <button className="btn-white" type="submit">{t("add")}</button>
+              </Select></Field>
+            <Field label={t("options")}>
+              <Textarea name="options" rows={3} placeholder={t("optionsPlaceholder")} /></Field>
+            <Checkbox name="required" label={t("required")} />
+            <Button variant="primary" type="submit">{t("add")}</Button>
           </form>
-        </section>
+        </Card>
       )}
 
       <p className="muted small">{t.rich("eventLink", { url, link: (c) => <span className="gold">{c}</span> })}</p>

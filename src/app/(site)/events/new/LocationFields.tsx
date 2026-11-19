@@ -9,6 +9,7 @@ import { countryDetails, locatePlace, placeDetails, searchPlaces, type PlaceDeta
 import type { CountryReference } from "@/lib/reference";
 import { MAPS_URL_HINT_KEY, MAPS_URL_MAX, isGoogleMapsUrl } from "@/lib/maps-url";
 import type { ZoneContext } from "./TimeZoneField";
+import { Field, Input } from "@/design";
 
 type Place = { placeId: string; address: string; city: string; lat: number | null; lng: number | null; timeZone: string | null };
 
@@ -141,8 +142,9 @@ export default function LocationFields({
           placeholder={t("searchCountries")}
         />
         {reference === "loading" ? (
-          <label className="field"><span>{t("stateOrRegion")}</span>
-            <input className="input" disabled placeholder={t("loading")} /></label>
+          <Field label={t("stateOrRegion")}>
+            <Input disabled placeholder={t("loading")} />
+          </Field>
         ) : ref?.regions ? (
           <Combobox
             key={countryCode}
@@ -154,9 +156,10 @@ export default function LocationFields({
             placeholder={t("chooseRegion", { label: ref.label.toLowerCase() })}
           />
         ) : (
-          <label className="field"><span>{t("stateCityRegion")}</span>
-            <input className="input" name="region" maxLength={120} value={region}
-              onChange={(e) => { setRegion(e.target.value); setPlace(null); setNote(""); }} /></label>
+          <Field label={t("stateCityRegion")}>
+            <Input name="region" maxLength={120} value={region}
+              onChange={(e) => { setRegion(e.target.value); setPlace(null); setNote(""); }} />
+          </Field>
         )}
       </div>
 
@@ -175,18 +178,16 @@ export default function LocationFields({
       {note && <p className="muted small venue-note" role="status">{note}</p>}
       {src && <iframe className="ev-map venue-map" src={src} title={t("mapOf", { venue: venue || t("theVenue") })} loading="lazy" referrerPolicy="strict-origin-when-cross-origin" />}
 
-      <label className="field"><span>{t("mapsLink")}</span>
-        <input className="input" type="url" name="maps_url" inputMode="url" maxLength={MAPS_URL_MAX} value={mapsUrl}
+      <Field
+        label={t("mapsLink")}
+        hint={mapsError ? undefined : src ? t("mapsHelpWithMap") : t("mapsHelp")}
+        error={mapsError ? t("mapsError", { hint: mapsError }) : undefined}
+      >
+        <Input type="url" name="maps_url" inputMode="url" maxLength={MAPS_URL_MAX} value={mapsUrl}
           onChange={(e) => { setMapsUrl(e.target.value); if (mapsError) setMapsError(""); }}
           onBlur={() => setMapsError(mapsUrl.trim() && !isGoogleMapsUrl(mapsUrl) ? mapsHint : "")}
-          aria-invalid={mapsError ? true : undefined}
           placeholder="https://maps.app.goo.gl/…" title={mapsHint} />
-        {mapsError
-          ? <span className="error small" role="alert">{t("mapsError", { hint: mapsError })}</span>
-          : <span className="muted small">{src
-            ? t("mapsHelpWithMap")
-            : t("mapsHelp")}</span>}
-      </label>
+      </Field>
 
       <input type="hidden" name="country" value={country?.name ?? ""} />
       <input type="hidden" name="place_id" value={place?.placeId ?? ""} />
@@ -346,8 +347,7 @@ function VenueSearch({
     <label className="field">
       <span>{t("label")}</span>
       <div className="combo">
-        <input
-          className="input"
+        <Input
           name="venue"
           maxLength={300}
           autoComplete="off"

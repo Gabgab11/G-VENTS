@@ -13,6 +13,12 @@ const nextConfig: NextConfig = {
     // Two root layouts (public pages per language, and the rest) share no not-found page (Change 3).
     globalNotFound: true,
   },
+  // The design system's index (import { Button } from "@/design") re-exports every component. It has no
+  // side effects, so a page only ships the components it uses, not every Radix primitive (NFR-13).
+  webpack(config) {
+    config.module.rules.push({ test: /[\\/]src[\\/]design[\\/](index|cx|token-list)\.ts$/, sideEffects: false });
+    return config;
+  },
   async headers() {
     return [
       // The service worker must always be fresh, so a new version reaches every device.

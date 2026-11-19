@@ -7,7 +7,9 @@
     "discover": "استكشف",
     "pricing": "الأسعار",
     "createEvent": "أنشئ فعالية",
-    "back": "رجوع"
+    "back": "رجوع",
+    "menu": "القائمة",
+    "closeMenu": "إغلاق القائمة"
   },
   "account": {
     "signIn": "تسجيل الدخول",

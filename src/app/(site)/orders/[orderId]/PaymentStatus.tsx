@@ -1,10 +1,10 @@
-import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { getFormat } from "@/i18n/format-server";
 import type { components } from "@/lib/api/schema";
 import { paymentIsFinal, refundStatusKey } from "@/lib/payment-text";
 import { PayButton, PaymentWatcher } from "./PaymentWatcher";
 import { intlLocale } from "@/lib/format";
+import { Badge, Button, Card, type BadgeTone } from "@/design";
 
 type Payment = components["schemas"]["OrderPaymentDto"];
 
@@ -19,6 +19,14 @@ const TITLE: Record<Payment["status"], string> = {
   disputed: "disputed",
   waitlisted: "waitlisted",
 };
+
+/** Badge tone for a refund's status. */
+function refundTone(status: string): BadgeTone {
+  if (status === "refunded") return "success";
+  if (status === "queued" || status === "processing") return "warning";
+  if (status === "failed") return "danger";
+  return "neutral";
+}
 
 const WHEN: Intl.DateTimeFormatOptions = { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "Africa/Lagos" };
 
@@ -35,7 +43,7 @@ export default async function PaymentStatus({ orderId, payment, eventSlug }: { o
   const q = payment.quote;
   const offer = payment.status === "waitlisted" && payment.offerExpiresAt && payment.canPay;
   return (
-    <section className={`panel stack pay-status pay-${payment.status}`} aria-labelledby="pay-status-title">
+    <Card as="section" className={`pay-status pay-${payment.status}`} aria-labelledby="pay-status-title">
       <div className="spread">
         <h2 id="pay-status-title" className="pay-status-title">{offer ? tr("offerTitle") : t.title}</h2>
         {payment.reference && <code className="pay-ref" aria-label={tr("reference")}>{payment.reference}</code>}
@@ -49,7 +57,7 @@ export default async function PaymentStatus({ orderId, payment, eventSlug }: { o
       {payment.canPay && (
         <PayButton orderId={orderId} label={payment.status === "failed" ? tr("tryAgain") : q ? tr("payTotal", { total: formatMinor(q.totalMinor, q.currency) }) : tr("pay")} />
       )}
-      {payment.status === "expired" && eventSlug && <Link href={`/e/${eventSlug}`} className="btn-white pay-cta">{tr("startAgain")}</Link>}
+      {payment.status === "expired" && eventSlug && <Button href={`/e/${eventSlug}`} variant="primary" className="pay-cta">{tr("startAgain")}</Button>}
 
       {q && (
         <div className="pay-breakdown">
@@ -74,13 +82,13 @@ export default async function PaymentStatus({ orderId, payment, eventSlug }: { o
             {payment.refunds.map((r) => (
               <li key={r.id}>
                 <span>{tr("refundLine", { amount: formatMinor(r.amountMinor, r.currency), count: r.ticketIds.length })}{r.reason === "cancellation" ? ` · ${tr("refundCancelled")}` : r.reason === "late_payment" ? ` · ${tr("refundLate")}` : ""}</span>
-                <span className={`pay-pill ${r.status}`}>{refundStatusKey(r.status) ? root(refundStatusKey(r.status)!) : r.status}</span>
+                <Badge tone={refundTone(r.status)}>{refundStatusKey(r.status) ? root(refundStatusKey(r.status)!) : r.status}</Badge>
               </li>
             ))}
           </ul>
           <p className="muted small">{tr("refundsNote")}</p>
         </div>
       )}
-    </section>
+    </Card>
   );
 }

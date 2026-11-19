@@ -6,6 +6,7 @@ import { updateEventSetting } from "./actions";
 import { useTranslations } from "next-intl";
 import { timezoneLabel } from "@/lib/dates";
 import { useFormat } from "@/i18n/format-hooks";
+import { Button, Card, Checkbox } from "@/design";
 
 export type DashEvent = {
   id: string;
@@ -44,7 +45,7 @@ export default function EventRow({ event }: { event: DashEvent }) {
   const when = format.dateTime(event.starts_at, event.timezone, "compact");
 
   return (
-    <div className="dash-row">
+    <Card>
       <div className="dash-main">
         <Link href={`/dashboard/${event.id}`} className="dash-title">{event.title}</Link>
         <div className="muted small">{`${when} (${timezoneLabel(event.timezone)})`} · {STATUSES.includes(status) ? t(`status.${status}`) : status} · {t("eventRow.registered", { count: event.going })}</div>
@@ -59,21 +60,18 @@ export default function EventRow({ event }: { event: DashEvent }) {
             onClick={() => change("visibility", "private", () => setVis("private"))}>{t("visibility.private")}</button>
         </div>
 
-        <label className="check">
-          <input type="checkbox" checked={show} disabled={pending}
-            onChange={(e) => change("show_attendee_count", String(e.target.checked), () => setShow(e.target.checked))} />
-          <span>{t("eventRow.showCount")}</span>
-        </label>
+        <Checkbox checked={show} disabled={pending} label={t("eventRow.showCount")}
+          onChange={(e) => change("show_attendee_count", String(e.target.checked), () => setShow(e.target.checked))} />
 
         </>}
         {status === "draft" && ["owner", "admin"].includes(event.role) && (
-          <button type="button" className="btn-small" disabled={pending}
-            onClick={() => change("status", "published", () => setStatus("published"))}>{t("eventRow.publish")}</button>
+          <Button size="sm" disabled={pending}
+            onClick={() => change("status", "published", () => setStatus("published"))}>{t("eventRow.publish")}</Button>
         )}
-        <Link href={`/dashboard/${event.id}`} className="btn-small">{t("eventRow.manage")}</Link>
+        <Button href={`/dashboard/${event.id}`} size="sm">{t("eventRow.manage")}</Button>
       </div>
 
       {error && <p className="error" role="alert">{error}</p>}
-    </div>
+    </Card>
   );
 }

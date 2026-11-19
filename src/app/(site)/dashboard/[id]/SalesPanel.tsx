@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 import type { components } from "@/lib/api/schema";
 import { feeChoiceKey, type FeeChoice } from "@/lib/payment-text";
 import { getFormat } from "@/i18n/format-server";
+import { Banner, Card, Stat } from "@/design";
 
 type Sales = components["schemas"]["EventSalesDto"];
 type Dispute = components["schemas"]["EventDisputeDto"];
@@ -10,7 +11,7 @@ type Dispute = components["schemas"]["EventDisputeDto"];
 export async function SalesPanel({ sales, feeChoice }: { sales: Sales; feeChoice: FeeChoice }) {
   const [t, root, format] = await Promise.all([getTranslations("dashboard.sales"), getTranslations(), getFormat()]);
   return (
-    <section className="panel stack" aria-labelledby="sales-title">
+    <Card as="section" aria-labelledby="sales-title">
       <div className="spread">
         <div id="sales-title" className="panel-label">{t("title")}</div>
         <span className="muted small">{root(feeChoiceKey(feeChoice).labelKey)}</span>
@@ -22,8 +23,8 @@ export async function SalesPanel({ sales, feeChoice }: { sales: Sales; feeChoice
         return (
           <div className="stack" key={c.currency}>
             <div className="stats">
-              <div className="stat"><b>{c.ticketsSold}</b><span>{t("ticketsSold")}</span></div>
-              <div className="stat"><b className="pay-money">{f(c.netMinor)}</b><span>{t("received")}</span></div>
+              <Stat label={t("ticketsSold")} value={c.ticketsSold} />
+              <Stat label={t("received")} value={<span className="pay-money">{f(c.netMinor)}</span>} />
             </div>
             <dl className="pay-ledger">
               <dt>{t("guestsPaid", { count: c.ordersPaid })}</dt><dd>{f(c.grossMinor)}</dd>
@@ -45,7 +46,7 @@ export async function SalesPanel({ sales, feeChoice }: { sales: Sales; feeChoice
         </p>
       )}
       <p className="muted small">{t("shareNote")}</p>
-    </section>
+    </Card>
   );
 }
 
@@ -57,9 +58,9 @@ export async function DisputeBanner({ disputes }: { disputes: Dispute[] }) {
   const total = new Map<string, number>();
   for (const d of open) total.set(d.currency, (total.get(d.currency) ?? 0) + d.amountMinor);
   return (
-    <section className="pay-banner" role="alert" aria-labelledby="disputes-title">
-      <b id="disputes-title">{t("title", { count: open.length })} ({[...total].map(([c, n]) => format.money(n, c)).join(" · ")})</b>
-      <p className="small">{t("body")}</p>
-    </section>
+    <Banner tone="danger" aria-labelledby="disputes-title"
+      title={<span id="disputes-title">{t("title", { count: open.length })} ({[...total].map(([c, n]) => format.money(n, c)).join(" · ")})</span>}>
+      {t("body")}
+    </Banner>
   );
 }

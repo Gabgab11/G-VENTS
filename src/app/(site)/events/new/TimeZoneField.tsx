@@ -5,6 +5,7 @@ import Combobox from "@/components/Combobox";
 import { useTranslations } from "next-intl";
 import { mainZones, zoneOptions } from "@/lib/time-zones";
 import { useFormat } from "@/i18n/format-hooks";
+import { Select } from "@/design";
 
 // The event's time zone, shown rather than asked for. Most hosts never touch it: it comes from the
 // venue (its coordinates), from the country when the country has one zone, or from the host's
@@ -64,10 +65,10 @@ export default function TimeZoneField({ online, context }: { online: boolean; co
       <span>{t("label")}</span>
       {needsChoice && !picking ? (
         <>
-          <select className="input" value="" onChange={(e) => setChosen(e.target.value)} aria-label={t("inCountry", { country: context.countryName })}>
+          <Select value="" onChange={(e) => setChosen(e.target.value)} aria-label={t("inCountry", { country: context.countryName })}>
             <option value="" disabled>{t("choose")}</option>
             {clocks.map((z) => <option key={z} value={z}>{name(z)}</option>)}
-          </select>
+          </Select>
           <span className="muted small">{t("several", { country: context.countryName })}</span>
         </>
       ) : picking ? (

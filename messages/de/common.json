@@ -7,7 +7,9 @@
     "discover": "Entdecken",
     "pricing": "Preise",
     "createEvent": "Event erstellen",
-    "back": "Zurück"
+    "back": "Zurück",
+    "menu": "Menü",
+    "closeMenu": "Menü schließen"
   },
   "account": {
     "signIn": "Anmelden",

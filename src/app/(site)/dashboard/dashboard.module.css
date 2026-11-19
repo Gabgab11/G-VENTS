@@ -1,0 +1,22 @@
+/* Dashboard-only touches on top of the design-system components (Change 4, FR-28.6). */
+
+/* A card that needs attention: money owed, or a destructive action (cancel, delete). */
+/* Doubled class: wins over the Card's own border regardless of stylesheet order. */
+.warn.warn { border-color: color-mix(in srgb, var(--color-danger) 55%, transparent); }
+
+/* Inputs and selects in a row form (filters, capacity, style): sized, not full width. */
+.rowForm { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+.rowForm > input:not([type="hidden"]),
+.rowForm > span { flex: 1 1 12rem; max-inline-size: 15rem; }
+
+/* Inside a guest card: details at the start, status and actions at the end. */
+.guestRow { display: flex; justify-content: space-between; gap: var(--space-4); }
+/* A request inside the requests card: a divided row, not a nested card. */
+.requestRow { display: flex; justify-content: space-between; gap: var(--space-4); padding-block-start: var(--space-4); border-block-start: 1px solid var(--color-border); }
+
+@media (max-width: 639px) {
+  .rowForm { flex-direction: column; align-items: stretch; }
+  .rowForm > input:not([type="hidden"]),
+  .rowForm > span { max-inline-size: none; }
+  .guestRow, .requestRow { flex-direction: column; }
+}

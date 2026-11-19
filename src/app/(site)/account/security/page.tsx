@@ -9,6 +9,7 @@ import { mfaState, safeNext, type Method } from "@/lib/mfa";
 import { removeFactor } from "./actions";
 import { EnrollForm, VerifyForm } from "./MfaForms";
 import { AddPasskey, UsePasskey } from "./Passkeys";
+import { Banner, Card } from "@/design";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("account.security");
@@ -51,28 +52,28 @@ export default async function SecurityPage({ searchParams }: { searchParams: Pro
         {t.rich("intro", { b: (c) => <b>{c}</b> })}
       </p>
 
-      {sp.done && <p className="ok-note" role="status">{t("done")}</p>}
-      {sp.removed && <p className="ok-note" role="status">{t("removed")}</p>}
+      {sp.done && <Banner tone="success" title={t("done")} />}
+      {sp.removed && <Banner tone="success" title={t("removed")} />}
       {sp.err && <p className="error" role="alert">{t("removeFailed")}</p>}
 
       {/* Not set up yet: offer both, passkey first. */}
       {!hasAny && (
         <>
-          <section className="panel stack" aria-labelledby="sec-passkey">
+          <Card as="section" aria-labelledby="sec-passkey">
             <div id="sec-passkey" className="panel-label">{t("passkeyTitle")}</div>
             <p className="muted small">{t("passkeyHint")}</p>
             <AddPasskey next={after} />
-          </section>
-          <section className="panel stack" aria-labelledby="sec-totp">
+          </Card>
+          <Card as="section" aria-labelledby="sec-totp">
             <div id="sec-totp" className="panel-label">{t("appTitle")}</div>
             <EnrollForm next={after} />
-          </section>
+          </Card>
         </>
       )}
 
       {/* Set up, but this session isn't confirmed yet. */}
       {hasAny && !confirmed && (
-        <section className="panel stack" aria-labelledby="sec-confirm">
+        <Card as="section" aria-labelledby="sec-confirm">
           <div id="sec-confirm" className="panel-label">{t("confirmTitle")}</div>
           <p className="muted small">{sp.next ? t("confirmHintContinue") : t("confirmHint")}</p>
           {passkeys.map((p) => <UsePasskey key={p.id} factorId={p.id} name={p.name} next={after} />)}
@@ -82,13 +83,13 @@ export default async function SecurityPage({ searchParams }: { searchParams: Pro
               <VerifyForm next={after} />
             </>
           )}
-        </section>
+        </Card>
       )}
 
       {/* Confirmed: manage methods. */}
       {hasAny && confirmed && (
         <>
-          <section className="panel stack" aria-labelledby="sec-methods">
+          <Card as="section" aria-labelledby="sec-methods">
             <div id="sec-methods" className="panel-label">{t("methodsTitle")}</div>
             <ul className="sec-methods">
               {passkeys.map((p) => (
@@ -99,16 +100,16 @@ export default async function SecurityPage({ searchParams }: { searchParams: Pro
               )}
             </ul>
             <p className="muted small">{t("methodsNote")}</p>
-          </section>
-          <section className="panel stack" aria-labelledby="sec-add">
+          </Card>
+          <Card as="section" aria-labelledby="sec-add">
             <div id="sec-add" className="panel-label">{t("addPasskeyTitle")}</div>
             <AddPasskey next="/account/security?done=1" />
-          </section>
+          </Card>
           {!factor && (
-            <section className="panel stack" aria-labelledby="sec-add-totp">
+            <Card as="section" aria-labelledby="sec-add-totp">
               <div id="sec-add-totp" className="panel-label">{t("addAppTitle")}</div>
               <EnrollForm next="/account/security?done=1" />
-            </section>
+            </Card>
           )}
         </>
       )}

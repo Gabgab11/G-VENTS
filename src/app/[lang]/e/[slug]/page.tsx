@@ -16,6 +16,7 @@ import PaidOrderForm from "./PaidOrderForm";
 import ThemeStage from "@/components/ThemeStage";
 import VenueMap, { directionsUrl } from "@/components/VenueMap";
 import SiteHeader from "@/components/SiteHeader";
+import { Button } from "@/design";
 
 // The public event page from gventz-api (U6a), laid out like Luma: the cover and host on the left;
 // the date, place and tickets on the right; then the description and the venue map. The API decides
@@ -169,15 +170,15 @@ export default async function EventPage({ params }: { params: Promise<{ lang: st
                   </ul>
                   <p className="muted small">{t("host.note")}</p>
                   <div className="ev-host-actions">
-                    <Link href={`/dashboard/${event.id}?tab=guests`} className="btn-grad ev-cta">{t("host.seeGuests")}</Link>
-                    <Link href={`/dashboard/${event.id}`} className="btn-ghost ev-cta">{t("host.manage")}</Link>
+                    <Button href={`/dashboard/${event.id}?tab=guests`} variant="accent" fullWidth className="ev-cta">{t("host.seeGuests")}</Button>
+                    <Button href={`/dashboard/${event.id}`} variant="secondary" fullWidth className="ev-cta">{t("host.manage")}</Button>
                   </div>
                 </div>
               )}
               {!event.canManage && canOrder && !signedIn && (
                 <div className="ev-signup">
                   <p>{t("signUp.welcome")}</p>
-                  <Link href={signUpHref} className="btn-grad ev-cta">{t("signUp.cta")}</Link>
+                  <Button href={signUpHref} variant="accent" fullWidth>{t("signUp.cta")}</Button>
                   <p className="muted small">{t.rich("signUp.haveAccount", { link: (c) => <Link href={signInHref} className="gold">{c}</Link> })}</p>
                 </div>
               )}

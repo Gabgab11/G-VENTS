@@ -7,7 +7,9 @@
     "discover": "Discover",
     "pricing": "Pricing",
     "createEvent": "Create event",
-    "back": "Back"
+    "back": "Back",
+    "menu": "Menu",
+    "closeMenu": "Close menu"
   },
   "account": {
     "signIn": "Sign in",

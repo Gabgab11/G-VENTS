@@ -11,7 +11,7 @@ import SignOutButton from "@/components/SignOutButton";
 // home page are cached and shared by every visitor, so this is decided in the browser. The session
 // cookie is httpOnly (the browser's JavaScript can't read it), so the answer comes from
 // /api/session. The admin pages themselves are still guarded by the API (staff, two-step sign-in).
-export default function AccountLink({ className = "hp-signin", withSignOut = false }: { className?: string; withSignOut?: boolean }) {
+export default function AccountLink({ className = "site-account", withSignOut = false }: { className?: string; withSignOut?: boolean }) {
   const t = useTranslations("common.account");
   const [session, setSession] = useState({ signedIn: false, isStaff: false });
   const menu = useRef<HTMLDetailsElement>(null);

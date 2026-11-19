@@ -7,6 +7,7 @@ import type { PageQuestion, PageTicketType } from "@/lib/event-page";
 import { NON_REFUNDABLE_KEY, ORGANIZER_KEY, type FeeChoice } from "@/lib/payment-text";
 import { placePaidOrder, quotePaid, type OrderState, type Quote } from "./actions";
 import GuestDetails from "./GuestDetails";
+import { Button, Checkbox } from "@/design";
 
 type Props = {
   eventId: string;
@@ -118,17 +119,14 @@ export default function PaidOrderForm({ eventId, ticketTypes, questions, perBuye
       <div className="pay-terms">
         {refundPolicy && <p className="small"><b>{t("refundPolicy")}</b> {refundPolicy}</p>}
         <p className="small muted">{root(ORGANIZER_KEY)}</p>
-        <label className="check">
-          <input type="checkbox" name="non_refundable" required />
-          <span>{root(NON_REFUNDABLE_KEY)}</span>
-        </label>
+        <Checkbox name="non_refundable" required label={root(NON_REFUNDABLE_KEY)} />
       </div>
 
       {state?.error && <p className="error" role="alert">{state.error}</p>}
 
-      <button className="btn-white" type="submit" disabled={pending || total === 0}>
+      <Button variant="primary" type="submit" disabled={pending || total === 0}>
         {pending ? (waitlist ? t("joining") : t("opening")) : waitlist ? t("join") : quote ? t("payTotal", { total: formatMinor(quote.totalMinor, quote.currency) }) : t("pay")}
-      </button>
+      </Button>
       {!waitlist && <p className="muted small">{t("payNote")}</p>}
     </form>
   );

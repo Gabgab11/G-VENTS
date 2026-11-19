@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { useEffect, useState, useTransition } from "react";
 import type { PayoutCountry } from "@/lib/payment-text";
+import { Button, Checkbox, Field, Input, Select } from "@/design";
 import { checkAccount, loadBanks } from "./actions";
 
 type Bank = { code: string; name: string };
@@ -53,23 +54,24 @@ export default function BankAccountFields({ country }: { country: PayoutCountry 
 
   return (
     <div className="stack">
-      <label className="field"><span>{t("bank")}</span>
-        <select className="input" name="bank_code" value={bankCode} required disabled={!country || loadingBanks}
+      <Field label={t("bank")} error={bankError || undefined}>
+        <Select name="bank_code" value={bankCode} required disabled={!country || loadingBanks}
           onChange={(e) => { setBankCode(e.target.value); setResolved(null); }}>
           <option value="" disabled>{!country ? t("chooseCountryFirst") : loadingBanks ? t("loadingBanks") : t("chooseBank")}</option>
           {banks.map((b) => <option key={`${b.code}-${b.name}`} value={b.code}>{b.name}</option>)}
-        </select></label>
+        </Select>
+      </Field>
       <input type="hidden" name="bank_name" value={bankName} />
-      {bankError && <p className="error" role="alert">{bankError}</p>}
 
-      <label className="field"><span>{t("accountNumber")}</span>
-        <input className="input" name="account_number" inputMode="numeric" autoComplete="off" maxLength={24} required value={number}
-          onChange={(e) => { setNumber(e.target.value); setResolved(null); }} /></label>
+      <Field label={t("accountNumber")}>
+        <Input name="account_number" inputMode="numeric" autoComplete="off" maxLength={24} required value={number}
+          onChange={(e) => { setNumber(e.target.value); setResolved(null); }} />
+      </Field>
 
       <div className="row-gap">
-        <button type="button" className="btn-ghost" onClick={check} disabled={checking || !bankCode || number.trim().length < 6}>
+        <Button variant="secondary" onClick={check} disabled={checking || !bankCode || number.trim().length < 6}>
           {checking ? t("checking") : t("check")}
-        </button>
+        </Button>
       </div>
       {checkError && <p className="error" role="alert">{checkError}</p>}
 
@@ -80,10 +82,8 @@ export default function BankAccountFields({ country }: { country: PayoutCountry 
           ) : (
             <p className="muted small">{t("cantCheck")}</p>
           )}
-          <label className="check">
-            <input type="checkbox" name="confirm_account" required />
-            <span>{resolved.verified && resolved.accountName ? t("confirmNamed", { name: resolved.accountName }) : t("confirm")}</span>
-          </label>
+          <Checkbox name="confirm_account" required
+            label={resolved.verified && resolved.accountName ? t("confirmNamed", { name: resolved.accountName }) : t("confirm")} />
         </div>
       )}
     </div>

@@ -1,11 +1,12 @@
 import { getTranslations } from "next-intl/server";
+import { Card } from "@/design";
 import { THEMES } from "@/lib/themes";
 import { setDashboardTheme } from "./actions";
 
 export default async function ThemePanel({ current }: { current: string }) {
   const t = await getTranslations("dashboard");
   return (
-    <section className="panel">
+    <Card as="section">
       <div className="panel-label">{t("themePanel.title")}</div>
       <p className="muted small">{t("themePanel.hint")}</p>
       <form action={setDashboardTheme} className="theme-picks">
@@ -18,6 +19,6 @@ export default async function ThemePanel({ current }: { current: string }) {
           </button>
         ))}
       </form>
-    </section>
+    </Card>
   );
 }

@@ -2,6 +2,8 @@
 
 import { useId, useMemo, useRef, useState } from "react";
 import { fold } from "@/lib/locations";
+import { Input } from "@/design";
+import styles from "./Combobox.module.css";
 
 export type ComboOption = { value: string; label: string };
 
@@ -71,8 +73,8 @@ export default function Combobox({
     <label className="field">
       <span>{label}</span>
       <div className="combo">
-        <input
-          className="input combo-input"
+        <Input
+          className={`combo-input ${styles.input}`}
           role="combobox"
           aria-expanded={open}
           aria-controls={listId}

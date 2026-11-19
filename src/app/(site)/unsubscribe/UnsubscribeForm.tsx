@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { useTranslations } from "next-intl";
+import { Button } from "@/design";
 import { confirmUnsubscribe, type UnsubscribeState } from "./actions";
 
 // A button rather than unsubscribing on page load, so mail scanners that open links don't
@@ -28,7 +29,7 @@ export default function UnsubscribeForm({ token }: { token: string }) {
           {state.reason === "unknown" ? t("unknownLink") : t("failed")}
         </p>
       )}
-      <button className="auth-primary" type="submit" disabled={pending}>{pending ? t("pending") : t("button")}</button>
+      <Button variant="primary" type="submit" fullWidth disabled={pending}>{pending ? t("pending") : t("button")}</Button>
     </form>
   );
 }

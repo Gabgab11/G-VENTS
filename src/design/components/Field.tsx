@@ -53,7 +53,7 @@ export function Field({ label, hint, error, required, id, className, children }:
         </p>
       ) : null}
       {error ? (
-        <p id={errorId} className={styles.error}>
+        <p id={errorId} className={styles.error} role="alert">
           <CircleAlert size={16} strokeWidth={1.75} aria-hidden />
           <span>{error}</span>
         </p>

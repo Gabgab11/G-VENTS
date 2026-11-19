@@ -59,10 +59,10 @@ describe("Stat", () => {
 
 describe("EmptyState, Card, PageHeader", () => {
   it("EmptyState renders heading, text and action", () => {
-    const out = html(<EmptyState icon={<svg />} title="No guests yet" action={<a href="/x">{"Share"}</a>}>{"Share your event."}</EmptyState>);
+    const out = html(<EmptyState icon={<svg />} title="No guests yet" action={<a href="https://example.com/x">{"Share"}</a>}>{"Share your event."}</EmptyState>);
     expect(out).toContain("<h3");
     expect(out).toContain("Share your event.");
-    expect(out).toContain('href="/x"');
+    expect(out).toContain('href="https://example.com/x"');
   });
 
   it("Card renders as a section with a header", () => {

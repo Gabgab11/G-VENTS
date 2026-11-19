@@ -5,6 +5,7 @@ import { useActionState, useState } from "react";
 import type { PageQuestion, PageTicketType } from "@/lib/event-page";
 import { placeOrder, type OrderState } from "./actions";
 import GuestDetails from "./GuestDetails";
+import { Button } from "@/design";
 
 type Props = {
   eventId: string;
@@ -59,9 +60,9 @@ export default function OrderForm({ eventId, ticketTypes, questions, perBuyerLim
 
       {state?.error && <p className="error" role="alert">{state.error}</p>}
 
-      <button className="btn-white" type="submit" disabled={pending || total === 0}>
+      <Button variant="primary" type="submit" disabled={pending || total === 0}>
         {pending ? t("pending") : requireApproval ? t("request", { count: total }) : t("get", { count: total })}
-      </button>
+      </Button>
     </form>
   );
 }

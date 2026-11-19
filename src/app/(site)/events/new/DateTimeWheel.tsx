@@ -4,6 +4,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { intlLocale } from "@/lib/format";
 import type { Locale } from "@/i18n/languages";
+import { Button } from "@/design";
 
 // Apple-style wheel picker for a date and a time. It writes two hidden inputs so the
 // server action reads the same fields it did before (date/time or end_date/end_time).
@@ -212,7 +213,7 @@ export default function DateTimeWheel({
           </div>
           <div className="wheel-foot">
             <span className="muted small">{formatDay(draftDate, lang)} · {formatTime(joinTime(draft.hour, draft.minute, draft.period), lang)}</span>
-            <button type="button" className="btn-grad wheel-done" onClick={done}>{t("done")}</button>
+            <Button variant="accent" onClick={done}>{t("done")}</Button>
           </div>
         </div>
       )}

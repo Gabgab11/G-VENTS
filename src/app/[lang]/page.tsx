@@ -2,13 +2,11 @@ import Link from "next/link";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { withAlternates } from "@/i18n/seo";
 import { getFeaturedEvents } from "@/lib/events";
-import AccountLink from "@/app/AccountLink";
 import HeroCards from "@/app/HeroCards";
 import HeroTilt from "@/app/HeroTilt";
 import HeroHover from "@/app/HeroHover";
 import { pageFonts } from "@/app/fonts";
-import ColorModeToggle from "@/components/ColorModeToggle";
-import LanguageSwitcher from "@/components/LanguageSwitcher";
+import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/design/layout/SiteFooter";
 import "./discover/discover.css";
 import Rail from "./discover/Rail";
@@ -32,12 +30,8 @@ const CSS = `
 .hp .hp-c4, .hp .hp-c5 { color: #fff; }
 .hp-wrap { max-width: none; margin: 0 auto; padding: 0 clamp(24px, 5vw, 96px); }
 
-.hp-top { display: flex; justify-content: space-between; align-items: center; padding: 18px clamp(16px, 1.6vw, 28px); width:100%; max-width:none; margin:0; }
-.hp-top-actions { display:flex; align-items:center; gap:10px; }
-.hp-top-actions, .hp-top-actions .cm, .hp-top-actions button, .hp-top-actions a { position:relative; z-index:5; pointer-events:auto; }
-.hp-logo { font-family: var(--display); font-weight: 800; font-size: var(--text-heading-2); letter-spacing: -0.4px; white-space: nowrap; }
-.hp-logo b { color: var(--coral); }
-.hp-signin { font-size: var(--text-body-sm); font-weight: 600; border: 1px solid var(--line); padding: 9px 16px; border-radius: var(--radius-full); }
+.hp-top { padding: var(--space-3) var(--gutter) 0; pointer-events: none; }
+.hp-top header > * { pointer-events: auto; }
 
 /* padding-block, not padding: the side padding comes from .hp-wrap and must survive on phones */
 .hp-hero { padding-block: clamp(52px, 9vh, 130px) 30px; }
@@ -154,7 +148,7 @@ const CSS = `
 .hp-closing { text-align: center; padding: clamp(100px,14vh,200px) 20px clamp(110px,16vh,220px); }
 .hp-closing h2 { font-family: var(--display); font-weight: 800; font-size: clamp(40px, 7vw, 80px); line-height: 0.98; letter-spacing: -2.5px; margin: 0 0 28px; }
 
-@media(max-width:640px) { .hp-top { padding-inline:16px; } .hp-top-actions { gap:8px; } .hp-wrap { padding-inline:22px; } }
+@media(max-width:640px) { .hp-wrap { padding-inline:22px; } }
 
 @media (max-width: 820px) {
   .hp-grid { grid-template-columns: 1fr 1fr; }
@@ -205,10 +199,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
       <div className="hp-stage">
       <HeroCards />
       <HeroHover />
-      <header className="hp-top">
-        <Link href="/" className="hp-logo">G-vent<b>Z</b></Link>
-        <div className="hp-top-actions"><LanguageSwitcher /><ColorModeToggle /><AccountLink /></div>
-      </header>
+      <div className="hp-top"><SiteHeader back={false} /></div>
 
       <section className="hp-wrap hp-hero">
         <span className="hp-pill">{t("hero.pill")}</span>

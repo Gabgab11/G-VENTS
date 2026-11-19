@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useState } from "react";
+import { Button } from "@/design";
 
 export default function CopyLink({ url }: { url: string }) {
   const t = useTranslations("dashboard.copyLink");
@@ -9,11 +10,11 @@ export default function CopyLink({ url }: { url: string }) {
   return (
     <div className="copy-box">
       <span className="copy-url">{url}</span>
-      <button type="button" className="btn-small" onClick={async () => {
+      <Button size="sm" onClick={async () => {
         await navigator.clipboard.writeText(url);
         setCopied(true);
         setTimeout(() => setCopied(false), 1500);
-      }}>{t(copied ? "copied" : "copy")}</button>
+      }}>{t(copied ? "copied" : "copy")}</Button>
     </div>
   );
 }

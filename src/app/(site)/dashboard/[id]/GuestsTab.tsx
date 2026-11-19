@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { api, data } from "@/lib/api/server";
 import { can, type EventDashboard } from "@/lib/auth";
 import type { components } from "@/lib/api/schema";
@@ -6,12 +5,22 @@ import { approveOrder, checkInGuest, declineOrder, promoteFromWaitlist, refundTi
 import { refundStatusKey } from "@/lib/payment-text";
 import { getTranslations } from "next-intl/server";
 import { getFormat } from "@/i18n/format-server";
+import { Badge, Button, Card, Checkbox, Input, Select, type BadgeTone } from "@/design";
+import styles from "../dashboard.module.css";
 
 type GuestRow = components["schemas"]["GuestRowResponse"];
 
 export type GuestQuery = { q?: string; status?: string; type?: string; sort?: string; page?: string };
 
 const STATUSES = ["confirmed", "pending", "waitlisted", "declined", "cancelled", "refunded", "checked_in", "not_checked_in"] as const;
+
+/** A ticket or refund status as a badge tone (never colour alone: the badge keeps its word). */
+function toneOf(status: string): BadgeTone {
+  if (["confirmed", "refunded", "ok", "approved", "completed"].includes(status)) return "success";
+  if (["pending", "waitlisted", "queued", "processing", "submitted", "pending_approval"].includes(status)) return "warning";
+  if (["declined", "cancelled", "failed", "revoked"].includes(status)) return "danger";
+  return "neutral";
+}
 
 // The guest list (US-7.3, I2, I3, I4) from gventz-api: one row per ticket, search, filters, totals.
 // Pending requests are grouped by order so the host approves or declines a group at once.
@@ -55,42 +64,42 @@ export default async function GuestsTab({ event, query }: { event: EventDashboar
         <p className="muted small">
           {t("guests.counts", { confirmed: list.counts.confirmed, pending: list.counts.pending, waitlist: list.waitlistCount, checkedIn: list.counts.checkedIn })}
         </p>
-        <span className="row-form">
+        <span className={styles.rowForm}>
           {promote && list.waitlistCount > 0 && (
             <form action={promoteFromWaitlist}>
               <input type="hidden" name="event_id" value={id} />
-              <button className="btn-small" type="submit">{t("guests.promote")}</button>
+              <Button size="sm" type="submit">{t("guests.promote")}</Button>
             </form>
           )}
           {can(event, "guests.export") && <a className="btn-small" href={`/dashboard/${id}/guests.csv`}>{t("guests.export")}</a>}
         </span>
       </div>
 
-      <form className="row-form" action={`/dashboard/${id}`} method="get" role="search">
+      <form className={styles.rowForm} action={`/dashboard/${id}`} method="get" role="search">
         <input type="hidden" name="tab" value="guests" />
-        <input className="input" name="q" defaultValue={q} placeholder={t("guests.searchPlaceholder")} aria-label={t("guests.searchLabel")} />
-        <select className="input" name="status" defaultValue={status ?? ""} aria-label={t("guests.statusLabel")}>
+        <Input name="q" defaultValue={q} placeholder={t("guests.searchPlaceholder")} aria-label={t("guests.searchLabel")} />
+        <Select name="status" defaultValue={status ?? ""} aria-label={t("guests.statusLabel")}>
           <option value="">{t("guests.everyone")}</option>
           {STATUSES.map((s) => <option key={s} value={s}>{statusLabel(s)}</option>)}
-        </select>
+        </Select>
         {event.ticketTypes.length > 1 && (
-          <select className="input" name="type" defaultValue={ticketTypeId ?? ""} aria-label={t("guests.ticketTypeLabel")}>
+          <Select name="type" defaultValue={ticketTypeId ?? ""} aria-label={t("guests.ticketTypeLabel")}>
             <option value="">{t("guests.allTickets")}</option>
             {event.ticketTypes.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}
-          </select>
+          </Select>
         )}
-        <select className="input" name="sort" defaultValue={sort} aria-label={t("guests.sortLabel")}>
+        <Select name="sort" defaultValue={sort} aria-label={t("guests.sortLabel")}>
           <option value="registered">{t("guests.newest")}</option>
           <option value="checked_in">{t("guests.recentlyCheckedIn")}</option>
-        </select>
-        <button className="btn-small" type="submit">{t("guests.show")}</button>
+        </Select>
+        <Button size="sm" type="submit">{t("guests.show")}</Button>
       </form>
 
       {approve && pendingGroups.length > 0 && (
-        <section className="panel">
+        <Card as="section">
           <div className="panel-label">{t("guests.requests")}</div>
           {pendingGroups.map((g) => (
-            <div className="guest-row" key={g.orderId}>
+            <div className={styles.requestRow} key={g.orderId}>
               <div className="guest-main">
                 <b>{g.buyerName}</b>
                 <div className="muted small">{g.buyerEmail} · {t("guests.tickets", { count: g.tickets })}</div>
@@ -100,56 +109,58 @@ export default async function GuestsTab({ event, query }: { event: EventDashboar
                 <form action={approveOrder}>
                   <input type="hidden" name="event_id" value={id} />
                   <input type="hidden" name="order_id" value={g.orderId} />
-                  <button className="btn-small" type="submit">{t("guests.approve")}</button>
+                  <Button size="sm" type="submit">{t("guests.approve")}</Button>
                 </form>
-                <form action={declineOrder} className="row-form">
+                <form action={declineOrder} className={styles.rowForm}>
                   <input type="hidden" name="event_id" value={id} />
                   <input type="hidden" name="order_id" value={g.orderId} />
-                  <input className="input" name="message" maxLength={500} placeholder={t("guests.messagePlaceholder")} aria-label={t("guests.messageTo", { name: g.buyerName })} />
+                  <Input name="message" maxLength={500} placeholder={t("guests.messagePlaceholder")} aria-label={t("guests.messageTo", { name: g.buyerName })} />
                   <button className="link-btn" type="submit">{t("guests.decline")}</button>
                 </form>
               </div>
             </div>
           ))}
-        </section>
+        </Card>
       )}
 
       {list.items.length === 0 && <p className="muted">{t(q || status || ticketTypeId ? "guests.noMatch" : "guests.empty")}</p>}
 
       {list.items.map((r) => (
-        <div className="guest-row" key={r.ticketId}>
-          <div className="guest-main">
-            <b>{r.displayName}</b>
-            <div className="muted small">
-              {r.buyerEmail} · {r.ticketType}{r.number && r.total && r.total > 1 ? ` · ${t("guests.ticketNumber", { number: r.number, total: r.total })}` : ""}
-              {r.displayName !== r.buyerName ? ` · ${t("guests.bookedBy", { name: r.buyerName })}` : ""}
+        <Card key={r.ticketId}>
+          <div className={styles.guestRow}>
+            <div className="guest-main">
+              <b>{r.displayName}</b>
+              <div className="muted small">
+                {r.buyerEmail} · {r.ticketType}{r.number && r.total && r.total > 1 ? ` · ${t("guests.ticketNumber", { number: r.number, total: r.total })}` : ""}
+                {r.displayName !== r.buyerName ? ` · ${t("guests.bookedBy", { name: r.buyerName })}` : ""}
+              </div>
+              {r.answers.map((a) => <div className="muted small" key={a.questionId}>{a.label}: {a.value}</div>)}
             </div>
-            {r.answers.map((a) => <div className="muted small" key={a.questionId}>{a.label}: {a.value}</div>)}
+            <div className="guest-side">
+              <Badge tone={toneOf(r.status)}>{statusLabel(r.status)}</Badge>
+              {checkIn && r.status === "confirmed" && !r.checkedInAt && (
+                <form action={checkInGuest}>
+                  <input type="hidden" name="event_id" value={id} />
+                  <input type="hidden" name="ticket_id" value={r.ticketId} />
+                  <Button size="sm" type="submit" aria-label={t("guests.checkInLabel", { name: r.displayName })}>{t("guests.checkIn")}</Button>
+                </form>
+              )}
+              {r.checkedInAt && <span className="muted small">{t("guests.checkedIn")}</span>}
+              {r.disputed && <Badge tone="danger">{t("guests.disputed")}</Badge>}
+              {r.refundStatus && <Badge tone={r.refundStatus === "failed" ? "danger" : r.refundStatus === "refunded" ? "success" : "warning"}>{refundLabel(r.refundStatus)}</Badge>}
+              {refund && r.paid && r.status === "confirmed" && r.refundableMinor !== null && r.refundableMinor > 0 && (!r.refundStatus || r.refundStatus === "failed") && (
+                <RefundAction eventId={id} ticketId={r.ticketId} name={r.displayName} amount={format.money(r.refundableMinor, currencyOf(r.ticketTypeId))} />
+              )}
+            </div>
           </div>
-          <div className="guest-side">
-            <span className={`tag tag-${r.status}`}>{statusLabel(r.status)}</span>
-            {checkIn && r.status === "confirmed" && !r.checkedInAt && (
-              <form action={checkInGuest}>
-                <input type="hidden" name="event_id" value={id} />
-                <input type="hidden" name="ticket_id" value={r.ticketId} />
-                <button className="btn-small" type="submit" aria-label={t("guests.checkInLabel", { name: r.displayName })}>{t("guests.checkIn")}</button>
-              </form>
-            )}
-            {r.checkedInAt && <span className="muted small">{t("guests.checkedIn")}</span>}
-            {r.disputed && <span className="tag tag-cancelled">{t("guests.disputed")}</span>}
-            {r.refundStatus && <span className={`tag ${r.refundStatus === "failed" ? "tag-cancelled" : r.refundStatus === "refunded" ? "" : "tag-waitlisted"}`}>{refundLabel(r.refundStatus)}</span>}
-            {refund && r.paid && r.status === "confirmed" && r.refundableMinor !== null && r.refundableMinor > 0 && (!r.refundStatus || r.refundStatus === "failed") && (
-              <RefundAction eventId={id} ticketId={r.ticketId} name={r.displayName} amount={format.money(r.refundableMinor, currencyOf(r.ticketTypeId))} />
-            )}
-          </div>
-        </div>
+        </Card>
       ))}
 
       {pages > 1 && (
         <nav className="spread" aria-label={t("guests.pagesLabel")}>
-          {page > 1 ? <Link href={href({ page: String(page - 1) })} className="btn-small">{t("pagination.previous")}</Link> : <span />}
+          {page > 1 ? <Button href={href({ page: String(page - 1) })} size="sm">{t("pagination.previous")}</Button> : <span />}
           <span className="muted small">{t("pagination.page", { page, pages })}</span>
-          {page < pages ? <Link href={href({ page: String(page + 1) })} className="btn-small">{t("pagination.next")}</Link> : <span />}
+          {page < pages ? <Button href={href({ page: String(page + 1) })} size="sm">{t("pagination.next")}</Button> : <span />}
         </nav>
       )}
     </div>
@@ -183,8 +194,8 @@ async function RefundAction({ eventId, ticketId, name, amount }: { eventId: stri
         <input type="hidden" name="event_id" value={eventId} />
         <input type="hidden" name="ticket_id" value={ticketId} />
         <p className="small">{t.rich("body", { name, amount, b: (c) => <b>{c}</b> })}</p>
-        <label className="check"><input type="checkbox" name="confirm" value="yes" required /> <span>{t("confirm", { amount, name })}</span></label>
-        <button className="btn-small" type="submit">{t("button")}</button>
+        <Checkbox name="confirm" value="yes" required label={t("confirm", { amount, name })} />
+        <Button size="sm" type="submit">{t("button")}</Button>
       </form>
     </details>
   );

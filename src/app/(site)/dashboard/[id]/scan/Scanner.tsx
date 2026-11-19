@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { Locale } from "@/i18n/languages";
 import { scanTicket } from "./actions";
 import { scanScreen, type ScanScreen } from "./scan-screen";
+import { Button, Input } from "@/design";
 
 const SCAN_EVERY_MS = 150;
 const SHOW_RESULT_MS = 1_500;
@@ -102,8 +103,8 @@ export default function Scanner({ eventId, title }: { eventId: string; title: st
           setManual("");
         }}
       >
-        <input className="input" value={manual} onChange={(e) => setManual(e.target.value)} placeholder={t("codePlaceholder")} aria-label={t("codeLabel")} autoComplete="off" />
-        <button className="btn-small" type="submit">{t("check")}</button>
+        <Input value={manual} onChange={(e) => setManual(e.target.value)} placeholder={t("codePlaceholder")} aria-label={t("codeLabel")} autoComplete="off" />
+        <Button size="sm" type="submit">{t("check")}</Button>
       </form>
     </div>
   );

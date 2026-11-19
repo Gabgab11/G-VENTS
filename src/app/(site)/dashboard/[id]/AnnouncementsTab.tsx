@@ -4,6 +4,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { createAnnouncement, sendAnnouncement } from "./actions";
 import { intlLocale } from "@/lib/format";
 import type { Locale } from "@/i18n/languages";
+import { Button, Card, Field, Input, Select, Textarea } from "@/design";
 
 // Segment → its label's id under dashboard.announcements.segments.
 const SEGMENT_LABELS = {
@@ -35,7 +36,7 @@ export default async function AnnouncementsTab({ event }: { event: EventDashboar
 
   return (
     <div className="stack">
-      <section className="panel">
+      <Card as="section">
         <div className="panel-label">{t("plan")}</div>
         <p className="small">
           {t.rich("sendsLeft", { left: sendsLeft, allowed: allowance.sendsAllowed, b: (c) => <b>{c}</b> })}
@@ -47,29 +48,29 @@ export default async function AnnouncementsTab({ event }: { event: EventDashboar
           {t("countRule")}
           {started && ` ${t("started")}`}
         </p>
-      </section>
+      </Card>
 
       {can(event, "announcements.draft") && (
-        <section className="panel">
+        <Card as="section">
           <div className="panel-label">{t("newTitle")}</div>
           <form action={createAnnouncement} className="form">
             <input type="hidden" name="event_id" value={id} />
-            <label className="field"><span>{t("sendTo")}</span>
-              <select className="input" name="segment" defaultValue="all">
+            <Field label={t("sendTo")}>
+              <Select name="segment" defaultValue="all">
                 {(Object.keys(SEGMENT_LABELS) as (keyof typeof SEGMENT_LABELS)[]).map((key) => (
                   <option key={key} value={key}>{segmentLabel(key)} ({allowance.audience[key]})</option>
                 ))}
-              </select></label>
-            <label className="field"><span>{t("subject")}</span>
-              <input className="input" name="subject" maxLength={200} placeholder={t("subjectPlaceholder")} /></label>
-            <label className="field"><span>{t("message")}</span>
-              <textarea className="input" name="body" rows={6} placeholder={t("messagePlaceholder")} /></label>
-            <button className="btn-white" type="submit">{t("saveDraft")}</button>
+              </Select></Field>
+            <Field label={t("subject")}>
+              <Input name="subject" maxLength={200} placeholder={t("subjectPlaceholder")} /></Field>
+            <Field label={t("message")}>
+              <Textarea name="body" rows={6} placeholder={t("messagePlaceholder")} /></Field>
+            <Button variant="primary" type="submit">{t("saveDraft")}</Button>
           </form>
-        </section>
+        </Card>
       )}
 
-      <section className="panel">
+      <Card as="section">
         <div className="panel-label">{t("title")}</div>
         {past.length === 0 && <p className="muted small">{t("none")}</p>}
         {past.map((a) => {
@@ -85,9 +86,9 @@ export default async function AnnouncementsTab({ event }: { event: EventDashboar
                   <form action={sendAnnouncement}>
                     <input type="hidden" name="event_id" value={id} />
                     <input type="hidden" name="announcement_id" value={a.id} />
-                    <button className="btn-white" type="submit" disabled={audience === 0}>
+                    <Button variant="primary" type="submit" disabled={audience === 0}>
                       {t("send", { count: audience })}
-                    </button>
+                    </Button>
                   </form>
                 ) : (
                   <span className="muted small">{t("draft")}</span>
@@ -100,7 +101,7 @@ export default async function AnnouncementsTab({ event }: { event: EventDashboar
             </div>
           );
         })}
-      </section>
+      </Card>
     </div>
   );
 }

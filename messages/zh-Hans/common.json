@@ -7,7 +7,9 @@
     "discover": "发现",
     "pricing": "价格",
     "createEvent": "创建活动",
-    "back": "返回"
+    "back": "返回",
+    "menu": "菜单",
+    "closeMenu": "关闭菜单"
   },
   "account": {
     "signIn": "登录",

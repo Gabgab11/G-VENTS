@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useFormStatus } from "react-dom";
+import { Button, Field, Input } from "@/design";
 import { deleteEvent } from "./actions";
 
 // The delete button stays off until the host types the event's name.
@@ -25,10 +26,8 @@ export default function DeleteEventForm({ id, title, guests }: { id: string; tit
       ) : (
         <p className="muted small">{t("nobody")}</p>
       )}
-      <label className="field">
-        <span>{t.rich("typeToConfirm", { title, b: (c) => <b>{c}</b> })}</span>
-        <input
-          className="input"
+      <Field label={t.rich("typeToConfirm", { title, b: (c) => <b>{c}</b> })}>
+        <Input
           name="confirm_title"
           value={typed}
           onChange={(e) => setTyped(e.target.value)}
@@ -36,7 +35,7 @@ export default function DeleteEventForm({ id, title, guests }: { id: string; tit
           spellCheck={false}
           placeholder={title}
         />
-      </label>
+      </Field>
       <DeleteButton enabled={matches} />
     </form>
   );
@@ -46,8 +45,8 @@ function DeleteButton({ enabled }: { enabled: boolean }) {
   const t = useTranslations("dashboard.delete");
   const { pending } = useFormStatus();
   return (
-    <button className="btn-danger" type="submit" disabled={!enabled || pending} aria-disabled={!enabled || pending}>
+    <Button variant="danger" type="submit" disabled={!enabled || pending} aria-disabled={!enabled || pending}>
       {t(pending ? "deleting" : "button")}
-    </button>
+    </Button>
   );
 }

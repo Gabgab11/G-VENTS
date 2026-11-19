@@ -2,14 +2,15 @@
 
 import { useTranslations } from "next-intl";
 import { useActionState, useState, useTransition } from "react";
+import { Button, Field, Input } from "@/design";
 import { finishEnroll, startEnroll, verifyCode, type EnrollState, type VerifyState } from "./actions";
 
 function CodeField() {
   const t = useTranslations("account.mfa");
   return (
-    <label className="field"><span>{t("codeLabel")}</span>
-      <input className="input mfa-code" name="code" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9 ]{6,7}" maxLength={7} required autoFocus />
-    </label>
+    <Field label={t("codeLabel")}>
+      <Input className="mfa-code" name="code" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9 ]{6,7}" maxLength={7} required autoFocus />
+    </Field>
   );
 }
 
@@ -25,9 +26,9 @@ export function EnrollForm({ next }: { next: string }) {
     return (
       <div className="stack">
         {setup?.error && <p className="error" role="alert">{setup.error}</p>}
-        <button type="button" className="btn-grad" disabled={starting} onClick={() => start(async () => setSetup(await startEnroll()))}>
+        <Button variant="accent" disabled={starting} onClick={() => start(async () => setSetup(await startEnroll()))}>
           {starting ? t("preparing") : t("setUp")}
-        </button>
+        </Button>
       </div>
     );
   }
@@ -47,7 +48,7 @@ export function EnrollForm({ next }: { next: string }) {
       <input type="hidden" name="next" value={next} />
       <CodeField />
       {state?.error && <p className="error" role="alert">{state.error}</p>}
-      <button type="submit" className="btn-grad" disabled={confirming}>{confirming ? t("checking") : t("turnOn")}</button>
+      <Button variant="accent" type="submit" disabled={confirming}>{confirming ? t("checking") : t("turnOn")}</Button>
     </form>
   );
 }
@@ -61,7 +62,7 @@ export function VerifyForm({ next }: { next: string }) {
       <input type="hidden" name="next" value={next} />
       <CodeField />
       {state?.error && <p className="error" role="alert">{state.error}</p>}
-      <button type="submit" className="btn-grad" disabled={pending}>{pending ? t("checking") : t("continue")}</button>
+      <Button variant="accent" type="submit" disabled={pending}>{pending ? t("checking") : t("continue")}</Button>
     </form>
   );
 }

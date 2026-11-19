@@ -6,6 +6,7 @@ import type { Locale } from "@/i18n/languages";
 import { eventDateParts, timezoneLabel } from "@/lib/dates";
 import { intlLocale, safeZone } from "@/lib/format";
 import { qrSvg } from "@/lib/qr";
+import { Badge, Button, type BadgeTone } from "@/design";
 
 export type MyOrder = components["schemas"]["MyOrderResponse"];
 
@@ -23,6 +24,17 @@ const STATUS: Record<string, string> = {
   refunded: "refunded",
   partially_refunded: "partiallyRefunded",
   disputed: "disputed",
+};
+
+/** The status pill's tone (FR-28.6); anything unlisted is neutral. */
+const TONE: Record<string, BadgeTone> = {
+  completed: "success",
+  refunded: "success",
+  pending_approval: "warning",
+  waitlisted: "warning",
+  declined: "danger",
+  cancelled: "danger",
+  failed: "danger",
 };
 
 /** The calendar tile and date lines in the page's language; English keeps eventDateParts' exact output. */
@@ -64,7 +76,7 @@ export default async function OrderCard({ order, origin, showQr }: { order: MyOr
           {date && <div className="ev-fact-sub">{date.dateLine} · {date.timeLine}</div>}
           {event?.where && <div className="ev-fact-sub">{event.where}</div>}
         </div>
-        <span className={`oc-status oc-${order.status}`}>{status.title}</span>
+        <Badge tone={TONE[order.status] ?? "neutral"}>{status.title}</Badge>
       </header>
       <p className="oc-note">{status.body}</p>
       <ul className="oc-list">
@@ -79,7 +91,7 @@ export default async function OrderCard({ order, origin, showQr }: { order: MyOr
                 {tk.ticketType}{tk.number && total > 1 ? ` · ${t("ticketNumber", { number: tk.number, total })}` : ""}{tk.checkedInAt ? ` · ${t("checkedIn")}` : ""}
               </div>
             </div>
-            <Link className="btn-small" href={`/t/${tk.code}`}>{t("openTicket")}</Link>
+            <Button href={`/t/${tk.code}`} variant="secondary" size="sm">{t("openTicket")}</Button>
           </li>
         ))}
       </ul>

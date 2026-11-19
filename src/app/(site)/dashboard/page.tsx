@@ -11,6 +11,7 @@ import SellPaidCard from "./SellPaidCard";
 import { getAvailability, getMyHostApplication } from "@/lib/payments";
 import SiteHeader from "@/components/SiteHeader";
 import { getTranslations } from "next-intl/server";
+import { Button } from "@/design";
 
 // The organizer's events from gventz-api: owned, or where they hold an accepted role.
 export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ deleted?: string; page?: string }> }) {
@@ -53,8 +54,8 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
           <h1>{t("list.title")}</h1>
         </div>
         <div className="row-gap">
-          {me?.isStaff && <Link href="/admin" className="btn-ghost">{t("list.admin")}</Link>}
-          <Link href="/events/new" className="btn-white">{t("list.create")}</Link>
+          {me?.isStaff && <Button href="/admin" variant="secondary">{t("list.admin")}</Button>}
+          <Button href="/events/new" variant="primary">{t("list.create")}</Button>
         </div>
       </div>
       <p className="muted">{t.rich("list.intro", { link: (c) => <Link href="/account/security" className="gold">{c}</Link> })}</p>
@@ -72,9 +73,9 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
 
       {pages > 1 && (
         <nav className="spread" aria-label={t("list.pagesLabel")}>
-          {page > 1 ? <Link href={`/dashboard?page=${page - 1}`} className="btn-small">{t("pagination.previous")}</Link> : <span />}
+          {page > 1 ? <Button href={`/dashboard?page=${page - 1}`} size="sm">{t("pagination.previous")}</Button> : <span />}
           <span className="muted small">{t("pagination.page", { page, pages })}</span>
-          {page < pages ? <Link href={`/dashboard?page=${page + 1}`} className="btn-small">{t("pagination.next")}</Link> : <span />}
+          {page < pages ? <Button href={`/dashboard?page=${page + 1}`} size="sm">{t("pagination.next")}</Button> : <span />}
         </nav>
       )}
     </main>

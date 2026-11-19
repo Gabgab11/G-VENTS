@@ -1,0 +1,2 @@
+/* Room for the caret on the design-system Input (wins over the Input's own padding). */
+.input.input { padding-inline-end: var(--space-10); }

@@ -4,6 +4,8 @@ import { setRegistrationOpen, setCapacity } from "./actions";
 import type { components } from "@/lib/api/schema";
 import { SalesPanel } from "./SalesPanel";
 import { getTranslations } from "next-intl/server";
+import { Button, Card, Input, Stat } from "@/design";
+import styles from "../dashboard.module.css";
 
 export default async function OverviewTab({ event, url, sales }: { event: EventDashboard; url: string; sales: components["schemas"]["EventSalesDto"] | null }) {
   const id = event.id;
@@ -13,23 +15,23 @@ export default async function OverviewTab({ event, url, sales }: { event: EventD
   return (
     <div className="stack">
       <div className="stats">
-        <div className="stat"><b>{counts.confirmed}</b><span>{t("confirmed")}</span></div>
-        <div className="stat"><b>{counts.pending}</b><span>{t("pending")}</span></div>
-        <div className="stat"><b>{counts.waitlisted}</b><span>{t("waitlisted")}</span></div>
-        <div className="stat"><b>{counts.checkedIn}</b><span>{t("checkedIn")}</span></div>
-        <div className="stat"><b>{event.capacity ?? "∞"}</b><span>{t("capacity")}</span></div>
+        <Stat label={t("confirmed")} value={counts.confirmed} />
+        <Stat label={t("pending")} value={counts.pending} />
+        <Stat label={t("waitlisted")} value={counts.waitlisted} />
+        <Stat label={t("checkedIn")} value={counts.checkedIn} />
+        <Stat label={t("capacity")} value={event.capacity ?? "∞"} />
       </div>
 
       {sales && <SalesPanel sales={sales} feeChoice={event.feeChoice} />}
 
-      <section className="panel">
+      <Card as="section">
         <div className="panel-label">{t("shareTitle")}</div>
         <p className="muted small">{t("shareHint")}</p>
         <CopyLink url={url} />
-      </section>
+      </Card>
 
       {edit && (
-        <section className="panel">
+        <Card as="section">
           <div className="spread">
             <div>
               <div className="option-title">{t("registration")}</div>
@@ -38,25 +40,25 @@ export default async function OverviewTab({ event, url, sales }: { event: EventD
             <form action={setRegistrationOpen}>
               <input type="hidden" name="event_id" value={id} />
               <input type="hidden" name="open" value={event.registrationOpen ? "false" : "true"} />
-              <button className={event.registrationOpen ? "btn-ghost" : "btn-grad"} type="submit">
+              <Button variant={event.registrationOpen ? "secondary" : "accent"} type="submit">
                 {t(event.registrationOpen ? "closeRegistration" : "openRegistration")}
-              </button>
+              </Button>
             </form>
           </div>
-        </section>
+        </Card>
       )}
 
       {edit && (
-        <section className="panel">
+        <Card as="section">
           <label className="option-title" htmlFor="capacity">{t("capacity")}</label>
           <p className="muted small" id="capacity-hint">{t("capacityHint")}</p>
-          <form action={setCapacity} className="row-form">
+          <form action={setCapacity} className={styles.rowForm}>
             <input type="hidden" name="event_id" value={id} />
-            <input id="capacity" aria-describedby="capacity-hint" className="input" name="capacity" inputMode="numeric"
+            <Input id="capacity" aria-describedby="capacity-hint" name="capacity" inputMode="numeric"
               defaultValue={event.capacity ?? ""} placeholder={t("capacityPlaceholder")} />
-            <button className="btn-white" type="submit">{t("saveCapacity")}</button>
+            <Button variant="primary" type="submit">{t("saveCapacity")}</Button>
           </form>
-        </section>
+        </Card>
       )}
     </div>
   );
