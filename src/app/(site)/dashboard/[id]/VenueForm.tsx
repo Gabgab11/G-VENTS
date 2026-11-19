@@ -2,7 +2,8 @@
 
 import { useTranslations } from "next-intl";
 import { useId, useState } from "react";
-import { Button, Switch } from "@/design";
+import { Button } from "@/design";
+import { Switch } from "@/design/client";
 import LocationFields from "@/app/(site)/events/new/LocationFields";
 import { updateVenue } from "./actions";
 

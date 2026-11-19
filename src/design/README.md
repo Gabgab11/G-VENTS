@@ -6,7 +6,10 @@ Components and tokens for every G-ventZ screen (Change 4, FR-28).
 
 ```tsx
 import { Button, Card, CardHeader, Field, Input } from "@/design";
+import { Switch, Tabs, Dialog, Sheet, Menu, Tooltip, Popover, ToastProvider, useToast } from "@/design/client";
 ```
+
+Client-only components (state, Radix, context) come from `@/design/client`. Keep them out of `@/design`: a server component importing the index would otherwise ship every one of them to the browser.
 
 Each component is `src/design/components/X.tsx` with its own `X.module.css`. Components with state,
 context or Radix are client components (`"use client"`); the rest also render in server components.

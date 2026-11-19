@@ -8,7 +8,8 @@ import AccountLink from "@/app/AccountLink";
 import BackLink from "@/components/BackLink";
 import ColorModeToggle from "@/components/ColorModeToggle";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
-import { Button, Sheet, SheetContent, SheetTrigger, SheetClose } from "@/design";
+import { Button } from "@/design";
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/design/client";
 import styles from "./SiteHeader.module.css";
 
 const NAV = [

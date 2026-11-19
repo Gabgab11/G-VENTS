@@ -17,7 +17,8 @@ import Link from "next/link";
 import { currencySymbol } from "@/lib/money";
 import { FEE_CHOICES, feeChoiceKey, sellReasonKey, type FeeChoice } from "@/lib/payment-text";
 import FeeExample from "./FeeExample";
-import { Button, Card, Field, Input, Select, Switch, Textarea } from "@/design";
+import { Button, Card, Field, Input, Select, Textarea } from "@/design";
+import { Switch } from "@/design/client";
 import styles from "./NewEventForm.module.css";
 
 type Tier = { id: number; name: string; price: string; qty: string };

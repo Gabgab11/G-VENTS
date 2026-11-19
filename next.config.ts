@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
   // The design system's index (import { Button } from "@/design") re-exports every component. It has no
   // side effects, so a page only ships the components it uses, not every Radix primitive (NFR-13).
   webpack(config) {
-    config.module.rules.push({ test: /[\\/]src[\\/]design[\\/](index|cx|token-list)\.ts$/, sideEffects: false });
+    config.module.rules.push({ test: /[\\/]src[\\/]design[\\/](index|client|cx|token-list)\.ts$/, sideEffects: false });
     return config;
   },
   async headers() {

@@ -2,12 +2,8 @@
 
 import { useState } from "react";
 import { CalendarDays, Plus, Share2 } from "lucide-react";
-import {
-  Avatar, Badge, Banner, Button, Card, CardHeader, Checkbox, Dialog, DialogClose, DialogContent, DialogTrigger,
-  EmptyState, Field, Input, Link, Menu, MenuContent, MenuItem, MenuLabel, MenuSeparator, MenuTrigger, PageHeader,
-  Popover, PopoverContent, PopoverTrigger, Select, Sheet, SheetContent, SheetTrigger, Stat, Switch, TabLink, TabLinks,
-  Table, Tabs, TabsContent, TabsList, TabsTrigger, Td, Textarea, Th, ToastProvider, Tooltip, useToast,
-} from "@/design";
+import { Avatar, Badge, Banner, Button, Card, CardHeader, Checkbox, EmptyState, Field, Input, Link, PageHeader, Select, Stat, TabLink, TabLinks, Table, Td, Textarea, Th } from "@/design";
+import { Dialog, DialogClose, DialogContent, DialogTrigger, Menu, MenuContent, MenuItem, MenuLabel, MenuSeparator, MenuTrigger, Popover, PopoverContent, PopoverTrigger, Sheet, SheetContent, SheetTrigger, Switch, Tabs, TabsContent, TabsList, TabsTrigger, ToastProvider, Tooltip, useToast } from "@/design/client";
 import { TOKENS } from "@/design/token-list";
 import styles from "./style-guide.module.css";
 
