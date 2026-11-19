@@ -50,6 +50,7 @@ export default function AccountLink({ className = "site-account", withSignOut = 
       <details className="account-menu" ref={menu}>
         <summary className={className}>{t("account")}</summary>
         <div className="account-menu-list">
+          <Link href="/my-tickets">{t("myTickets")}</Link>
           <Link href="/dashboard" className="account-menu-phone">{t("dashboard")}</Link>
           {session.isStaff && <Link href="/admin">{t("platformAdmin")}</Link>}
           <Link href="/account/security">{t("security")}</Link>

@@ -44,7 +44,8 @@
   "signUp": {
     "welcome": "欢迎！创建免费账户或登录即可获取门票。使用 Google 或 6 位邮箱验证码，只需几秒钟。",
     "cta": "获取门票",
-    "haveAccount": "已有账户？<link>登录</link>"
+    "haveAccount": "已有账户？<link>登录</link>",
+    "newHere": "初次使用？<link>创建免费账户</link>"
   },
   "guest": {
     "name": "您的全名",
@@ -94,5 +95,20 @@
     "chooseTicket": "请至少选择一张门票。",
     "ticketRange": "请选择 1 到 10 张门票。",
     "nonRefundable": "请勾选“{text}”以继续。"
+  },
+  "meta": {
+    "cardAlt": "{title}：日期、地点和门票"
+  },
+  "trust": {
+    "paystack": "由 Paystack 提供安全支付",
+    "refunds": "退款：{policy}",
+    "refundsLink": "退款政策",
+    "email": "门票将发送至您的账户邮箱"
+  },
+  "map": {
+    "open": "在 Google 地图中打开",
+    "show": "显示地图",
+    "title": "{place}的地图",
+    "imageAlt": "显示{place}的地图"
   }
 }

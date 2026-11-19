@@ -38,13 +38,14 @@ export default function AuthScreen({ mode, art }: { mode: AuthMode; art: ReactNo
     const params = new URLSearchParams(window.location.search);
     setFromCreate(params.get("next") === "/events/new");
     const n = params.get("next");
-    setNext(n ? `?next=${encodeURIComponent(safeNextPath(n))}` : "");
+    setNext(n ? `?next=${encodeURIComponent(safeNextPath(n, "/my-tickets"))}` : "");
     if (params.get("error") === "google") setError(t("googleDidntFinish"));
   }, [t]);
 
   function nextPath() {
-    if (typeof window === "undefined") return "/dashboard";
-    return safeNextPath(new URLSearchParams(window.location.search).get("next"));
+    // No (or an unsafe) `next`: a guest's tickets, not the host dashboard (D82).
+    if (typeof window === "undefined") return "/my-tickets";
+    return safeNextPath(new URLSearchParams(window.location.search).get("next"), "/my-tickets");
   }
 
   // Google returns to /auth/callback, which sets the session and continues to `next`.

@@ -44,7 +44,8 @@
   "signUp": {
     "welcome": "Welcome! Create a free account or sign in to get your tickets. It takes a few seconds with Google or a 6-digit email code.",
     "cta": "Get tickets",
-    "haveAccount": "Already have an account? <link>Sign in</link>"
+    "haveAccount": "Already have an account? <link>Sign in</link>",
+    "newHere": "New here? <link>Create a free account</link>"
   },
   "guest": {
     "name": "Your full name",
@@ -94,5 +95,20 @@
     "chooseTicket": "Choose at least one ticket.",
     "ticketRange": "Choose between 1 and 10 tickets.",
     "nonRefundable": "Tick \"{text}\" to continue."
+  },
+  "meta": {
+    "cardAlt": "{title}: date, place and tickets"
+  },
+  "trust": {
+    "paystack": "Secure payment by Paystack",
+    "refunds": "Refunds: {policy}",
+    "refundsLink": "Refund policy",
+    "email": "Tickets go to your account email"
+  },
+  "map": {
+    "open": "Open in Google Maps",
+    "show": "Show map",
+    "title": "Map of {place}",
+    "imageAlt": "Map showing {place}"
   }
 }

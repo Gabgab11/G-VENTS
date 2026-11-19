@@ -2066,6 +2066,13 @@ export interface components {
             country: string | null;
             coverUrl: string | null;
             coverTheme: string;
+            /** @description Lowest price among ticket types on sale now, in integer minor units (kobo, cents); null when that is free or nothing is on sale */
+            minPriceMinor: number | null;
+            /**
+             * @description ISO 4217 currency of minPriceMinor; null with it
+             * @example NGN
+             */
+            currency: string | null;
         };
         FeaturedPageDto: {
             items: components["schemas"]["EventCardDto"][];
@@ -2161,6 +2168,11 @@ export interface components {
             attendeeCount: number | null;
             /** @description The owner's display name ("Hosted by"); null when they haven't set one */
             hostName: string | null;
+            /**
+             * Format: date-time
+             * @description Last change by the host to the event, its ticket types or its flyer; versions the share card
+             */
+            updatedAt: string;
             ticketTypes: components["schemas"]["TicketTypeViewDto"][];
             questions: components["schemas"]["QuestionViewDto"][];
             /**
@@ -2355,6 +2367,11 @@ export interface components {
             attendeeCount: number | null;
             /** @description The owner's display name ("Hosted by"); null when they haven't set one */
             hostName: string | null;
+            /**
+             * Format: date-time
+             * @description Last change by the host to the event, its ticket types or its flyer; versions the share card
+             */
+            updatedAt: string;
             ticketTypes: components["schemas"]["TicketTypeViewDto"][];
             questions: components["schemas"]["QuestionViewDto"][];
             /**
@@ -2388,6 +2405,13 @@ export interface components {
             country: string | null;
             coverUrl: string | null;
             coverTheme: string;
+            /** @description Lowest price among ticket types on sale now, in integer minor units (kobo, cents); null when that is free or nothing is on sale */
+            minPriceMinor: number | null;
+            /**
+             * @description ISO 4217 currency of minPriceMinor; null with it
+             * @example NGN
+             */
+            currency: string | null;
             /** @enum {string} */
             status: "draft" | "published" | "cancelled";
             /** @enum {string} */

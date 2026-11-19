@@ -1,6 +1,6 @@
 // Where to send someone after they sign in. Only same-site paths are allowed:
-// anything else (other sites, "//host", "javascript:", backslash tricks) falls back to the dashboard.
-export function safeNextPath(raw: string | null | undefined, fallback = "/dashboard"): string {
+// anything else (other sites, "//host", "javascript:", backslash tricks) falls back to My tickets (D82: after sign-in, back where you were going, else My tickets).
+export function safeNextPath(raw: string | null | undefined, fallback = "/my-tickets"): string {
   if (!raw) return fallback;
   if (!raw.startsWith("/") || raw.startsWith("//") || raw.includes("\\")) return fallback;
   // Reject control characters, which some browsers strip before parsing.

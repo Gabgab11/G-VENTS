@@ -8,8 +8,8 @@ describe("safeNextPath", () => {
   });
 
   it("falls back when there is no value", () => {
-    expect(safeNextPath(null)).toBe("/dashboard");
-    expect(safeNextPath("")).toBe("/dashboard");
+    expect(safeNextPath(null)).toBe("/my-tickets");
+    expect(safeNextPath("")).toBe("/my-tickets");
     expect(safeNextPath(undefined, "/")).toBe("/");
   });
 
@@ -24,6 +24,6 @@ describe("safeNextPath", () => {
     "data:text/html,hi",
     "dashboard",
   ])("rejects %s", (input) => {
-    expect(safeNextPath(input)).toBe("/dashboard");
+    expect(safeNextPath(input)).toBe("/my-tickets");
   });
 });

@@ -5,6 +5,8 @@ import { formatDateTime, intlLocale, safeZone } from "@/lib/format";
 import { themeBackground } from "@/lib/themes";
 import type { Locale } from "@/i18n/languages";
 import { categoryLabelKey, isCategory } from "@/lib/categories";
+import { priceLabel } from "@/lib/price-label";
+import { Badge } from "@/design";
 
 export function placeOf(e: Pick<EventCard, "is_online" | "venue_name" | "city">, online: string): string {
   if (e.is_online) return online;
@@ -28,10 +30,16 @@ export function categoryLabel(category: string, t: (key: string) => string): str
   return isCategory(category) ? t(categoryLabelKey(category)) : category;
 }
 
+/** The lowest price on sale from the card's API fields; null (free) when there is none. */
+export function cardPrice(e: { min_price_minor?: number | null; currency?: string | null }): { minor: number; currency: string } | null {
+  return e.min_price_minor != null && e.min_price_minor > 0 && e.currency ? { minor: e.min_price_minor, currency: e.currency } : null;
+}
+
 // One event in a Discover row: the flyer (or the event's colour style with its name), then the
-// name, place and date.
+// name, place and date, and "Free" or "From ₦5,000".
 export default function EventTile({ event: e }: { event: EventCard }) {
   const t = useTranslations("discover");
+  const shared = useTranslations("shared");
   const root = useTranslations();
   const lang = useLocale() as Locale;
   const place = placeOf(e, t("online"));
@@ -45,6 +53,7 @@ export default function EventTile({ event: e }: { event: EventCard }) {
       <span className="dc-tile-title">{e.title}</span>
       {place && <span className="dc-tile-meta">{place}</span>}
       <span className="dc-tile-meta">{whenOf(e, lang)}</span>
+      <Badge plain style={{ justifySelf: "start" }}>{priceLabel(cardPrice(e), lang, (k, v) => shared(k, v))}</Badge>
     </Link>
   );
 }

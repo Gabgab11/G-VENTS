@@ -1,0 +1,9 @@
+/* ShareButton's sheet (Change 4 chunk 2, FR-29.2): card preview, share links, copy row, QR poster. */
+.body { display: grid; gap: var(--space-4); }
+.card { display: block; inline-size: 100%; block-size: auto; aspect-ratio: 1200 / 630; object-fit: cover; border-radius: var(--radius-md); border: 1px solid var(--color-border); background: var(--color-surface-raised); }
+.networks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2); }
+.copyRow { display: flex; gap: var(--space-2); align-items: center; }
+.link { flex: 1; min-inline-size: 0; block-size: var(--control-height); padding-inline: var(--space-3); border: 1px solid var(--color-border-strong); border-radius: var(--radius-md); background: var(--color-surface); color: var(--color-text); font: inherit; font-size: var(--text-body); text-overflow: ellipsis; }
+.link:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+/* The portalled toasts stay clickable while the sheet (a modal) disables pointer events on <body>. */
+.toasts { pointer-events: auto; }

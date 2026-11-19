@@ -14,12 +14,13 @@ import styles from "./SiteHeader.module.css";
 
 const NAV = [
   { href: "/discover", label: "discover" },
-  { href: "/pricing", label: "pricing" },
-  { href: "/events/new", label: "createEvent" },
+  { href: "/my-tickets", label: "myTickets" },
+  { href: "/events/new", label: "hostEvent" },
 ] as const;
 
 // The one header (Change 4, DS4) on every page except the home page (which has its own over the hero):
-// a back arrow, the logo (home), the main links, language, colour mode and the account corner.
+// a back arrow, the logo (home), the main links (Discover, My tickets, Host an event; Pricing is in
+// the footer, D82), language, colour mode and the account corner.
 // `back` is where the arrow goes when there's no history to go back to (never back into sign-in);
 // `actions` replaces the account link (the dashboard puts Sign out there). On phones the links,
 // language and colour mode move into a menu sheet, so the header is always one row.

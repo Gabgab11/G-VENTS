@@ -26,7 +26,7 @@ export default async function MyTicketsPage({ searchParams }: { searchParams: Pr
 
   return (
     <main className="tickets-page">
-      <SiteHeader back="/dashboard" />
+      <SiteHeader back="/" current="/my-tickets" />
       <h1>{t("heading")}</h1>
       <div className="seg" role="tablist" aria-label={t("which")}>
         <Link href="/my-tickets" className={when === "upcoming" ? "on" : ""} role="tab" aria-selected={when === "upcoming"}>{t("upcoming")}</Link>

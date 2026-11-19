@@ -44,7 +44,8 @@
   "signUp": {
     "welcome": "Bienvenue ! Créez un compte gratuit ou connectez-vous pour obtenir vos billets. Cela prend quelques secondes avec Google ou un code à 6 chiffres reçu par e-mail.",
     "cta": "Obtenir des billets",
-    "haveAccount": "Vous avez déjà un compte ? <link>Se connecter</link>"
+    "haveAccount": "Vous avez déjà un compte ? <link>Se connecter</link>",
+    "newHere": "Nouveau sur G-ventZ ? <link>Créez un compte gratuit</link>"
   },
   "guest": {
     "name": "Votre nom complet",
@@ -94,5 +95,20 @@
     "chooseTicket": "Choisissez au moins un billet.",
     "ticketRange": "Choisissez entre 1 et 10 billets.",
     "nonRefundable": "Cochez « {text} » pour continuer."
+  },
+  "meta": {
+    "cardAlt": "{title} : date, lieu et billets"
+  },
+  "trust": {
+    "paystack": "Paiement sécurisé par Paystack",
+    "refunds": "Remboursements : {policy}",
+    "refundsLink": "Politique de remboursement",
+    "email": "Les billets sont envoyés à l'adresse e-mail de votre compte"
+  },
+  "map": {
+    "open": "Ouvrir dans Google Maps",
+    "show": "Afficher la carte",
+    "title": "Carte de {place}",
+    "imageAlt": "Carte indiquant {place}"
   }
 }

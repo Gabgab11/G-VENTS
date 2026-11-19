@@ -15,6 +15,10 @@ import type { components } from "@/lib/api/schema";
 import { DisputeBanner } from "./SalesPanel";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Button, TabLink, TabLinks } from "@/design";
+import ShareButton from "@/components/ShareButton";
+import { localizedPath } from "@/i18n/routing";
+import { formatDateTime } from "@/lib/format";
+import type { Locale } from "@/i18n/languages";
 
 type Sales = components["schemas"]["EventSalesDto"];
 
@@ -67,8 +71,15 @@ export default async function ManageEventPage({
       <SiteHeader back="/dashboard" />
       <h1>{event.title}</h1>
       <p className="muted small">{statusLabel} · {t(event.visibility === "private" ? "visibility.private" : "visibility.public")} · {t("event.youAre", { role: event.role })}</p>
-      {event.status === "published" && can(event, "guests.checkIn") && (
-        <p><Button href={`/dashboard/${id}/scan`} variant="accent">{t("event.scan")}</Button></p>
+      {event.status === "published" && (
+        <div className="row-gap">
+          {can(event, "guests.checkIn") && <Button href={`/dashboard/${id}/scan`} variant="accent">{t("event.scan")}</Button>}
+          <ShareButton
+            path={localizedPath(`/e/${encodeURIComponent(event.slug)}`, lang as Locale)}
+            title={event.title}
+            qr={{ title: event.title, subtitle: formatDateTime(event.startsAt, event.timeZone, lang as Locale, "long") }}
+          />
+        </div>
       )}
 
       {sales && <DisputeBanner disputes={sales.disputes} />}

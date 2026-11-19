@@ -44,7 +44,8 @@
   "signUp": {
     "welcome": "Boas-vindas! Crie uma conta gratuita ou entre para garantir seus ingressos. Leva poucos segundos com o Google ou um código de 6 dígitos por e-mail.",
     "cta": "Garantir ingressos",
-    "haveAccount": "Já tem uma conta? <link>Entrar</link>"
+    "haveAccount": "Já tem uma conta? <link>Entrar</link>",
+    "newHere": "É novo por aqui? <link>Crie uma conta gratuita</link>"
   },
   "guest": {
     "name": "Seu nome completo",
@@ -94,5 +95,20 @@
     "chooseTicket": "Escolha pelo menos um ingresso.",
     "ticketRange": "Escolha entre 1 e 10 ingressos.",
     "nonRefundable": "Marque \"{text}\" para continuar."
+  },
+  "meta": {
+    "cardAlt": "{title}: data, local e ingressos"
+  },
+  "trust": {
+    "paystack": "Pagamento seguro pelo Paystack",
+    "refunds": "Reembolsos: {policy}",
+    "refundsLink": "Política de reembolso",
+    "email": "Os ingressos são enviados para o e-mail da sua conta"
+  },
+  "map": {
+    "open": "Abrir no Google Maps",
+    "show": "Mostrar mapa",
+    "title": "Mapa de {place}",
+    "imageAlt": "Mapa mostrando {place}"
   }
 }

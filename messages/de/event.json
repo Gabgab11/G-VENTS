@@ -44,7 +44,8 @@
   "signUp": {
     "welcome": "Willkommen! Erstellen Sie ein kostenloses Konto oder melden Sie sich an, um Ihre Tickets zu erhalten. Mit Google oder einem 6-stelligen E-Mail-Code dauert es nur wenige Sekunden.",
     "cta": "Tickets holen",
-    "haveAccount": "Sie haben bereits ein Konto? <link>Anmelden</link>"
+    "haveAccount": "Sie haben bereits ein Konto? <link>Anmelden</link>",
+    "newHere": "Neu hier? <link>Erstellen Sie ein kostenloses Konto</link>"
   },
   "guest": {
     "name": "Ihr vollständiger Name",
@@ -94,5 +95,20 @@
     "chooseTicket": "Wählen Sie mindestens ein Ticket.",
     "ticketRange": "Wählen Sie zwischen 1 und 10 Tickets.",
     "nonRefundable": "Setzen Sie das Häkchen bei „{text}“, um fortzufahren."
+  },
+  "meta": {
+    "cardAlt": "{title}: Datum, Ort und Tickets"
+  },
+  "trust": {
+    "paystack": "Sichere Zahlung über Paystack",
+    "refunds": "Erstattungen: {policy}",
+    "refundsLink": "Erstattungsrichtlinie",
+    "email": "Tickets werden an die E-Mail-Adresse Ihres Kontos gesendet"
+  },
+  "map": {
+    "open": "In Google Maps öffnen",
+    "show": "Karte anzeigen",
+    "title": "Karte von {place}",
+    "imageAlt": "Karte mit {place}"
   }
 }
