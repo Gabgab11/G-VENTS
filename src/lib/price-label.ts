@@ -23,5 +23,5 @@ export function priceLabel(
   t: (key: "price.free" | "price.from", values?: { price: string }) => string,
 ): string {
   if (!price || price.minor <= 0) return t("price.free");
-  return t("price.from", { price: formatMoney(price.minor, price.currency, lang) });
+  return t("price.from", { price: formatMoney(price.minor, price.currency, lang, true) });
 }

@@ -58,8 +58,8 @@ describe("share card text (D81)", () => {
       { priceMinor: 750000, currency: "NGN", remaining: 10 },
       { priceMinor: 500000, currency: "NGN", remaining: null },
     ];
-    expect(priceLabel(cardPrice(types), "en", tEn)).toBe("From ₦5,000.00");
-    expect(priceLabel(cardPrice(types), "fr", tFr)).toMatch(/^À partir de 5 000,00\s?NGN$/);
+    expect(priceLabel(cardPrice(types), "en", tEn)).toBe("From ₦5,000");
+    expect(priceLabel(cardPrice(types), "fr", tFr)).toMatch(/^À partir de 5\s000\sNGN$/u);
     expect(priceLabel(cardPrice([{ priceMinor: 0, currency: "NGN" }]), "en", tEn)).toBe("Free");
     expect(priceLabel(cardPrice([]), "en", tEn)).toBe("Free");
   });

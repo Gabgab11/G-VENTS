@@ -11,6 +11,6 @@ describe("event tile price", () => {
   });
 
   it("is From the lowest price, formatted from minor units in the event's currency", () => {
-    expect(priceLabel(cardPrice({ min_price_minor: 500000, currency: "NGN" }), "en", t)).toBe("From ₦5,000.00");
+    expect(priceLabel(cardPrice({ min_price_minor: 500000, currency: "NGN" }), "en", t)).toBe("From ₦5,000");
   });
 });

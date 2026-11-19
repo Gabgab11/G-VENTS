@@ -25,7 +25,8 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   setRequestLocale(lang);
   if (!(await loadTicket(code.toLowerCase()))) notFound();
   const t = await getTranslations("tickets.ticket");
-  return { title: t("meta.title"), robots: { index: false, follow: false } };
+  // Tickets are private: no index, and no link preview (the site card would otherwise be inherited).
+  return { title: t("meta.title"), robots: { index: false, follow: false }, openGraph: null, twitter: null };
 }
 
 /** A message id under tickets.ticket.status, with its tone. */
