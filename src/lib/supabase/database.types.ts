@@ -201,6 +201,26 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"event_images": {
+                  Row: {
+                    "created_at": string,"event_id": string,"height": number | null,"id": string,"position": number,"storage_path": string,"url": string,"width": number | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"event_id": string,"height"?: number | null,"id"?: string,"position": number,"storage_path": string,"url": string,"width"?: number | null
+                  }
+                  Update: {
+                    "created_at"?: string,"event_id"?: string,"height"?: number | null,"id"?: string,"position"?: number,"storage_path"?: string,"url"?: string,"width"?: number | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "event_images_event_id_fkey"
+      columns: ["event_id"]
+isOneToOne: false
+      referencedRelation: "events"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"event_invites": {
                   Row: {
                     "accepted_at": string | null,"accepted_by": string | null,"created_at": string,"email": string,"event_id": string,"expires_at": string,"id": string,"invited_by": string | null,"revoked_at": string | null,"role": string,"token_hash": string
@@ -367,14 +387,14 @@ isOneToOne: false
                   ]
                 },"orders": {
                   Row: {
-                    "amount_minor": number,"answers": NonNullable<Json>,"buyer_id": string | null,"country": string | null,"created_at": string,"currency": string,"decided_at": string | null,"decided_by": string | null,"decision_note": string | null,"event_id": string,"hold_expires_at": string | null,"id": string,"kind": string,"non_refundable_accepted_at": string | null,"quote": Json | null,"reference": string | null,"status": string,"ticket_count": number,"updated_at": string
+                    "amount_minor": number,"answers": NonNullable<Json>,"buyer_gender": string | null,"buyer_id": string | null,"buyer_phone": string | null,"country": string | null,"created_at": string,"currency": string,"decided_at": string | null,"decided_by": string | null,"decision_note": string | null,"event_id": string,"hold_expires_at": string | null,"id": string,"kind": string,"non_refundable_accepted_at": string | null,"quote": Json | null,"reference": string | null,"status": string,"ticket_count": number,"updated_at": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "amount_minor"?: number,"answers"?: NonNullable<Json>,"buyer_id"?: string | null,"country"?: string | null,"created_at"?: string,"currency": string,"decided_at"?: string | null,"decided_by"?: string | null,"decision_note"?: string | null,"event_id": string,"hold_expires_at"?: string | null,"id"?: string,"kind"?: string,"non_refundable_accepted_at"?: string | null,"quote"?: Json | null,"reference"?: string | null,"status": string,"ticket_count": number,"updated_at"?: string
+                    "amount_minor"?: number,"answers"?: NonNullable<Json>,"buyer_gender"?: string | null,"buyer_id"?: string | null,"buyer_phone"?: string | null,"country"?: string | null,"created_at"?: string,"currency": string,"decided_at"?: string | null,"decided_by"?: string | null,"decision_note"?: string | null,"event_id": string,"hold_expires_at"?: string | null,"id"?: string,"kind"?: string,"non_refundable_accepted_at"?: string | null,"quote"?: Json | null,"reference"?: string | null,"status": string,"ticket_count": number,"updated_at"?: string
                   }
                   Update: {
-                    "amount_minor"?: number,"answers"?: NonNullable<Json>,"buyer_id"?: string | null,"country"?: string | null,"created_at"?: string,"currency"?: string,"decided_at"?: string | null,"decided_by"?: string | null,"decision_note"?: string | null,"event_id"?: string,"hold_expires_at"?: string | null,"id"?: string,"kind"?: string,"non_refundable_accepted_at"?: string | null,"quote"?: Json | null,"reference"?: string | null,"status"?: string,"ticket_count"?: number,"updated_at"?: string
+                    "amount_minor"?: number,"answers"?: NonNullable<Json>,"buyer_gender"?: string | null,"buyer_id"?: string | null,"buyer_phone"?: string | null,"country"?: string | null,"created_at"?: string,"currency"?: string,"decided_at"?: string | null,"decided_by"?: string | null,"decision_note"?: string | null,"event_id"?: string,"hold_expires_at"?: string | null,"id"?: string,"kind"?: string,"non_refundable_accepted_at"?: string | null,"quote"?: Json | null,"reference"?: string | null,"status"?: string,"ticket_count"?: number,"updated_at"?: string
                   }
                   Relationships: [
                     {
@@ -547,14 +567,14 @@ isOneToOne: false
                   ]
                 },"profiles": {
                   Row: {
-                    "avatar_path": string | null,"bio": string | null,"country": string | null,"cover_path": string | null,"created_at": string,"dashboard_theme": string,"email": string | null,"facebook": string | null,"full_name": string | null,"handle": string | null,"id": string,"instagram": string | null,"language": string | null,"location": string | null,"suspended_at": string | null,"suspended_reason": string | null,"verified_at": string | null,"verified_by": string | null,"website": string | null,"x": string | null
+                    "avatar_path": string | null,"bio": string | null,"country": string | null,"cover_path": string | null,"created_at": string,"dashboard_theme": string,"email": string | null,"facebook": string | null,"full_name": string | null,"gender": string | null,"handle": string | null,"id": string,"instagram": string | null,"language": string | null,"location": string | null,"phone": string | null,"suspended_at": string | null,"suspended_reason": string | null,"verified_at": string | null,"verified_by": string | null,"website": string | null,"x": string | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "avatar_path"?: string | null,"bio"?: string | null,"country"?: string | null,"cover_path"?: string | null,"created_at"?: string,"dashboard_theme"?: string,"email"?: string | null,"facebook"?: string | null,"full_name"?: string | null,"handle"?: string | null,"id": string,"instagram"?: string | null,"language"?: string | null,"location"?: string | null,"suspended_at"?: string | null,"suspended_reason"?: string | null,"verified_at"?: string | null,"verified_by"?: string | null,"website"?: string | null,"x"?: string | null
+                    "avatar_path"?: string | null,"bio"?: string | null,"country"?: string | null,"cover_path"?: string | null,"created_at"?: string,"dashboard_theme"?: string,"email"?: string | null,"facebook"?: string | null,"full_name"?: string | null,"gender"?: string | null,"handle"?: string | null,"id": string,"instagram"?: string | null,"language"?: string | null,"location"?: string | null,"phone"?: string | null,"suspended_at"?: string | null,"suspended_reason"?: string | null,"verified_at"?: string | null,"verified_by"?: string | null,"website"?: string | null,"x"?: string | null
                   }
                   Update: {
-                    "avatar_path"?: string | null,"bio"?: string | null,"country"?: string | null,"cover_path"?: string | null,"created_at"?: string,"dashboard_theme"?: string,"email"?: string | null,"facebook"?: string | null,"full_name"?: string | null,"handle"?: string | null,"id"?: string,"instagram"?: string | null,"language"?: string | null,"location"?: string | null,"suspended_at"?: string | null,"suspended_reason"?: string | null,"verified_at"?: string | null,"verified_by"?: string | null,"website"?: string | null,"x"?: string | null
+                    "avatar_path"?: string | null,"bio"?: string | null,"country"?: string | null,"cover_path"?: string | null,"created_at"?: string,"dashboard_theme"?: string,"email"?: string | null,"facebook"?: string | null,"full_name"?: string | null,"gender"?: string | null,"handle"?: string | null,"id"?: string,"instagram"?: string | null,"language"?: string | null,"location"?: string | null,"phone"?: string | null,"suspended_at"?: string | null,"suspended_reason"?: string | null,"verified_at"?: string | null,"verified_by"?: string | null,"website"?: string | null,"x"?: string | null
                   }
                   Relationships: [
                     {
@@ -613,14 +633,14 @@ isOneToOne: false
                   ]
                 },"registrations": {
                   Row: {
-                    "amount_minor": number,"answers": NonNullable<Json>,"attendee_email": string,"attendee_name": string,"checked_in_at": string | null,"checked_in_by": string | null,"created_at": string,"event_id": string,"guest_name": string | null,"id": string,"order_id": string | null,"payment_ref": string | null,"status": string,"ticket_code": string,"ticket_number": number | null,"tier_id": string,"user_id": string | null
+                    "amount_minor": number,"answers": NonNullable<Json>,"attendee_email": string,"attendee_name": string,"checked_in_at": string | null,"checked_in_by": string | null,"created_at": string,"event_id": string,"guest_name": string | null,"id": string,"order_id": string | null,"payment_ref": string | null,"recipient_email": string | null,"status": string,"ticket_code": string,"ticket_number": number | null,"tier_id": string,"user_id": string | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "amount_minor"?: number,"answers"?: NonNullable<Json>,"attendee_email": string,"attendee_name": string,"checked_in_at"?: string | null,"checked_in_by"?: string | null,"created_at"?: string,"event_id": string,"guest_name"?: string | null,"id"?: string,"order_id"?: string | null,"payment_ref"?: string | null,"status"?: string,"ticket_code"?: string,"ticket_number"?: number | null,"tier_id": string,"user_id"?: string | null
+                    "amount_minor"?: number,"answers"?: NonNullable<Json>,"attendee_email": string,"attendee_name": string,"checked_in_at"?: string | null,"checked_in_by"?: string | null,"created_at"?: string,"event_id": string,"guest_name"?: string | null,"id"?: string,"order_id"?: string | null,"payment_ref"?: string | null,"recipient_email"?: string | null,"status"?: string,"ticket_code"?: string,"ticket_number"?: number | null,"tier_id": string,"user_id"?: string | null
                   }
                   Update: {
-                    "amount_minor"?: number,"answers"?: NonNullable<Json>,"attendee_email"?: string,"attendee_name"?: string,"checked_in_at"?: string | null,"checked_in_by"?: string | null,"created_at"?: string,"event_id"?: string,"guest_name"?: string | null,"id"?: string,"order_id"?: string | null,"payment_ref"?: string | null,"status"?: string,"ticket_code"?: string,"ticket_number"?: number | null,"tier_id"?: string,"user_id"?: string | null
+                    "amount_minor"?: number,"answers"?: NonNullable<Json>,"attendee_email"?: string,"attendee_name"?: string,"checked_in_at"?: string | null,"checked_in_by"?: string | null,"created_at"?: string,"event_id"?: string,"guest_name"?: string | null,"id"?: string,"order_id"?: string | null,"payment_ref"?: string | null,"recipient_email"?: string | null,"status"?: string,"ticket_code"?: string,"ticket_number"?: number | null,"tier_id"?: string,"user_id"?: string | null
                   }
                   Relationships: [
                     {
@@ -671,14 +691,14 @@ isOneToOne: false
                   ]
                 },"ticket_tiers": {
                   Row: {
-                    "created_at": string,"currency": string,"event_id": string,"id": string,"is_active": boolean,"name": string,"price_minor": number,"quantity": number | null,"sales_end": string | null,"sales_start": string | null,"sold": number
+                    "created_at": string,"currency": string,"description": string | null,"event_id": string,"group_size": number,"id": string,"is_active": boolean,"name": string,"price_minor": number,"quantity": number | null,"sales_end": string | null,"sales_start": string | null,"sold": number
                   }
                   ComputedFields: never
                   Insert: {
-                    "created_at"?: string,"currency"?: string,"event_id": string,"id"?: string,"is_active"?: boolean,"name": string,"price_minor"?: number,"quantity"?: number | null,"sales_end"?: string | null,"sales_start"?: string | null,"sold"?: number
+                    "created_at"?: string,"currency"?: string,"description"?: string | null,"event_id": string,"group_size"?: number,"id"?: string,"is_active"?: boolean,"name": string,"price_minor"?: number,"quantity"?: number | null,"sales_end"?: string | null,"sales_start"?: string | null,"sold"?: number
                   }
                   Update: {
-                    "created_at"?: string,"currency"?: string,"event_id"?: string,"id"?: string,"is_active"?: boolean,"name"?: string,"price_minor"?: number,"quantity"?: number | null,"sales_end"?: string | null,"sales_start"?: string | null,"sold"?: number
+                    "created_at"?: string,"currency"?: string,"description"?: string | null,"event_id"?: string,"group_size"?: number,"id"?: string,"is_active"?: boolean,"name"?: string,"price_minor"?: number,"quantity"?: number | null,"sales_end"?: string | null,"sales_start"?: string | null,"sold"?: number
                   }
                   Relationships: [
                     {
