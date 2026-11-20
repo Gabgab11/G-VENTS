@@ -13,6 +13,7 @@ import { Banner, Button } from "@/design";
 import OrderForm from "../OrderForm";
 import PaidOrderForm from "../PaidOrderForm";
 import { eventCta, orderableTypes, ticketsLeft } from "../event-cta";
+import AboutSection from "../AboutSection";
 import { bookingPath, eventDate, eventPath, eventPlace } from "../event-view";
 import b from "./Booking.module.css";
 
@@ -144,6 +145,7 @@ export default async function BookingPage({ params }: { params: Promise<{ lang: 
           </div>
         )}
       </div>
+      <AboutSection event={event} />
     </main>
   );
 }
