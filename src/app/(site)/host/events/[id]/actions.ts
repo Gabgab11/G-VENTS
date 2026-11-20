@@ -175,11 +175,10 @@ export async function saveDetails(_prev: { error?: string }, formData: FormData)
 
 const QUICK: Record<string, (v: string) => boolean> = {
   visibility: (v) => v === "public" || v === "private",
-  show_attendee_count: (v) => v === "true" || v === "false",
   status: (v) => v === "published",
 };
 
-// Quick settings in the workspace (publish, visibility, attendee count), moved from the old list.
+// Quick settings in the workspace (publish and visibility), moved from the old list.
 // The API checks the caller's role (publish: owner or admin; the others: event.edit).
 export async function updateEventSetting(eventId: string, name: string, value: string): Promise<{ error?: string }> {
   const check = Object.hasOwn(QUICK, name) ? QUICK[name] : undefined;
@@ -189,8 +188,7 @@ export async function updateEventSetting(eventId: string, name: string, value: s
     const client = await api();
     const params = { path: { id: eventId } };
     if (name === "status") await client.POST("/v1/events/{id}/publish", { params });
-    else if (name === "visibility") await client.PATCH("/v1/events/{id}", { params, body: { visibility: value as "public" | "private" } });
-    else await client.PATCH("/v1/events/{id}/settings", { params, body: { showAttendeeCount: value === "true" } });
+    else await client.PATCH("/v1/events/{id}", { params, body: { visibility: value as "public" | "private" } });
   } catch (error) {
     return { error: problemMessage(error, await getTranslations("errors"), await getLocale(), t("saveFailed")) };
   }

@@ -2226,7 +2226,7 @@ export interface components {
             canManage: boolean;
             /** @enum {string|null} */
             viewerRole: "owner" | "admin" | "editor" | "checkin" | "finance" | "viewer" | null;
-            /** @description Shown when the host allows it, or to staff */
+            /** @description Confirmed guests; only for the event team and staff, null for everyone else */
             attendeeCount: number | null;
             /** @description The owner's display name ("Hosted by"); null when they haven't set one */
             hostName: string | null;
@@ -2427,7 +2427,7 @@ export interface components {
             canManage: boolean;
             /** @enum {string|null} */
             viewerRole: "owner" | "admin" | "editor" | "checkin" | "finance" | "viewer" | null;
-            /** @description Shown when the host allows it, or to staff */
+            /** @description Confirmed guests; only for the event team and staff, null for everyone else */
             attendeeCount: number | null;
             /** @description The owner's display name ("Hosted by"); null when they haven't set one */
             hostName: string | null;

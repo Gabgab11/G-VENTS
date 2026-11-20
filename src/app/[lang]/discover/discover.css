@@ -38,7 +38,7 @@
 .dc-dots button.on span { background: color-mix(in srgb, var(--tone-paper) 35%, transparent); }
 .dc-dots button.on span::after { content: ""; position: absolute; inset: 0; background: #fff; transform-origin: left; }
 .dc-dots button.on span::after { transform: scaleX(0); }
-.dc-dots button.on span.run::after { animation: dc-progress var(--dc-dur, 7s) linear forwards; }
+.dc-dots button.on span.run::after { animation: dc-progress var(--dc-dur, 5s) linear forwards; }
 @keyframes dc-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
 /* Body */

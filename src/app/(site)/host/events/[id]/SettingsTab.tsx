@@ -23,7 +23,7 @@ export default async function SettingsTab({ event: e }: { event: EventDashboard 
       {(edit || (publish && e.status === "draft")) && (
         <Card as="section">
           <CardHeader title={t("quick.title")} />
-          <QuickSettings eventId={id} status={e.status} visibility={e.visibility} showAttendeeCount={e.showAttendeeCount} canPublish={publish} canEdit={edit} />
+          <QuickSettings eventId={id} status={e.status} visibility={e.visibility} canPublish={publish} canEdit={edit} />
         </Card>
       )}
 

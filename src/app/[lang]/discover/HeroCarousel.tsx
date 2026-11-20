@@ -15,7 +15,7 @@ export type HeroSlide = {
   shareUrl: string;
 };
 
-const INTERVAL_MS = 7000;
+const INTERVAL_MS = 5000;
 
 function share(slide: HeroSlide, text: string) {
   return [

@@ -454,14 +454,6 @@ export default function NewEventForm({
 
             <div className={styles.option}>
               <div className={styles.optionText}>
-                <span className={styles.label} id="opt-count">{t("form.options.attendeeCount")}</span>
-                <span className={styles.hint} id="opt-count-help">{t("form.options.attendeeCountHelp")}</span>
-              </div>
-              <Switch name="show_attendee_count" defaultChecked aria-labelledby="opt-count" aria-describedby="opt-count-help" />
-            </div>
-
-            <div className={styles.option}>
-              <div className={styles.optionText}>
                 <span className={styles.label} id="opt-approval">{t("form.options.approval")}</span>
                 <span className={styles.hint} id="opt-approval-help">{t("form.options.approvalHelp")}</span>
               </div>
