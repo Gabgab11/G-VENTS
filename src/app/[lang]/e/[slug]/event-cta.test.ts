@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { eventCta, maxQuantity, opensBooking, orderableTypes, ticketsLeft, type EventCtaInput } from "./event-cta";
+import { clampQuantities, eventCta, maxQuantity, opensBooking, orderableTypes, ticketsLeft, type EventCtaInput } from "./event-cta";
 
 const free = { priceMinor: 0, remaining: 10 };
 const paid = { priceMinor: 500_000, remaining: null };
@@ -111,5 +111,19 @@ describe("maxQuantity", () => {
   it("offers nothing of a sold-out type, except to join its waiting list", () => {
     expect(maxQuantity(gone, {}, 4)).toBe(0);
     expect(maxQuantity(gone, {}, 4, true)).toBe(4);
+  });
+});
+
+describe("clampQuantities (after the inline sign-in)", () => {
+  it("keeps the same object when everything still fits", () => {
+    const chosen = { a: 2, b: 1 };
+    expect(clampQuantities(chosen, 3)).toBe(chosen);
+    expect(clampQuantities(chosen, 10)).toBe(chosen);
+  });
+
+  it("takes from the last types first", () => {
+    expect(clampQuantities({ a: 2, b: 2 }, 3)).toEqual({ a: 2, b: 1 });
+    expect(clampQuantities({ a: 2, b: 2 }, 1)).toEqual({ a: 1, b: 0 });
+    expect(clampQuantities({ a: 2 }, 0)).toEqual({ a: 0 });
   });
 });

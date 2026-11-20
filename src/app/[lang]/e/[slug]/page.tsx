@@ -22,6 +22,7 @@ import { eventCta, orderableTypes, type EventCta } from "./event-cta";
 import AboutSection from "./AboutSection";
 import Gallery from "./Gallery";
 import { bookingPath, eventDate, eventPath, eventPlace } from "./event-view";
+import { codeParam, withCode } from "./tickets/discount-code";
 import s from "./EventPage.module.css";
 
 // The public event page from gventz-api (U6a), as a summary (Change 4 chunk 3b): the pictures and host on
@@ -58,8 +59,8 @@ const DISABLED_LABEL = { soldOut: "summary.soldOut", closed: "summary.closed", c
 const DISABLED_NOTE = { soldOut: "summary.soldOutNote", closed: "tickets.closed", cancelled: "tickets.cancelled", notOnSale: "tickets.notOnSale" } as const;
 const isDisabled = (c: EventCta): c is Extract<EventCta, { kind: keyof typeof DISABLED_LABEL }> => c.kind in DISABLED_LABEL;
 
-export default async function EventPage({ params }: { params: Promise<{ lang: string; slug: string }> }) {
-  const { lang, slug } = await params;
+export default async function EventPage({ params, searchParams }: { params: Promise<{ lang: string; slug: string }>; searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  const [{ lang, slug }, query] = await Promise.all([params, searchParams]);
   setRequestLocale(lang);
   const t = await getTranslations("event");
   const shared = await getTranslations("shared");
@@ -76,9 +77,9 @@ export default async function EventPage({ params }: { params: Promise<{ lang: st
   const date = eventDate(event, format.lang, format.range(event.startsAt, event.endsAt, event.timeZone), t);
   const place = eventPlace(event.location, t);
   const path = eventPath(event.slug, format.lang);
-  const booking = bookingPath(event.slug, format.lang);
-  const signInHref = `/sign-in?next=${encodeURIComponent(booking)}`;
-  const signUpHref = `/sign-up?next=${encodeURIComponent(booking)}`;
+  // Signed-out visitors go straight to booking and confirm their email there (D88); a `?code=` link
+  // carries its discount code through (D91).
+  const booking = withCode(bookingPath(event.slug, format.lang), codeParam(query.code));
   const manageHref = `/host/events/${event.id}`;
 
   const { free, paid } = orderableTypes(event);
@@ -103,7 +104,7 @@ export default async function EventPage({ params }: { params: Promise<{ lang: st
       case "get":
       case "waitlist": {
         const label = c.kind === "waitlist" ? t("summary.joinWaitlist") : c.label === "register" ? t("summary.register") : t("summary.getTickets");
-        return <Button href={c.signIn ? signInHref : booking} variant="accent" size={size} fullWidth={size === "lg"}>{label}</Button>;
+        return <Button href={booking} variant="accent" size={size} fullWidth={size === "lg"}>{label}</Button>;
       }
       case "limit":
         return <Button href="/my-tickets" variant="secondary" size={size} fullWidth={size === "lg"}>{t("order.seeMyTickets")}</Button>;
@@ -241,9 +242,6 @@ export default async function EventPage({ params }: { params: Promise<{ lang: st
                 {isDisabled(cta) && <p className={s.note}>{t(DISABLED_NOTE[cta.kind])}</p>}
                 {team && <Button href={`${manageHref}?tab=guests`} variant="secondary" size="lg" fullWidth>{t("host.seeGuests")}</Button>}
                 {team && <p className={s.note}>{t("host.note")}</p>}
-                {(cta.kind === "get" || cta.kind === "waitlist") && cta.signIn && (
-                  <p className={s.note}>{t.rich("signUp.newHere", { link: (c) => <Link href={signUpHref} className={s.inlineLink}>{c}</Link> })}</p>
-                )}
               </div>
             )}
 

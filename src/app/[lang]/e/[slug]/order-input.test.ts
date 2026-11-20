@@ -55,3 +55,30 @@ describe("isCheckoutUrl", () => {
     for (const bad of ["http://evil.example/x", "javascript:alert(1)", "/orders/1", "", null]) expect(isCheckoutUrl(bad), String(bad)).toBe(false);
   });
 });
+
+describe("paidOrderBody with a discount code (D91)", () => {
+  const A2 = "0190a000-0000-7000-8000-00000000000a";
+  const fd = (entries: [string, string][]) => {
+    const f = new FormData();
+    for (const [k, v] of entries) f.append(k, v);
+    return f;
+  };
+
+  it("sends the applied code, upper-cased", () => {
+    expect(paidOrderBody(fd([[`qty_${A2}`, "1"], ["non_refundable", "on"], ["code", " early10 "]]))).toEqual({
+      lines: [{ ticketTypeId: A2, quantity: 1 }],
+      nonRefundableAccepted: true,
+      code: "EARLY10",
+    });
+  });
+
+  it("leaves out a blank or malformed code, and any code when joining the waiting list", () => {
+    expect(paidOrderBody(fd([[`qty_${A2}`, "1"], ["non_refundable", "on"], ["code", ""]]))).not.toHaveProperty("code");
+    expect(paidOrderBody(fd([[`qty_${A2}`, "1"], ["non_refundable", "on"], ["code", "no spaces!"]]))).not.toHaveProperty("code");
+    expect(paidOrderBody(fd([[`qty_${A2}`, "1"], ["non_refundable", "on"], ["join_waitlist", "true"], ["code", "EARLY10"]]))).toEqual({
+      lines: [{ ticketTypeId: A2, quantity: 1 }],
+      nonRefundableAccepted: true,
+      joinWaitlist: true,
+    });
+  });
+});

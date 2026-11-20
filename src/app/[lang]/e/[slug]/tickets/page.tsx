@@ -14,12 +14,15 @@ import OrderForm from "../OrderForm";
 import PaidOrderForm from "../PaidOrderForm";
 import { eventCta, orderableTypes, ticketsLeft } from "../event-cta";
 import AboutSection from "../AboutSection";
-import { bookingPath, eventDate, eventPath, eventPlace } from "../event-view";
+import { eventDate, eventPath, eventPlace } from "../event-view";
+import { codeParam } from "./discount-code";
 import b from "./Booking.module.css";
 
 // The booking page (Change 4 chunk 3b, step 2): a clean page for getting tickets, opened from the event
-// page's one button. Signed-out visitors sign in first and come back here; the event's team goes to
-// the event page; at the per-person limit the limit note replaces the form. The order forms, their
+// page's one button. Signed-out visitors book here too and confirm their email with the inline code
+// (chunk 3d, D88); after it the page refreshes and is worked out again for the account (the team goes
+// to the event page; at the per-person limit the limit note replaces the form). `?code=` applies a
+// discount code (D91). The order forms, their
 // server actions, holds and errors are the ones the event page used to have.
 // Like the event page, the metadata calls notFound() before anything streams, so an unknown event is
 // a real 404; the event is loaded once per request (loadEventPage is React-cached).
@@ -43,20 +46,21 @@ function Thumb({ event, className }: { event: EventPage; className: string }) {
   );
 }
 
-export default async function BookingPage({ params }: { params: Promise<{ lang: string; slug: string }> }) {
-  const { lang, slug } = await params;
+type PageProps = { params: Promise<{ lang: string; slug: string }>; searchParams: Promise<Record<string, string | string[] | undefined>> };
+
+export default async function BookingPage({ params, searchParams }: PageProps) {
+  const [{ lang, slug }, query] = await Promise.all([params, searchParams]);
   setRequestLocale(lang);
   const [t, format, supabase] = await Promise.all([getTranslations("event"), getFormat(), createSupabaseServerClient()]);
   const [{ data: { session } }, event] = await Promise.all([supabase.auth.getSession(), loadEventPage(slug)]);
   if (!event) notFound();
 
-  const here = bookingPath(event.slug, format.lang);
   const back = eventPath(event.slug, format.lang);
-  if (!session) redirect(`/sign-in?next=${encodeURIComponent(here)}`);
-  const cta = eventCta({ ...event, signedIn: true });
+  const signedIn = !!session;
+  const cta = eventCta({ ...event, signedIn });
   if (cta.kind === "manage") redirect(back);
 
-  const me = await (await api()).GET("/v1/me").then(data).catch(() => null);
+  const me = session ? await (await api()).GET("/v1/me").then(data).catch(() => null) : null;
   const date = eventDate(event, format.lang, format.range(event.startsAt, event.endsAt, event.timeZone), t);
   const place = eventPlace(event.location, t);
   const { free, paid } = orderableTypes(event);
@@ -65,8 +69,8 @@ export default async function BookingPage({ params }: { params: Promise<{ lang: 
   const open = cta.kind === "get" || cta.kind === "waitlist";
   // Free and paid tickets are separate orders (M5, CK1): one form each, never mixed.
   const both = open && free.length > 0 && paid.length > 0;
-  const userEmail = me?.email ?? session.user.email ?? "";
-  const defaultName = me?.fullName ?? "";
+  const buyer = { signedIn, email: me?.email ?? session?.user.email ?? "", name: me?.fullName ?? "" };
+  const code = codeParam(query.code);
 
   const summary = (
     <div className={b.event}>
@@ -118,8 +122,7 @@ export default async function BookingPage({ params }: { params: Promise<{ lang: 
                   questions={event.questions}
                   perBuyerLimit={left}
                   held={held}
-                  userEmail={userEmail}
-                  defaultName={defaultName}
+                  buyer={buyer}
                   requireApproval={event.requireApproval}
                   summary={summary}
                 />
@@ -134,8 +137,8 @@ export default async function BookingPage({ params }: { params: Promise<{ lang: 
                   questions={event.questions}
                   perBuyerLimit={left}
                   held={held}
-                  userEmail={userEmail}
-                  defaultName={defaultName}
+                  buyer={buyer}
+                  initialCode={code}
                   refundPolicy={event.refundPolicy}
                   feeChoice={event.feeChoice}
                   summary={summary}

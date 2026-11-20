@@ -20,7 +20,7 @@ export type EventCtaInput = {
 export type EventCta =
   /** The event's team: "Manage event". */
   | { kind: "manage" }
-  /** Get tickets (paid) or Register (all free); signed-out visitors sign in first. */
+  /** Get tickets (paid) or Register (all free); `signIn`: signed out, the email is confirmed on the booking page. */
   | { kind: "get"; label: "getTickets" | "register"; signIn: boolean }
   /** Only sold-out paid tickets left: the paid form can join their waiting list. */
   | { kind: "waitlist"; signIn: boolean }
