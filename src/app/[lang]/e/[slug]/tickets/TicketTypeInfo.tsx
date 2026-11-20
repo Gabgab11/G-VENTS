@@ -13,10 +13,10 @@ export default function TicketTypeInfo({ type, className }: { type: { name: stri
   return (
     <span className={className ? `${b.typeInfo} ${className}` : b.typeInfo}>
       <span className={b.typeTitle}>
-        <span className={b.typeName}>{type.name}</span>
+        <span className={b.typeName} dir="auto">{type.name}</span>
         {size > 1 && <Badge tone="accent">{t("groupOf", { count: size })}</Badge>}
       </span>
-      {type.description && <span className={b.typeDesc}>{type.description}</span>}
+      {type.description && <span className={b.typeDesc} dir="auto">{type.description}</span>}
     </span>
   );
 }

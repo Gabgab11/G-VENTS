@@ -37,7 +37,8 @@
 .warning .icon { color: var(--color-warning); }
 .danger .icon { color: var(--color-danger); }
 
-.title { font-size: var(--text-label); line-height: var(--leading-label); font-weight: var(--weight-bold); }
+.body { min-inline-size: 0; }
+.title { font-size: var(--text-label); line-height: var(--leading-label); font-weight: var(--weight-bold); overflow-wrap: anywhere; }
 .description { margin-block-start: var(--space-1); font-size: var(--text-body-sm); line-height: var(--leading-body-sm); color: var(--color-text-soft); }
 .close {
   display: grid;

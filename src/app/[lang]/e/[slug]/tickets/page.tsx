@@ -80,7 +80,7 @@ export default async function BookingPage({ params, searchParams }: PageProps) {
   const code = codeParam(query.code);
 
   const summary = (
-    <div className={b.event}>
+    <div className={b.event} key="summary">
       <Thumb event={event} className={b.eventThumb} />
       <div className={b.eventText}>
         <p className={b.eventTitle}>{event.title}</p>

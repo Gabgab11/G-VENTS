@@ -50,7 +50,7 @@ export default function ResendTicket({ orderId, ticketId, email, name }: Props) 
       >
         <form onSubmit={(e) => { e.preventDefault(); send(); }}>
           <Field label={t("email")} error={error ?? undefined}>
-            <Input type="email" value={address} onChange={(e) => setAddress(e.target.value)} maxLength={254} autoComplete="off" dir="ltr" required />
+            <Input type="email" value={address} onChange={(e) => { setAddress(e.target.value); setError(null); }} maxLength={254} autoComplete="off" dir="ltr" required />
           </Field>
         </form>
       </DialogContent>
