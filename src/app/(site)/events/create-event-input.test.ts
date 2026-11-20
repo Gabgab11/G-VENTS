@@ -35,7 +35,7 @@ describe("createEventBody", () => {
       startsAt: "2026-12-05T18:00",
       endsAt: "2026-12-05T23:00",
       location: { kind: "venue", venueName: "Eko Hotel", countryCode: "NG", region: "Lagos", city: "Victoria Island", address: "Adetokunbo Ademola", place: { placeId: "ChIJ1234567890", lat: 6.42, lng: 3.43 } },
-      ticketTypes: [{ name: "Regular", priceMinor: 0 }, { name: "VIP", priceMinor: 0, quantity: 50 }],
+      ticketTypes: [{ name: "Regular", priceMinor: 0, groupSize: 1 }, { name: "VIP", priceMinor: 0, groupSize: 1, quantity: 50 }],
       visibility: "public",
       showAttendeeCount: true,
       requireApproval: false,
@@ -122,7 +122,7 @@ describe("paid tickets when the host can sell (M5)", () => {
   it("sends whole units as minor units in the payout currency, free tiers stay free", () => {
     const body = createEventBody(priced("5,000", [["fee_choice", "guest_pays"]]), { currency: "NGN" });
     if ("error" in body) throw new Error(body.error);
-    expect(body.ticketTypes).toEqual([{ name: "Regular", priceMinor: 500000, currency: "NGN" }, { name: "VIP", priceMinor: 0, quantity: 50 }]);
+    expect(body.ticketTypes).toEqual([{ name: "Regular", priceMinor: 500000, groupSize: 1, currency: "NGN" }, { name: "VIP", priceMinor: 0, groupSize: 1, quantity: 50 }]);
     expect(body.feeChoice).toBe("guest_pays");
   });
 
@@ -133,6 +133,6 @@ describe("paid tickets when the host can sell (M5)", () => {
 
   it("defaults the fee choice to host_absorbs", () => {
     const body = createEventBody(priced("2500"), { currency: "KES" });
-    expect("error" in body ? body : [body.feeChoice, body.ticketTypes[0]]).toEqual(["host_absorbs", { name: "Regular", priceMinor: 250000, currency: "KES" }]);
+    expect("error" in body ? body : [body.feeChoice, body.ticketTypes[0]]).toEqual(["host_absorbs", { name: "Regular", priceMinor: 250000, groupSize: 1, currency: "KES" }]);
   });
 });

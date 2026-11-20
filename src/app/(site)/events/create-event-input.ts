@@ -93,7 +93,7 @@ export function createEventBody(formData: FormData, paid: PaidSetup = null, t: T
       if (minor === null) return { error: t(`${V}.price`, { name, currency: paid.currency }) };
       priceMinor = minor;
     }
-    ticketTypes.push({ name, priceMinor, ...(priceMinor > 0 && paid ? { currency: paid.currency } : {}), ...(quantity !== null ? { quantity } : {}) });
+    ticketTypes.push({ name, priceMinor, groupSize: 1, ...(priceMinor > 0 && paid ? { currency: paid.currency } : {}), ...(quantity !== null ? { quantity } : {}) });
   }
   if (ticketTypes.length === 0) return { error: t(`${V}.noTickets`) };
   if (ticketTypes.length > MAX_TIERS) return { error: t(`${V}.maxTickets`, { max: MAX_TIERS }) };
