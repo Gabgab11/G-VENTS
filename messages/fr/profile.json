@@ -6,7 +6,6 @@
     "followers": "{count, plural, one {# abonné} other {# abonnés}}",
     "follow": "Suivre",
     "following": "Abonné",
-    "followLabel": "Suivre {name}",
     "editProfile": "Modifier le profil",
     "followFailed": "Cela n'a pas fonctionné. Veuillez réessayer.",
     "selfFollow": "Vous ne pouvez pas vous suivre vous-même.",

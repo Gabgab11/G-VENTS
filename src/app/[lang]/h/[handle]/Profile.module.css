@@ -1,0 +1,33 @@
+/* A host's public profile (Change 4 chunk 4, FR-32). Tokens only; logical properties so Arabic mirrors. */
+.page { padding: var(--space-6) clamp(16px, 6vw, 160px) var(--space-16); display: grid; gap: var(--space-8); }
+
+.hero { display: grid; gap: var(--space-4); min-inline-size: 0; }
+.cover { position: relative; aspect-ratio: 3 / 1; min-block-size: 120px; border-radius: var(--radius-lg); overflow: hidden; background: var(--grad-brand); }
+.cover img { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; }
+
+.head { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--space-4); margin-block-start: calc(-1 * clamp(40px, 6vw, 64px)); padding-inline: var(--space-4); position: relative; }
+.avatar.avatar { inline-size: clamp(88px, 12vw, 128px); block-size: clamp(88px, 12vw, 128px); font-size: var(--text-heading-1); border: 4px solid var(--color-bg); box-shadow: var(--shadow-2); }
+.identity { display: grid; gap: var(--space-1); flex: 1 1 260px; min-inline-size: 0; padding-block-end: var(--space-1); }
+.name { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); font-family: var(--font-display); font-size: var(--text-heading-1); line-height: var(--leading-heading-1); font-weight: var(--weight-heavy); letter-spacing: -0.02em; overflow-wrap: anywhere; }
+.badge { font-family: var(--font-sans); letter-spacing: normal; }
+.meta { margin: 0; display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); color: var(--color-text-muted); font-size: var(--text-body-sm); line-height: var(--leading-body-sm); }
+.metaItem { display: inline-flex; align-items: center; gap: var(--space-1); }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); padding-block-end: var(--space-1); }
+.follow { display: inline-grid; gap: var(--space-1); justify-items: start; }
+.followError { color: var(--color-danger); font-size: var(--text-body-sm); }
+
+.bio { margin: 0; padding-inline: var(--space-4); max-inline-size: 64ch; white-space: pre-line; line-height: var(--leading-body); color: var(--color-text-soft); overflow-wrap: anywhere; }
+
+.socials { list-style: none; margin: 0; padding: 0 var(--space-4); display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.social { display: inline-flex; align-items: center; gap: var(--space-2); min-block-size: 44px; padding-inline: var(--space-3) var(--space-4); border: 1px solid var(--color-border); border-radius: var(--radius-full); background: var(--color-surface); color: var(--color-text); text-decoration: none; font-weight: var(--weight-semibold); font-size: var(--text-body-sm); }
+.social:hover { background: var(--color-surface-raised); }
+.social:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+
+.events { --display: var(--font-display); display: grid; gap: var(--space-6); min-inline-size: 0; }
+.pager { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-3); }
+
+@media (max-width: 640px) {
+  .head { padding-inline: var(--space-2); }
+  .actions { inline-size: 100%; }
+  .bio, .socials { padding-inline: var(--space-2); }
+}
