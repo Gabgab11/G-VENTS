@@ -420,6 +420,46 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/share-cards/events/{slug}.png": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * An event's share card
+         * @description The 1200×630 link-preview image of a published public event, in the given language: flyer (JPEG or PNG) or cover style, date in the event time zone, title, place, price, host. Drafts, private, cancelled and unknown events are not found.
+         */
+        get: operations["ShareCardsController_event_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/share-cards/site.png": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * The site's share card
+         * @description The 1200×630 link-preview image for the home page, Discover and pages without their own card, in the given language.
+         */
+        get: operations["ShareCardsController_site_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/events/{id}/questions": {
         parameters: {
             query?: never;
@@ -5420,6 +5460,79 @@ export interface operations {
             };
             /** @description team.invite_gone: expired, withdrawn or already used */
             410: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ShareCardsController_event_v1: {
+        parameters: {
+            query?: {
+                /** @description The event's updatedAt; makes the address immutable (cached for a year) */
+                v?: unknown;
+                /** @description Card language; anything else is English */
+                lang?: "en" | "es" | "fr" | "de" | "zh-Hans" | "pt" | "ar";
+            };
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 1200×630 PNG */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "image/png": string;
+                };
+            };
+            /** @description event.not_found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description rate_limit.exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ShareCardsController_site_v1: {
+        parameters: {
+            query?: {
+                /** @description Any version string; makes the address immutable (cached for a year) */
+                v?: unknown;
+                /** @description Card language; anything else is English */
+                lang?: "en" | "es" | "fr" | "de" | "zh-Hans" | "pt" | "ar";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 1200×630 PNG */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "image/png": string;
+                };
+            };
+            /** @description rate_limit.exceeded */
+            429: {
                 headers: {
                     [name: string]: unknown;
                 };
