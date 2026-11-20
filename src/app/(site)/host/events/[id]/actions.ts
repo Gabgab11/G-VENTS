@@ -12,6 +12,7 @@ import { locationInput } from "@/app/(site)/events/create-event-input";
 import { MAPS_URL_HINT_KEY } from "@/lib/maps-url";
 import { getLocale, getTranslations } from "next-intl/server";
 import type { MessageCode } from "./messages";
+import type { RefundResult } from "./refund-dialog";
 import { detailsPatch, readDetailsForm } from "./details-form";
 import type { components } from "@/lib/api/schema";
 
@@ -248,23 +249,28 @@ export async function promoteFromWaitlist(formData: FormData) {
 
 /**
  * RF4: the host refunds one paid ticket at their discretion (owner, admin or finance; two-step
- * sign-in). The ticket stops working at once; the guest gets their share back by Paystack.
+ * sign-in). The ticket stops working at once; the guest gets their share back by Paystack. Returns
+ * to the refund dialog, which stays open on an error and shows it there (Change 4 follow-up).
  */
-export async function refundTicket(formData: FormData) {
-  const id = await eventIdFrom(formData);
-  const ticketId = field(formData, "ticket_id");
-  if (!isUuid(ticketId)) fail(id, "guests");
-  if (formData.get("confirm") !== "yes") fail(id, "guests", "refund_confirm");
-  // auth.mfa_required sends the host to confirm it's you; redirected after call(), whose catch would swallow it.
-  let mfaNeeded = false;
-  await call(id, "guests", async () => {
-    try {
-      await (await api()).POST("/v1/events/{id}/tickets/{ticketId}/refund", { params: { path: { id, ticketId } } });
-    } catch (error) {
-      if (error instanceof ApiError && error.code === "auth.mfa_required") mfaNeeded = true;
-      else throw error;
+export async function refundTicket(eventId: string, ticketId: string, confirmed: boolean): Promise<RefundResult> {
+  const t = await getTranslations("dashboard");
+  if (!isUuid(eventId) || !isUuid(ticketId)) return { ok: false, error: t("notices.err.failed") };
+  if (confirmed !== true) return { ok: false, error: t("notices.err.refundConfirm") };
+  try {
+    const refund = data(await (await api()).POST("/v1/events/{id}/tickets/{ticketId}/refund", { params: { path: { id: eventId, ticketId } } }));
+    revalidatePath(`/host/events/${eventId}`);
+    return { ok: true, status: refund.status };
+  } catch (error) {
+    if (error instanceof ApiError && error.code === "auth.mfa_required") return { ok: false, error: t("guests.refund.twoStepTitle"), twoStep: true };
+    if (!(error instanceof ApiError) || error.status >= 500) console.error("[host/events] refund:", error instanceof Error ? error.message : error);
+    const lang = await getLocale();
+    const message = problemMessage(error, await getTranslations("errors"), lang, t("notices.err.failed"));
+    // Paystack's own reason, when the API passes one (a safe, specific text from refund.provider_rejected).
+    if (error instanceof ApiError && error.code === "refund.provider_rejected") {
+      const english = (await getTranslations({ locale: "en", namespace: "errors" }))("refund.provider_rejected");
+      const detail = error.problem.detail.trim();
+      if (detail && detail !== english && detail !== message) return { ok: false, error: message, reason: detail.slice(0, 300) };
     }
-  });
-  if (mfaNeeded) redirect(`/host/settings/security?next=${encodeURIComponent(`/host/events/${id}?tab=guests`)}`);
-  done(id, "guests", "refund_queued");
+    return { ok: false, error: message };
+  }
 }

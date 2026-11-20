@@ -87,9 +87,169 @@
   },
   "help": {
     "meta": {
-      "title": "帮助 · G-ventZ"
+      "title": "帮助与联系 · G-ventZ",
+      "description": "关于 G-ventZ 门票、退款和举办活动的解答，以及联系支持团队的表单。"
     },
-    "title": "帮助",
-    "text": "宾客：请联系您报名的活动的主办方。主办方：请在您的控制台中管理活动。"
+    "eyebrow": "帮助与联系",
+    "title": "我们能帮您什么？",
+    "text": "在下方快速找到答案，或给我们留言，我们的团队会通过电子邮件回复您。",
+    "emailUs": "发送邮件：<email></email>",
+    "quick": {
+      "label": "快速帮助",
+      "tickets": {
+        "title": "我的门票",
+        "text": "查看您的门票、二维码和订单。"
+      },
+      "refunds": {
+        "title": "退款",
+        "text": "退款如何进行，以及如何申请退款。"
+      },
+      "pricing": {
+        "title": "价格",
+        "text": "在 G-ventZ 售票的费用。"
+      },
+      "hosting": {
+        "title": "举办活动",
+        "text": "创建活动、出售门票并为来宾签到。"
+      },
+      "legalLinks": "请阅读我们的<terms>服务条款</terms>和<privacy>隐私政策</privacy>。"
+    },
+    "contact": {
+      "label": "联系我们",
+      "title": "我们聊聊吧。",
+      "text": "无论您需要门票、退款或活动方面的帮助，还是希望与 G-ventZ 合作，我们的团队都乐意倾听。",
+      "note1": {
+        "title": "告诉我们您的需求",
+        "text": "选择一个主题并提供足够的细节，方便我们把您的请求转给合适的人。"
+      },
+      "note2": {
+        "title": "我们会直接回复",
+        "text": "您的留言会私下发送给 G-ventZ 支持团队，我们会回复到您填写的电子邮件地址。"
+      },
+      "mapLabel": "点阵世界地图，标出尼日利亚拉各斯",
+      "pin": "尼日利亚拉各斯",
+      "cities": {
+        "london": "英国伦敦",
+        "newYork": "美国纽约",
+        "saoPaulo": "巴西圣保罗",
+        "capeTown": "南非开普敦",
+        "nairobi": "肯尼亚内罗毕",
+        "dubai": "阿联酋迪拜",
+        "mumbai": "印度孟买",
+        "tokyo": "日本东京",
+        "sydney": "澳大利亚悉尼"
+      },
+      "caption": "G-ventZ 总部位于尼日利亚拉各斯。",
+      "panelLabel": "联系我们的团队",
+      "panelTitle": "给我们留言",
+      "panelText": "填写表单，我们会回复到您提供的电子邮件地址。",
+      "name": "姓名",
+      "namePlaceholder": "您的姓名",
+      "email": "电子邮件地址",
+      "emailPlaceholder": "you@example.com",
+      "country": "国家/地区",
+      "countryPlaceholder": "选择您的国家/地区",
+      "topic": "主题",
+      "topicPlaceholder": "选择主题",
+      "topics": {
+        "tickets": "门票和订单",
+        "refunds": "退款",
+        "hosting": "举办活动和收款",
+        "account": "账户",
+        "partnerships": "合作",
+        "other": "其他"
+      },
+      "message": "留言",
+      "messagePlaceholder": "告诉我们需要什么帮助…",
+      "counter": "{count, number} / {max, number}",
+      "consent": "发送此留言即表示您同意我们就您的请求与您联系。",
+      "send": "发送留言",
+      "sending": "正在发送…",
+      "sent": {
+        "title": "已收到留言",
+        "text": "感谢您的来信。我们的团队成员会尽快通过电子邮件回复您。",
+        "again": "再发一条"
+      },
+      "errors": {
+        "fix": "请检查标出的字段。",
+        "nameLength": "请输入您的姓名（2 到 100 个字符）。",
+        "emailInvalid": "请输入有效的电子邮件地址。",
+        "countryMissing": "请选择您的国家/地区。",
+        "topicMissing": "请选择主题。",
+        "messageShort": "请再多写一些（至少 10 个字符）。",
+        "messageLong": "留言不能超过 4,000 个字符。",
+        "failed": "留言未能发送。请重试，或发送邮件至 support@gventz.com。",
+        "captchaWait": "正在检查您的浏览器，请稍候再发送。",
+        "captchaLoad": "安全检查未能加载。请刷新页面后重试。"
+      }
+    }
+  },
+  "about": {
+    "meta": {
+      "title": "关于我们 · G-ventZ",
+      "description": "G-ventZ 是来自拉各斯的活动平台：主办方创建活动并售票，来宾发现活动并把门票集中在一处。"
+    },
+    "eyebrow": "关于 G-ventZ",
+    "titleStart": "每一场庆祝，",
+    "titleHighlight": "尽在一处。",
+    "lead": "G-ventZ 帮助人们创建活动、出售门票并迎接来宾，从 owambe 派对、生日聚会到音乐会和会议。",
+    "audiences": "G-ventZ 为谁服务",
+    "what": {
+      "title": "G-ventZ 是什么",
+      "p1": "G-ventZ 是一个活动平台。主办方几分钟就能创建活动页面，只需分享一个链接，来宾就能在任何地方报名或购票。入场时，每张门票都有二维码，主办方团队扫码即可为来宾签到。",
+      "p2": "来宾可以用 Google 或发送到邮箱的验证码登录，在“发现”中寻找活动，并在“我的门票”中保存所有门票。"
+    },
+    "guests": {
+      "label": "面向来宾",
+      "title": "找到它，订好它，准时到。",
+      "points": {
+        "find": "发现您附近的活动，或打开主办方分享的链接。",
+        "book": "几步即可报名或付款。门票会发送到您已验证的邮箱。",
+        "ticket": "每张门票及其二维码都保存在“我的门票”中。",
+        "refund": "退款遵循活动自身的政策和我们的退款政策。"
+      }
+    },
+    "hosts": {
+      "label": "面向主办方",
+      "title": "在一处管理您的活动。",
+      "points": {
+        "create": "创建免费或付费活动，设置门票类型、报名问题和专属外观。",
+        "sell": "通过 Paystack 售票，支持折扣码和团体票。",
+        "manage": "查看来宾名单、审批申请、发送公告，并通过二维码为来宾签到。",
+        "team": "按合适的角色邀请团队成员，并在活动日志中查看每一处更改。"
+      }
+    },
+    "money": {
+      "title": "资金如何流转",
+      "text": "付费门票通过持牌支付服务商 Paystack 处理。G-ventZ 从不保管您的资金。",
+      "steps": {
+        "pay": {
+          "title": "来宾通过 Paystack 付款",
+          "text": "可使用银行卡、银行转账或 Paystack 在其所在国家提供的其他方式。G-ventZ 从不查看或存储银行卡信息。"
+        },
+        "split": {
+          "title": "每笔销售直接进入主办方的银行账户",
+          "text": "Paystack 会拆分每笔付款：主办方的部分直接进入其银行账户，G-ventZ 的服务费同时扣除。"
+        },
+        "never": {
+          "title": "G-ventZ 从不保管您的资金",
+          "text": "中间没有 G-ventZ 钱包。主办方可以在“收款”页面查看每笔销售、费用和实际到账金额。"
+        }
+      }
+    },
+    "where": {
+      "title": "我们在哪里",
+      "text": "G-ventZ 在尼日利亚拉各斯开发和运营。有问题？请发送邮件至 <email></email>，或使用我们的联系表单。"
+    },
+    "closing": {
+      "title": "准备好迎接下一场活动了吗？",
+      "text": "为这个周末找点乐子，或在几分钟内创建您自己的活动。"
+    },
+    "cta": {
+      "discover": "发现活动",
+      "host": "举办活动",
+      "contact": "联系我们",
+      "pricing": "查看价格"
+    }
   }
 }

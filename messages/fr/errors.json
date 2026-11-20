@@ -203,8 +203,17 @@
     "time_zone_not_found": "Aucun fuseau horaire trouvé pour ce lieu."
   },
   "refund": {
+    "provider_insufficient_balance": "Paystack ne peut pas encore envoyer ce remboursement : le solde de G-ventZ est insuffisant. Il est en file d'attente et partira automatiquement.",
+    "provider_already_reversed": "Paystack indique que ce paiement a déjà été remboursé.",
+    "provider_amount_too_high": "Refus de Paystack : le remboursement dépasse ce qui reste de ce paiement.",
+    "provider_amount_too_low": "Refus de Paystack : le montant du remboursement est trop faible.",
+    "provider_transaction_not_found": "Paystack n'a pas trouvé ce paiement.",
+    "provider_currency_mismatch": "Refus de Paystack : la devise du remboursement ne correspond pas à celle du paiement.",
     "needs_approval": "Ce remboursement dépasse ce que votre équipe peut envoyer elle-même pour le moment. Contactez l'assistance G-ventZ et nous l'examinerons.",
-    "not_refundable": "Ce billet ne peut pas être remboursé : il ne s'agit pas d'un billet payant confirmé, ou il a déjà été remboursé."
+    "not_refundable": "Ce billet ne peut pas être remboursé : il ne s'agit pas d'un billet payant confirmé, ou il a déjà été remboursé.",
+    "provider_rejected": "Paystack n’a pas pu lancer ce remboursement. Réessayez plus tard, ou contactez l’assistance G-ventZ.",
+    "provider_unavailable": "Paystack ne répond pas pour le moment. Réessayez dans quelques minutes.",
+    "in_progress": "Un remboursement de ce billet est déjà en cours."
   },
   "registration": {
     "already_registered": "Vous avez déjà un billet pour cet événement.",
@@ -272,5 +281,17 @@
     "member_not_found": "Cette personne ne fait pas partie de l'équipe.",
     "owner_fixed": "Le rôle du propriétaire de l'événement ne peut être ni modifié ni retiré.",
     "role_invalid": "Choisissez un rôle."
+  },
+  "support": {
+    "message_invalid": "Écrivez un message de 10 à 4 000 caractères.",
+    "captcha_invalid": "Veuillez effectuer la vérification de sécurité et réessayer.",
+    "captcha_unavailable": "La vérification de sécurité n'est pas disponible pour le moment. Réessayez dans un instant.",
+    "captcha_failed": "La vérification de sécurité a échoué. Actualisez la page et réessayez.",
+    "rate_limited": "Vous avez envoyé plusieurs messages en peu de temps. Patientez un peu, ou écrivez à support@gventz.com.",
+    "name_invalid": "Saisissez votre nom (2 à 100 caractères).",
+    "email_invalid": "Saisissez une adresse e-mail valide.",
+    "country_invalid": "Choisissez votre pays.",
+    "topic_invalid": "Choisissez un sujet.",
+    "message_length": "Votre message doit faire entre 10 et 4 000 caractères."
   }
 }

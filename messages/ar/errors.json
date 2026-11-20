@@ -203,8 +203,17 @@
     "time_zone_not_found": "لم يُعثر على منطقة زمنية لهذا المكان."
   },
   "refund": {
+    "provider_insufficient_balance": "لا يستطيع Paystack إرسال هذا الاسترداد بعد: رصيد G-ventZ غير كافٍ. الطلب في قائمة الانتظار وسيُرسَل تلقائيًا.",
+    "provider_already_reversed": "يفيد Paystack بأن هذه الدفعة استُردّت بالفعل.",
+    "provider_amount_too_high": "رفض Paystack: مبلغ الاسترداد أكبر من المتبقي من هذه الدفعة.",
+    "provider_amount_too_low": "رفض Paystack: مبلغ الاسترداد صغير جدًا.",
+    "provider_transaction_not_found": "لم يعثر Paystack على هذه الدفعة.",
+    "provider_currency_mismatch": "رفض Paystack: عملة الاسترداد لا تطابق عملة الدفعة.",
     "needs_approval": "هذا الاسترداد يتجاوز ما يمكن لفريقك إرساله بنفسه حاليًا. تواصل مع دعم G-ventZ وسنراجعه.",
-    "not_refundable": "لا يمكن استرداد هذه التذكرة: فهي ليست تذكرة مدفوعة ومؤكدة، أو سبق استردادها."
+    "not_refundable": "لا يمكن استرداد هذه التذكرة: فهي ليست تذكرة مدفوعة ومؤكدة، أو سبق استردادها.",
+    "provider_rejected": "تعذّر على Paystack بدء هذا الاسترداد. حاول لاحقًا، أو تواصل مع دعم G-ventZ.",
+    "provider_unavailable": "لا يستجيب Paystack الآن. حاول مرة أخرى بعد بضع دقائق.",
+    "in_progress": "هناك استرداد قيد التنفيذ لهذه التذكرة بالفعل."
   },
   "registration": {
     "already_registered": "لديك بالفعل تذكرة لهذه الفعالية.",
@@ -272,5 +281,17 @@
     "member_not_found": "هذا الشخص ليس عضوًا في الفريق.",
     "owner_fixed": "لا يمكن تغيير دور مالك الفعالية أو إزالته.",
     "role_invalid": "اختر دورًا."
+  },
+  "support": {
+    "message_invalid": "اكتب رسالة من 10 إلى 4,000 حرف.",
+    "captcha_invalid": "يُرجى إكمال التحقق الأمني ثم المحاولة مرة أخرى.",
+    "captcha_unavailable": "التحقق الأمني غير متاح الآن. يُرجى المحاولة بعد قليل.",
+    "captcha_failed": "فشل فحص الأمان. حدّث الصفحة وحاول مرة أخرى.",
+    "rate_limited": "أرسلت عدة رسائل في وقت قصير. انتظر قليلًا، أو راسل support@gventz.com.",
+    "name_invalid": "أدخل اسمك (من 2 إلى 100 حرف).",
+    "email_invalid": "أدخل عنوان بريد إلكتروني صالحًا.",
+    "country_invalid": "اختر بلدك.",
+    "topic_invalid": "اختر موضوعًا.",
+    "message_length": "يجب أن تتراوح رسالتك بين 10 و4,000 حرف."
   }
 }

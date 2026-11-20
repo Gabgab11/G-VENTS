@@ -1779,7 +1779,7 @@ export interface paths {
         put?: never;
         /**
          * Refund a ticket
-         * @description Two-step sign-in; owner, admin or finance. The guest gets back the ticket's share of what they paid; the ticket is voided at once and its place goes back on sale. G-ventZ fees, VAT and Paystack charges are not returned; your share becomes an amount you owe, recovered from your next sales. Audited.
+         * @description Two-step sign-in; owner, admin or finance. The guest gets back the ticket's share of what they paid (the order total in proportion to each ticket's price); the ticket is voided at once and its place goes back on sale. Your share of it (the refund less the G-ventZ fee and VAT on that ticket) becomes an amount you owe, recovered from your next sales. Audited. When Paystack refuses the refund, the ticket stays cancelled and the answer is 409 with a `refund.provider_*` code and Paystack's reason; `refund.provider_insufficient_balance` is sent again automatically, the others are finished by G-ventZ support.
          */
         post: operations["EventSalesController_refund_v1"];
         delete?: never;
@@ -2074,6 +2074,26 @@ export interface paths {
         get: operations["HostShareCardsController_host_v1"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/support/messages": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Contact G-ventZ support
+         * @description The Help & contact form. Emails the support inbox (reply-to the sender) and sends the sender an acknowledgement in their language (`language`, else Accept-Language). Rate-limited per client IP (5 an hour) and per sender address (3 an hour, 10 a day). A Turnstile `captchaToken` is required when the API is configured for it. A filled `website` (honeypot) gets the same 202 and nothing is sent.
+         */
+        post: operations["SupportController_send_v1"];
         delete?: never;
         options?: never;
         head?: never;
@@ -4684,6 +4704,34 @@ export interface components {
             verified: boolean;
             /** Format: date-time */
             verifiedAt: string | null;
+        };
+        SupportMessageRequestDto: {
+            /** @example Stephen Ade */
+            name: string;
+            /**
+             * Format: email
+             * @description Replies go here.
+             * @example stephen@example.com
+             */
+            email: string;
+            /** @example Nigeria */
+            country?: string;
+            /** @enum {string} */
+            topic: "tickets" | "refunds" | "hosting" | "account" | "partnerships" | "other";
+            message: string;
+            /** @description Honeypot: hidden on the form and left empty. When filled the answer is the same 202, and nothing is sent. */
+            website?: string;
+            /** @description Cloudflare Turnstile token. Required when the API has TURNSTILE_SECRET_KEY. */
+            captchaToken?: string;
+            /**
+             * @description The acknowledgement's language; else from Accept-Language; else English.
+             * @enum {string}
+             */
+            language?: "en" | "es" | "fr" | "de" | "zh-Hans" | "pt" | "ar";
+        };
+        SupportMessageQueuedDto: {
+            /** @enum {string} */
+            status: "queued";
         };
     };
     responses: never;
@@ -8587,7 +8635,7 @@ export interface operations {
                 };
                 content?: never;
             };
-            /** @description refund.not_refundable */
+            /** @description refund.not_refundable, refund.needs_approval, refund.provider_insufficient_balance, refund.provider_already_reversed, refund.provider_amount_too_high, refund.provider_amount_too_low, refund.provider_transaction_not_found, refund.provider_currency_mismatch, refund.provider_rejected */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -9214,6 +9262,52 @@ export interface operations {
             };
             /** @description rate_limit.exceeded */
             429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    SupportController_send_v1: {
+        parameters: {
+            query?: never;
+            header: {
+                "accept-language": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SupportMessageRequestDto"];
+            };
+        };
+        responses: {
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SupportMessageQueuedDto"];
+                };
+            };
+            /** @description support.name_invalid, support.email_invalid, support.country_invalid, support.topic_invalid, support.message_invalid, support.captcha_invalid (or validation.failed listing several) */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description rate_limit.exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description support.captcha_unavailable */
+            503: {
                 headers: {
                     [name: string]: unknown;
                 };

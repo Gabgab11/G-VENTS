@@ -203,8 +203,17 @@
     "time_zone_not_found": "No time zone found for that place."
   },
   "refund": {
+    "provider_insufficient_balance": "Paystack can't send this refund yet: the G-ventZ balance is too low. It's queued and will go out automatically.",
+    "provider_already_reversed": "Paystack says this payment has already been refunded.",
+    "provider_amount_too_high": "Paystack refused: the refund is more than what's left of this payment.",
+    "provider_amount_too_low": "Paystack refused: the refund amount is too small.",
+    "provider_transaction_not_found": "Paystack couldn't find this payment.",
+    "provider_currency_mismatch": "Paystack refused: the refund currency doesn't match the payment.",
     "needs_approval": "This refund is more than your team can send yourselves right now. Contact G-ventZ support and we'll review it.",
-    "not_refundable": "This ticket can't be refunded: it isn't a paid, confirmed ticket, or it was already refunded."
+    "not_refundable": "This ticket can't be refunded: it isn't a paid, confirmed ticket, or it was already refunded.",
+    "provider_rejected": "Paystack couldn't start this refund. Try again later, or contact G-ventZ support.",
+    "provider_unavailable": "Paystack isn't responding right now. Please try again in a few minutes.",
+    "in_progress": "A refund for this ticket is already under way."
   },
   "registration": {
     "already_registered": "You already have a ticket for this event.",
@@ -272,5 +281,17 @@
     "member_not_found": "This person is not on the team.",
     "owner_fixed": "The event owner's role can't be changed or removed.",
     "role_invalid": "Choose a role."
+  },
+  "support": {
+    "message_invalid": "Write a message of 10 to 4,000 characters.",
+    "captcha_invalid": "Please complete the security check and try again.",
+    "captcha_unavailable": "The security check isn't available right now. Please try again shortly.",
+    "captcha_failed": "The security check failed. Refresh the page and try again.",
+    "rate_limited": "You've sent several messages in a short time. Please wait a while, or email support@gventz.com.",
+    "name_invalid": "Enter your name (2 to 100 characters).",
+    "email_invalid": "Enter a valid email address.",
+    "country_invalid": "Select your country.",
+    "topic_invalid": "Select a topic.",
+    "message_length": "Your message must be 10 to 4,000 characters."
   }
 }

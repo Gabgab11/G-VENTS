@@ -87,9 +87,169 @@
   },
   "help": {
     "meta": {
-      "title": "Help · G-ventZ"
+      "title": "Help & contact · G-ventZ",
+      "description": "Answers about tickets, refunds and hosting on G-ventZ, and a form to reach our support team."
     },
-    "title": "Help",
-    "text": "Guests: contact the organiser of the event you registered for. Organisers: manage your events from your dashboard."
+    "eyebrow": "Help & contact",
+    "title": "How can we help?",
+    "text": "Find quick answers below, or send us a message and our team will reply by email.",
+    "emailUs": "Email us: <email></email>",
+    "quick": {
+      "label": "Quick help",
+      "tickets": {
+        "title": "My tickets",
+        "text": "Find your tickets, QR codes and orders."
+      },
+      "refunds": {
+        "title": "Refunds",
+        "text": "How refunds work and how to ask for one."
+      },
+      "pricing": {
+        "title": "Pricing",
+        "text": "What it costs to sell tickets on G-ventZ."
+      },
+      "hosting": {
+        "title": "Host an event",
+        "text": "Create an event, sell tickets and check guests in."
+      },
+      "legalLinks": "Read our <terms>Terms</terms> and <privacy>Privacy policy</privacy>."
+    },
+    "contact": {
+      "label": "Contact",
+      "title": "Let's start a conversation.",
+      "text": "Whether you need help with a ticket, a refund or your events, or would like to work with G-ventZ, our team is ready to listen.",
+      "note1": {
+        "title": "Tell us what you need",
+        "text": "Choose a topic and share enough detail for us to send your request to the right person."
+      },
+      "note2": {
+        "title": "We'll reply directly",
+        "text": "Your message goes privately to the G-ventZ support team, and we answer at the email address you give."
+      },
+      "mapLabel": "Dotted world map highlighting Lagos, Nigeria",
+      "pin": "Lagos, Nigeria",
+      "cities": {
+        "london": "London, United Kingdom",
+        "newYork": "New York, United States",
+        "saoPaulo": "São Paulo, Brazil",
+        "capeTown": "Cape Town, South Africa",
+        "nairobi": "Nairobi, Kenya",
+        "dubai": "Dubai, UAE",
+        "mumbai": "Mumbai, India",
+        "tokyo": "Tokyo, Japan",
+        "sydney": "Sydney, Australia"
+      },
+      "caption": "G-ventZ is based in Lagos, Nigeria.",
+      "panelLabel": "Reach our team",
+      "panelTitle": "Send us a message",
+      "panelText": "Complete the form and we'll reply to the email address you provide.",
+      "name": "Full name",
+      "namePlaceholder": "Your full name",
+      "email": "Email address",
+      "emailPlaceholder": "you@example.com",
+      "country": "Country",
+      "countryPlaceholder": "Select your country",
+      "topic": "Topic",
+      "topicPlaceholder": "Select a topic",
+      "topics": {
+        "tickets": "Tickets & orders",
+        "refunds": "Refunds",
+        "hosting": "Hosting & payouts",
+        "account": "Account",
+        "partnerships": "Partnerships",
+        "other": "Other"
+      },
+      "message": "Message",
+      "messagePlaceholder": "Tell us how we can help…",
+      "counter": "{count, number} / {max, number}",
+      "consent": "By sending this message, you agree that we may contact you about your request.",
+      "send": "Send message",
+      "sending": "Sending…",
+      "sent": {
+        "title": "Message received",
+        "text": "Thank you for reaching out. A member of our team will reply to your email soon.",
+        "again": "Send another"
+      },
+      "errors": {
+        "fix": "Check the highlighted fields.",
+        "nameLength": "Enter your name (2 to 100 characters).",
+        "emailInvalid": "Enter a valid email address.",
+        "countryMissing": "Select your country.",
+        "topicMissing": "Select a topic.",
+        "messageShort": "Tell us a little more (at least 10 characters).",
+        "messageLong": "Keep your message under 4,000 characters.",
+        "failed": "We couldn't send your message. Please try again, or email support@gventz.com.",
+        "captchaWait": "One moment while we check your browser, then send again.",
+        "captchaLoad": "The security check didn't load. Refresh the page and try again."
+      }
+    }
+  },
+  "about": {
+    "meta": {
+      "title": "About · G-ventZ",
+      "description": "G-ventZ is an event platform from Lagos: hosts create events and sell tickets, and guests find events and keep their tickets in one place."
+    },
+    "eyebrow": "About G-ventZ",
+    "titleStart": "Every celebration,",
+    "titleHighlight": "one place.",
+    "lead": "G-ventZ helps people create events, sell tickets and welcome their guests, from an owambe or a birthday to a concert or a conference.",
+    "audiences": "Who G-ventZ is for",
+    "what": {
+      "title": "What G-ventZ is",
+      "p1": "G-ventZ is an event platform. Hosts create an event page in minutes, share one link, and let guests register or buy tickets from anywhere. At the door, every ticket has a QR code that the host's team scans to check guests in.",
+      "p2": "Guests sign in with Google or a code sent to their email, find events on Discover, and keep every ticket in My tickets."
+    },
+    "guests": {
+      "label": "For guests",
+      "title": "Find it, book it, show up.",
+      "points": {
+        "find": "Discover events near you, or open the link a host shared.",
+        "book": "Register or pay in a few steps. Your tickets go to your confirmed email.",
+        "ticket": "Every ticket and its QR code stays in My tickets.",
+        "refund": "Refunds follow the event's policy and our refund policy."
+      }
+    },
+    "hosts": {
+      "label": "For hosts",
+      "title": "Run your event from one place.",
+      "points": {
+        "create": "Create free or paid events with ticket types, questions and your own look.",
+        "sell": "Sell tickets with Paystack, with discount codes and group tickets.",
+        "manage": "See your guest list, approve requests, send announcements and check guests in by QR code.",
+        "team": "Invite your team with the right roles, and see every change in the activity log."
+      }
+    },
+    "money": {
+      "title": "How money works",
+      "text": "Paid tickets go through Paystack, a licensed payment provider. G-ventZ never holds your money.",
+      "steps": {
+        "pay": {
+          "title": "Guests pay with Paystack",
+          "text": "By card, bank transfer or the other methods Paystack offers in their country. G-ventZ never sees or stores card details."
+        },
+        "split": {
+          "title": "Each sale goes to the host's bank",
+          "text": "Paystack splits every payment: the host's share goes straight to their bank account, and G-ventZ's fee is taken at the same time."
+        },
+        "never": {
+          "title": "G-ventZ never holds your money",
+          "text": "There is no G-ventZ wallet in between. Hosts see each sale, the fees and what they received on their Payouts page."
+        }
+      }
+    },
+    "where": {
+      "title": "Where we are",
+      "text": "G-ventZ is built and run from Lagos, Nigeria. Questions? Write to <email></email> or use our contact form."
+    },
+    "closing": {
+      "title": "Ready for your next event?",
+      "text": "Find something to go to this weekend, or create your own event in minutes."
+    },
+    "cta": {
+      "discover": "Discover events",
+      "host": "Host an event",
+      "contact": "Contact us",
+      "pricing": "See pricing"
+    }
   }
 }

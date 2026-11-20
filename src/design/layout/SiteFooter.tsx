@@ -36,8 +36,8 @@ export default async function SiteFooter() {
         <div>
           <p className="site-footer-title">{t("footer.company.title")}</p>
           <nav className="site-footer-links" aria-label={t("footer.company.title")}>
-            <Link href="/help">{t("footer.company.about")}</Link>
-            <Link href="/help">{t("footer.company.contact")}</Link>
+            <Link href="/about">{t("footer.company.about")}</Link>
+            <Link href="/help#contact">{t("footer.company.contact")}</Link>
           </nav>
         </div>
         <div>
