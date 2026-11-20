@@ -10,10 +10,11 @@
     "admin": "Admin",
     "scan": "Scanner",
     "more": "Plus",
-    "viewSite": "Voir le site",
+    "viewSite": "Découvrir des événements",
     "myTickets": "Mes billets",
     "account": "Compte",
     "signOut": "Se déconnecter",
+    "homepage": "Page d'accueil de G-ventZ",
     "close": "Fermer"
   },
   "home": {

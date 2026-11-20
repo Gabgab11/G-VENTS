@@ -23,7 +23,7 @@ export default async function HostLayout({ children }: { children: React.ReactNo
         email={me?.email ?? ""}
         isStaff={me?.isStaff === true}
         labels={{
-          skip: t("skip"), signOut: t("signOut"), nav: t("nav"), home: t("home"), events: t("events"), orders: t("orders"),
+          skip: t("skip"), signOut: t("signOut"), homepage: t("homepage"), nav: t("nav"), home: t("home"), events: t("events"), orders: t("orders"),
           payouts: t("payouts"), settings: t("settings"), admin: t("admin"), scan: t("scan"), more: t("more"),
           viewSite: t("viewSite"), myTickets: t("myTickets"), account: t("account"), close: t("close"),
         }}

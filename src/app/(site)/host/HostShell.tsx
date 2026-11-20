@@ -5,13 +5,13 @@ import { usePathname } from "next/navigation";
 import { useRef, type ReactNode } from "react";
 import { LogOut } from "lucide-react";
 import { signOut } from "@/app/(site)/auth/actions";
-import { Banknote, CalendarDays, ExternalLink, Home, LayoutGrid, MoreHorizontal, ScanLine, Settings, Shield, Ticket, Users } from "lucide-react";
+import { Banknote, CalendarDays, Compass, Home, MoreHorizontal, ScanLine, Settings, Shield, Ticket, Users } from "lucide-react";
 import { Avatar } from "@/design";
 import { Menu, MenuContent, MenuItem, MenuSeparator, MenuTrigger, Sheet, SheetClose, SheetContent, SheetTrigger } from "@/design/client";
 import styles from "./HostShell.module.css";
 
 type Labels = Record<
-  "skip" | "signOut" | "nav" | "home" | "events" | "orders" | "payouts" | "settings" | "admin" | "scan" | "more" | "viewSite" | "myTickets" | "account" | "close",
+  "skip" | "signOut" | "homepage" | "nav" | "home" | "events" | "orders" | "payouts" | "settings" | "admin" | "scan" | "more" | "viewSite" | "myTickets" | "account" | "close",
   string
 >;
 
@@ -50,14 +50,14 @@ export default function HostShell({ name, email, isStaff, labels: l, children }:
       <form ref={signOutForm} action={signOut} hidden />
 
       <aside className={styles.sidebar}>
-        <Link href="/host" className={styles.logo}>G-vent<b>Z</b></Link>
+        <Link href="/" className={styles.logo} aria-label={l.homepage}>G-vent<b>Z</b></Link>
         <nav aria-label={l.nav} className={styles.sideNav}>
           {side.map((s) => (
             <Link key={s.href} href={s.href} className={styles.sideLink} aria-current={aria(s.href)}>{s.icon}<span>{s.label}</span></Link>
           ))}
         </nav>
         <div className={styles.sideFoot}>
-          <Link href="/discover" className={styles.sideLink}><ExternalLink {...ICON} /><span>{l.viewSite}</span></Link>
+          <Link href="/discover" className={styles.sideLink}><Compass {...ICON} /><span>{l.viewSite}</span></Link>
           <Menu>
             <MenuTrigger>
               <button type="button" className={styles.account} aria-label={l.account}>
@@ -76,7 +76,7 @@ export default function HostShell({ name, email, isStaff, labels: l, children }:
       </aside>
 
       <header className={styles.topbar}>
-        <Link href="/host" className={styles.logo}>G-vent<b>Z</b></Link>
+        <Link href="/" className={styles.logo} aria-label={l.homepage}>G-vent<b>Z</b></Link>
         <Link href="/host/settings" aria-label={l.account}><Avatar name={name} size={28} /></Link>
       </header>
 
@@ -101,7 +101,7 @@ export default function HostShell({ name, email, isStaff, labels: l, children }:
                 { href: "/host/settings", label: l.settings, icon: <Settings {...ICON} /> },
                 ...(isStaff ? [{ href: "/admin", label: l.admin, icon: <Shield {...ICON} /> }] : []),
                 { href: "/my-tickets", label: l.myTickets, icon: <Ticket {...ICON} /> },
-                { href: "/discover", label: l.viewSite, icon: <LayoutGrid {...ICON} /> },
+                { href: "/discover", label: l.viewSite, icon: <Compass {...ICON} /> },
               ].map((s) => (
                 <SheetClose key={s.href}>
                   <Link href={s.href} className={styles.sideLink} aria-current={aria(s.href)}>{s.icon}<span>{s.label}</span></Link>
