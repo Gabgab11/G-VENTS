@@ -1,10 +1,11 @@
 /* SiteFooter (Change 4, DS4). Global, not a CSS module, because FooterWordmark and LanguageSwitcher
    render their own class names inside it. Every value comes from src/design/tokens.css. */
-.site-footer { position: relative; margin-block-start: calc(var(--space-16) * 2); padding: var(--space-12) var(--gutter) 0; background: var(--tone-ink); color: var(--color-text); font-family: var(--font-sans); }
+.site-footer { position: relative; margin-block-start: calc(var(--space-16) * 3); padding: var(--space-12) var(--gutter) 0; background: var(--tone-ink); color: var(--color-text); font-family: var(--font-sans); }
 .site-footer a { color: inherit; text-decoration: none; }
 /* The page fades into the footer instead of meeting it at a hard edge (most visible in light mode):
-   a band above the footer going from transparent (the page shows through) to the footer's ink. */
-.site-footer::before { content: ""; position: absolute; inset-inline: 0; inset-block-end: 100%; block-size: calc(var(--space-16) * 2); background: linear-gradient(to bottom, transparent, var(--tone-ink)); pointer-events: none; }
+   a tall band above the footer going from transparent (the page shows through) to the footer's ink on an
+   eased curve (many stops), so there's no visible start or end line. */
+.site-footer::before { content: ""; position: absolute; inset-inline: 0; inset-block-end: 100%; block-size: calc(var(--space-16) * 4); background: linear-gradient(to bottom, transparent 0%, color-mix(in oklab, var(--tone-ink) 2%, transparent) 14%, color-mix(in oklab, var(--tone-ink) 6%, transparent) 26%, color-mix(in oklab, var(--tone-ink) 12%, transparent) 37%, color-mix(in oklab, var(--tone-ink) 20%, transparent) 47%, color-mix(in oklab, var(--tone-ink) 29%, transparent) 56%, color-mix(in oklab, var(--tone-ink) 39%, transparent) 64%, color-mix(in oklab, var(--tone-ink) 49%, transparent) 71%, color-mix(in oklab, var(--tone-ink) 60%, transparent) 78%, color-mix(in oklab, var(--tone-ink) 71%, transparent) 84%, color-mix(in oklab, var(--tone-ink) 81%, transparent) 89%, color-mix(in oklab, var(--tone-ink) 90%, transparent) 94%, color-mix(in oklab, var(--tone-ink) 96%, transparent) 97%, color-mix(in oklab, var(--tone-ink) 100%, transparent) 100%); pointer-events: none; }
 .site-footer a:hover { color: var(--color-accent); }
 .site-footer-main { display: grid; grid-template-columns: minmax(280px, 1.7fr) repeat(3, minmax(130px, 1fr)) minmax(170px, 1fr); gap: var(--space-12); padding-bottom: var(--space-12); }
 .site-footer-brand p { max-width: 390px; margin: 0; color: var(--color-text-soft); font-family: var(--font-display); font-size: var(--text-heading-2); line-height: var(--leading-heading-2); font-weight: var(--weight-bold); }
