@@ -1,5 +1,6 @@
 import type { components } from "@/lib/api/schema";
 import { field, isUuid } from "@/lib/forms";
+import { cleanCode } from "./tickets/discount-code";
 
 export type PlaceOrderBody = components["schemas"]["PlaceOrderDto"];
 
@@ -47,7 +48,8 @@ export type PaidOrderBody = components["schemas"]["PaidOrderDto"];
 /**
  * The paid order form → PaidOrderDto (M5, CK1–CK3): the same lines, names and answers as a free
  * order, plus the guest's tick on "non-refundable, except if the event is cancelled", and whether
- * to join the waiting list when a chosen ticket type is sold out (WL1).
+ * to join the waiting list when a chosen ticket type is sold out (WL1), and the discount code the
+ * buyer applied (D91; the API checks it again).
  */
 export function paidOrderBody(formData: FormData): PaidOrderBody | { error: OrderInputError } {
   const base = placeOrderBody(formData);
@@ -55,7 +57,9 @@ export function paidOrderBody(formData: FormData): PaidOrderBody | { error: Orde
   if (formData.get("non_refundable") !== "on") {
     return { error: "nonRefundable" };
   }
-  return { ...base, nonRefundableAccepted: true, ...(formData.get("join_waitlist") === "true" ? { joinWaitlist: true } : {}) };
+  const waitlist = formData.get("join_waitlist") === "true";
+  const code = waitlist ? null : cleanCode(formData.get("code"));
+  return { ...base, nonRefundableAccepted: true, ...(waitlist ? { joinWaitlist: true } : {}), ...(code ? { code } : {}) };
 }
 
 /**

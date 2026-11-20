@@ -5,9 +5,13 @@ import { useEffect, useRef, useState } from 'react';
 type Props = {
   length?: number;
   onComplete?: (code: string) => void;
+  /** The hidden input's accessible name, in the page's language. */
+  label?: string;
+  /** Disables typing while the code is being checked. */
+  disabled?: boolean;
 };
 
-export default function OtpInput({ length = 6, onComplete }: Props) {
+export default function OtpInput({ length = 6, onComplete, label = 'One-time code', disabled = false }: Props) {
   const [code, setCode] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
   const onCompleteRef = useRef(onComplete);
@@ -67,7 +71,8 @@ export default function OtpInput({ length = 6, onComplete }: Props) {
         maxLength={length}
         value={code}
         onChange={(e) => handleChange(e.target.value)}
-        aria-label="One-time code"
+        disabled={disabled}
+        aria-label={label}
       />
     </div>
   );

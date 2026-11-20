@@ -78,3 +78,21 @@ export function maxQuantity(type: { id: string; remaining: number | null }, chos
   const room = soldOut && waitlist ? limit : type.remaining ?? limit;
   return Math.max(0, Math.min(limit - others, room));
 }
+
+/**
+ * The chosen quantities cut down to what the viewer may still get, taking from the last types first
+ * (after the inline sign-in, an account that already holds tickets may have less room). The same
+ * object comes back when nothing changes, so a state update is skipped.
+ */
+export function clampQuantities(chosen: Readonly<Record<string, number>>, limit: number): Record<string, number> {
+  let room = Math.max(0, limit);
+  let changed = false;
+  const next: Record<string, number> = {};
+  for (const [id, n] of Object.entries(chosen)) {
+    const keep = Math.min(n, room);
+    if (keep !== n) changed = true;
+    next[id] = keep;
+    room -= keep;
+  }
+  return changed ? next : (chosen as Record<string, number>);
+}
