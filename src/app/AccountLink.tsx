@@ -46,15 +46,15 @@ export default function AccountLink({ className = "site-account", withSignOut = 
     <>
       {/* On phones these two move into the Account menu (globals.css), so the header fits one line. */}
       {session.isStaff && <Link href="/admin" className={`${className} account-admin`}>{t("admin")}</Link>}
-      <Link href="/dashboard" className={`${className} account-dash`}>{t("dashboard")}</Link>
+      <Link href="/host" className={`${className} account-dash`}>{t("dashboard")}</Link>
       <details className="account-menu" ref={menu}>
         <summary className={className}>{t("account")}</summary>
         <div className="account-menu-list">
           <Link href="/my-tickets">{t("myTickets")}</Link>
-          <Link href="/dashboard" className="account-menu-phone">{t("dashboard")}</Link>
+          <Link href="/host" className="account-menu-phone">{t("dashboard")}</Link>
           {session.isStaff && <Link href="/admin">{t("platformAdmin")}</Link>}
-          <Link href="/account/security">{t("security")}</Link>
-          <Link href="/account/payouts">{t("payouts")}</Link>
+          <Link href="/host/settings/security">{t("security")}</Link>
+          <Link href="/host/payouts">{t("payouts")}</Link>
           {/* Pages with a Sign out button: on phones it moves in here, so the header fits one line. */}
           {withSignOut && <SignOutButton className="account-menu-phone" buttonClassName="account-menu-item" />}
         </div>

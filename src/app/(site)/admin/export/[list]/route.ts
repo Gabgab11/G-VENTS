@@ -60,7 +60,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ list
     } while (cursor && rows.length < MAX_ROWS);
   } catch (error) {
     if (error instanceof ApiError && (error.status === 404 || error.status === 401)) return new Response("Not found", { status: 404 });
-    if (error instanceof ApiError && error.code === "auth.mfa_required") return Response.redirect(new URL(`/account/security?next=/admin/${list}`, url), 303);
+    if (error instanceof ApiError && error.code === "auth.mfa_required") return Response.redirect(new URL(`/host/settings/security?next=/admin/${list}`, url), 303);
     throw error;
   }
 

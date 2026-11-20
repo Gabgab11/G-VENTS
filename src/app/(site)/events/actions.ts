@@ -1,18 +1,23 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { api, data } from "@/lib/api/server";
 import { getLocale, getTranslations } from "next-intl/server";
-import { problemMessage } from "@/lib/api/problem";
+import { ApiError, problemMessage } from "@/lib/api/problem";
 import { requireUser } from "@/lib/auth";
 import { flyerFrom, uploadFlyer } from "@/lib/flyer";
 import { getAvailability } from "@/lib/payments";
 import { sellReasonKey } from "@/lib/payment-text";
 import type { components } from "@/lib/api/schema";
 import { createEventBody, hasPaidPrice, type PaidSetup } from "./create-event-input";
+import { fieldOfMessageKey, fieldOfProblem } from "@/app/(site)/host/events/new/steps";
 
-/** `created`: the event exists and the browser still has to send its image (`image_pending`). */
-export type CreateEventState = { error?: string; created?: { id: string; next: string } } | undefined;
+/**
+ * `created`: the event exists and the browser still has to send its image (`image_pending`).
+ * `field`: the form field an error is about, when known, so the stepper opens the step holding it.
+ */
+export type CreateEventState = { error?: string; field?: string; created?: { id: string; next: string } } | undefined;
 
 /** Message ids (createEvent.save.*) for the image problems. */
 const FLYER_PROBLEMS = {
@@ -31,28 +36,33 @@ const FLYER_PROBLEMS = {
 // `created` back, and posts the image to /api/events/{id}/flyer itself. Without JavaScript the
 // image still comes here.
 export async function createEvent(_prev: CreateEventState, formData: FormData): Promise<CreateEventState> {
-  await requireUser("/events/new");
+  await requireUser("/host/events/new");
   const t = await getTranslations();
   // Paid ticket types (M5): only when the API says this host can sell now, in their payout currency.
   let paid: PaidSetup = null;
   if (hasPaidPrice(formData)) {
     const me = (await getAvailability())?.me;
-    if (!me?.canSellPaid || !me.currency) return { error: t(sellReasonKey(me?.reason).key) };
+    if (!me?.canSellPaid || !me.currency) return { error: t(sellReasonKey(me?.reason).key), field: "tier_price" };
     paid = { currency: me.currency };
   }
-  const body = createEventBody(formData, paid, (key, values) => t(key, values));
-  if ("error" in body) return { error: body.error };
+  // The last message key asked for is the one in the error: it tells the stepper which field (and step) to open.
+  let lastKey: string | undefined;
+  const body = createEventBody(formData, paid, (key, values) => { lastKey = key; return t(key, values); });
+  if ("error" in body) return { error: body.error, field: fieldOfMessageKey(lastKey) };
   const flyer = flyerFrom(formData);
-  if (flyer && "problem" in flyer) return { error: t(`createEvent.save.${FLYER_PROBLEMS[flyer.problem]}`) };
+  if (flyer && "problem" in flyer) return { error: t(`createEvent.save.${FLYER_PROBLEMS[flyer.problem]}`), field: "flyer" };
 
   let created: { id: string; slug: string };
   try {
     created = data(await (await api()).POST("/v1/events", { body }));
   } catch (error) {
-    return { error: problemMessage(error, await getTranslations("errors"), await getLocale(), t("createEvent.save.failed")) };
+    const field = error instanceof ApiError ? fieldOfProblem(error.problem) : undefined;
+    return { error: problemMessage(error, await getTranslations("errors"), await getLocale(), t("createEvent.save.failed")), ...(field ? { field } : {}) };
   }
 
-  const next = body.publish ? `/e/${created.slug}` : "/dashboard";
+  // Draft or published, the host lands on the new event's workspace (host area, HA).
+  revalidatePath("/host", "layout");
+  const next = `/host/events/${created.id}`;
   if (!flyer && formData.get("image_pending") === "1") return { created: { id: created.id, next } };
   if (flyer) {
     try {
@@ -60,7 +70,7 @@ export async function createEvent(_prev: CreateEventState, formData: FormData): 
       console.info(`[create event] image attached to ${created.id} (${flyer.contentType}, ${flyer.file.size} bytes)`);
     } catch (error) {
       console.error(`[create event] image upload failed: ${(error as Error).message}`);
-      redirect(`/dashboard/${created.id}?tab=settings&err=flyer_after_create`);
+      redirect(`/host/events/${created.id}?tab=details&err=flyer_after_create`);
     }
   }
   redirect(next);

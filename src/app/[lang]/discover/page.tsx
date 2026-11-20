@@ -79,7 +79,7 @@ export default async function DiscoverPage({ params, searchParams }: { params: P
             <span className="dc-slide-cat">{label ?? t("empty.discover")}</span>
             <h1 className="dc-slide-title">{inSentence ? t("empty.categoryTitle", { category: inSentence }) : t("empty.title")}</h1>
             <p className="dc-slide-meta">{t("empty.text")}</p>
-            <div className="dc-slide-actions"><Link href="/events/new" className="dc-slide-cta">{t("empty.create")}</Link></div>
+            <div className="dc-slide-actions"><Link href="/host/events/new" className="dc-slide-cta">{t("empty.create")}</Link></div>
           </div>
         </section>
       )}
@@ -98,7 +98,7 @@ export default async function DiscoverPage({ params, searchParams }: { params: P
             {events.length > 0 ? (
               <div className="dc-grid">{events.map((e) => <EventTile key={e.id} event={e} />)}</div>
             ) : (
-              <p className="dc-empty">{t.rich("categoryEmpty", { category: inSentence!, link: (c) => <Link href="/events/new">{c}</Link> })}</p>
+              <p className="dc-empty">{t.rich("categoryEmpty", { category: inSentence!, link: (c) => <Link href="/host/events/new">{c}</Link> })}</p>
             )}
           </section>
         ) : events.length > 0 ? (
@@ -112,7 +112,7 @@ export default async function DiscoverPage({ params, searchParams }: { params: P
             ))}
           </>
         ) : (
-          <p className="dc-empty">{t.rich("noEvents", { link: (c) => <Link href="/events/new">{c}</Link> })}</p>
+          <p className="dc-empty">{t.rich("noEvents", { link: (c) => <Link href="/host/events/new">{c}</Link> })}</p>
         )}
       </div>
     </main>

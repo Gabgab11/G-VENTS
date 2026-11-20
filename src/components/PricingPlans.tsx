@@ -16,7 +16,7 @@ const PLANS = [
     name: "Starter",
     fee: 3,
     feats: ["unlimitedEvents", "freeTickets", "qrCheckIn", "standardPages"],
-    href: "/sign-up?next=/events/new",
+    href: "/sign-up?next=/host/events/new",
     cta: "signUpFree",
     featured: false,
   },

@@ -20,7 +20,7 @@ async function run(path: string, work: () => Promise<unknown>, ok: string): Prom
   try {
     await work();
   } catch (error) {
-    if (error instanceof ApiError && error.code === "auth.mfa_required") redirect(`/account/security?next=${encodeURIComponent(path)}`);
+    if (error instanceof ApiError && error.code === "auth.mfa_required") redirect(`/host/settings/security?next=${encodeURIComponent(path)}`);
     back(path, `err=${encodeURIComponent(apiMessage(error, "That didn't work. Please try again."))}`);
   }
   back(path, `ok=${encodeURIComponent(ok)}`);
@@ -142,7 +142,7 @@ export async function acceptStaffInvite() {
     redirect(`/admin/invite?err=${encodeURIComponent(apiMessage(error, "That invitation couldn't be accepted."))}`);
   }
   // Staff need two-step sign-in before the dashboard opens; the security page sends them on.
-  redirect("/account/security?next=/admin");
+  redirect("/host/settings/security?next=/admin");
 }
 
 // ---- Paystack (M5): host applications, countries, VAT ----

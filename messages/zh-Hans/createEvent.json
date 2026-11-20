@@ -1,4 +1,20 @@
 {
+  "stepper": {
+    "title": "创建活动",
+    "stepOf": "第 {step} 步，共 {total} 步：{name}",
+    "progress": "进度",
+    "basics": "基本信息",
+    "when": "时间和地点",
+    "tickets": "门票",
+    "publish": "外观与发布",
+    "completed": "（已完成）",
+    "back": "返回",
+    "continue": "继续",
+    "where": "地点",
+    "look": "外观",
+    "preview": "封面预览：{title}",
+    "publishButton": "发布"
+  },
   "form": {
     "title": "创建活动",
     "intro": "填写详情，然后分享一个链接，让嘉宾报名。",
@@ -167,7 +183,8 @@
     "noTickets": "请至少添加一种门票。",
     "maxTickets": "最多添加 {max} 种门票类型。",
     "perBuyer": "请选择每人 1 到 10 张门票的上限。",
-    "country": "请从列表中选择国家/地区。"
+    "country": "请从列表中选择国家/地区。",
+    "venue": "请输入场地名称。"
   },
   "save": {
     "failed": "无法保存活动。请重试。",

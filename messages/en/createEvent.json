@@ -1,4 +1,20 @@
 {
+  "stepper": {
+    "title": "Create event",
+    "stepOf": "Step {step} of {total}: {name}",
+    "progress": "Progress",
+    "basics": "Basics",
+    "when": "When & where",
+    "tickets": "Tickets",
+    "publish": "Look & publish",
+    "completed": "(completed)",
+    "back": "Back",
+    "continue": "Continue",
+    "where": "Where",
+    "look": "Look",
+    "preview": "Cover preview: {title}",
+    "publishButton": "Publish"
+  },
   "form": {
     "title": "Create an event",
     "intro": "Add the details, then share one link so guests can register.",
@@ -167,7 +183,8 @@
     "noTickets": "Add at least one ticket.",
     "maxTickets": "Add at most {max} ticket types.",
     "perBuyer": "Choose a limit from 1 to 10 tickets per person.",
-    "country": "Choose a country from the list."
+    "country": "Choose a country from the list.",
+    "venue": "Enter the venue name."
   },
   "save": {
     "failed": "We couldn't save the event. Please try again.",

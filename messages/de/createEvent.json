@@ -1,4 +1,20 @@
 {
+  "stepper": {
+    "title": "Event erstellen",
+    "stepOf": "Schritt {step} von {total}: {name}",
+    "progress": "Fortschritt",
+    "basics": "Grundangaben",
+    "when": "Wann und wo",
+    "tickets": "Tickets",
+    "publish": "Gestaltung und Veröffentlichung",
+    "completed": "(abgeschlossen)",
+    "back": "Zurück",
+    "continue": "Weiter",
+    "where": "Wo",
+    "look": "Gestaltung",
+    "preview": "Vorschau des Titelbilds: {title}",
+    "publishButton": "Veröffentlichen"
+  },
   "form": {
     "title": "Event erstellen",
     "intro": "Fügen Sie die Details hinzu und teilen Sie dann einen Link, über den sich Gäste anmelden.",
@@ -167,7 +183,8 @@
     "noTickets": "Fügen Sie mindestens ein Ticket hinzu.",
     "maxTickets": "Fügen Sie höchstens {max} Ticketarten hinzu.",
     "perBuyer": "Wählen Sie ein Limit von 1 bis 10 Tickets pro Person.",
-    "country": "Wählen Sie ein Land aus der Liste."
+    "country": "Wählen Sie ein Land aus der Liste.",
+    "venue": "Geben Sie den Namen des Veranstaltungsorts ein."
   },
   "save": {
     "failed": "Wir konnten das Event nicht speichern. Bitte versuchen Sie es erneut.",

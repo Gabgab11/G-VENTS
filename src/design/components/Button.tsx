@@ -68,7 +68,8 @@ export function Button(props: ButtonProps) {
         </a>
       );
     }
-    if (isExternal(href)) {
+    // External addresses and downloads (a file, not a page: no client navigation, no prefetch).
+    if (isExternal(href) || anchor.download !== undefined) {
       return (
         <a href={href} {...shared}>
           {content}

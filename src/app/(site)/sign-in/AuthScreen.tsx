@@ -36,7 +36,7 @@ export default function AuthScreen({ mode, art }: { mode: AuthMode; art: ReactNo
   const [fromCreate, setFromCreate] = useState(false);
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    setFromCreate(params.get("next") === "/events/new");
+    setFromCreate(["/events/new", "/host/events/new"].includes(params.get("next") ?? ""));
     const n = params.get("next");
     setNext(n ? `?next=${encodeURIComponent(safeNextPath(n, "/my-tickets"))}` : "");
     if (params.get("error") === "google") setError(t("googleDidntFinish"));

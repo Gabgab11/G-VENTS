@@ -1,0 +1,170 @@
+{
+  "shell": {
+    "skip": "Aller au contenu",
+    "nav": "Espace organisateur",
+    "home": "Accueil",
+    "events": "Événements",
+    "orders": "Commandes et invités",
+    "payouts": "Versements",
+    "settings": "Paramètres",
+    "admin": "Admin",
+    "scan": "Scanner",
+    "more": "Plus",
+    "viewSite": "Voir le site",
+    "myTickets": "Mes billets",
+    "account": "Compte",
+    "signOut": "Se déconnecter",
+    "close": "Fermer"
+  },
+  "home": {
+    "title": "Accueil",
+    "welcome": "Bienvenue sur G-ventZ",
+    "welcomeNamed": "Bienvenue, {name}",
+    "welcomeLead": "Mettons votre premier événement en ligne. Cela ne prend que quelques minutes.",
+    "create": "Créer un événement",
+    "periodLabel": "Période",
+    "period": { "week": "7 jours", "month": "30 jours", "quarter": "90 jours", "year": "12 mois" },
+    "vs": { "week": "7 jours précédents", "month": "30 jours précédents", "quarter": "90 jours précédents", "year": "12 mois précédents" },
+    "delta": {
+      "up": "En hausse de {percent} % par rapport aux {vs}",
+      "down": "En baisse de {percent} % par rapport aux {vs}",
+      "flat": "Identique aux {vs}"
+    },
+    "noCompare": "Rien à comparer pour le moment",
+    "noPaid": "Aucune vente payante sur cette période",
+    "metricsLabel": "Chiffres de la période",
+    "metrics": {
+      "ticketsSold": "Billets",
+      "revenue": "Recettes",
+      "checkIns": "Enregistrements",
+      "upcoming": "Événements à venir",
+      "upcomingContext": "Publiés et pas encore commencés"
+    },
+    "checklist": {
+      "title": "Bien démarrer",
+      "progress": "{done} sur {total} terminé(s)",
+      "done": "Terminé",
+      "createdEvent": "Créez un événement",
+      "createdEventHint": "Ajoutez les informations de base, la date et le lieu, ainsi que vos billets.",
+      "createdEventAction": "Créez votre premier événement",
+      "sharedEvent": "Partagez-le",
+      "sharedEventHint": "Envoyez le lien. Il affiche votre affiche, la date et le prix.",
+      "sharedEventAction": "Partager",
+      "payoutReady": "Configurez les versements pour vendre des billets",
+      "payoutReadyHint": "Demandez à vendre des billets payants et ajoutez le compte bancaire sur lequel les ventes sont versées.",
+      "payoutReadyAction": "Configurer",
+      "twoStep": "Activez la connexion en deux étapes",
+      "twoStepHint": "Protège vos événements et vos versements si quelqu'un prend un jour le contrôle de votre adresse e-mail.",
+      "twoStepAction": "Activer"
+    },
+    "next": {
+      "title": "Prochain événement",
+      "all": "Tous les événements",
+      "none": "Aucun événement à venir",
+      "sold": "{sold, plural, one {# billet} other {# billets}}",
+      "soldOf": "{sold} billets sur {capacity}",
+      "draft": "Brouillon",
+      "manage": "Gérer",
+      "scan": "Scanner les billets"
+    },
+    "payout": {
+      "title": "Versements",
+      "view": "Voir les versements",
+      "active": "Prêt à vendre",
+      "activeHint": "Paystack verse chaque vente sur votre compte bancaire. G-ventZ ne détient jamais votre argent.",
+      "apply": "Demander à vendre des billets payants",
+      "status": {
+        "not_applied": "Billets gratuits uniquement",
+        "application_submitted": "Demande en cours d'examen",
+        "application_declined": "Demande refusée",
+        "approval_revoked": "Billets payants interrompus",
+        "payout_account_pending": "Compte bancaire en cours de vérification",
+        "payments_off": "Billets payants indisponibles",
+        "country_off": "Pas encore disponible dans votre pays",
+        "owes_money": "Solde dû",
+        "suspended": "Compte suspendu"
+      },
+      "hint": {
+        "not_applied": "Faites une demande pour vendre des billets payants. Les événements gratuits ne nécessitent rien de plus.",
+        "application_submitted": "Nous répondons généralement sous deux jours ouvrés.",
+        "application_declined": "Consultez le motif sur la page Versements.",
+        "approval_revoked": "Consultez la page Versements pour savoir ce qui s'est passé.",
+        "payout_account_pending": "Paystack confirme votre compte bancaire.",
+        "payments_off": "Les billets payants sont suspendus pour tout le monde pour le moment.",
+        "country_off": "Vous pouvez toujours organiser des événements gratuits.",
+        "owes_money": "Des remboursements ou des litiges ont laissé un solde ; il est prélevé sur vos prochaines ventes.",
+        "suspended": "Contactez l'assistance pour en savoir plus."
+      }
+    },
+    "orders": {
+      "title": "Commandes récentes",
+      "all": "Toutes les commandes",
+      "none": "Aucune commande pour le moment",
+      "guest": "Invité",
+      "free": "Gratuit",
+      "tickets": "{count, plural, one {# billet} other {# billets}}"
+    }
+  },
+  "settings": {
+    "title": "Paramètres",
+    "tabsLabel": "Sections des paramètres",
+    "tabs": { "security": "Sécurité", "appearance": "Apparence", "language": "Langue" },
+    "appearance": {
+      "title": "Style du tableau de bord",
+      "hint": "Les couleurs de votre espace organisateur. Vous seul les voyez ; les pages de vos événements conservent leur propre style."
+    },
+    "language": {
+      "title": "Langue",
+      "hint": "La langue de G-ventZ et des e-mails que nous vous envoyons."
+    }
+  },
+  "scan": {
+    "title": "Scanner les billets",
+    "lead": "Choisissez l'événement pour lequel vous enregistrez les invités.",
+    "none": "Rien à scanner pour le moment",
+    "noneHint": "Les événements publiés pour lesquels vous pouvez enregistrer des invités s'affichent ici jusqu'à leur fin.",
+    "events": "Vos événements",
+    "open": "Scanner"
+  },
+  "orders": {
+    "title": "Commandes et invités",
+    "lead": "Toutes les commandes de vos événements. Ouvrez-en une pour voir ses invités.",
+    "caption": "{total, plural, one {# commande} other {# commandes}}",
+    "guest": "Invité",
+    "free": "Gratuit",
+    "none": "Aucune commande pour le moment",
+    "noneHint": "Les commandes s'affichent ici dès que quelqu'un s'inscrit ou achète un billet.",
+    "noneFiltered": "Aucune commande ne correspond à ces filtres",
+    "filter": { "event": "Événement", "allEvents": "Tous les événements", "status": "Statut", "allStatuses": "Tous les statuts", "apply": "Afficher", "clear": "Effacer" },
+    "col": { "buyer": "Acheteur", "event": "Événement", "tickets": "Billets", "amount": "Montant", "status": "Statut", "when": "Commandé le" },
+    "status": {
+      "completed": "Confirmée",
+      "pending_approval": "En attente d'approbation",
+      "waitlisted": "Liste d'attente",
+      "declined": "Refusée",
+      "cancelled": "Annulée",
+      "awaiting_payment": "En attente de paiement",
+      "expired": "Expirée",
+      "failed": "Paiement échoué",
+      "partially_refunded": "Partiellement remboursée",
+      "refunded": "Remboursée",
+      "disputed": "Contestée"
+    },
+    "pages": "Pages",
+    "previous": "Précédent",
+    "next": "Suivant",
+    "page": "Page {page} sur {pages}"
+  },
+  "payouts": {
+    "title": "Règlements par événement",
+    "caption": "Ventes, frais et ce qui vous revient, par événement",
+    "csv": "Télécharger le CSV",
+    "failed": "Impossible de charger les règlements. Veuillez réessayer.",
+    "none": "Aucune vente payante pour le moment",
+    "noneHint": "Dès que vous vendrez des billets payants, les ventes et les frais de chaque événement s'afficheront ici.",
+    "col": { "event": "Événement", "orders": "Commandes", "gross": "Payé par les invités", "paystack": "Frais Paystack", "gventz": "Frais G-ventZ", "refunds": "Remboursements", "net": "Pour vous" },
+    "total": "Total",
+    "totalIn": "Total, {currency}",
+    "note": "Les frais G-ventZ incluent la TVA. Paystack verse chaque vente sur votre compte bancaire selon son calendrier de règlement ; G-ventZ ne détient jamais votre argent."
+  }
+}

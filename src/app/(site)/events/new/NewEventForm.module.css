@@ -1,7 +1,0 @@
-/* Create event: the publish bar's buttons fill the width on phones (as the old .btn-* rule did). */
-@media (max-width: 640px) {
-  .publishButton { inline-size: 100%; }
-}
-
-/* A ticket type inside the tickets card: a raised block, not a card in a card (design guidelines). */
-.tier.tier { background: var(--color-surface-raised); border-color: transparent; padding: var(--space-4); }

@@ -15,7 +15,7 @@ import styles from "./SiteHeader.module.css";
 const NAV = [
   { href: "/discover", label: "discover" },
   { href: "/my-tickets", label: "myTickets" },
-  { href: "/events/new", label: "hostEvent" },
+  { href: "/host/events/new", label: "hostEvent" },
 ] as const;
 
 // The one header (Change 4, DS4) on every page except the home page (which has its own over the hero):

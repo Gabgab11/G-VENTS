@@ -1,0 +1,170 @@
+{
+  "shell": {
+    "skip": "跳至内容",
+    "nav": "主办方后台",
+    "home": "首页",
+    "events": "活动",
+    "orders": "订单与来宾",
+    "payouts": "收款",
+    "settings": "设置",
+    "admin": "管理",
+    "scan": "扫码",
+    "more": "更多",
+    "viewSite": "查看网站",
+    "myTickets": "我的门票",
+    "account": "账户",
+    "signOut": "退出登录",
+    "close": "关闭"
+  },
+  "home": {
+    "title": "首页",
+    "welcome": "欢迎使用 G-ventZ",
+    "welcomeNamed": "欢迎，{name}",
+    "welcomeLead": "让我们发布您的第一个活动吧，只需几分钟。",
+    "create": "创建活动",
+    "periodLabel": "时间段",
+    "period": { "week": "7 天", "month": "30 天", "quarter": "90 天", "year": "12 个月" },
+    "vs": { "week": "前 7 天", "month": "前 30 天", "quarter": "前 90 天", "year": "前 12 个月" },
+    "delta": {
+      "up": "较{vs}上升 {percent}%",
+      "down": "较{vs}下降 {percent}%",
+      "flat": "与{vs}持平"
+    },
+    "noCompare": "暂无可比较的数据",
+    "noPaid": "此时间段内没有付费销售",
+    "metricsLabel": "该时间段的数据",
+    "metrics": {
+      "ticketsSold": "门票",
+      "revenue": "收入",
+      "checkIns": "签到",
+      "upcoming": "即将举行的活动",
+      "upcomingContext": "已发布且尚未开始"
+    },
+    "checklist": {
+      "title": "开始设置",
+      "progress": "已完成 {done}/{total}",
+      "done": "已完成",
+      "createdEvent": "创建活动",
+      "createdEventHint": "添加基本信息、日期和地点，以及您的门票。",
+      "createdEventAction": "创建您的第一个活动",
+      "sharedEvent": "分享活动",
+      "sharedEventHint": "发送链接，其中会显示您的海报、日期和价格。",
+      "sharedEventAction": "分享",
+      "payoutReady": "设置收款以出售门票",
+      "payoutReadyHint": "申请出售付费门票，并添加用于接收销售款项的银行账户。",
+      "payoutReadyAction": "设置",
+      "twoStep": "开启两步登录",
+      "twoStepHint": "即使您的邮箱被他人盗用，也能保护您的活动和收款安全。",
+      "twoStepAction": "开启"
+    },
+    "next": {
+      "title": "下一场活动",
+      "all": "全部活动",
+      "none": "没有即将举行的活动",
+      "sold": "{sold, plural, other {# 张门票}}",
+      "soldOf": "{sold}/{capacity} 张门票",
+      "draft": "草稿",
+      "manage": "管理",
+      "scan": "扫描门票"
+    },
+    "payout": {
+      "title": "收款",
+      "view": "查看收款",
+      "active": "可以开始售票",
+      "activeHint": "Paystack 会将每笔销售款项直接打入您的银行账户。G-ventZ 从不经手您的资金。",
+      "apply": "申请出售付费门票",
+      "status": {
+        "not_applied": "仅限免费门票",
+        "application_submitted": "申请审核中",
+        "application_declined": "申请被拒绝",
+        "approval_revoked": "付费门票已停售",
+        "payout_account_pending": "银行账户审核中",
+        "payments_off": "付费门票暂不可用",
+        "country_off": "您所在的国家/地区暂未开放",
+        "owes_money": "存在欠款",
+        "suspended": "账户已暂停"
+      },
+      "hint": {
+        "not_applied": "申请出售付费门票。免费活动无需其他操作。",
+        "application_submitted": "我们通常会在两个工作日内答复。",
+        "application_declined": "请在收款页面查看原因。",
+        "approval_revoked": "请在收款页面查看具体情况。",
+        "payout_account_pending": "Paystack 正在确认您的银行账户。",
+        "payments_off": "付费门票目前已对所有用户暂停。",
+        "country_off": "您仍可举办免费活动。",
+        "owes_money": "退款或争议产生了欠款，将从您后续的销售中扣除。",
+        "suspended": "请联系客服了解详情。"
+      }
+    },
+    "orders": {
+      "title": "最近订单",
+      "all": "全部订单",
+      "none": "暂无订单",
+      "guest": "来宾",
+      "free": "免费",
+      "tickets": "{count, plural, other {# 张门票}}"
+    }
+  },
+  "settings": {
+    "title": "设置",
+    "tabsLabel": "设置分区",
+    "tabs": { "security": "安全", "appearance": "外观", "language": "语言" },
+    "appearance": {
+      "title": "控制台风格",
+      "hint": "您的主办方后台的配色。仅您本人可见；您的活动页面保留各自的风格。"
+    },
+    "language": {
+      "title": "语言",
+      "hint": "G-ventZ 以及我们发送给您的邮件所使用的语言。"
+    }
+  },
+  "scan": {
+    "title": "扫描门票",
+    "lead": "请选择要为来宾签到的活动。",
+    "none": "目前没有可扫描的活动",
+    "noneHint": "您可以为来宾签到的已发布活动会显示在这里，直到活动结束。",
+    "events": "您的活动",
+    "open": "扫码"
+  },
+  "orders": {
+    "title": "订单与来宾",
+    "lead": "您所有活动的全部订单。打开订单即可查看其来宾。",
+    "caption": "{total, plural, other {# 个订单}}",
+    "guest": "来宾",
+    "free": "免费",
+    "none": "暂无订单",
+    "noneHint": "一旦有人报名或购买门票，订单就会显示在这里。",
+    "noneFiltered": "没有符合这些筛选条件的订单",
+    "filter": { "event": "活动", "allEvents": "全部活动", "status": "状态", "allStatuses": "全部状态", "apply": "显示", "clear": "清除" },
+    "col": { "buyer": "购买者", "event": "活动", "tickets": "门票", "amount": "金额", "status": "状态", "when": "下单时间" },
+    "status": {
+      "completed": "已确认",
+      "pending_approval": "等待审核",
+      "waitlisted": "候补名单",
+      "declined": "已拒绝",
+      "cancelled": "已取消",
+      "awaiting_payment": "等待付款",
+      "expired": "已过期",
+      "failed": "付款失败",
+      "partially_refunded": "部分退款",
+      "refunded": "已退款",
+      "disputed": "有争议"
+    },
+    "pages": "分页",
+    "previous": "上一页",
+    "next": "下一页",
+    "page": "第 {page} 页，共 {pages} 页"
+  },
+  "payouts": {
+    "title": "按活动结算",
+    "caption": "各活动的销售额、费用及您的所得",
+    "csv": "下载 CSV",
+    "failed": "无法加载结算信息，请重试。",
+    "none": "暂无付费销售",
+    "noneHint": "出售付费门票后，每个活动的销售额和费用将显示在这里。",
+    "col": { "event": "活动", "orders": "订单", "gross": "来宾支付", "paystack": "Paystack 手续费", "gventz": "G-ventZ 费用", "refunds": "退款", "net": "您的所得" },
+    "total": "合计",
+    "totalIn": "合计，{currency}",
+    "note": "G-ventZ 费用已含增值税。Paystack 会按照其结算周期将每笔销售款项打入您的银行账户；G-ventZ 从不经手您的资金。"
+  }
+}

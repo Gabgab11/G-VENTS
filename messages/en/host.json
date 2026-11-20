@@ -1,0 +1,170 @@
+{
+  "shell": {
+    "skip": "Skip to content",
+    "nav": "Host area",
+    "home": "Home",
+    "events": "Events",
+    "orders": "Orders & guests",
+    "payouts": "Payouts",
+    "settings": "Settings",
+    "admin": "Admin",
+    "scan": "Scan",
+    "more": "More",
+    "viewSite": "View site",
+    "myTickets": "My tickets",
+    "account": "Account",
+    "signOut": "Sign out",
+    "close": "Close"
+  },
+  "home": {
+    "title": "Home",
+    "welcome": "Welcome to G-ventZ",
+    "welcomeNamed": "Welcome, {name}",
+    "welcomeLead": "Let's get your first event live. It takes a few minutes.",
+    "create": "Create event",
+    "periodLabel": "Period",
+    "period": { "week": "7 days", "month": "30 days", "quarter": "90 days", "year": "12 months" },
+    "vs": { "week": "the previous 7 days", "month": "the previous 30 days", "quarter": "the previous 90 days", "year": "the previous 12 months" },
+    "delta": {
+      "up": "Up {percent}% on {vs}",
+      "down": "Down {percent}% on {vs}",
+      "flat": "Same as {vs}"
+    },
+    "noCompare": "Nothing to compare with yet",
+    "noPaid": "No paid sales in this period",
+    "metricsLabel": "Figures for the period",
+    "metrics": {
+      "ticketsSold": "Tickets",
+      "revenue": "Revenue",
+      "checkIns": "Check-ins",
+      "upcoming": "Upcoming events",
+      "upcomingContext": "Published and not started yet"
+    },
+    "checklist": {
+      "title": "Get set up",
+      "progress": "{done} of {total} done",
+      "done": "Done",
+      "createdEvent": "Create an event",
+      "createdEventHint": "Add the basics, the date and place, and your tickets.",
+      "createdEventAction": "Create your first event",
+      "sharedEvent": "Share it",
+      "sharedEventHint": "Send the link. It shows your flyer, the date and the price.",
+      "sharedEventAction": "Share",
+      "payoutReady": "Set up payouts to sell tickets",
+      "payoutReadyHint": "Apply for paid tickets and add the bank account sales are paid into.",
+      "payoutReadyAction": "Set up",
+      "twoStep": "Turn on two-step sign-in",
+      "twoStepHint": "Keeps your events and payouts safe if your email is ever taken over.",
+      "twoStepAction": "Turn on"
+    },
+    "next": {
+      "title": "Next event",
+      "all": "All events",
+      "none": "No upcoming events",
+      "sold": "{sold, plural, one {# ticket} other {# tickets}}",
+      "soldOf": "{sold} of {capacity} tickets",
+      "draft": "Draft",
+      "manage": "Manage",
+      "scan": "Scan tickets"
+    },
+    "payout": {
+      "title": "Payouts",
+      "view": "View payouts",
+      "active": "Ready to sell",
+      "activeHint": "Paystack pays each sale into your bank account. G-ventZ never holds your money.",
+      "apply": "Apply for paid tickets",
+      "status": {
+        "not_applied": "Free tickets only",
+        "application_submitted": "Application in review",
+        "application_declined": "Application declined",
+        "approval_revoked": "Paid tickets stopped",
+        "payout_account_pending": "Bank account being checked",
+        "payments_off": "Paid tickets unavailable",
+        "country_off": "Not available in your country yet",
+        "owes_money": "Balance owed",
+        "suspended": "Account suspended"
+      },
+      "hint": {
+        "not_applied": "Apply to sell paid tickets. Free events need nothing more.",
+        "application_submitted": "We usually reply within two working days.",
+        "application_declined": "See the reason on the Payouts page.",
+        "approval_revoked": "See the Payouts page for what happened.",
+        "payout_account_pending": "Paystack is confirming your bank account.",
+        "payments_off": "Paid tickets are paused for everyone at the moment.",
+        "country_off": "You can still host free events.",
+        "owes_money": "Refunds or disputes left a balance; it is taken from your next sales.",
+        "suspended": "Contact support to find out more."
+      }
+    },
+    "orders": {
+      "title": "Recent orders",
+      "all": "All orders",
+      "none": "No orders yet",
+      "guest": "Guest",
+      "free": "Free",
+      "tickets": "{count, plural, one {# ticket} other {# tickets}}"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "tabsLabel": "Settings sections",
+    "tabs": { "security": "Security", "appearance": "Appearance", "language": "Language" },
+    "appearance": {
+      "title": "Dashboard style",
+      "hint": "The colours of your host area. Only you see it; your event pages keep their own style."
+    },
+    "language": {
+      "title": "Language",
+      "hint": "The language of G-ventZ and the emails we send you."
+    }
+  },
+  "scan": {
+    "title": "Scan tickets",
+    "lead": "Choose the event you're checking guests in for.",
+    "none": "Nothing to scan right now",
+    "noneHint": "Published events you can check guests in for show here until they end.",
+    "events": "Your events",
+    "open": "Scan"
+  },
+  "orders": {
+    "title": "Orders & guests",
+    "lead": "Every order across your events. Open one to see its guests.",
+    "caption": "{total, plural, one {# order} other {# orders}}",
+    "guest": "Guest",
+    "free": "Free",
+    "none": "No orders yet",
+    "noneHint": "Orders show here as soon as someone registers or buys a ticket.",
+    "noneFiltered": "No orders match these filters",
+    "filter": { "event": "Event", "allEvents": "All events", "status": "Status", "allStatuses": "All statuses", "apply": "Show", "clear": "Clear" },
+    "col": { "buyer": "Buyer", "event": "Event", "tickets": "Tickets", "amount": "Amount", "status": "Status", "when": "Ordered" },
+    "status": {
+      "completed": "Confirmed",
+      "pending_approval": "Awaiting approval",
+      "waitlisted": "Waitlist",
+      "declined": "Declined",
+      "cancelled": "Cancelled",
+      "awaiting_payment": "Awaiting payment",
+      "expired": "Expired",
+      "failed": "Payment failed",
+      "partially_refunded": "Partly refunded",
+      "refunded": "Refunded",
+      "disputed": "Disputed"
+    },
+    "pages": "Pages",
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page {page} of {pages}"
+  },
+  "payouts": {
+    "title": "Settlements by event",
+    "caption": "Sales, fees and what's left for you, per event",
+    "csv": "Download CSV",
+    "failed": "Settlements couldn't be loaded. Please try again.",
+    "none": "No paid sales yet",
+    "noneHint": "Once you sell paid tickets, each event's sales and fees show here.",
+    "col": { "event": "Event", "orders": "Orders", "gross": "Guests paid", "paystack": "Paystack fee", "gventz": "G-ventZ fee", "refunds": "Refunds", "net": "Yours" },
+    "total": "Total",
+    "totalIn": "Total, {currency}",
+    "note": "The G-ventZ fee includes VAT. Paystack pays each sale into your bank account on its settlement schedule; G-ventZ never holds your money."
+  }
+}

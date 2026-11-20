@@ -9,7 +9,7 @@ const ON: Locale[] = ["en", "fr", "zh-Hans", "ar"];
 describe("routing (W2, D72, FR-24)", () => {
   it("knows the public pages, with or without a language prefix", () => {
     for (const p of ["/", "/discover", "/discover/music", "/e/afro-night", "/t/ABC123", "/pricing", "/help", "/terms", "/privacy", "/refunds", "/fr", "/fr/e/afro-night", "/zh/discover", "/ar/t/X"]) expect(isPublicPath(p), p).toBe(true);
-    for (const p of ["/dashboard", "/sign-in", "/events/new", "/admin", "/account/security", "/orders/1", "/api/session", "/e/x/edit", "/fr/dashboard", "/english"]) expect(isPublicPath(p), p).toBe(false);
+    for (const p of ["/dashboard", "/sign-in", "/events/new", "/admin", "/host/settings/security", "/orders/1", "/api/session", "/e/x/edit", "/fr/dashboard", "/english"]) expect(isPublicPath(p), p).toBe(false);
   });
 
   it("moves public pages between languages and leaves the rest alone", () => {

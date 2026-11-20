@@ -22,13 +22,13 @@ export default async function SiteFooter() {
           <nav className="site-footer-links" aria-label={t("footer.discover.title")}>
             <Link href="/discover">{t("footer.discover.allEvents")}</Link>
             <Link href="/pricing">{t("footer.discover.pricing")}</Link>
-            <Link href="/events/new">{t("footer.discover.createEvent")}</Link>
+            <Link href="/host/events/new">{t("footer.discover.createEvent")}</Link>
           </nav>
         </div>
         <div>
           <p className="site-footer-title">{t("footer.hosts.title")}</p>
           <nav className="site-footer-links" aria-label={t("footer.hosts.title")}>
-            <Link href="/events/new">{t("footer.hosts.host")}</Link>
+            <Link href="/host/events/new">{t("footer.hosts.host")}</Link>
             <Link href="/help">{t("footer.hosts.help")}</Link>
             <Link href="/refunds">{t("footer.hosts.refunds")}</Link>
           </nav>
@@ -48,7 +48,7 @@ export default async function SiteFooter() {
           </div>
           <div className="site-footer-contact">
             <p className="site-footer-label">{t("footer.contact.forHosts")}</p>
-            <Link href="/events/new">{t("footer.contact.getStarted")}</Link>
+            <Link href="/host/events/new">{t("footer.contact.getStarted")}</Link>
           </div>
         </div>
       </div>

@@ -18,7 +18,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   if (!me?.isStaff) {
     return (
       <main className="wrap page ad">
-        <SiteHeader back="/dashboard" />
+        <SiteHeader back="/host" />
         {/* The admin pages are written in English (D69); the header follows the visitor's language. */}
         <div lang="en" dir="ltr" style={{ display: "contents" }}>{children}</div>
       </main>
@@ -26,7 +26,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   }
   return (
     <main className="wrap page ad ad-viz">
-      <SiteHeader back="/dashboard" />
+      <SiteHeader back="/host" />
       {/* The admin pages are written in English (D69); the header follows the visitor's language. */}
       <div lang="en" dir="ltr" style={{ display: "contents" }}>
       <div className="ad-head">

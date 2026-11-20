@@ -245,7 +245,7 @@ export interface paths {
         };
         /**
          * My events
-         * @description Events you own or help run, newest start first, with confirmed counts.
+         * @description Events you own or help run, with confirmed counts and capacity; gross per currency where your role may see sales. Filter: all (default), upcoming, drafts, past.
          */
         get: operations["MeEventsController_list_v1"];
         put?: never;
@@ -1729,6 +1729,66 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/host/orders": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Orders across my events
+         * @description Orders on every event where you can see orders (owner, admin, finance), newest first, optionally for one event or one status. Buyer names are shown as first name and last initial. pageSize at most 100 (default 25).
+         */
+        get: operations["HostHomeController_orders_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/host/settlements": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Settlements across my events
+         * @description One row per event and currency where you can see sales (owner, admin, finance), with the same ledger figures as GET /v1/events/{id}/settlements; totals per currency; and your own payout account. Integer minor units.
+         */
+        get: operations["HostHomeController_settlementsSummary_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/host/settlements.csv": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Export settlements across my events (CSV)
+         * @description The columns of GET /v1/events/{id}/settlements.csv after an Event column: one row per paid order on every event where you can see sales, paid at in that event's time zone, masked buyer email, amounts in integer minor units. UTF-8 with BOM, at most 50,000 rows. Audited.
+         */
+        get: operations["HostHomeController_settlementsCsv_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/hosts/{handle}": {
         parameters: {
             query?: never;
@@ -2387,6 +2447,12 @@ export interface components {
             /** @description Paid ticket types can be bought now (Paystack on for the country and the host can sell) */
             paidSalesOpen: boolean;
         };
+        HostEventGrossDto: {
+            /** @example NGN */
+            currency: string;
+            /** @description Integer minor units */
+            grossMinor: number;
+        };
         HostEventDto: {
             /** Format: uuid */
             id: string;
@@ -2420,6 +2486,10 @@ export interface components {
             /** @enum {string} */
             role: "owner" | "admin" | "editor" | "checkin" | "finance" | "viewer";
             confirmedCount: number;
+            /** @description Null: unlimited */
+            capacity: number | null;
+            /** @description Gross paid sales per currency from the ledger (what guests paid), integer minor units; empty unless your role may see sales (owner, admin, finance) */
+            gross: components["schemas"]["HostEventGrossDto"][];
         };
         HostEventsPageDto: {
             items: components["schemas"]["HostEventDto"][];
@@ -4107,6 +4177,78 @@ export interface components {
             /** @description Setup steps; null once you own an event and every step is done */
             checklist: components["schemas"]["HostHomeChecklistDto"] | null;
         };
+        HostOrderDto: {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            eventId: string;
+            eventTitle: string;
+            /**
+             * @description First name and last initial ("Ada O.")
+             * @example Ada O.
+             */
+            buyerName: string | null;
+            tickets: number;
+            /** @description Integer minor units */
+            amountMinor: number;
+            /** @example NGN */
+            currency: string;
+            /** @enum {string} */
+            kind: "free" | "paid";
+            /** @enum {string} */
+            status: "completed" | "pending_approval" | "waitlisted" | "declined" | "cancelled" | "awaiting_payment" | "expired" | "failed" | "partially_refunded" | "refunded" | "disputed";
+            /** Format: date-time */
+            createdAt: string;
+        };
+        HostOrdersPageDto: {
+            /** @description Newest first */
+            items: components["schemas"]["HostOrderDto"][];
+            page: number;
+            pageSize: number;
+            total: number;
+        };
+        HostSettlementRowDto: {
+            /** @example NGN */
+            currency: string;
+            ordersPaid: number;
+            /** @description What guests paid */
+            grossMinor: number;
+            /** @description Paystack's charges */
+            paystackFeesMinor: number;
+            /** @description G-ventZ fees */
+            gventzFeesMinor: number;
+            /** @description VAT on the G-ventZ fees */
+            vatMinor: number;
+            /** @description Taken off ticket prices by discount codes (already out of gross) */
+            discountsMinor: number;
+            /** @description Refunded to guests */
+            refundsMinor: number;
+            /** @description Lost chargebacks */
+            disputesLostMinor: number;
+            /** @description Your share of refunds and lost disputes, owed to G-ventZ */
+            hostDebtMinor: number;
+            /** @description Owed amounts G-ventZ recovered from these sales */
+            debtRecoveredMinor: number;
+            /** @description What Paystack split to your subaccount for these sales */
+            paidToHostMinor: number;
+            /** @description gross - Paystack fees - G-ventZ fees - VAT - your share of refunds and lost disputes */
+            netMinor: number;
+            /** Format: uuid */
+            eventId: string;
+            eventTitle: string;
+            /** Format: date-time */
+            eventStartsAt: string;
+            /** @example Africa/Lagos */
+            timeZone: string;
+        };
+        HostSettlementsDto: {
+            /** @description One row per event and currency, from the ledger (the same figures as GET /v1/events/{id}/settlements); latest event start first; integer minor units */
+            rows: components["schemas"]["HostSettlementRowDto"][];
+            /** @description The rows added up per currency */
+            totals: components["schemas"]["SettlementCurrencyDto"][];
+            /** @description Your own payout account */
+            payout: components["schemas"]["SettlementPayoutDto"];
+        };
         HostSocialsDto: {
             /** @example https://instagram.com/adaevents */
             instagram: string | null;
@@ -4766,6 +4908,8 @@ export interface operations {
             query?: {
                 page?: number;
                 pageSize?: number;
+                /** @description upcoming: published and not ended (soonest first); drafts; past: ended (not drafts) or cancelled. all and the others: newest start first */
+                filter?: "all" | "upcoming" | "drafts" | "past";
             };
             header?: never;
             path?: never;
@@ -7984,6 +8128,98 @@ export interface operations {
             };
             /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
             401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    HostHomeController_orders_v1: {
+        parameters: {
+            query?: {
+                page?: number;
+                pageSize?: number;
+                /** @description Only this event (an empty page when you may not see its orders) */
+                eventId?: string;
+                status?: "completed" | "pending_approval" | "waitlisted" | "declined" | "cancelled" | "awaiting_payment" | "expired" | "failed" | "partially_refunded" | "refunded" | "disputed";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HostOrdersPageDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    HostHomeController_settlementsSummary_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HostSettlementsDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    HostHomeController_settlementsCsv_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The CSV file */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "text/csv": string;
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description rate_limit.exceeded */
+            429: {
                 headers: {
                     [name: string]: unknown;
                 };

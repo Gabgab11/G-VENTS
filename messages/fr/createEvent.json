@@ -1,4 +1,20 @@
 {
+  "stepper": {
+    "title": "Créer un événement",
+    "stepOf": "Étape {step} sur {total} : {name}",
+    "progress": "Progression",
+    "basics": "Informations de base",
+    "when": "Date et lieu",
+    "tickets": "Billets",
+    "publish": "Apparence et publication",
+    "completed": "(terminée)",
+    "back": "Retour",
+    "continue": "Continuer",
+    "where": "Lieu",
+    "look": "Apparence",
+    "preview": "Aperçu de la couverture : {title}",
+    "publishButton": "Publier"
+  },
   "form": {
     "title": "Créer un événement",
     "intro": "Ajoutez les détails, puis partagez un seul lien pour que les invités s’inscrivent.",
@@ -167,7 +183,8 @@
     "noTickets": "Ajoutez au moins un billet.",
     "maxTickets": "Ajoutez au maximum {max} types de billets.",
     "perBuyer": "Choisissez une limite de 1 à 10 billets par personne.",
-    "country": "Choisissez un pays dans la liste."
+    "country": "Choisissez un pays dans la liste.",
+    "venue": "Indiquez le nom du lieu."
   },
   "save": {
     "failed": "Nous n’avons pas pu enregistrer l’événement. Veuillez réessayer.",

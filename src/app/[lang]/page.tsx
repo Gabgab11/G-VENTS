@@ -189,8 +189,8 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
   const events = await featuredEvents();
 
   // The page is shared by every visitor, so it can't know who is signed in.
-  // /events/new sends signed-out visitors to sign-up and then back to the form.
-  const createHref = "/events/new";
+  // /host/events/new sends signed-out visitors to sign-up and then back to the form.
+  const createHref = "/host/events/new";
 
   return (
     <main className={`hp ${pageFonts}`}>
