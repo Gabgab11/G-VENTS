@@ -830,11 +830,94 @@ export interface paths {
         put?: never;
         /**
          * Use the uploaded flyer
-         * @description Checks the real file type and size, sets the flyer and deletes the previous one.
+         * @description Checks the real file type and size, and makes it the main picture (picture 1), replacing and deleting the previous main picture.
          */
         post: operations["FlyerController_confirm_v1"];
-        /** Remove the flyer */
+        /**
+         * Remove the flyer
+         * @description Removes the main picture (picture 1); the next picture, if any, becomes the main one.
+         */
         delete: operations["FlyerController_remove_v1"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/events/{id}/images/upload-url": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Get an upload URL for a new picture
+         * @description JPEG, PNG or WebP up to 5 MB; at most 5 pictures per event. Upload with PUT, then confirm.
+         */
+        post: operations["EventImagesController_requestUpload_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/events/{id}/images": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Add the uploaded picture
+         * @description Checks the real file type and size and adds it after the others. The first picture is the main one (coverUrl). Confirming the same upload again returns the stored picture.
+         */
+        post: operations["EventImagesController_confirm_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/events/{id}/images/order": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Reorder the pictures
+         * @description The first becomes the main picture (coverUrl). Returns the pictures in the new order.
+         */
+        put: operations["EventImagesController_reorder_v1"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/events/{id}/images/{imageId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Remove a picture
+         * @description The pictures after it move up; removing the main one makes the next the main picture. The file is deleted.
+         */
+        delete: operations["EventImagesController_remove_v1"];
         options?: never;
         head?: never;
         patch?: never;
@@ -2156,6 +2239,15 @@ export interface components {
             /** @description Google Maps link the host added */
             mapsUrl?: string | null;
         };
+        EventImageDto: {
+            /** Format: uuid */
+            id: string;
+            url: string;
+            /** @description Pixels, as reported by the uploader */
+            width: number | null;
+            /** @description Pixels, as reported by the uploader */
+            height: number | null;
+        };
         TicketTypeViewDto: {
             /** Format: uuid */
             id: string;
@@ -2207,7 +2299,10 @@ export interface components {
             /** @example Africa/Lagos */
             timeZone: string;
             location: components["schemas"]["LocationViewDto"];
+            /** @description The main picture (images[0].url), or null */
             coverUrl: string | null;
+            /** @description Up to 5 pictures in the host's order; the first is the main picture */
+            images: components["schemas"]["EventImageDto"][];
             coverTheme: string;
             capacity: number | null;
             refundPolicy: string | null;
@@ -2232,7 +2327,7 @@ export interface components {
             hostName: string | null;
             /**
              * Format: date-time
-             * @description Last change by the host to the event, its ticket types or its flyer; versions the share card
+             * @description Last change by the host to the event, its ticket types or its pictures; versions the share card
              */
             updatedAt: string;
             ticketTypes: components["schemas"]["TicketTypeViewDto"][];
@@ -2360,7 +2455,7 @@ export interface components {
             /** @example 1042 */
             id: string;
             /**
-             * @description event.created, event.edited, event.rescheduled, event.published, event.unpublished, event.cancelled, team.invited, team.invite_revoked, team.invite_accepted, team.role_changed, team.member_removed, guest.checked_in, refund.requested, refund.processed
+             * @description event.created, event.edited, event.rescheduled, event.published, event.unpublished, event.cancelled, team.invited, team.invite_revoked, team.invite_accepted, team.role_changed, team.member_removed, guest.checked_in, refund.requested, refund.processed, images.added, images.removed, images.reordered
              * @example event.edited
              */
             action: string;
@@ -2408,7 +2503,10 @@ export interface components {
             /** @example Africa/Lagos */
             timeZone: string;
             location: components["schemas"]["LocationViewDto"];
+            /** @description The main picture (images[0].url), or null */
             coverUrl: string | null;
+            /** @description Up to 5 pictures in the host's order; the first is the main picture */
+            images: components["schemas"]["EventImageDto"][];
             coverTheme: string;
             capacity: number | null;
             refundPolicy: string | null;
@@ -2433,7 +2531,7 @@ export interface components {
             hostName: string | null;
             /**
              * Format: date-time
-             * @description Last change by the host to the event, its ticket types or its flyer; versions the share card
+             * @description Last change by the host to the event, its ticket types or its pictures; versions the share card
              */
             updatedAt: string;
             ticketTypes: components["schemas"]["TicketTypeViewDto"][];
@@ -3020,6 +3118,29 @@ export interface components {
         };
         FlyerResponse: {
             url: string;
+        };
+        ImageUploadRequestDto: {
+            /** @enum {string} */
+            contentType: "image/jpeg" | "image/png" | "image/webp";
+            /** @description File size in bytes; over 5 MB is refused up front (flyer.size) */
+            size?: number;
+        };
+        ImageConfirmDto: {
+            /** @example 0190a000-0000-7000-8000-000000000001/1792900000000-a1b2c3.jpg */
+            path: string;
+            width?: number | null;
+            height?: number | null;
+        };
+        EventImageResponse: {
+            /** Format: uuid */
+            id: string;
+            url: string;
+            width: number | null;
+            height: number | null;
+        };
+        ImageOrderDto: {
+            /** @description Every picture of the event, each once, in the new order; the first becomes the main picture */
+            ids: string[];
         };
         SuggestionResponse: {
             placeId: string;
@@ -6273,6 +6394,220 @@ export interface operations {
                 content?: never;
             };
             /** @description event.forbidden: needs flyer.manage */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.not_found (also when you have no role on the event) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    EventImagesController_requestUpload_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ImageUploadRequestDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FlyerUploadResponse"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.forbidden: needs event.edit */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.not_found (also when you have no role on the event) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.images_full (already 5), flyer.size */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    EventImagesController_confirm_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ImageConfirmDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EventImageResponse"];
+                };
+            };
+            /** @description flyer.path_invalid */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.forbidden: needs event.edit */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.not_found (also when you have no role on the event) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description flyer.not_uploaded */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.images_full, flyer.type, flyer.size */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    EventImagesController_reorder_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ImageOrderDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EventImageResponse"][];
+                };
+            };
+            /** @description event.images_order_invalid: ids must be exactly the event's pictures */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.forbidden: needs event.edit */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.not_found (also when you have no role on the event) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    EventImagesController_remove_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                imageId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.forbidden: needs event.edit */
             403: {
                 headers: {
                     [name: string]: unknown;
