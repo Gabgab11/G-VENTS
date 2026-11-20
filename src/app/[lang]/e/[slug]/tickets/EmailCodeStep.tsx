@@ -121,7 +121,7 @@ export default function EmailCodeStep({ idPrefix, nameField, onSignedIn }: Props
     return (
       <div className={b.verify} role="group" aria-labelledby={`${idPrefix}-code-title`}>
         <p className={b.verifyTitle} id={`${idPrefix}-code-title`}>{t("codeTitle")}</p>
-        <p className={b.note}>{t.rich("codeSent", { email: state.email, address: (c) => <b className={b.verifyEmail}>{c}</b> })}</p>
+        <p className={b.note}>{t.rich("codeSent", { email: state.email, address: (c) => <bdi dir="ltr" className={b.verifyEmail}>{c}</bdi> })}</p>
         {!done && (
           <div className={b.otp}>
             <OtpInput key={state.attempt} length={6} onComplete={verify} label={t("codeLabel")} disabled={busy === "verifying"} />
@@ -154,7 +154,7 @@ export default function EmailCodeStep({ idPrefix, nameField, onSignedIn }: Props
     <div className={b.verify}>
       <Field label={tg("email")} hint={t("emailHint")} error={state.error ?? undefined} id={`${idPrefix}-email`}>
         <Input ref={emailRef} type="email" value={email} onChange={(e) => setEmail(e.target.value)} onKeyDown={onEmailKey}
-          autoComplete="email" inputMode="email" maxLength={254} placeholder={t("emailPlaceholder")} />
+          autoComplete="email" inputMode="email" dir="ltr" maxLength={254} placeholder={t("emailPlaceholder")} />
       </Field>
       {siteKey && (
         <Turnstile ref={captcha} siteKey={siteKey} onToken={setCaptchaToken} onError={() => dispatch({ type: "failed", message: t("captchaLoad") })} />

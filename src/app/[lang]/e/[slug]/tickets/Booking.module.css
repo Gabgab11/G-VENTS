@@ -26,9 +26,9 @@
 
 .fieldset { display: grid; gap: var(--space-2); margin: 0; padding: 0; border: 0; min-width: 0; }
 .legend { padding: 0; margin-block-end: var(--space-2); font-size: var(--text-body-sm); line-height: var(--leading-body-sm); color: var(--color-text-muted); }
-.typeRow { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); }
+.typeRow { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); }
 .typeRowOff { opacity: .6; }
-.typeName { flex: 1; min-width: 0; font-weight: var(--weight-bold); overflow-wrap: anywhere; }
+.typeName { flex: 1 1 12ch; min-width: 0; font-weight: var(--weight-bold); overflow-wrap: anywhere; }
 .typePrice { font-size: var(--text-body-sm); color: var(--color-text-muted); font-variant-numeric: tabular-nums; text-align: end; }
 .qty { flex: none; inline-size: 88px; }
 .note { margin: 0; font-size: var(--text-body-sm); line-height: var(--leading-body-sm); color: var(--color-text-muted); }
@@ -60,7 +60,7 @@
 .verify { display: grid; gap: var(--space-3); }
 .verifyContinue { justify-self: start; }
 .verifyTitle { margin: 0; font-size: var(--text-label); line-height: var(--leading-label); font-weight: var(--weight-semibold); }
-.verifyEmail { font-weight: var(--weight-semibold); color: var(--color-text); overflow-wrap: anywhere; }
+.verifyEmail { display: inline-block; max-inline-size: 100%; font-weight: var(--weight-semibold); color: var(--color-text); overflow-wrap: anywhere; }
 .verifyStatus:empty { display: none; }
 .verifyActions { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-inline-start: calc(-1 * var(--space-3)); }
 /* The shared code boxes (OtpInput), in this page's colours. */

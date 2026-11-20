@@ -11,7 +11,7 @@ import GuestDetails, { type Buyer } from "./GuestDetails";
 import { useFormValid } from "./use-form-valid";
 import { useCheckout } from "./tickets/use-checkout";
 import { useQuote } from "./tickets/use-quote";
-import DiscountCode from "./tickets/DiscountCode";
+import DiscountCode, { isolate } from "./tickets/DiscountCode";
 import { Button, Card, CardHeader, Checkbox, Select, cx } from "@/design";
 import b from "./tickets/Booking.module.css";
 
@@ -108,7 +108,7 @@ export default function PaidOrderForm({ eventId, ticketTypes, questions, perBuye
                 )}
                 {!!quote.discountMinor && quote.discountMinor > 0 && (
                   <div className={b.line}>
-                    <span>{tb("discount", { code: quote.discountCode ?? "" })}</span><span>{`−${formatMinor(quote.discountMinor, quote.currency)}`}</span>
+                    <span>{tb("discount", { code: isolate(quote.discountCode ?? "") })}</span><span>{formatMinor(-quote.discountMinor, quote.currency)}</span>
                   </div>
                 )}
                 <div className={cx(b.line, b.total)}><span>{t("total")}</span><span>{formatMinor(quote.totalMinor, quote.currency)}</span></div>

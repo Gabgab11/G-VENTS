@@ -6,6 +6,9 @@ import { TicketPercent } from "lucide-react";
 import { Button, Field, Input } from "@/design";
 import b from "./Booking.module.css";
 
+/** Keeps a Latin code in one piece inside Arabic text (first-strong isolate). */
+export const isolate = (text: string) => `\u2068${text}\u2069`;
+
 type Props = {
   /** The code in use ("" for none); `confirmed` once the API's quote carries it. */
   code: string;
@@ -33,9 +36,9 @@ export default function DiscountCode({ code, confirmed, error, applying, initial
       <div className={b.code}>
         <p className={b.codeApplied} role="status">
           <TicketPercent size={16} strokeWidth={1.75} aria-hidden />
-          <span>{confirmed ? t("applied", { code }) : t("checking", { code })}</span>
+          <span>{confirmed ? t("applied", { code: isolate(code) }) : t("checking", { code: isolate(code) })}</span>
         </p>
-        <Button type="button" variant="ghost" size="sm" onClick={() => { setInput(""); onRemove(); }} aria-label={t("removeLabel", { code })}>
+        <Button type="button" variant="ghost" size="sm" onClick={() => { setInput(""); onRemove(); }} aria-label={t("removeLabel", { code: isolate(code) })}>
           {t("remove")}
         </Button>
       </div>
