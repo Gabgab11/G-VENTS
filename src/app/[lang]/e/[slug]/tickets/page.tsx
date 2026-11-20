@@ -16,6 +16,7 @@ import { eventCta, orderableTypes, ticketsLeft } from "../event-cta";
 import AboutSection from "../AboutSection";
 import { eventDate, eventPath, eventPlace } from "../event-view";
 import { codeParam } from "./discount-code";
+import { isPhoneCountry, phoneCountryOptions } from "@/lib/phone";
 import b from "./Booking.module.css";
 
 // The booking page (Change 4 chunk 3b, step 2): a clean page for getting tickets, opened from the event
@@ -69,7 +70,13 @@ export default async function BookingPage({ params, searchParams }: PageProps) {
   const open = cta.kind === "get" || cta.kind === "waitlist";
   // Free and paid tickets are separate orders (M5, CK1): one form each, never mixed.
   const both = open && free.length > 0 && paid.length > 0;
-  const buyer = { signedIn, email: me?.email ?? session?.user.email ?? "", name: me?.fullName ?? "" };
+  const buyer = { signedIn, email: me?.email ?? session?.user.email ?? "", name: me?.fullName ?? "", phone: me?.phone ?? null, gender: me?.gender ?? null };
+  // The phone picker starts on the event's country (4b), else the account's, else Nigeria.
+  const venueCountry = event.location.kind === "venue" ? event.location.countryCode : null;
+  const phone = {
+    countries: phoneCountryOptions(format.lang),
+    country: [venueCountry, me?.country].find((c): c is string => isPhoneCountry(c))?.toUpperCase() ?? "NG",
+  };
   const code = codeParam(query.code);
 
   const summary = (
@@ -123,6 +130,7 @@ export default async function BookingPage({ params, searchParams }: PageProps) {
                   perBuyerLimit={left}
                   held={held}
                   buyer={buyer}
+                  phone={phone}
                   requireApproval={event.requireApproval}
                   summary={summary}
                 />
@@ -138,6 +146,7 @@ export default async function BookingPage({ params, searchParams }: PageProps) {
                   perBuyerLimit={left}
                   held={held}
                   buyer={buyer}
+                  phone={phone}
                   initialCode={code}
                   refundPolicy={event.refundPolicy}
                   feeChoice={event.feeChoice}

@@ -7,7 +7,9 @@ import type { PageQuestion, PageTicketType } from "@/lib/event-page";
 import { NON_REFUNDABLE_KEY, ORGANIZER_KEY, type FeeChoice } from "@/lib/payment-text";
 import { placePaidOrder, type OrderState } from "./actions";
 import { maxQuantity } from "./event-cta";
-import GuestDetails, { type Buyer } from "./GuestDetails";
+import GuestDetails, { type Buyer, type PhoneSetup } from "./GuestDetails";
+import TicketTypeInfo from "./tickets/TicketTypeInfo";
+import { groupSizeOf, isSoldOut, summaryLine, ticketTypesInOrder } from "@/lib/group-tickets";
 import { useFormValid } from "./use-form-valid";
 import { useCheckout } from "./tickets/use-checkout";
 import { useQuote } from "./tickets/use-quote";
@@ -23,6 +25,8 @@ type Props = {
   /** Tickets the buyer already holds for this event (counted against the limit). */
   held?: number;
   buyer: Buyer;
+  /** The phone's country picker (4b). */
+  phone: PhoneSetup;
   /** A discount code from a `?code=` link, applied straight away (D91). */
   initialCode?: string | null;
   refundPolicy: string | null;
@@ -37,7 +41,7 @@ type Props = {
 // then "Pay with Paystack". Both are in the one form. A sold-out type can be chosen to join its
 // waiting list (WL1). The summary card has the discount code box (D91); signed-out buyers confirm
 // their email inline first (D88), and the button stays disabled until they have.
-export default function PaidOrderForm({ eventId, ticketTypes, questions, perBuyerLimit, held = 0, buyer, initialCode = null, refundPolicy, feeChoice, summary }: Props) {
+export default function PaidOrderForm({ eventId, ticketTypes, questions, perBuyerLimit, held = 0, buyer, phone, initialCode = null, refundPolicy, feeChoice, summary }: Props) {
   const t = useTranslations("event.paid");
   const tb = useTranslations("event.booking");
   const tv = useTranslations("event.verify");
@@ -45,11 +49,11 @@ export default function PaidOrderForm({ eventId, ticketTypes, questions, perBuye
   const format = useFormat();
   const formatMinor = format.money;
   const [state, action, pending] = useActionState<OrderState, FormData>(placePaidOrder, undefined);
-  const first = ticketTypes.find((tt) => tt.remaining === null || tt.remaining > 0);
+  const first = ticketTypes.find((tt) => !isSoldOut(tt));
   const [qty, setQty] = useState<Record<string, number>>(first ? { [first.id]: 1 } : {});
   const { ref, valid, check } = useFormValid();
   const total = Object.values(qty).reduce((a, b) => a + b, 0);
-  const soldOut = (tt: PageTicketType) => tt.remaining !== null && tt.remaining <= 0;
+  const soldOut = (tt: PageTicketType) => isSoldOut(tt);
   const waitlist = ticketTypes.some((tt) => soldOut(tt) && (qty[tt.id] ?? 0) > 0);
   const currency = ticketTypes[0]?.currency ?? "NGN";
   const { quote, quoteError, ...discount } = useQuote(eventId, qty, initialCode);
@@ -72,8 +76,10 @@ export default function PaidOrderForm({ eventId, ticketTypes, questions, perBuye
           <legend className="sr-only">{t("legend")}</legend>
           {ticketTypes.map((tt) => (
             <div key={tt.id} className={b.typeRow}>
-              <span className={b.typeName}>{tt.name}</span>
-              <span className={b.typePrice}>{soldOut(tt) ? t("soldOutWaitlist") : formatMinor(tt.priceMinor, tt.currency)}</span>
+              <TicketTypeInfo type={tt} />
+              <span className={b.typePrice}>
+                {soldOut(tt) ? t("soldOutWaitlist") : groupSizeOf(tt) > 1 ? root("event.order.priceAdmits", { price: formatMinor(tt.priceMinor, tt.currency), count: groupSizeOf(tt) }) : formatMinor(tt.priceMinor, tt.currency)}
+              </span>
               <span className={b.qty}>
                 <Select name={`qty_${tt.id}`} value={qty[tt.id] ?? 0} aria-label={root("event.order.howMany", { name: tt.name })}
                   onChange={(e) => setQty((q) => ({ ...q, [tt.id]: Number(e.target.value) }))}>
@@ -85,7 +91,8 @@ export default function PaidOrderForm({ eventId, ticketTypes, questions, perBuye
           <p className={b.note}>{held > 0 ? root("event.order.limitLeft", { count: perBuyerLimit, held }) : root("event.order.limit", { count: perBuyerLimit })}</p>
         </fieldset>
 
-        <GuestDetails idPrefix="paid" total={total} questions={questions} buyer={buyer} justVerified={checkout.justVerified} onSignedIn={checkout.signedIn} />
+        <GuestDetails idPrefix="paid" ticketNames={ticketTypesInOrder(qty, ticketTypes).map((tt) => tt.name)} questions={questions} buyer={buyer} phone={phone}
+          people={checkout.people} justVerified={checkout.justVerified} onSignedIn={checkout.signedIn} />
       </Card>
 
       <Card className={b.summary}>
@@ -97,7 +104,7 @@ export default function PaidOrderForm({ eventId, ticketTypes, questions, perBuye
               <>
                 {quote.lines.map((l) => (
                   <div className={b.line} key={l.ticketTypeId}>
-                    <span>{tb("line", { name: l.name, count: l.quantity })}</span><span>{formatMinor(l.unitPriceMinor * l.quantity, quote.currency)}</span>
+                    <span>{summaryLine(tb, l.name, l.quantity, l.groupSize)}</span><span>{formatMinor(l.unitPriceMinor * l.quantity, quote.currency)}</span>
                   </div>
                 ))}
                 {quote.serviceFeeMinor > 0 && (

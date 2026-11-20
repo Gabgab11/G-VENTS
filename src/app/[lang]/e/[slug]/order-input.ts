@@ -1,6 +1,8 @@
 import type { components } from "@/lib/api/schema";
 import { field, isUuid } from "@/lib/forms";
+import { toE164 } from "@/lib/phone";
 import { cleanCode } from "./tickets/discount-code";
+import { readRecipients, type RecipientError } from "./tickets/recipients";
 
 export type PlaceOrderBody = components["schemas"]["PlaceOrderDto"];
 
@@ -9,11 +11,18 @@ const QUANTITY_FIELD = /^qty_([0-9a-f-]{36})$/i;
 const MAX_TICKETS = 10;
 
 /** Why a form can't be sent: a message id under event.errors (Change 3); the action shows it in the reader's language. */
-export type OrderInputError = "chooseTicket" | "ticketRange" | "nonRefundable";
+export type OrderInputError = "chooseTicket" | "ticketRange" | "nonRefundable" | "phoneRequired" | "phoneInvalid" | RecipientError;
+
+const GENDERS = ["female", "male", "unspecified"] as const;
+export const PHONE_COUNTRY_FIELD = "buyer_phone_country";
+export const PHONE_FIELD = "buyer_phone";
+export const GENDER_FIELD = "buyer_gender";
 
 /**
  * The order form → the API's PlaceOrderDto (U4 business-rules §1): one line per ticket type with a
- * quantity, optional names for tickets 2..n, the event's questions once, the buyer's name.
+ * quantity (purchases; a group purchase is one, D90), the event's questions once, the buyer's name,
+ * phone (required on the website, sent in E.164) and optional gender (4b), and the people the buyer
+ * sends tickets to (D89).
  */
 export function placeOrderBody(formData: FormData): PlaceOrderBody | { error: OrderInputError } {
   const lines: PlaceOrderBody["lines"] = [];
@@ -32,12 +41,23 @@ export function placeOrderBody(formData: FormData): PlaceOrderBody | { error: Or
   if (total < 1) return { error: "chooseTicket" };
   if (total > MAX_TICKETS) return { error: "ticketRange" };
 
-  // guest_2 … guest_n name tickets 2..n; ticket 1 is the buyer's.
-  const guestNames = Array.from({ length: total }, (_, i) => (i === 0 ? "" : field(formData, `guest_${i + 1}`, 120)));
+  const typedPhone = field(formData, PHONE_FIELD, 40);
+  if (!typedPhone) return { error: "phoneRequired" };
+  const buyerPhone = toE164(field(formData, PHONE_COUNTRY_FIELD, 2), typedPhone);
+  if (!buyerPhone) return { error: "phoneInvalid" };
+  const gender = field(formData, GENDER_FIELD, 20);
+  const buyerGender = GENDERS.find((g) => g === gender);
+
+  // Tickets 2, 3, ... for other people (the API also refuses the buyer's own email).
+  const people = readRecipients(formData);
+  if ("error" in people) return people;
+
   const buyerName = field(formData, "buyer_name", 120);
   return {
     lines,
-    ...(guestNames.some(Boolean) ? { guestNames } : {}),
+    ...(people.recipients.length > 0 ? { recipients: people.recipients } : {}),
+    buyerPhone,
+    ...(buyerGender ? { buyerGender } : {}),
     ...(Object.keys(answers).length > 0 ? { answers } : {}),
     ...(buyerName ? { buyerName } : {}),
   };

@@ -87,6 +87,7 @@ export function useBookingDraft({ form, eventId, kind, signedIn, restore, code, 
       const name = control.name;
       if (!name || name.startsWith("qty_") || (control instanceof HTMLInputElement && control.type === "hidden")) continue;
       if (control instanceof HTMLInputElement && control.type === "checkbox") control.checked = fields[name] === "on";
+      else if (control instanceof HTMLInputElement && control.type === "radio") continue; // kept in React state (restore)
       else if (name in fields) control.value = fields[name]!;
     }
     latest.current.restored?.();

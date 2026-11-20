@@ -2,7 +2,10 @@
 // Pure, so every state is unit-tested; the page turns the answer into a link, a banner or a disabled
 // button. The API decides who may buy; this only chooses what to show.
 
-type TicketTypeLike = { priceMinor: number; remaining: number | null };
+import { isSoldOut, purchasesLeft } from "@/lib/group-tickets";
+
+/** `remaining` counts entries; a group type (D90) needs groupSize of them per purchase. */
+type TicketTypeLike = { priceMinor: number; remaining: number | null; groupSize?: number };
 
 export type EventCtaInput = {
   status: "draft" | "published" | "cancelled";
@@ -30,8 +33,6 @@ export type EventCta =
   | { kind: "closed" }
   | { kind: "cancelled" }
   | { kind: "notOnSale" };
-
-const isSoldOut = (t: TicketTypeLike) => t.remaining !== null && t.remaining <= 0;
 
 /** Ticket types that can be ordered now: free ones, and paid ones while paid sales are open. */
 export function orderableTypes<T extends TicketTypeLike>(input: Pick<EventCtaInput, "paidSalesOpen"> & { ticketTypes: readonly T[] }): { free: T[]; paid: T[] } {
@@ -68,14 +69,14 @@ export function opensBooking(cta: EventCta): cta is Extract<EventCta, { kind: "g
 }
 
 /**
- * The most of one ticket type the booking form offers: what is left of the viewer's limit after the
- * other types chosen, and no more than the type has left. A sold-out paid type can still be chosen to
- * join its waiting list (`waitlist`), up to the limit.
+ * The most of one ticket type the booking form offers, in purchases: what is left of the viewer's
+ * limit after the other types chosen (a group purchase counts once, D90), and no more purchases than
+ * the type's entries allow. A sold-out paid type can still be chosen to join its waiting list
+ * (`waitlist`), up to the limit.
  */
-export function maxQuantity(type: { id: string; remaining: number | null }, chosen: Readonly<Record<string, number>>, limit: number, waitlist = false): number {
+export function maxQuantity(type: { id: string; remaining: number | null; groupSize?: number }, chosen: Readonly<Record<string, number>>, limit: number, waitlist = false): number {
   const others = Object.entries(chosen).reduce((sum, [id, n]) => (id === type.id ? sum : sum + n), 0);
-  const soldOut = type.remaining !== null && type.remaining <= 0;
-  const room = soldOut && waitlist ? limit : type.remaining ?? limit;
+  const room = isSoldOut(type) && waitlist ? limit : purchasesLeft(type) ?? limit;
   return Math.max(0, Math.min(limit - others, room));
 }
 

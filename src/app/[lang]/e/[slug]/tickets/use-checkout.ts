@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState, type Dispatch, type RefObject, type S
 import { clampQuantities } from "../event-cta";
 import type { BookingDraft } from "./booking-draft";
 import { useBookingDraft } from "./use-booking-draft";
+import { draftPeople } from "./recipients";
 
 type Options = {
   form: RefObject<HTMLFormElement | null>;
@@ -25,11 +26,17 @@ type Options = {
  */
 export function useCheckout({ form, eventId, kind, signedIn, perBuyerLimit, setQty, check, code, restoreCode }: Options) {
   const [justVerified, setJustVerified] = useState(false);
+  // "Who are these tickets for?" (D89): kept here so a draft puts the rows back before they're filled.
+  const [forOthers, setForOthers] = useState(false);
+  const [people, setPeople] = useState(0);
 
   const restore = useCallback(
     (draft: BookingDraft) => {
       setQty((q) => clampQuantities(Object.keys(draft.qty).length > 0 ? draft.qty : q, perBuyerLimit));
       if (draft.code) restoreCode?.(draft.code);
+      const saved = draftPeople(draft.fields);
+      setForOthers(saved.forOthers);
+      setPeople(saved.people);
       setJustVerified(signedIn);
     },
     [perBuyerLimit, restoreCode, setQty, signedIn],
@@ -43,6 +50,7 @@ export function useCheckout({ form, eventId, kind, signedIn, perBuyerLimit, setQ
 
   return {
     justVerified,
+    people: { forOthers, people, setForOthers, setPeople },
     /** The inline code signed the buyer in. */
     signedIn: useCallback(() => setJustVerified(true), []),
     /** The order is being sent: the draft is no longer needed. */
