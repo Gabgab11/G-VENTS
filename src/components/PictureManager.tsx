@@ -43,6 +43,7 @@ export default function PictureManager({
   onRemove,
   busy = false,
   error,
+  hideLabel = false,
 }: {
   pictures: ManagedPicture[];
   onAdd: (files: File[]) => void;
@@ -51,6 +52,8 @@ export default function PictureManager({
   busy?: boolean;
   /** A problem from saving, shown with the picker's own. */
   error?: string;
+  /** The label is said by a heading around it (the Details tab's card): keep it for screen readers only. */
+  hideLabel?: boolean;
 }) {
   const t = useTranslations("createEvent.pictures");
   const id = useId();
@@ -128,7 +131,7 @@ export default function PictureManager({
   return (
     <div className={s.manager} role="group" aria-labelledby={`${id}-label`} aria-describedby={`${id}-help`}>
       <div className={s.head}>
-        <span className={s.label} id={`${id}-label`}>{t("label")}</span>
+        <span className={hideLabel ? "sr-only" : s.label} id={`${id}-label`}>{t("label")}</span>
         <span className={s.count}>{t("count", { count: pictures.length, max: MAX_PICTURES })}</span>
       </div>
       <p className={s.hint} id={`${id}-help`}>{t("help", { max: MAX_PICTURES })}</p>

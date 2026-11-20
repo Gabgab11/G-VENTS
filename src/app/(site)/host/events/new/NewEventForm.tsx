@@ -15,6 +15,9 @@ import LocationFields from "./LocationFields";
 import DateTimeWheel from "./DateTimeWheel";
 import TimeZoneField, { type ZoneContext } from "./TimeZoneField";
 import FeeExample from "./FeeExample";
+import PictureManager, { measurePicture } from "@/components/PictureManager";
+import { movePicture } from "@/lib/picture-list";
+import { uploadPicture } from "@/lib/picture-upload";
 import { LAST_STEP, STEPS, canVisit, checkStep, nextStep, previousStep, stepOfField } from "./steps";
 import styles from "./NewEventForm.module.css";
 
@@ -22,10 +25,11 @@ type Tier = { id: number; name: string; price: string; qty: string };
 /** A problem shown on a step: the message and, when known, the field to point at. */
 type StepError = { step: number; message: string; field?: string };
 
-const IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
-const IMAGE_MAX = 5 * 1024 * 1024;
+/** A picture chosen in step 4, kept in the browser until the event exists. */
+type Picture = { key: string; url: string; file: File };
 const FOCUSABLE = "input:not([type=hidden]), select, textarea, button";
 let nextId = 2;
+let nextPicture = 1;
 
 /** Moves focus to a field by its submitted name; for hidden inputs (date wheels, pickers) to the nearest visible control. */
 function focusField(form: HTMLFormElement, name: string | undefined) {
@@ -78,12 +82,11 @@ export default function NewEventForm({
   const [online, setOnline] = useState(false);
   // The time zone follows the venue (TimeZoneField); LocationFields reports the country's zones and the venue's.
   const [zoneContext, setZoneContext] = useState<ZoneContext>({ countryName: "", countryZones: [], venueZone: null });
-  const [image, setImage] = useState<{ url: string; name: string } | null>(null);
-  const [imageError, setImageError] = useState("");
-  const imageInput = useRef<HTMLInputElement>(null);
-  // The chosen image, held back from the Server Action and sent to the flyer route once the event
-  // exists (Cloudflare's WAF blocks some images sent to Server Actions, src/lib/same-origin.ts).
-  const pendingImage = useRef<File | null>(null);
+  // Up to five pictures (chunk 3c), held back from the Server Action and sent one by one, in order,
+  // to the pictures route once the event exists (Cloudflare's WAF blocks some images sent to Server
+  // Actions, src/lib/same-origin.ts). The first is the main picture.
+  const [pictures, setPictures] = useState<Picture[]>([]);
+  const pendingPictures = useRef<File[]>([]);
   const [sendingImage, setSendingImage] = useState(false);
   const router = useRouter();
   const [start, setStart] = useState({ date: "", time: "" });
@@ -93,16 +96,16 @@ export default function NewEventForm({
   useEffect(() => {
     const created = state?.created;
     if (!created) return;
-    const file = pendingImage.current;
-    pendingImage.current = null;
+    const files = pendingPictures.current;
+    pendingPictures.current = [];
     setSendingImage(true);
     void (async () => {
-      let ok = !file;
-      if (file) {
-        const body = new FormData();
-        body.set("flyer", file);
-        const res = await fetch(`/api/events/${created.id}/flyer`, { method: "POST", body, headers: { Accept: "application/json" } }).catch(() => null);
-        ok = !!res?.ok;
+      let ok = true;
+      for (const file of files) {
+        const url = URL.createObjectURL(file);
+        const size = await measurePicture(url);
+        URL.revokeObjectURL(url);
+        if (!(await uploadPicture(created.id, file, size)).ok) { ok = false; break; }
       }
       router.push(ok ? created.next : `/host/events/${created.id}?tab=details&err=flyer_after_create`);
     })();
@@ -117,7 +120,10 @@ export default function NewEventForm({
     setStep(at);
   }, [state]);
 
-  useEffect(() => () => { if (image) URL.revokeObjectURL(image.url); }, [image]);
+  // Previews are blob: URLs; let them go when the form goes.
+  const previews = useRef(pictures);
+  previews.current = pictures;
+  useEffect(() => () => previews.current.forEach((p) => URL.revokeObjectURL(p.url)), []);
 
   // After a step change: focus the step's heading (or the field with a problem), so screen-reader
   // and keyboard users start at the top of the new step.
@@ -173,25 +179,16 @@ export default function NewEventForm({
     }
   }
 
-  function chooseImage(file: File | undefined) {
-    setImageError("");
-    if (!file) { setImage(null); return; }
-    let problem = "";
-    if (!IMAGE_TYPES.includes(file.type)) problem = t("form.image.wrongType");
-    else if (file.size > IMAGE_MAX) problem = t("form.image.tooLarge");
-    if (problem) {
-      setImageError(problem);
-      if (imageInput.current) imageInput.current.value = "";
-      setImage(null);
-      return;
-    }
-    setImage({ url: URL.createObjectURL(file), name: file.name });
+  function addPictures(files: File[]) {
+    setPictures((list) => [...list, ...files.map((file) => ({ key: `p${nextPicture++}`, url: URL.createObjectURL(file), file }))]);
   }
 
-  function removeImage() {
-    if (imageInput.current) imageInput.current.value = "";
-    setImage(null);
-    setImageError("");
+  function removePicture(index: number) {
+    setPictures((list) => {
+      const gone = list[index];
+      if (gone) URL.revokeObjectURL(gone.url);
+      return list.filter((_, i) => i !== index);
+    });
   }
 
   // The form is sent from here rather than by React's form action: after an action React clears
@@ -214,14 +211,9 @@ export default function NewEventForm({
     setError(null);
     const submitter = (e.nativeEvent as SubmitEvent).submitter;
     const data = new FormData(form, submitter instanceof HTMLButtonElement ? submitter : null);
-    const file = data.get("flyer");
     data.delete("flyer");
-    if (file instanceof File && file.size > 0) {
-      pendingImage.current = file;
-      data.set("image_pending", "1");
-    } else {
-      pendingImage.current = null;
-    }
+    pendingPictures.current = pictures.map((p) => p.file);
+    if (pictures.length > 0) data.set("image_pending", "1");
     startTransition(() => formAction(data));
   }
 
@@ -402,26 +394,13 @@ export default function NewEventForm({
             <CardHeader title={s("look")} headingLevel={3} />
             <div className={styles.look}>
               <div className={styles.preview} style={{ background: themeBackground(theme) }} role="img" aria-label={s("preview", { title: title || t("form.coverTitle") })}>
-                {/* eslint-disable-next-line @next/next/no-img-element -- a local preview (blob: URL) of the chosen file */}
-                {image && <img className={styles.previewImage} src={image.url} alt="" />}
+                {/* eslint-disable-next-line @next/next/no-img-element -- a local preview (blob: URL) of the main picture */}
+                {pictures[0] && <img className={styles.previewImage} src={pictures[0].url} alt="" />}
                 <span className={styles.previewTitle}>{title || t("form.coverTitle")}</span>
               </div>
               <div className={styles.lookFields}>
-                <div className={styles.group}>
-                  <span className={styles.label} id="image-label">{t("form.image.label")}</span>
-                  <span className={styles.hint} id="image-help">{t("form.image.help")}</span>
-                  <input ref={imageInput} id="event-image" className={styles.visuallyHidden} type="file" name="flyer" tabIndex={-1}
-                    accept={IMAGE_TYPES.join(",")} onChange={(e) => chooseImage(e.target.files?.[0])} aria-labelledby="image-label" />
-                  <div className={styles.row}>
-                    <Button variant="secondary" size="sm" onClick={() => imageInput.current?.click()} aria-describedby="image-help">
-                      {image ? t("form.image.change") : t("form.image.add")}
-                    </Button>
-                    {image && <Button variant="ghost" size="sm" onClick={removeImage}>{t("form.image.remove")}</Button>}
-                  </div>
-                  {image && <span className={styles.hint}>{image.name}</span>}
-                  {imageError && <p className={styles.error} role="alert">{imageError}</p>}
-                  {!image && <span className={styles.hint}>{t("form.image.none")}</span>}
-                </div>
+                <PictureManager pictures={pictures} onAdd={addPictures} onRemove={removePicture}
+                  onMove={(from, to) => setPictures((list) => movePicture(list, from, to))} busy={busy} />
               </div>
             </div>
             <fieldset className={styles.fieldset}>
