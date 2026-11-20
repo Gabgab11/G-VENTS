@@ -73,7 +73,7 @@
   "flyer": {
     "not_uploaded": "Laden Sie zuerst das Bild hoch.",
     "path_invalid": "Dieser Upload gehört nicht zu dieser Veranstaltung.",
-    "size": "Flyer dürfen höchstens 5 MB groß sein.",
+    "size": "Bilder dürfen höchstens 5 MB groß sein.",
     "storage_unavailable": "Flyer-Uploads sind gerade nicht verfügbar. Bitte versuchen Sie es in Kürze erneut.",
     "type": "Verwenden Sie ein JPEG-, PNG- oder WebP-Bild."
   },

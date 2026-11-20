@@ -122,17 +122,6 @@
   box-shadow: var(--shadow-2);
 }
 @media (max-width: 959px) { .saveBar { inset-block-end: calc(var(--bottom-bar-height, 56px) + var(--space-3) + env(safe-area-inset-bottom)); } }
-.flyer {
-  inline-size: 160px;
-  aspect-ratio: 4 / 5;
-  display: grid;
-  place-items: center;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  background-size: cover;
-}
-.flyer img { inline-size: 100%; block-size: 100%; object-fit: cover; display: block; }
-.flyerEmpty { padding: var(--space-2); border-radius: var(--radius-sm); background: var(--color-surface); color: var(--color-text-muted); font-size: var(--text-caption); }
 .zone { display: grid; gap: var(--space-2); }
 .zoneLabel { font-size: var(--text-label); line-height: var(--leading-label); font-weight: var(--weight-semibold); }
 

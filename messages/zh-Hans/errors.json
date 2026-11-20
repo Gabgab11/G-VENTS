@@ -73,7 +73,7 @@
   "flyer": {
     "not_uploaded": "请先上传图片。",
     "path_invalid": "该上传文件不属于此活动。",
-    "size": "海报最大为 5 MB。",
+    "size": "图片最大为 5 MB。",
     "storage_unavailable": "海报上传暂不可用。请稍后再试。",
     "type": "请使用 JPEG、PNG 或 WebP 图片。"
   },

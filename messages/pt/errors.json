@@ -73,7 +73,7 @@
   "flyer": {
     "not_uploaded": "Envie a imagem primeiro.",
     "path_invalid": "Esse arquivo não pertence a este evento.",
-    "size": "Os flyers podem ter no máximo 5 MB.",
+    "size": "As imagens podem ter no máximo 5 MB.",
     "storage_unavailable": "O envio de flyers está indisponível no momento. Tente novamente em breve.",
     "type": "Use uma imagem JPEG, PNG ou WebP."
   },

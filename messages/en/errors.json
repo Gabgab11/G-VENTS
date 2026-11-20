@@ -73,7 +73,7 @@
   "flyer": {
     "not_uploaded": "Upload the image first.",
     "path_invalid": "That upload doesn't belong to this event.",
-    "size": "Flyers can be at most 5 MB.",
+    "size": "Pictures can be at most 5 MB.",
     "storage_unavailable": "Flyer uploads are unavailable right now. Please try again shortly.",
     "type": "Use a JPEG, PNG or WebP image."
   },

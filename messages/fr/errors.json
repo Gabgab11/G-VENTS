@@ -73,7 +73,7 @@
   "flyer": {
     "not_uploaded": "Téléversez d'abord l'image.",
     "path_invalid": "Ce fichier n'appartient pas à cet événement.",
-    "size": "Les flyers peuvent peser au maximum 5 Mo.",
+    "size": "Les images peuvent peser au maximum 5 Mo.",
     "storage_unavailable": "Le téléversement des flyers est indisponible pour le moment. Veuillez réessayer sous peu.",
     "type": "Utilisez une image JPEG, PNG ou WebP."
   },

@@ -73,7 +73,7 @@
   "flyer": {
     "not_uploaded": "Suba primero la imagen.",
     "path_invalid": "Ese archivo no pertenece a este evento.",
-    "size": "Los flyers pueden pesar como máximo 5 MB.",
+    "size": "Las imágenes pueden pesar como máximo 5 MB.",
     "storage_unavailable": "La subida de flyers no está disponible ahora. Inténtelo de nuevo en breve.",
     "type": "Use una imagen JPEG, PNG o WebP."
   },
