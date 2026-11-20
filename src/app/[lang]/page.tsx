@@ -5,6 +5,7 @@ import { getFeaturedEvents } from "@/lib/events";
 import HeroCards from "@/app/HeroCards";
 import HeroTilt from "@/app/HeroTilt";
 import HeroHover from "@/app/HeroHover";
+import HeroActions from "@/app/HeroActions";
 import { pageFonts } from "@/app/fonts";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/design/layout/SiteFooter";
@@ -207,10 +208,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
         <p className="hp-lede">
           {t("hero.lede")}
         </p>
-        <div className="hp-actions">
-          <Link href={createHref} className="hp-btn">{t("hero.createFirst")}</Link>
-          <Link href="/discover" className="hp-ghost">{t("hero.browse")}</Link>
-        </div>
+        <HeroActions createHref={createHref} />
         <HeroTilt />
       </section>
       </div>

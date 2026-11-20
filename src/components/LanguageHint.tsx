@@ -1,5 +1,7 @@
 "use client";
 
+import { loadSession } from "@/lib/use-session";
+
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -26,10 +28,7 @@ export default function LanguageHint() {
       // Storage blocked: show the hint; dismissing just won't be remembered.
     }
     let live = true;
-    fetch("/api/session", { cache: "no-store", credentials: "same-origin" })
-      .then((r) => (r.ok ? r.json() : {}))
-      .then((d: { language?: string }) => { if (live && isEnabled(d.language) && d.language !== current) setPreferred(d.language); })
-      .catch(() => {});
+    void loadSession().then((d) => { if (live && isEnabled(d.language) && d.language !== current) setPreferred(d.language); });
     return () => { live = false; };
   }, [current]);
 

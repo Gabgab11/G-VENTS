@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import SignOutButton from "@/components/SignOutButton";
+import { useSession } from "@/lib/use-session";
 
 // The account corner of every header: "Sign in", or for a signed-in visitor "Admin" (G-ventZ staff
 // only), "Dashboard" and an Account menu (two-step sign-in and passkeys, payouts). Pages like the
@@ -13,20 +14,9 @@ import SignOutButton from "@/components/SignOutButton";
 // /api/session. The admin pages themselves are still guarded by the API (staff, two-step sign-in).
 export default function AccountLink({ className = "site-account" }: { className?: string }) {
   const t = useTranslations("common.account");
-  const [session, setSession] = useState({ signedIn: false, isStaff: false });
+  const session = useSession();
   const menu = useRef<HTMLDetailsElement>(null);
   const pathname = usePathname();
-
-  useEffect(() => {
-    let live = true;
-    fetch("/api/session", { cache: "no-store", credentials: "same-origin" })
-      .then((r) => (r.ok ? r.json() : {}))
-      .then((d: { signedIn?: boolean; isStaff?: boolean }) => {
-        if (live) setSession({ signedIn: d.signedIn === true, isStaff: d.signedIn === true && d.isStaff === true });
-      })
-      .catch(() => {});
-    return () => { live = false; };
-  }, []);
 
   // Close the menu on navigation, an outside click or Escape.
   useEffect(() => { if (menu.current) menu.current.open = false; }, [pathname]);
@@ -46,12 +36,13 @@ export default function AccountLink({ className = "site-account" }: { className?
     <>
       {/* On phones these two move into the Account menu (globals.css), so the header fits one line. */}
       {session.isStaff && <Link href="/admin" className={`${className} account-admin`}>{t("admin")}</Link>}
-      <Link href="/host" className={`${className} account-dash`}>{t("dashboard")}</Link>
+      {/* The Dashboard is for people who host (own or help run an event); "Host an event" is for everyone. */}
+      {session.isHost && <Link href="/host" className={`${className} account-dash`}>{t("dashboard")}</Link>}
       <details className="account-menu" ref={menu}>
         <summary className={className}>{t("account")}</summary>
         <div className="account-menu-list">
           <Link href="/my-tickets">{t("myTickets")}</Link>
-          <Link href="/host" className="account-menu-phone">{t("dashboard")}</Link>
+          {session.isHost && <Link href="/host" className="account-menu-phone">{t("dashboard")}</Link>}
           {session.isStaff && <Link href="/admin">{t("platformAdmin")}</Link>}
           <Link href="/host/settings/security">{t("security")}</Link>
           <Link href="/host/payouts">{t("payouts")}</Link>
