@@ -48,10 +48,6 @@ export default function ColorModeToggle({ className = "" }: { className?: string
           onClick={() => {
             applyColorMode(nextMode);
             setMode(nextMode);
-            document.querySelectorAll<HTMLElement>(".hp").forEach((page) => {
-              if (nextMode === "system") delete page.dataset.colorMode;
-              else page.dataset.colorMode = nextMode;
-            });
           }}
         >
           <Icon mode={nextMode} />

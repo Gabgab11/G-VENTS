@@ -5,11 +5,14 @@
   "nav": {
     "main": "القائمة الرئيسية",
     "discover": "استكشف",
-    "pricing": "الأسعار",
-    "createEvent": "أنشئ فعالية",
-    "back": "رجوع"
+    "myTickets": "تذاكري",
+    "hostEvent": "نظّم فعالية",
+    "back": "رجوع",
+    "menu": "القائمة",
+    "closeMenu": "إغلاق القائمة"
   },
   "account": {
+    "myTickets": "تذاكري",
     "signIn": "تسجيل الدخول",
     "signOut": "تسجيل الخروج",
     "dashboard": "لوحة التحكم",

@@ -82,7 +82,8 @@
       "button": "Registrar a {name}"
     },
     "foot": "Esta entrada pertenece a {name}. Cualquiera con este enlace puede verla, así que compártala solo con personas de confianza.",
-    "print": "Imprimir o guardar como PDF"
+    "print": "Imprimir o guardar como PDF",
+    "groupNote": "Forma parte de un grupo de {count}. Cada persona tiene su propia entrada."
   },
   "email": {
     "label": "Enviarme la entrada por correo",

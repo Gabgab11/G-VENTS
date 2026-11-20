@@ -90,8 +90,8 @@ export interface paths {
         options?: never;
         head?: never;
         /**
-         * Edit event details
-         * @description Only fields sent change. Dates, time zone and ticket types are fixed after creation.
+         * Edit an event
+         * @description Only fields sent change: details, category, dates and time zone (local times), and ticket types (add, rename, quantity not below sold, price only while unsold, remove only unsold). Moving a published event with guests records events.event_rescheduled. Audited and shown in the activity log.
          */
         patch: operations["EventsController_updateDetails_v1"];
         trace?: never;
@@ -196,6 +196,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/events/{id}/activity": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Event activity log
+         * @description What happened on the event and who did it, newest first. Owner, admin, editor, finance and viewer.
+         */
+        get: operations["EventsController_activity_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/events/by-slug/{slug}": {
         parameters: {
             query?: never;
@@ -225,7 +245,7 @@ export interface paths {
         };
         /**
          * My events
-         * @description Events you own or help run, newest start first, with confirmed counts.
+         * @description Events you own or help run, with confirmed counts and capacity; gross per currency where your role may see sales. Filter: all (default), upcoming, drafts, past.
          */
         get: operations["MeEventsController_list_v1"];
         put?: never;
@@ -288,6 +308,150 @@ export interface paths {
          * @description Offline lookup from coordinates.
          */
         get: operations["ReferenceController_timeZone_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/events/{id}/team": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Event team
+         * @description The owner and accepted members; open invitations for the owner and admins.
+         */
+        get: operations["EventTeamController_list_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/events/{id}/team-invites": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Invite someone to the team
+         * @description Owner or admin. Emails a link valid for 7 days, in the inviter's language. Inviting the same email again replaces the earlier invitation. Rate-limited.
+         */
+        post: operations["EventTeamController_invite_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/events/{id}/team-invites/{inviteId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Withdraw an invitation
+         * @description Owner or admin; only an open invitation.
+         */
+        delete: operations["EventTeamController_revoke_v1"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/events/{id}/members/{userId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Remove a member
+         * @description Owner or admin. The owner can't be removed; the only admin can't remove themselves.
+         */
+        delete: operations["EventTeamController_remove_v1"];
+        options?: never;
+        head?: never;
+        /**
+         * Change a member's role
+         * @description Owner or admin. The owner's role is fixed; the only admin can't step down.
+         */
+        patch: operations["EventTeamController_changeRole_v1"];
+        trace?: never;
+    };
+    "/v1/team-invites/{token}/accept": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Accept a team invitation
+         * @description Signed in with exactly the invited email, confirmed. Adds you to the team with the invited role.
+         */
+        post: operations["TeamInvitesController_accept_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/share-cards/events/{slug}.png": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * An event's share card
+         * @description The 1200×630 link-preview image of a published public event, in the given language: flyer (JPEG or PNG) or cover style, date in the event time zone, title, place, price, host. Drafts, private, cancelled and unknown events are not found.
+         */
+        get: operations["ShareCardsController_event_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/share-cards/site.png": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * The site's share card
+         * @description The 1200×630 link-preview image for the home page, Discover and pages without their own card, in the given language.
+         */
+        get: operations["ShareCardsController_site_v1"];
         put?: never;
         post?: never;
         delete?: never;
@@ -389,9 +553,29 @@ export interface paths {
         put?: never;
         /**
          * Send an announcement
-         * @description Emails the chosen audience (one email per address, unsubscribed left out). Free plan: 2 sends per event, only before it starts, and 1,000 announcement emails per host per month. 409 with announcement.already_sent, event_started, event_draft, event_limit, no_recipients or quota_exceeded.
+         * @description Emails the chosen audience (one email per address, unsubscribed left out). Free plan: 2 sends per event, only before it starts (except the thanks and feedback templates), and 1,000 announcement emails per host per month. 409 with announcement.already_sent, event_started, event_draft, event_limit, no_recipients or quota_exceeded.
          */
         post: operations["AnnouncementsController_send_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/announcement-templates": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Announcement templates
+         * @description Ids with a short English description. A template adds G-ventZ's framing, in each guest's language, around your subject and message; your words are sent as written.
+         */
+        get: operations["AnnouncementTemplatesController_list_v1"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -429,7 +613,7 @@ export interface paths {
         put?: never;
         /**
          * Get free tickets
-         * @description One order for up to 10 tickets, all sent to your verified email. The whole group is admitted, waits for approval, joins the waiting list (event full) or is refused; it is never split. 503 order.busy (Retry-After: 2) when the event is very busy.
+         * @description One order for up to 10 purchases (a group ticket is one purchase of groupSize tickets, D90), all held by you and sent to your verified email; tickets you send to other people (recipients, D89) are also emailed to them once the order is confirmed. The whole group is admitted, waits for approval, joins the waiting list (event full) or is refused; it is never split. 503 order.busy (Retry-After: 2) when the event is very busy.
          */
         post: operations["OrdersController_place_v1"];
         delete?: never;
@@ -618,6 +802,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/me/orders/{orderId}/tickets/{ticketId}/resend": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Resend a ticket from my order
+         * @description D89: emails one confirmed ticket of your order again: to the person you sent it to, or to you when it stayed with you. Send `email` to correct that person's address first (not on ticket 1, which is yours, and not your own address). At most 5 an hour per ticket (429 ticket.email_limit) and 30 an hour per buyer (429 rate_limit.exceeded). 409 ticket.email_unavailable when the ticket is not confirmed or the event was cancelled. 400 order.recipient_email_invalid, order.recipient_is_buyer, ticket.first_ticket_is_buyers.
+         */
+        post: operations["MeOrdersController_resend_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/me/orders": {
         parameters: {
             query?: never;
@@ -686,11 +890,94 @@ export interface paths {
         put?: never;
         /**
          * Use the uploaded flyer
-         * @description Checks the real file type and size, sets the flyer and deletes the previous one.
+         * @description Checks the real file type and size, and makes it the main picture (picture 1), replacing and deleting the previous main picture.
          */
         post: operations["FlyerController_confirm_v1"];
-        /** Remove the flyer */
+        /**
+         * Remove the flyer
+         * @description Removes the main picture (picture 1); the next picture, if any, becomes the main one.
+         */
         delete: operations["FlyerController_remove_v1"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/events/{id}/images/upload-url": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Get an upload URL for a new picture
+         * @description JPEG, PNG or WebP up to 5 MB; at most 5 pictures per event. Upload with PUT, then confirm.
+         */
+        post: operations["EventImagesController_requestUpload_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/events/{id}/images": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Add the uploaded picture
+         * @description Checks the real file type and size and adds it after the others. The first picture is the main one (coverUrl). Confirming the same upload again returns the stored picture.
+         */
+        post: operations["EventImagesController_confirm_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/events/{id}/images/order": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Reorder the pictures
+         * @description The first becomes the main picture (coverUrl). Returns the pictures in the new order.
+         */
+        put: operations["EventImagesController_reorder_v1"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/events/{id}/images/{imageId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Remove a picture
+         * @description The pictures after it move up; removing the main one makes the next the main picture. The file is deleted.
+         */
+        delete: operations["EventImagesController_remove_v1"];
         options?: never;
         head?: never;
         patch?: never;
@@ -1372,7 +1659,7 @@ export interface paths {
         put?: never;
         /**
          * Price a paid order
-         * @description Prices, G-ventZ fees, VAT and the total, before paying. Paid ticket types only.
+         * @description Prices, G-ventZ fees, VAT and the total, before paying. Paid ticket types only. With `code`, the discount per ticket and in total (fees on the discounted price); trying codes is rate-limited per client (discounts.try).
          */
         post: operations["CheckoutController_quote_v1"];
         delete?: never;
@@ -1392,7 +1679,7 @@ export interface paths {
         put?: never;
         /**
          * Buy paid tickets
-         * @description Holds the tickets for 10 minutes and opens Paystack checkout. Paid ticket types only (free ones are a separate order). nonRefundableAccepted must be true. When sold out and joinWaitlist is true, the order joins the waiting list instead (status waitlisted, no payment).
+         * @description Holds the tickets for 10 minutes and opens Paystack checkout. Paid ticket types only (free ones are a separate order). nonRefundableAccepted must be true. When sold out and joinWaitlist is true, the order joins the waiting list instead (status waitlisted, no payment). With `code`, the discount is checked again when the order is held, and the use is counted (given back if the hold expires unpaid).
          */
         post: operations["CheckoutController_place_v1"];
         delete?: never;
@@ -1441,6 +1728,46 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/events/{id}/settlements": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Settlements
+         * @description Per currency from the ledger: gross, Paystack fees, G-ventZ fees and VAT, discounts, refunds, lost disputes, your share of them, and net; per day in the event's time zone; and the payout account. Integer minor units. Owner, admin and finance.
+         */
+        get: operations["EventSalesController_settlements_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/events/{id}/settlements.csv": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Export settlements (CSV)
+         * @description One row per paid order: reference, paid at (event time), masked buyer email, tickets, currency, gross, fees, discount, refunded, net, in integer minor units. UTF-8 with BOM, at most 50,000 rows. Owner, admin and finance. Audited.
+         */
+        get: operations["EventSalesController_settlementsCsv_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/events/{id}/tickets/{ticketId}/refund": {
         parameters: {
             query?: never;
@@ -1461,6 +1788,50 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/events/{id}/discount-codes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * The event's discount codes
+         * @description Oldest first, with uses and the state now. Owner and admin.
+         */
+        get: operations["DiscountCodesController_list_v1"];
+        put?: never;
+        /**
+         * Create a discount code
+         * @description percent (basis points), fixed (minor units off each ticket) or free; optional limit, window and paid ticket types (empty = all). Codes apply to paid tickets only. Owner and admin. Audited.
+         */
+        post: operations["DiscountCodesController_create_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/events/{id}/discount-codes/{codeId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Change a discount code
+         * @description Pause or unpause, change the limit (not below the uses), the window or the ticket types. Kind and value only until the code is first used. Owner and admin. Audited.
+         */
+        patch: operations["DiscountCodesController_update_v1"];
+        trace?: never;
+    };
     "/v1/webhooks/paystack/{country}": {
         parameters: {
             query?: never;
@@ -1475,6 +1846,234 @@ export interface paths {
          * @description One URL per Paystack country account (NG, GH, KE, ZA). x-paystack-signature must be the HMAC-SHA512 of the raw body with that country's secret key. Stored, then processed once per event.
          */
         post: operations["PaystackWebhookController_receive_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/host/home": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Host home
+         * @description Across events you own or help run: tickets sold, revenue per currency (events where you can see sales), check-ins and upcoming events, each with the previous period; the next event; the last 10 orders (events where you can see orders); your payout status; and a setup checklist until you own an event and every step is done.
+         */
+        get: operations["HostHomeController_get_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/host/orders": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Orders across my events
+         * @description Orders on every event where you can see orders (owner, admin, finance), newest first, optionally for one event or one status. Buyer names are shown as first name and last initial. pageSize at most 100 (default 25).
+         */
+        get: operations["HostHomeController_orders_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/host/settlements": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Settlements across my events
+         * @description One row per event and currency where you can see sales (owner, admin, finance), with the same ledger figures as GET /v1/events/{id}/settlements; totals per currency; and your own payout account. Integer minor units.
+         */
+        get: operations["HostHomeController_settlementsSummary_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/host/settlements.csv": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Export settlements across my events (CSV)
+         * @description The columns of GET /v1/events/{id}/settlements.csv after an Event column: one row per paid order on every event where you can see sales, paid at in that event's time zone, masked buyer email, amounts in integer minor units. UTF-8 with BOM, at most 50,000 rows. Audited.
+         */
+        get: operations["HostHomeController_settlementsCsv_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/hosts/{handle}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Public host profile
+         * @description Profile, socials, verified badge, follower count and one page of the host’s published public events (`tab` upcoming or past, cursor pagination). An old handle resolves to the same profile with `movedTo` set to the current handle. `following` only when signed in. Cached briefly for anonymous callers.
+         */
+        get: operations["HostsController_profile_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/hosts/{id}/follow": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Follow a host
+         * @description Idempotent. 60 follow changes a minute. You get an email when the host publishes a new public event.
+         */
+        put: operations["HostsController_follow_v1"];
+        post?: never;
+        /**
+         * Unfollow a host
+         * @description Idempotent. 60 follow changes a minute.
+         */
+        delete: operations["HostsController_unfollow_v1"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/hosts/unsubscribe": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Stop a host’s emails
+         * @description The token comes from a “new event” email; it ends that follow. 404 host.unsubscribe_unknown for a token that matches nothing (already used, or unfollowed).
+         */
+        post: operations["HostsController_unsubscribe_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/me/profile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * My host profile
+         * @description Handle, bio, location, images, socials, verified badge and follower count.
+         */
+        get: operations["MyHostProfileController_get_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update my host profile
+         * @description Only fields sent change; null or "" clears one. Handle: 3-30 of a-z, 0-9 and hyphens, reserved words refused, unique ignoring case, 5 changes a day (audited); the old handle redirects. Socials: https links on instagram.com, facebook.com/fb.com, x.com/twitter.com; website any https link up to 300 characters. Images: paths from the upload URL, after uploading.
+         */
+        patch: operations["MyHostProfileController_update_v1"];
+        trace?: never;
+    };
+    "/v1/me/profile/images/upload-url": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Get an upload URL for an avatar or cover
+         * @description JPEG, PNG or WebP up to 5 MB. PUT the file, then PATCH /v1/me/profile with avatarPath or coverPath.
+         */
+        post: operations["MyHostProfileController_imageUpload_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/hosts/{id}/verified": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Give or remove the verified badge
+         * @description Audited as host.verified or host.unverified. Repeating it changes nothing.
+         */
+        post: operations["AdminHostVerificationController_setVerified_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/share-cards/hosts/{handle}.png": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * A host profile's share card
+         * @description The 1200×630 link-preview image of a host profile, in the given language: cover (JPEG or PNG; otherwise the brand gradient), avatar (or initials), name and verified mark, @handle, follower count and the next upcoming public event. An old handle answers 308 to the current handle’s card (query kept); an unknown handle is not found.
+         */
+        get: operations["HostShareCardsController_host_v1"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1543,6 +2142,16 @@ export interface components {
              * @enum {string|null}
              */
             language: "en" | "es" | "fr" | "de" | "zh-Hans" | "pt" | "ar" | null;
+            /**
+             * @description The phone given at the last checkout (E.164), to prefill the next; null until given
+             * @example +2348012345678
+             */
+            phone: string | null;
+            /**
+             * @description The gender given at the last checkout; null until given
+             * @enum {string|null}
+             */
+            gender: "female" | "male" | "unspecified" | null;
             /**
              * @description aal2 when two-step sign-in was used for this session
              * @enum {string}
@@ -1621,6 +2230,13 @@ export interface components {
             salesStart?: string;
             /** Format: date-time */
             salesEnd?: string;
+            /**
+             * @description People admitted per purchase (D90): 1 = ordinary, 2-20 = a group. Else 400 event.group_size_invalid
+             * @default 1
+             */
+            groupSize: number;
+            /** @description Shown under the ticket type. Else 400 event.ticket_description_invalid */
+            description?: string | null;
         };
         CreateEventDto: {
             /** @example Lagos Tech Meetup */
@@ -1690,6 +2306,15 @@ export interface components {
             country: string | null;
             coverUrl: string | null;
             coverTheme: string;
+            /** @description Lowest price among ticket types on sale now, in integer minor units (kobo, cents); null when that is free or nothing is on sale */
+            minPriceMinor: number | null;
+            /**
+             * @description ISO 4217 currency of minPriceMinor; null with it
+             * @example NGN
+             */
+            currency: string | null;
+            /** @description The event's owner has the verified badge */
+            hostVerified: boolean;
         };
         FeaturedPageDto: {
             items: components["schemas"]["EventCardDto"][];
@@ -1713,6 +2338,32 @@ export interface components {
             /** @description Google Maps link the host added */
             mapsUrl?: string | null;
         };
+        EventImageDto: {
+            /** Format: uuid */
+            id: string;
+            url: string;
+            /** @description Pixels, as reported by the uploader */
+            width: number | null;
+            /** @description Pixels, as reported by the uploader */
+            height: number | null;
+        };
+        EventHostDto: {
+            /**
+             * Format: uuid
+             * @description The owner's profile id (follow with PUT /v1/hosts/{id}/follow)
+             */
+            id: string;
+            /**
+             * @description Public handle (/h/{handle}); null until the host chooses one
+             * @example ada-events
+             */
+            handle: string | null;
+            /** @description Display name; null when not set */
+            name: string | null;
+            avatarUrl: string | null;
+            /** @description The host has the verified badge */
+            verified: boolean;
+        };
         TicketTypeViewDto: {
             /** Format: uuid */
             id: string;
@@ -1721,13 +2372,19 @@ export interface components {
             priceMinor: number;
             /** @example NGN */
             currency: string;
+            /** @description Entries for sale (a group purchase uses groupSize of them); null = unlimited */
             quantity: number | null;
+            /** @description Entries sold or held */
             sold: number;
+            /** @description Entries left; a group purchase needs groupSize of them */
             remaining: number | null;
             /** Format: date-time */
             salesStart: string | null;
             /** Format: date-time */
             salesEnd: string | null;
+            /** @description People admitted per purchase (D90): 1 = an ordinary ticket, 2-20 = "Group of N". Price is per purchase; each purchase gives groupSize tickets and counts as one against perBuyerLimit */
+            groupSize: number;
+            description: string | null;
         };
         QuestionViewDto: {
             /** Format: uuid */
@@ -1764,7 +2421,10 @@ export interface components {
             /** @example Africa/Lagos */
             timeZone: string;
             location: components["schemas"]["LocationViewDto"];
+            /** @description The main picture (images[0].url), or null */
             coverUrl: string | null;
+            /** @description Up to 5 pictures in the host's order; the first is the main picture */
+            images: components["schemas"]["EventImageDto"][];
             coverTheme: string;
             capacity: number | null;
             refundPolicy: string | null;
@@ -1777,14 +2437,23 @@ export interface components {
             registrationOpen: boolean;
             /** @description Most tickets one person can get */
             perBuyerLimit: number;
+            /** @description What you already hold for this event, as counted against perBuyerLimit (a group purchase counts as one); null when signed out */
+            viewerTickets: number | null;
             /** @description Owner, admin or editor */
             canManage: boolean;
             /** @enum {string|null} */
             viewerRole: "owner" | "admin" | "editor" | "checkin" | "finance" | "viewer" | null;
-            /** @description Shown when the host allows it, or to staff */
+            /** @description Confirmed guests; only for the event team and staff, null for everyone else */
             attendeeCount: number | null;
             /** @description The owner's display name ("Hosted by"); null when they haven't set one */
             hostName: string | null;
+            /** @description The owner's public profile; hostName is kept for older callers */
+            host: components["schemas"]["EventHostDto"];
+            /**
+             * Format: date-time
+             * @description Last change by the host to the event, its ticket types or its pictures; versions the share card
+             */
+            updatedAt: string;
             ticketTypes: components["schemas"]["TicketTypeViewDto"][];
             questions: components["schemas"]["QuestionViewDto"][];
             /**
@@ -1808,6 +2477,43 @@ export interface components {
             /** @description Email the owner on each registration */
             notifyRegistration: boolean;
         };
+        TicketTypeChangeDto: {
+            /**
+             * Format: uuid
+             * @description The ticket type to edit or remove; omit to add a new one
+             */
+            id?: string;
+            /** @description Remove this type; only when it has no sales (else 409 event.ticket_type_has_sales) */
+            remove?: boolean;
+            /**
+             * @description Required when adding
+             * @example VIP
+             */
+            name?: string;
+            /**
+             * @description Integer minor units. Changes only while the type has no sales (else 409 event.ticket_price_locked). Paid prices follow creation rules (event.paid_not_allowed, event.currency_not_payout)
+             * @example 500000
+             */
+            priceMinor?: number;
+            /**
+             * @description Adding only: the event's ticket currency (the default)
+             * @example NGN
+             */
+            currency?: string;
+            /**
+             * @description Null = unlimited; never below the number sold (409 event.ticket_quantity_below_sold)
+             * @example 200
+             */
+            quantity?: number | null;
+            /** Format: date-time */
+            salesStart?: string | null;
+            /** Format: date-time */
+            salesEnd?: string | null;
+            /** @description People admitted per purchase (D90). Changes only while the type has no sales (else 409 event.group_size_locked) */
+            groupSize?: number;
+            /** @description Null or blank removes it */
+            description?: string | null;
+        };
         UpdateEventDetailsDto: {
             title?: string;
             description?: string | null;
@@ -1815,6 +2521,25 @@ export interface components {
             /** @enum {string} */
             visibility?: "public" | "private";
             notifyRegistration?: boolean;
+            /** @enum {string} */
+            category?: "Music" | "Conferences" | "Tech" | "Faith" | "Arts" | "Food" | "Sports" | "Business" | "Nightlife" | "Education" | "Community" | "Charity" | "Family" | "Other";
+            /**
+             * @description Local wall-clock time in the event's time zone (or timeZone when sent)
+             * @example 2026-12-05T18:00
+             */
+            startsAt?: string;
+            /**
+             * @description Null clears the end
+             * @example 2026-12-05T21:00
+             */
+            endsAt?: string | null;
+            /**
+             * @description IANA zone. Dates not sent keep their local wall-clock time in the new zone
+             * @example Africa/Lagos
+             */
+            timeZone?: string;
+            /** @description Ticket-type changes, applied in order; the event keeps 1-20 types in one currency */
+            ticketTypes?: components["schemas"]["TicketTypeChangeDto"][];
         };
         UpdateEventSettingsDto: {
             showAttendeeCount?: boolean;
@@ -1849,6 +2574,43 @@ export interface components {
             /** @enum {string} */
             status: "published";
         };
+        ActivityActorDto: {
+            /** Format: uuid */
+            id: string;
+            name: string | null;
+        };
+        ActivityItemDto: {
+            /** @example 1042 */
+            id: string;
+            /**
+             * @description event.created, event.edited, event.rescheduled, event.published, event.unpublished, event.cancelled, team.invited, team.invite_revoked, team.invite_accepted, team.role_changed, team.member_removed, guest.checked_in, refund.requested, refund.processed, images.added, images.removed, images.reordered
+             * @example event.edited
+             */
+            action: string;
+            /** @description A member or ticket type id, an invited email, a ticket or refund id */
+            subject: string | null;
+            /** @description The subject's name when it is a team member */
+            subjectName: string | null;
+            /**
+             * @example {
+             *       "fields": [
+             *         "title",
+             *         "startsAt"
+             *       ]
+             *     }
+             */
+            meta: {
+                [key: string]: unknown;
+            };
+            /** Format: date-time */
+            at: string;
+            /** @description Null for G-ventZ itself (a refund settling) */
+            actor: components["schemas"]["ActivityActorDto"] | null;
+        };
+        ActivityPageDto: {
+            items: components["schemas"]["ActivityItemDto"][];
+            nextCursor: string | null;
+        };
         EventPageDto: {
             /** Format: uuid */
             id: string;
@@ -1869,7 +2631,10 @@ export interface components {
             /** @example Africa/Lagos */
             timeZone: string;
             location: components["schemas"]["LocationViewDto"];
+            /** @description The main picture (images[0].url), or null */
             coverUrl: string | null;
+            /** @description Up to 5 pictures in the host's order; the first is the main picture */
+            images: components["schemas"]["EventImageDto"][];
             coverTheme: string;
             capacity: number | null;
             refundPolicy: string | null;
@@ -1882,14 +2647,23 @@ export interface components {
             registrationOpen: boolean;
             /** @description Most tickets one person can get */
             perBuyerLimit: number;
+            /** @description What you already hold for this event, as counted against perBuyerLimit (a group purchase counts as one); null when signed out */
+            viewerTickets: number | null;
             /** @description Owner, admin or editor */
             canManage: boolean;
             /** @enum {string|null} */
             viewerRole: "owner" | "admin" | "editor" | "checkin" | "finance" | "viewer" | null;
-            /** @description Shown when the host allows it, or to staff */
+            /** @description Confirmed guests; only for the event team and staff, null for everyone else */
             attendeeCount: number | null;
             /** @description The owner's display name ("Hosted by"); null when they haven't set one */
             hostName: string | null;
+            /** @description The owner's public profile; hostName is kept for older callers */
+            host: components["schemas"]["EventHostDto"];
+            /**
+             * Format: date-time
+             * @description Last change by the host to the event, its ticket types or its pictures; versions the share card
+             */
+            updatedAt: string;
             ticketTypes: components["schemas"]["TicketTypeViewDto"][];
             questions: components["schemas"]["QuestionViewDto"][];
             /**
@@ -1904,6 +2678,12 @@ export interface components {
             paymentCountry: "NG" | "GH" | "KE" | "ZA" | null;
             /** @description Paid ticket types can be bought now (Paystack on for the country and the host can sell) */
             paidSalesOpen: boolean;
+        };
+        HostEventGrossDto: {
+            /** @example NGN */
+            currency: string;
+            /** @description Integer minor units */
+            grossMinor: number;
         };
         HostEventDto: {
             /** Format: uuid */
@@ -1923,6 +2703,15 @@ export interface components {
             country: string | null;
             coverUrl: string | null;
             coverTheme: string;
+            /** @description Lowest price among ticket types on sale now, in integer minor units (kobo, cents); null when that is free or nothing is on sale */
+            minPriceMinor: number | null;
+            /**
+             * @description ISO 4217 currency of minPriceMinor; null with it
+             * @example NGN
+             */
+            currency: string | null;
+            /** @description The event's owner has the verified badge */
+            hostVerified: boolean;
             /** @enum {string} */
             status: "draft" | "published" | "cancelled";
             /** @enum {string} */
@@ -1931,6 +2720,10 @@ export interface components {
             /** @enum {string} */
             role: "owner" | "admin" | "editor" | "checkin" | "finance" | "viewer";
             confirmedCount: number;
+            /** @description Null: unlimited */
+            capacity: number | null;
+            /** @description Gross paid sales per currency from the ledger (what guests paid), integer minor units; empty unless your role may see sales (owner, admin, finance) */
+            gross: components["schemas"]["HostEventGrossDto"][];
         };
         HostEventsPageDto: {
             items: components["schemas"]["HostEventDto"][];
@@ -1965,6 +2758,69 @@ export interface components {
             /** @example Africa/Lagos */
             timeZone: string;
         };
+        TeamMemberDto: {
+            /** Format: uuid */
+            userId: string;
+            name: string | null;
+            email: string | null;
+            /** @enum {string} */
+            role: "owner" | "admin" | "editor" | "checkin" | "finance" | "viewer";
+            /**
+             * Format: date-time
+             * @description When they accepted; when the event was created for the owner
+             */
+            joinedAt: string | null;
+        };
+        TeamInviterDto: {
+            /** Format: uuid */
+            id: string;
+            name: string | null;
+        };
+        TeamInviteDto: {
+            /** Format: uuid */
+            id: string;
+            /** @example ada@example.com */
+            email: string;
+            /** @enum {string} */
+            role: "admin" | "editor" | "checkin" | "finance" | "viewer";
+            invitedBy: components["schemas"]["TeamInviterDto"] | null;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            expiresAt: string;
+        };
+        TeamDto: {
+            /** @description The owner first, then accepted members */
+            members: components["schemas"]["TeamMemberDto"][];
+            /** @description Open invitations; empty unless you can manage the team */
+            invites: components["schemas"]["TeamInviteDto"][];
+            /** @description You are the owner or an admin */
+            canManage: boolean;
+        };
+        InviteTeamMemberDto: {
+            /** @example ada@example.com */
+            email: string;
+            /**
+             * @description admin = co-host, checkin = door staff; never owner
+             * @enum {string}
+             */
+            role: "admin" | "editor" | "checkin" | "finance" | "viewer";
+        };
+        ChangeMemberRoleDto: {
+            /** @enum {string} */
+            role: "admin" | "editor" | "checkin" | "finance" | "viewer";
+        };
+        TeamInviteAcceptedDto: {
+            /** Format: uuid */
+            eventId: string;
+            /** @example lagos-tech-meetup-x7k2p */
+            slug: string;
+            /**
+             * @description Your role on the event now
+             * @enum {string}
+             */
+            role: "owner" | "admin" | "editor" | "checkin" | "finance" | "viewer";
+        };
         QuestionDto: {
             /** Format: uuid */
             id: string;
@@ -1992,6 +2848,11 @@ export interface components {
             body: string;
             /** @enum {string} */
             segment: "all" | "paid" | "checked_in" | "not_checked_in" | "waitlist";
+            /**
+             * @description G-ventZ's framing around your text; null = none
+             * @enum {string|null}
+             */
+            template: "reminder" | "reschedule" | "lineup" | "thanks" | "feedback" | null;
             /** @enum {string} */
             status: "draft" | "sending" | "sent";
             /** Format: uuid */
@@ -2013,6 +2874,11 @@ export interface components {
              * @enum {string}
              */
             segment: "all" | "paid" | "checked_in" | "not_checked_in" | "waitlist";
+            /**
+             * @description G-ventZ's framing, in each guest's language, around your subject and message (which are sent as written). thanks and feedback can be sent after the event starts.
+             * @enum {string|null}
+             */
+            template?: "reminder" | "reschedule" | "lineup" | "thanks" | "feedback" | null;
         };
         AudienceCountsDto: {
             all: number;
@@ -2047,6 +2913,12 @@ export interface components {
             emailsLeftThisMonth: number;
             sendsLeftForEvent: number;
         };
+        AnnouncementTemplateDto: {
+            /** @enum {string} */
+            id: "reminder" | "reschedule" | "lineup" | "thanks" | "feedback";
+            /** @description What the template adds, in English (the website translates its own labels) */
+            description: string;
+        };
         UnsubscribeDto: {
             /** @description From the unsubscribe link */
             token: string;
@@ -2058,20 +2930,44 @@ export interface components {
         OrderLineInputDto: {
             /** Format: uuid */
             ticketTypeId: string;
-            /** @example 2 */
+            /**
+             * @description Purchases: for a group type (groupSize > 1) each purchase gives groupSize tickets (D90)
+             * @example 2
+             */
             quantity: number;
         };
+        RecipientInputDto: {
+            /** @example Tolu Ade */
+            name: string;
+            /**
+             * @description Their ticket is emailed here once confirmed; blank = no email. Not your own address
+             * @example tolu@example.com
+             */
+            email?: string | null;
+        };
         PlaceOrderDto: {
-            /** @description 1-20 lines, 1-10 tickets in total. Ticket types may repeat. */
+            /** @description 1-20 lines, 1-10 purchases in total (a group purchase is one, and counts once against perBuyerLimit). Ticket types may repeat. */
             lines: components["schemas"]["OrderLineInputDto"][];
             /**
-             * @description guestNames[i] names ticket i+1; blank for none. Ticket 1 defaults to the buyer, others to "Guest of {buyer}".
+             * @description guestNames[i] names ticket i+1; blank for none. Ticket 1 defaults to the buyer, others to "Guest of {buyer}". A recipient's name takes the place of the guest name.
              * @example [
              *       "",
              *       "Tolu Ade"
              *     ]
              */
             guestNames?: string[];
+            /** @description Tickets for other people (D89): recipients[i] gets ticket i+2 (ticket 1 is yours) with their name, and when an email is given it is sent there once the order is confirmed or paid. At most 20, and at most the order's tickets minus one; the rest stay with you, and you see every ticket in My tickets. 400 order.recipients_too_many, order.recipient_name_invalid, order.recipient_email_invalid, order.recipient_is_buyer, order.recipients_exceed_tickets */
+            recipients?: components["schemas"]["RecipientInputDto"][];
+            /**
+             * @description Your phone in E.164 (+2348012345678); spaces and dashes are ignored. Saved with the order and remembered for next time (GET /v1/me). Optional in the API; the website requires it. 400 order.buyer_phone_invalid
+             * @example +2348012345678
+             */
+            buyerPhone?: string;
+            /**
+             * @description Optional; unspecified = prefer not to say
+             * @enum {string}
+             */
+            buyerGender?: "female" | "male" | "unspecified";
             /**
              * @description Answers keyed by question id; once per order.
              * @example {
@@ -2103,6 +2999,8 @@ export interface components {
             displayName: string;
             /** @enum {string} */
             status: "confirmed" | "pending" | "waitlisted";
+            /** @description Where this ticket is emailed once confirmed (D89); null = it stays with you */
+            recipientEmail: string | null;
         };
         OrderPlacedResponse: {
             /** Format: uuid */
@@ -2136,6 +3034,8 @@ export interface components {
             ticketType: string;
             number: number | null;
             total: number | null;
+            /** @description People per purchase of this ticket type (D90): 1 = ordinary; above 1 shows "Table of N" */
+            groupSize: number;
             buyerName: string;
             /** Format: date-time */
             checkedInAt: string | null;
@@ -2188,6 +3088,18 @@ export interface components {
             refundStatus: "queued" | "processing" | "refunded" | "failed" | null;
             /** @description The ticket's order has an open chargeback */
             disputed: boolean;
+            /** @description Where this ticket was emailed when the buyer sent it to someone else (D89) */
+            recipientEmail: string | null;
+            /**
+             * @description The buyer's phone (E.164); only for roles with guests.export (owner, admin, finance), else null
+             * @example +2348012345678
+             */
+            buyerPhone: string | null;
+            /**
+             * @description The buyer's gender; only for roles with guests.export, else null
+             * @enum {string|null}
+             */
+            buyerGender: "female" | "male" | "unspecified" | null;
         };
         GuestCountsResponse: {
             confirmed: number;
@@ -2253,6 +3165,8 @@ export interface components {
             total: number | null;
             displayName: string;
             ticketType: string;
+            /** @description People per purchase of this ticket type (D90) */
+            groupSize: number;
             /** Format: date-time */
             checkedInAt: string | null;
             /** @example https://gventz.com/t/abcdef0123456789abcdef01 */
@@ -2263,22 +3177,43 @@ export interface components {
             email: components["schemas"]["TicketEmailDeliveryResponse"] | null;
             event: components["schemas"]["TicketEventResponse"];
         };
+        ResendTicketDto: {
+            /**
+             * @description Corrects the recipient's address before sending; omit to resend as it is
+             * @example tolu@example.com
+             */
+            email?: string;
+        };
         MyTicketResponse: {
+            /**
+             * Format: uuid
+             * @description For POST /v1/me/orders/{orderId}/tickets/{ticketId}/resend
+             */
+            id: string;
             code: string;
             number: number | null;
             displayName: string;
             ticketType: string;
+            /** @description People per purchase of this ticket type (D90): above 1 shows "Ticket 2 of 4 · Table of 4" */
+            groupSize: number;
             status: string;
             /** Format: date-time */
             checkedInAt: string | null;
+            /** @description Who this ticket was sent to (D89); null = yours */
+            recipientEmail: string | null;
         };
         FeeQuoteLineDto: {
             /** Format: uuid */
             ticketTypeId: string;
             name: string;
+            /** @description Purchases of this type; a group purchase (groupSize > 1) gives groupSize tickets */
             quantity: number;
+            /** @description Tickets per purchase (D90); unit prices, discounts and fees below are per purchase */
+            groupSize: number;
             /** @description Ticket price, minor units */
             unitPriceMinor: number;
+            /** @description Discount code reduction per ticket, minor units; present only when a code applies to this line */
+            unitDiscountMinor?: number;
             /** @description G-ventZ fee per ticket, minor units */
             unitFeeMinor: number;
             /** @description VAT on that fee per ticket, minor units */
@@ -2290,8 +3225,12 @@ export interface components {
             /** @enum {string} */
             feeChoice: "host_absorbs" | "guest_pays";
             lines: components["schemas"]["FeeQuoteLineDto"][];
-            /** @description Sum of ticket prices */
+            /** @description Sum of ticket prices (after any discount code) */
             pricesMinor: number;
+            /** @description What a discount code took off the ticket prices; present only with a code */
+            discountMinor?: number;
+            /** @description The discount code applied; present only with a code */
+            discountCode?: string | null;
             /** @description G-ventZ fees */
             feesMinor: number;
             /** @description VAT on the G-ventZ fees */
@@ -2372,6 +3311,29 @@ export interface components {
         };
         FlyerResponse: {
             url: string;
+        };
+        ImageUploadRequestDto: {
+            /** @enum {string} */
+            contentType: "image/jpeg" | "image/png" | "image/webp";
+            /** @description File size in bytes; over 5 MB is refused up front (flyer.size) */
+            size?: number;
+        };
+        ImageConfirmDto: {
+            /** @example 0190a000-0000-7000-8000-000000000001/1792900000000-a1b2c3.jpg */
+            path: string;
+            width?: number | null;
+            height?: number | null;
+        };
+        EventImageResponse: {
+            /** Format: uuid */
+            id: string;
+            url: string;
+            width: number | null;
+            height: number | null;
+        };
+        ImageOrderDto: {
+            /** @description Every picture of the event, each once, in the new order; the first becomes the main picture */
+            ids: string[];
         };
         SuggestionResponse: {
             placeId: string;
@@ -3168,20 +4130,45 @@ export interface components {
         PaidLineDto: {
             /** Format: uuid */
             ticketTypeId: string;
-            /** @example 2 */
+            /**
+             * @description Purchases: a group type (groupSize > 1) is priced per purchase and gives groupSize tickets (D90)
+             * @example 2
+             */
             quantity: number;
         };
         QuoteRequestDto: {
-            /** @description Paid ticket types only, 1-10 tickets in total */
+            /** @description Paid ticket types only, 1-10 purchases in total (a group purchase is one) */
             lines: components["schemas"]["PaidLineDto"][];
+            /**
+             * @description A discount code for this event, in any case (blank = none). Checked against the lines; fees are worked out on the discounted price. 422 discount.invalid, discount.expired, discount.not_for_ticket or discount.whole_order; 409 discount.used_up
+             * @example EARLYBIRD
+             */
+            code?: string;
         };
         PaidOrderDto: {
-            /** @description Paid ticket types only, 1-10 tickets in total */
+            /** @description Paid ticket types only, 1-10 purchases in total (a group purchase is one) */
             lines: components["schemas"]["PaidLineDto"][];
+            /**
+             * @description A discount code for this event, in any case (blank = none). Checked against the lines; fees are worked out on the discounted price. 422 discount.invalid, discount.expired, discount.not_for_ticket or discount.whole_order; 409 discount.used_up
+             * @example EARLYBIRD
+             */
+            code?: string;
             /** @description The guest ticked "I understand tickets are non-refundable, except if the event is cancelled" (CK3). Must be true. */
             nonRefundableAccepted: boolean;
-            /** @description guestNames[i] names ticket i+1; blank for none. */
+            /** @description guestNames[i] names ticket i+1; blank for none. A recipient's name takes the place of the guest name. */
             guestNames?: string[];
+            /** @description Tickets for other people (D89): recipients[i] gets ticket i+2 (ticket 1 is yours) with their name, and when an email is given it is sent there once the order is confirmed or paid. At most 20, and at most the order's tickets minus one; the rest stay with you, and you see every ticket in My tickets. 400 order.recipients_too_many, order.recipient_name_invalid, order.recipient_email_invalid, order.recipient_is_buyer, order.recipients_exceed_tickets */
+            recipients?: components["schemas"]["RecipientInputDto"][];
+            /**
+             * @description Your phone in E.164 (+2348012345678); spaces and dashes are ignored. Saved with the order and remembered for next time (GET /v1/me). Optional in the API; the website requires it. 400 order.buyer_phone_invalid
+             * @example +2348012345678
+             */
+            buyerPhone?: string;
+            /**
+             * @description Optional; unspecified = prefer not to say
+             * @enum {string}
+             */
+            buyerGender?: "female" | "male" | "unspecified";
             /** @description Answers keyed by question id; once per order. */
             answers?: {
                 [key: string]: string;
@@ -3236,6 +4223,76 @@ export interface components {
             /** @description Refunds that failed after retries (G-ventZ is alerted) */
             refundsFailed: number;
         };
+        SettlementCurrencyDto: {
+            /** @example NGN */
+            currency: string;
+            ordersPaid: number;
+            /** @description What guests paid */
+            grossMinor: number;
+            /** @description Paystack's charges */
+            paystackFeesMinor: number;
+            /** @description G-ventZ fees */
+            gventzFeesMinor: number;
+            /** @description VAT on the G-ventZ fees */
+            vatMinor: number;
+            /** @description Taken off ticket prices by discount codes (already out of gross) */
+            discountsMinor: number;
+            /** @description Refunded to guests */
+            refundsMinor: number;
+            /** @description Lost chargebacks */
+            disputesLostMinor: number;
+            /** @description Your share of refunds and lost disputes, owed to G-ventZ */
+            hostDebtMinor: number;
+            /** @description Owed amounts G-ventZ recovered from these sales */
+            debtRecoveredMinor: number;
+            /** @description What Paystack split to your subaccount for these sales */
+            paidToHostMinor: number;
+            /** @description gross - Paystack fees - G-ventZ fees - VAT - your share of refunds and lost disputes */
+            netMinor: number;
+        };
+        SettlementDayDto: {
+            /**
+             * @description In the event's time zone
+             * @example 2026-11-19
+             */
+            date: string;
+            currency: string;
+            /** @description Orders paid that day */
+            orders: number;
+            grossMinor: number;
+            /** @description Paystack fees, G-ventZ fees and VAT */
+            feesMinor: number;
+            /** @description Refunded to guests that day */
+            refundsMinor: number;
+            /** @description gross - fees - your share of refunds and lost disputes that day */
+            netMinor: number;
+        };
+        SettlementPayoutDto: {
+            /**
+             * @description none: no payout account yet
+             * @enum {string}
+             */
+            status: "none" | "pending" | "active" | "replaced";
+            currency: string | null;
+            bankName: string | null;
+            accountNumberLast4: string | null;
+            accountName: string | null;
+            /** Format: date-time */
+            activatedAt: string | null;
+            /**
+             * @description Each sale is split to the host's Paystack subaccount and paid on Paystack's settlement schedule for it (D41, D84); G-ventZ holds nothing
+             * @enum {string}
+             */
+            settlement: "per_sale";
+        };
+        EventSettlementsDto: {
+            /** @description From the ledger, per currency; integer minor units */
+            currencies: components["schemas"]["SettlementCurrencyDto"][];
+            /** @description Newest first */
+            days: components["schemas"]["SettlementDayDto"][];
+            /** @description The event owner's payout account */
+            payout: components["schemas"]["SettlementPayoutDto"];
+        };
         TicketRefundDto: {
             /** Format: uuid */
             refundId: string;
@@ -3247,8 +4304,386 @@ export interface components {
             /** @enum {string} */
             status: "queued" | "processing" | "refunded" | "failed";
         };
+        DiscountCodeDto: {
+            /** Format: uuid */
+            id: string;
+            /**
+             * @description Upper-case; guests may type it in any case
+             * @example EARLYBIRD
+             */
+            code: string;
+            /** @enum {string} */
+            kind: "percent" | "fixed" | "free";
+            /** @description percent: basis points (2500 = 25%); fixed: minor units off each ticket, in the event currency; free: 0 */
+            value: number;
+            /** @description Null = unlimited */
+            maxUses: number | null;
+            /** @description Orders holding or having paid with the code */
+            uses: number;
+            /** Format: date-time */
+            startsAt: string | null;
+            /** Format: date-time */
+            endsAt: string | null;
+            /** @description Empty = every paid ticket type */
+            ticketTypeIds: string[];
+            paused: boolean;
+            /**
+             * @description Derived now
+             * @enum {string}
+             */
+            state: "active" | "paused" | "scheduled" | "ended" | "used_up";
+            /** @description Kind and value can no longer change (the code has been used) */
+            locked: boolean;
+            /** Format: date-time */
+            createdAt: string;
+        };
+        DiscountCodesDto: {
+            items: components["schemas"]["DiscountCodeDto"][];
+        };
+        CreateDiscountCodeDto: {
+            /**
+             * @description 3-32 of A-Z 0-9 - _, any case (stored upper-case); unique per event
+             * @example EARLYBIRD
+             */
+            code: string;
+            /** @enum {string} */
+            kind: "percent" | "fixed" | "free";
+            /**
+             * @description percent: basis points 1-10000 (2500 = 25%); fixed: minor units off each ticket, in the event currency; not used for free
+             * @example 2500
+             */
+            value?: number;
+            /** @description Orders that may use it; absent or null = unlimited */
+            maxUses?: number | null;
+            /** Format: date-time */
+            startsAt?: string | null;
+            /** Format: date-time */
+            endsAt?: string | null;
+            /** @description The event's paid ticket types it applies to; empty or absent = all of them */
+            ticketTypeIds?: string[];
+            /** @default false */
+            paused: boolean;
+        };
+        UpdateDiscountCodeDto: {
+            paused?: boolean;
+            /** @description null = unlimited; at least the uses so far */
+            maxUses?: number | null;
+            /** Format: date-time */
+            startsAt?: string | null;
+            /** Format: date-time */
+            endsAt?: string | null;
+            ticketTypeIds?: string[];
+            /**
+             * @description Only until the code is first used (409 discount.locked)
+             * @enum {string}
+             */
+            kind?: "percent" | "fixed" | "free";
+            /** @description Only until the code is first used (409 discount.locked) */
+            value?: number;
+        };
         WebhookAckDto: {
             received: boolean;
+        };
+        ComparedFigureDto: {
+            /** @description This period */
+            current: number;
+            /** @description The previous period of equal length */
+            previous: number;
+            /**
+             * @description Change in percent, one decimal place; null when the previous figure is 0
+             * @example 25.5
+             */
+            change: number | null;
+        };
+        ComparedRevenueDto: {
+            /** @description This period */
+            current: number;
+            /** @description The previous period of equal length */
+            previous: number;
+            /**
+             * @description Change in percent, one decimal place; null when the previous figure is 0
+             * @example 25.5
+             */
+            change: number | null;
+            /** @example NGN */
+            currency: string;
+        };
+        HostHomeMetricsDto: {
+            /** @description Tickets confirmed in the period (free and paid) */
+            ticketsSold: components["schemas"]["ComparedFigureDto"];
+            /** @description Gross per currency in integer minor units (completed paid orders created in the period); only events where you can see sales */
+            revenue: components["schemas"]["ComparedRevenueDto"][];
+            /** @description Guests checked in during the period */
+            checkIns: components["schemas"]["ComparedFigureDto"];
+            /** @description Published events not started yet: now (current) and at the start of the period (previous, counting events created by then) */
+            upcomingEvents: components["schemas"]["ComparedFigureDto"];
+        };
+        HostHomeNextEventDto: {
+            /** Format: uuid */
+            id: string;
+            slug: string;
+            title: string;
+            /** @enum {string} */
+            status: "draft" | "published";
+            /** Format: date-time */
+            startsAt: string;
+            /** @example Africa/Lagos */
+            timeZone: string;
+            coverUrl: string | null;
+            coverTheme: string;
+            /** @description Confirmed tickets */
+            sold: number;
+            /** @description Null: unlimited */
+            capacity: number | null;
+        };
+        HostHomeOrderDto: {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            eventId: string;
+            eventTitle: string;
+            /**
+             * @description First name and last initial ("Ada O.")
+             * @example Ada O.
+             */
+            buyerName: string | null;
+            tickets: number;
+            /** @description Integer minor units */
+            amountMinor: number;
+            /** @example NGN */
+            currency: string;
+            /** @enum {string} */
+            kind: "free" | "paid";
+            status: string;
+            /** Format: date-time */
+            createdAt: string;
+        };
+        HostHomePayoutDto: {
+            /**
+             * @description Your latest paid-tickets application
+             * @enum {string}
+             */
+            applicationStatus: "none" | "submitted" | "approved" | "declined" | "revoked";
+            /**
+             * @description Your current payout account
+             * @enum {string|null}
+             */
+            payoutAccountStatus: "pending" | "active" | null;
+            /** @description Can create paid ticket types and publish paid events now */
+            canSellPaid: boolean;
+            /** @enum {string|null} */
+            reason: "payments_off" | "not_applied" | "application_submitted" | "application_declined" | "approval_revoked" | "payout_account_pending" | "country_off" | "owes_money" | "suspended" | null;
+            /** @enum {string|null} */
+            country: "NG" | "GH" | "KE" | "ZA" | null;
+            currency: string | null;
+        };
+        HostHomeChecklistDto: {
+            /** @description You own at least one event */
+            createdEvent: boolean;
+            /** @description One of your events has at least one registration or order */
+            sharedEvent: boolean;
+            /** @description Paid-tickets application approved and the payout account active */
+            payoutReady: boolean;
+            /** @description This session used two-step sign-in (aal2) */
+            twoStep: boolean;
+        };
+        HostHomeDto: {
+            /** @enum {string} */
+            period: "7d" | "30d" | "90d" | "12m";
+            /**
+             * Format: date-time
+             * @description Start of the period (the period ends now)
+             */
+            from: string;
+            /** Format: date-time */
+            to: string;
+            /**
+             * Format: date-time
+             * @description Start of the previous period, which ends at `from`
+             */
+            previousFrom: string;
+            metrics: components["schemas"]["HostHomeMetricsDto"];
+            nextEvent: components["schemas"]["HostHomeNextEventDto"] | null;
+            /** @description The last 10 orders across events where you can see orders */
+            recentOrders: components["schemas"]["HostHomeOrderDto"][];
+            payout: components["schemas"]["HostHomePayoutDto"];
+            /** @description Setup steps; null once you own an event and every step is done */
+            checklist: components["schemas"]["HostHomeChecklistDto"] | null;
+        };
+        HostOrderDto: {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            eventId: string;
+            eventTitle: string;
+            /**
+             * @description First name and last initial ("Ada O.")
+             * @example Ada O.
+             */
+            buyerName: string | null;
+            tickets: number;
+            /** @description Integer minor units */
+            amountMinor: number;
+            /** @example NGN */
+            currency: string;
+            /** @enum {string} */
+            kind: "free" | "paid";
+            /** @enum {string} */
+            status: "completed" | "pending_approval" | "waitlisted" | "declined" | "cancelled" | "awaiting_payment" | "expired" | "failed" | "partially_refunded" | "refunded" | "disputed";
+            /** Format: date-time */
+            createdAt: string;
+        };
+        HostOrdersPageDto: {
+            /** @description Newest first */
+            items: components["schemas"]["HostOrderDto"][];
+            page: number;
+            pageSize: number;
+            total: number;
+        };
+        HostSettlementRowDto: {
+            /** @example NGN */
+            currency: string;
+            ordersPaid: number;
+            /** @description What guests paid */
+            grossMinor: number;
+            /** @description Paystack's charges */
+            paystackFeesMinor: number;
+            /** @description G-ventZ fees */
+            gventzFeesMinor: number;
+            /** @description VAT on the G-ventZ fees */
+            vatMinor: number;
+            /** @description Taken off ticket prices by discount codes (already out of gross) */
+            discountsMinor: number;
+            /** @description Refunded to guests */
+            refundsMinor: number;
+            /** @description Lost chargebacks */
+            disputesLostMinor: number;
+            /** @description Your share of refunds and lost disputes, owed to G-ventZ */
+            hostDebtMinor: number;
+            /** @description Owed amounts G-ventZ recovered from these sales */
+            debtRecoveredMinor: number;
+            /** @description What Paystack split to your subaccount for these sales */
+            paidToHostMinor: number;
+            /** @description gross - Paystack fees - G-ventZ fees - VAT - your share of refunds and lost disputes */
+            netMinor: number;
+            /** Format: uuid */
+            eventId: string;
+            eventTitle: string;
+            /** Format: date-time */
+            eventStartsAt: string;
+            /** @example Africa/Lagos */
+            timeZone: string;
+        };
+        HostSettlementsDto: {
+            /** @description One row per event and currency, from the ledger (the same figures as GET /v1/events/{id}/settlements); latest event start first; integer minor units */
+            rows: components["schemas"]["HostSettlementRowDto"][];
+            /** @description The rows added up per currency */
+            totals: components["schemas"]["SettlementCurrencyDto"][];
+            /** @description Your own payout account */
+            payout: components["schemas"]["SettlementPayoutDto"];
+        };
+        HostSocialsDto: {
+            /** @example https://instagram.com/adaevents */
+            instagram: string | null;
+            /** @example https://facebook.com/adaevents */
+            facebook: string | null;
+            /** @example https://x.com/adaevents */
+            x: string | null;
+            /** @example https://adaevents.com */
+            website: string | null;
+        };
+        HostProfileDto: {
+            /** Format: uuid */
+            id: string;
+            /** @example ada-events */
+            handle: string;
+            /** @description Set when the requested handle is an old one: the page should redirect to this handle. */
+            movedTo: string | null;
+            name: string | null;
+            bio: string | null;
+            location: string | null;
+            avatarUrl: string | null;
+            coverUrl: string | null;
+            socials: components["schemas"]["HostSocialsDto"];
+            verified: boolean;
+            followerCount: number;
+            /** @description Only when the caller is signed in */
+            following?: boolean;
+            events: components["schemas"]["HostEventsPageDto"];
+        };
+        FollowStateDto: {
+            following: boolean;
+            followerCount: number;
+        };
+        HostUnsubscribeDto: {
+            /** @description The token from the email link */
+            token: string;
+        };
+        HostUnfollowedDto: {
+            hostName: string | null;
+            handle: string | null;
+        };
+        MyHostProfileDto: {
+            /** Format: uuid */
+            id: string;
+            handle: string | null;
+            /** @description Edited with PATCH /v1/me */
+            name: string | null;
+            bio: string | null;
+            location: string | null;
+            avatarPath: string | null;
+            avatarUrl: string | null;
+            coverPath: string | null;
+            coverUrl: string | null;
+            socials: components["schemas"]["HostSocialsDto"];
+            verified: boolean;
+            followerCount: number;
+        };
+        UpdateHostProfileDto: {
+            /**
+             * @description 3-30 of a-z, 0-9 and hyphens (no leading, trailing or double hyphen); case-insensitive; reserved words refused. 5 changes a day.
+             * @example ada-events
+             */
+            handle?: string;
+            bio?: string | null;
+            /** @example Lagos, Nigeria */
+            location?: string | null;
+            /** @description A path from POST /v1/me/profile/images/upload-url (kind avatar), after the upload */
+            avatarPath?: string | null;
+            /** @description A path from POST /v1/me/profile/images/upload-url (kind cover), after the upload */
+            coverPath?: string | null;
+            /** @description https link on instagram.com */
+            instagram?: string | null;
+            /** @description https link on facebook.com or fb.com */
+            facebook?: string | null;
+            /** @description https link on x.com or twitter.com (stored as x.com) */
+            x?: string | null;
+            /** @description Any https link, at most 300 characters */
+            website?: string | null;
+        };
+        ProfileImageUploadRequestDto: {
+            /** @enum {string} */
+            kind: "avatar" | "cover";
+            /** @enum {string} */
+            contentType: "image/jpeg" | "image/png" | "image/webp";
+        };
+        ProfileImageUploadDto: {
+            /** @example hosts/0190a000-0000-7000-8000-000000000001/avatar-1792900000000-a1b2c3.jpg */
+            path: string;
+            /** @description PUT the image bytes here (Content-Type: the image type), then PATCH /v1/me/profile with the path */
+            uploadUrl: string;
+            /** Format: date-time */
+            expiresAt: string;
+        };
+        SetVerifiedDto: {
+            verified: boolean;
+        };
+        VerifiedStateDto: {
+            /** Format: uuid */
+            hostId: string;
+            verified: boolean;
+            /** Format: date-time */
+            verifiedAt: string | null;
         };
     };
     responses: never;
@@ -3503,6 +4938,13 @@ export interface operations {
                 };
                 content?: never;
             };
+            /** @description event.ticket_price_locked, event.group_size_locked, event.ticket_quantity_below_sold, event.ticket_type_has_sales, event.cancelled */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
         };
     };
     EventsController_changeLocation_v1: {
@@ -3721,6 +5163,51 @@ export interface operations {
             };
         };
     };
+    EventsController_activity_v1: {
+        parameters: {
+            query?: {
+                cursor?: string;
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActivityPageDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.forbidden: needs activity.read */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.not_found (also when you have no role on the event) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     EventsController_page_v1: {
         parameters: {
             query?: never;
@@ -3754,6 +5241,8 @@ export interface operations {
             query?: {
                 page?: number;
                 pageSize?: number;
+                /** @description upcoming: published and not ended (soonest first); drafts; past: ended (not drafts) or cancelled. all and the others: newest start first */
+                filter?: "all" | "upcoming" | "drafts" | "past";
             };
             header?: never;
             path?: never;
@@ -3847,6 +5336,371 @@ export interface operations {
             };
             /** @description reference.time_zone_not_found */
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    EventTeamController_list_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TeamDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.forbidden: needs team.view */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.not_found (also when you have no role on the event) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    EventTeamController_invite_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["InviteTeamMemberDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TeamInviteDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.forbidden: needs members.manage */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.not_found (also when you have no role on the event) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description team.already_member */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description rate_limit.exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    EventTeamController_revoke_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                inviteId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.forbidden: needs members.manage */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.not_found (also when you have no role on the event) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    EventTeamController_remove_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                userId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.forbidden: needs members.manage */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.not_found (also when you have no role on the event) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description team.owner_fixed, team.last_admin */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    EventTeamController_changeRole_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                userId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ChangeMemberRoleDto"];
+            };
+        };
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.forbidden: needs members.manage */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.not_found (also when you have no role on the event) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description team.owner_fixed, team.last_admin */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    TeamInvitesController_accept_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                token: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TeamInviteAcceptedDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description team.invite_wrong_account */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description team.invite_not_found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description team.invite_gone: expired, withdrawn or already used */
+            410: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ShareCardsController_event_v1: {
+        parameters: {
+            query?: {
+                /** @description The event's updatedAt; makes the address immutable (cached for a year) */
+                v?: unknown;
+                /** @description Card language; anything else is English */
+                lang?: "en" | "es" | "fr" | "de" | "zh-Hans" | "pt" | "ar";
+            };
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 1200×630 PNG */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "image/png": string;
+                };
+            };
+            /** @description event.not_found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description rate_limit.exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ShareCardsController_site_v1: {
+        parameters: {
+            query?: {
+                /** @description Any version string; makes the address immutable (cached for a year) */
+                v?: unknown;
+                /** @description Card language; anything else is English */
+                lang?: "en" | "es" | "fr" | "de" | "zh-Hans" | "pt" | "ar";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 1200×630 PNG */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "image/png": string;
+                };
+            };
+            /** @description rate_limit.exceeded */
+            429: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -4149,6 +6003,32 @@ export interface operations {
             };
             /** @description event.not_found (also when you have no role on the event) */
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AnnouncementTemplatesController_list_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AnnouncementTemplateDto"][];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -4606,6 +6486,53 @@ export interface operations {
             };
         };
     };
+    MeOrdersController_resend_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                orderId: string;
+                ticketId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ResendTicketDto"];
+            };
+        };
+        responses: {
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TicketEmailQueuedResponse"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description ticket.not_found (also for other people's orders and tickets) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description ticket.email_limit, rate_limit.exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     MeOrdersController_list_v1: {
         parameters: {
             query?: {
@@ -4795,6 +6722,220 @@ export interface operations {
                 content?: never;
             };
             /** @description event.forbidden: needs flyer.manage */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.not_found (also when you have no role on the event) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    EventImagesController_requestUpload_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ImageUploadRequestDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FlyerUploadResponse"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.forbidden: needs event.edit */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.not_found (also when you have no role on the event) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.images_full (already 5), flyer.size */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    EventImagesController_confirm_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ImageConfirmDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EventImageResponse"];
+                };
+            };
+            /** @description flyer.path_invalid */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.forbidden: needs event.edit */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.not_found (also when you have no role on the event) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description flyer.not_uploaded */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.images_full, flyer.type, flyer.size */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    EventImagesController_reorder_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ImageOrderDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EventImageResponse"][];
+                };
+            };
+            /** @description event.images_order_invalid: ids must be exactly the event's pictures */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.forbidden: needs event.edit */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.not_found (also when you have no role on the event) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    EventImagesController_remove_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                imageId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.forbidden: needs event.edit */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -6198,6 +8339,13 @@ export interface operations {
                     "application/json": components["schemas"]["FeeQuoteDto"];
                 };
             };
+            /** @description rate_limit.exceeded (discount codes tried too often) */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
         };
     };
     CheckoutController_place_v1: {
@@ -6302,6 +8450,98 @@ export interface operations {
             };
         };
     };
+    EventSalesController_settlements_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EventSettlementsDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.forbidden: needs sales.view */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.not_found (also when you have no role on the event) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    EventSalesController_settlementsCsv_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The CSV file */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "text/csv": string;
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.forbidden: needs sales.view */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.not_found (also when you have no role on the event) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description rate_limit.exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     EventSalesController_refund_v1: {
         parameters: {
             query?: never;
@@ -6356,6 +8596,155 @@ export interface operations {
             };
         };
     };
+    DiscountCodesController_list_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DiscountCodesDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.forbidden: needs event.fees */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.not_found (also when you have no role on the event) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    DiscountCodesController_create_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateDiscountCodeDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DiscountCodeDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.forbidden: needs event.fees */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.not_found (also when you have no role on the event) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description discount.code_taken, discount.no_paid_types */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    DiscountCodesController_update_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                codeId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateDiscountCodeDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DiscountCodeDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.forbidden: needs event.fees */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.not_found (also when you have no role on the event) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description discount.locked */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     PaystackWebhookController_receive_v1: {
         parameters: {
             query?: never;
@@ -6377,6 +8766,454 @@ export interface operations {
             };
             /** @description webhook.signature_invalid */
             401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    HostHomeController_get_v1: {
+        parameters: {
+            query?: {
+                /** @description The period ending now; figures are compared with the period of equal length before it */
+                period?: "7d" | "30d" | "90d" | "12m";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HostHomeDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    HostHomeController_orders_v1: {
+        parameters: {
+            query?: {
+                page?: number;
+                pageSize?: number;
+                /** @description Only this event (an empty page when you may not see its orders) */
+                eventId?: string;
+                status?: "completed" | "pending_approval" | "waitlisted" | "declined" | "cancelled" | "awaiting_payment" | "expired" | "failed" | "partially_refunded" | "refunded" | "disputed";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HostOrdersPageDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    HostHomeController_settlementsSummary_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HostSettlementsDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    HostHomeController_settlementsCsv_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The CSV file */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "text/csv": string;
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description rate_limit.exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    HostsController_profile_v1: {
+        parameters: {
+            query?: {
+                tab?: "upcoming" | "past";
+                /** @description nextCursor from the previous page */
+                cursor?: string;
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                handle: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HostProfileDto"];
+                };
+            };
+            /** @description host.not_found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    HostsController_follow_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FollowStateDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description host.not_found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description rate_limit.exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    HostsController_unfollow_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FollowStateDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description host.not_found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    HostsController_unsubscribe_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HostUnsubscribeDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HostUnfollowedDto"];
+                };
+            };
+        };
+    };
+    MyHostProfileController_get_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MyHostProfileDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    MyHostProfileController_update_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateHostProfileDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MyHostProfileDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description host.handle_taken, host.image_not_uploaded */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description rate_limit.exceeded (handle changes) */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    MyHostProfileController_imageUpload_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ProfileImageUploadRequestDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProfileImageUploadDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AdminHostVerificationController_setVerified_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SetVerifiedDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VerifiedStateDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.mfa_required: staff must confirm with their authenticator app (aal2) */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description route.not_found for anyone who is not G-ventZ staff; host.not_found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    HostShareCardsController_host_v1: {
+        parameters: {
+            query?: {
+                /** @description Any version string; makes the address immutable (cached for a year). Without it, cached for an hour. */
+                v?: unknown;
+                /** @description Card language; anything else is English */
+                lang?: "en" | "es" | "fr" | "de" | "zh-Hans" | "pt" | "ar";
+            };
+            header?: never;
+            path: {
+                handle: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 1200×630 PNG */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "image/png": string;
+                };
+            };
+            /** @description An old handle: Location is the current handle’s card, relative, with the same query */
+            308: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description host.not_found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description rate_limit.exceeded */
+            429: {
                 headers: {
                     [name: string]: unknown;
                 };

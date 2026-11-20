@@ -1,0 +1,14 @@
+.check {
+  display: inline-flex;
+  gap: var(--space-3);
+  align-items: center;
+  min-height: var(--control-height);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--color-text);
+  cursor: pointer;
+}
+.input { width: 20px; height: 20px; margin: 0; flex: none; accent-color: var(--color-accent); cursor: pointer; }
+.input:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.input:disabled { cursor: not-allowed; }
+.input:disabled + span { opacity: 0.5; }

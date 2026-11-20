@@ -1,0 +1,4 @@
+.muted { margin: var(--space-3) 0 0; color: var(--color-text-muted); font-size: var(--text-body-sm); line-height: var(--leading-body-sm); }
+.event { color: var(--color-text); font-weight: var(--weight-semibold); text-decoration: none; }
+.event:hover { text-decoration: underline; }
+.total th, .total td { font-weight: var(--weight-bold); border-block-start: 2px solid var(--color-border-strong); }

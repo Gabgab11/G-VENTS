@@ -1,0 +1,21 @@
+.header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; }
+.text { min-width: 0; }
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-heading-1);
+  line-height: var(--leading-heading-1);
+  font-weight: var(--weight-heavy);
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+}
+.subtitle { margin: var(--space-1) 0 0; color: var(--color-text-muted); font-size: var(--text-body); line-height: var(--leading-body); }
+.actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+
+@media (max-width: 639px) {
+  /* 28px / 32px on phones: one space step below heading-1. */
+  .title {
+    font-size: calc(var(--text-heading-1) - var(--space-1));
+    line-height: calc(var(--leading-heading-1) - var(--space-1));
+  }
+}

@@ -13,7 +13,10 @@
     "no_recipients": "此受众中暂时没有人可以接收电子邮件。",
     "not_found": "找不到此公告。",
     "segment_invalid": "请选择此公告的接收对象。",
-    "unsubscribe_unknown": "此退订链接无效。"
+    "unsubscribe_unknown": "此退订链接无效。",
+    "fields_required": "请添加主题和内容。",
+    "quota_exceeded": "这将超出您本月的公告邮件额度。请选择较小的受众，或等待每月额度重置。",
+    "template_invalid": "请选择一个公告模板。"
   },
   "auth": {
     "anonymous_not_allowed": "请使用电子邮件或 Google 登录以继续。",
@@ -27,6 +30,22 @@
   },
   "db": {
     "busy": "我们现在非常繁忙。请稍后再试。"
+  },
+  "discount": {
+    "invalid": "此折扣码不适用于本活动。",
+    "expired": "此折扣码目前无效：已结束或尚未开始。",
+    "used_up": "此折扣码的使用次数已达上限。",
+    "not_for_ticket": "此折扣码不适用于您选择的门票。",
+    "whole_order": "使用此折扣码会使整个订单免费，而付费订单不能免费。请不使用此折扣码，或再添加一张门票。",
+    "code_format": "请使用 3 至 32 个字母、数字、- 或 _。",
+    "code_taken": "本活动已有此折扣码。",
+    "limit_invalid": "上限必须至少为 1，且不低于已使用次数。",
+    "locked": "此折扣码已被使用，其折扣方式和金额无法更改。请暂停它并创建新的折扣码。",
+    "no_paid_types": "折扣码适用于付费门票，而本活动没有付费门票。",
+    "not_found": "未找到折扣码。",
+    "ticket_types_invalid": "请选择本活动的付费门票类型；折扣码不适用于免费门票。",
+    "value_invalid": "请输入 1 至 100 之间的百分比，或大于 0 的金额。",
+    "window_invalid": "结束时间必须晚于开始时间。"
   },
   "event": {
     "already_cancelled": "此活动已取消。",
@@ -45,6 +64,9 @@
     "forbidden": "您无权对此活动执行该操作。",
     "has_paid_registrations": "包含付费门票的活动无法删除。",
     "host_owes_money": "您因退款欠 G-ventZ 款项，在用销售收入还清之前无法发布新的付费活动。",
+    "image_not_found": "该图片已被移除。",
+    "images_full": "此活动已有 5 张图片。请先移除一张再添加。",
+    "images_order_invalid": "图片在此期间已发生变化。请重新加载页面后重试。",
     "location_invalid": "请检查场地信息后重试。",
     "not_found": "未找到活动。",
     "not_published": "此活动尚未发布。",
@@ -62,7 +84,10 @@
     "time_invalid": "请使用有效的日期和时间。",
     "time_not_in_zone": "由于时钟调整，该时间在此时区中不存在。请选择其他时间。",
     "time_zone_required": "请选择活动的时区。",
-    "title_length": "活动名称必须为 3 到 140 个字符。"
+    "title_length": "活动名称必须为 3 到 140 个字符。",
+    "group_size_invalid": "团体票可供 1 至 20 人入场。",
+    "group_size_locked": "此票种已有销售，团体人数无法更改。请改为添加新的票种。",
+    "ticket_description_invalid": "票种描述最多 300 个字符。"
   },
   "export": {
     "busy": "已有导出正在进行。请一分钟后再试。"
@@ -70,11 +95,24 @@
   "flyer": {
     "not_uploaded": "请先上传图片。",
     "path_invalid": "该上传文件不属于此活动。",
-    "size": "海报最大为 5 MB。",
+    "size": "图片最大为 5 MB。",
     "storage_unavailable": "海报上传暂不可用。请稍后再试。",
     "type": "请使用 JPEG、PNG 或 WebP 图片。"
   },
   "host": {
+    "cannot_follow_self": "您不能关注自己。",
+    "handle_invalid": "请使用 3 到 30 个字母、数字或连字符，以字母或数字开头和结尾，且不能有连续的连字符。",
+    "handle_reserved": "此用户名为保留名称，请换一个。",
+    "handle_taken": "此用户名已被占用，请换一个。",
+    "bio_invalid": "简介太长。",
+    "location_invalid": "所在地太长。",
+    "social_invalid": "请使用指向该主页的 https:// 链接。",
+    "image_path_invalid": "该上传内容不属于您的主页。",
+    "image_not_uploaded": "请先上传图片。",
+    "image_type": "请使用 JPEG、PNG 或 WebP 图片。",
+    "image_size": "主页图片不能超过 5 MB。",
+    "storage_unavailable": "图片上传暂时不可用，请稍后重试。",
+    "unsubscribe_unknown": "此退订链接无效。",
     "already_suspended": "此主办方已被停用。",
     "cannot_suspend_self": "您不能停用自己的账户。",
     "not_suspended": "此主办方未被停用。",
@@ -122,7 +160,14 @@
     "sales_not_started": "门票尚未开售。",
     "sold_out": "该票种已售罄。",
     "ticket_type_unavailable": "该票种不可用。",
-    "transition_not_allowed": "此订单无法以这种方式更改。"
+    "transition_not_allowed": "此订单无法以这种方式更改。",
+    "recipients_too_many": "此订单最多可将门票发送给 20 人。",
+    "recipient_name_invalid": "请输入每个人的姓名（2 至 120 个字符）。",
+    "recipient_email_invalid": "请为每个人输入有效的电子邮箱，或留空。",
+    "recipient_is_buyer": "这是您自己的邮箱：您的门票已会发送给您。",
+    "recipients_exceed_tickets": "此订单没有这么多可发送给他人的门票。",
+    "buyer_phone_invalid": "请输入带国家/地区代码的电话号码，例如 +2348012345678。",
+    "buyer_gender_invalid": "请选择女、男或不愿透露。"
   },
   "payment": {
     "forbidden": "您无权执行此操作。",
@@ -204,7 +249,8 @@
   "ticket": {
     "email_limit": "此门票在一小时内已多次通过电子邮件发送。请稍后再试。",
     "email_unavailable": "我们暂时无法发送电子邮件。请重试。",
-    "not_found": "未找到门票。"
+    "not_found": "未找到门票。",
+    "first_ticket_is_buyers": "第 1 张门票属于您。请发送其他门票。"
   },
   "validation": {
     "failed": "部分字段无效。"
@@ -215,5 +261,16 @@
   },
   "webhook": {
     "signature_invalid": "签名无效。"
+  },
+  "team": {
+    "already_member": "此人已在团队中。",
+    "email_invalid": "请输入有效的电子邮箱。",
+    "invite_gone": "此邀请已过期或已被使用。请索取新的邀请。",
+    "invite_not_found": "未找到邀请。",
+    "invite_wrong_account": "此邀请发给的是另一个邮箱。请使用受邀且已验证的邮箱登录后接受。",
+    "last_admin": "您是唯一剩下的联合主办方，因此无法卸任。请先将其他人设为联合主办方。",
+    "member_not_found": "此人不在团队中。",
+    "owner_fixed": "活动所有者的角色无法更改或移除。",
+    "role_invalid": "请选择角色。"
   }
 }

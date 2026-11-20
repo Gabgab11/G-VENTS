@@ -1,0 +1,9 @@
+{
+  "src/app/(site)/admin/admin.css": 11,
+  "src/app/(site)/sign-in/AuthScreen.tsx": 4,
+  "src/app/[lang]/discover/CategoryTiles.tsx": 1,
+  "src/app/[lang]/discover/discover.css": 20,
+  "src/app/[lang]/page.tsx": 11,
+  "src/app/[lang]/t/[code]/ticket-css.ts": 28,
+  "src/app/globals.css": 7
+}

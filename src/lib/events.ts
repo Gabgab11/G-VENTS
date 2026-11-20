@@ -17,6 +17,9 @@ export type EventCard = {
   country: string | null;
   cover_theme: string | null;
   cover_url: string | null;
+  /** Lowest ticket price on sale, integer minor units; null when free. */
+  min_price_minor: number | null;
+  currency: string | null;
 };
 
 /**
@@ -44,5 +47,7 @@ export async function getFeaturedEvents(limit = 6, category?: Category): Promise
     country: e.country,
     cover_theme: e.coverTheme,
     cover_url: e.coverUrl,
+    min_price_minor: e.minPriceMinor,
+    currency: e.currency,
   }));
 }

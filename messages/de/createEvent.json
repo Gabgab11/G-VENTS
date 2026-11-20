@@ -1,4 +1,46 @@
 {
+  "pictures": {
+    "label": "Bilder",
+    "count": "{count} von {max}",
+    "help": "Bis zu {max} Bilder als JPG, PNG oder WebP, jeweils höchstens 5 MB. Das erste ist das Hauptbild: Es erscheint auf Karten, in Linkvorschauen und auf Tickets. Ziehen Sie die Bilder oder verwenden Sie die Pfeile, um die Reihenfolge zu ändern.",
+    "add": "Bilder hinzufügen",
+    "addMore": "Weitere hinzufügen",
+    "main": "Hauptbild",
+    "alt": "Bild {number}",
+    "earlier": "Bild {number} nach vorne verschieben",
+    "later": "Bild {number} nach hinten verschieben",
+    "makeMain": "Bild {number} zum Hauptbild machen",
+    "makeMainShort": "Zum Hauptbild machen",
+    "remove": "Bild {number} entfernen",
+    "uploading": "Wird hochgeladen …",
+    "full": "Eine Veranstaltung kann bis zu {max} Bilder haben. Entfernen Sie eines, um ein weiteres hinzuzufügen.",
+    "none": "Noch keine Bilder. Stattdessen wird der Titelstil verwendet.",
+    "wrongType": "{name} kann nicht verwendet werden. Wählen Sie ein JPG-, PNG- oder WebP-Bild.",
+    "tooLarge": "{name} ist größer als 5 MB. Bitte verkleinern Sie das Bild und versuchen Sie es erneut.",
+    "wrongTypePlain": "Wählen Sie ein JPG-, PNG- oder WebP-Bild.",
+    "tooLargePlain": "Bilder dürfen höchstens 5 MB groß sein.",
+    "signedOut": "Ihre Sitzung ist abgelaufen. Melden Sie sich erneut an, um Bilder hinzuzufügen.",
+    "failed": "Die Bilder konnten nicht gespeichert werden. Bitte versuchen Sie es erneut.",
+    "moved": "Bild an Position {number} von {total} verschoben.",
+    "madeMain": "Dies ist jetzt das Hauptbild.",
+    "removed": "Bild entfernt."
+  },
+  "stepper": {
+    "title": "Event erstellen",
+    "stepOf": "Schritt {step} von {total}: {name}",
+    "progress": "Fortschritt",
+    "basics": "Grundangaben",
+    "when": "Wann und wo",
+    "tickets": "Tickets",
+    "publish": "Gestaltung und Veröffentlichung",
+    "completed": "(abgeschlossen)",
+    "back": "Zurück",
+    "continue": "Weiter",
+    "where": "Wo",
+    "look": "Gestaltung",
+    "preview": "Vorschau des Titelbilds: {title}",
+    "publishButton": "Veröffentlichen"
+  },
   "form": {
     "title": "Event erstellen",
     "intro": "Fügen Sie die Details hinzu und teilen Sie dann einen Link, über den sich Gäste anmelden.",
@@ -41,7 +83,14 @@
       "pricePlaceholder": "z. B. 5000",
       "remove": "Ticket entfernen",
       "add": "+ Ticketart hinzufügen",
-      "perPerson": "Max. Tickets pro Person"
+      "perPerson": "Max. Tickets pro Person",
+      "description": "Beschreibung (optional)",
+      "descriptionCount": "{count}/{max} Zeichen",
+      "descriptionPlaceholder": "Was enthalten ist, etwa ein Tisch für vier nahe der Bühne",
+      "group": "Gruppenticket",
+      "groupHelp": "Ein Kauf gewährt mehreren Personen Einlass, etwa ein Tisch.",
+      "admits": "Für wie viele Personen?",
+      "admitsHint": "Von {min} bis {max}. Die Menge zählt Personen: 10 Tische zu 4 sind 40."
     },
     "options": {
       "label": "Event-Optionen",
@@ -167,7 +216,10 @@
     "noTickets": "Fügen Sie mindestens ein Ticket hinzu.",
     "maxTickets": "Fügen Sie höchstens {max} Ticketarten hinzu.",
     "perBuyer": "Wählen Sie ein Limit von 1 bis 10 Tickets pro Person.",
-    "country": "Wählen Sie ein Land aus der Liste."
+    "country": "Wählen Sie ein Land aus der Liste.",
+    "venue": "Geben Sie den Namen des Veranstaltungsorts ein.",
+    "groupSize": "Das Gruppenticket „{name}“ muss 2 bis 20 Personen Einlass gewähren.",
+    "ticketDescription": "Die Beschreibung von „{name}“ darf höchstens {max} Zeichen lang sein."
   },
   "save": {
     "failed": "Wir konnten das Event nicht speichern. Bitte versuchen Sie es erneut.",

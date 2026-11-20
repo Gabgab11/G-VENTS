@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { HOST_REDIRECTS } from "./src/lib/host-redirects";
 import createNextIntlPlugin from "next-intl/plugin";
 import { securityHeaders } from "./src/lib/csp";
 
@@ -12,6 +13,16 @@ const nextConfig: NextConfig = {
     serverActions: { bodySizeLimit: "6mb" },
     // Two root layouts (public pages per language, and the rest) share no not-found page (Change 3).
     globalNotFound: true,
+  },
+  // The design system's index (import { Button } from "@/design") re-exports every component. It has no
+  // side effects, so a page only ships the components it uses, not every Radix primitive (NFR-13).
+  webpack(config) {
+    config.module.rules.push({ test: /[\\/]src[\\/]design[\\/](index|client|cx|token-list)\.ts$/, sideEffects: false });
+    return config;
+  },
+  // The host area moved under /host (src/lib/host-redirects.ts).
+  async redirects() {
+    return [...HOST_REDIRECTS];
   },
   async headers() {
     return [

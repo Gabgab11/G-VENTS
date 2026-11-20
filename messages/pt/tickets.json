@@ -82,7 +82,8 @@
       "button": "Fazer check-in de {name}"
     },
     "foot": "Este ingresso pertence a {name}. Qualquer pessoa com este link pode vê-lo, então compartilhe só com pessoas de confiança.",
-    "print": "Imprimir ou salvar como PDF"
+    "print": "Imprimir ou salvar como PDF",
+    "groupNote": "Faz parte de um grupo de {count}. Cada pessoa tem o seu próprio bilhete."
   },
   "email": {
     "label": "Enviar meu ingresso por e-mail",

@@ -6,7 +6,19 @@
       "canManage": "Você pode editar este evento. <link>Gerenciar evento</link>"
     },
     "coverAlt": "Cartaz de {title}",
+    "gallery": {
+      "label": "Imagens de {title}",
+      "roleDescription": "galeria",
+      "alt": "Imagem {number} de {total}: {title}",
+      "position": "Imagem {number} de {total}",
+      "previous": "Imagem anterior",
+      "next": "Próxima imagem",
+      "show": "Ver a imagem {number} de {total}",
+      "showMore": "Ver a imagem {number} de {total} ({count, plural, one {mais # imagem} other {mais # imagens}})"
+    },
     "hostedBy": "Organizado por",
+    "hostFallback": "Organizador no G-ventZ",
+    "visitProfile": "Ver perfil",
     "going": "{count, plural, one {{count, number, ::group-off} pessoa vai} other {{count, number, ::group-off} pessoas vão}}",
     "privateEvent": "Evento privado",
     "timeLine": "{range} · horário de {zone}",
@@ -44,17 +56,44 @@
   "signUp": {
     "welcome": "Boas-vindas! Crie uma conta gratuita ou entre para garantir seus ingressos. Leva poucos segundos com o Google ou um código de 6 dígitos por e-mail.",
     "cta": "Garantir ingressos",
-    "haveAccount": "Já tem uma conta? <link>Entrar</link>"
+    "haveAccount": "Já tem uma conta? <link>Entrar</link>",
+    "newHere": "É novo por aqui? <link>Crie uma conta gratuita</link>"
   },
   "guest": {
     "name": "Seu nome completo",
     "email": "E-mail",
     "emailNote": "Todos os seus ingressos são enviados para o e-mail da sua conta.",
-    "othersLegend": "Nomes para os outros ingressos (opcional; você pode encaminhar cada ingresso)",
-    "ticketNumber": "Ingresso {number}",
-    "namePlaceholder": "Nome do convidado",
+    "emailThis": "Os ingressos são enviados para este e-mail.",
     "choose": "Escolher",
-    "socialPlaceholder": "@usuário ou link do perfil"
+    "socialPlaceholder": "@usuário ou link do perfil",
+    "phoneCountry": "Código do país",
+    "phone": "Número de telefone",
+    "phoneHint": "O organizador pode usá-lo para contactá-lo sobre o evento.",
+    "phonePlaceholder": "O seu número",
+    "gender": "Género (opcional)",
+    "genderNone": "Escolher",
+    "genders": {
+      "female": "Feminino",
+      "male": "Masculino",
+      "unspecified": "Prefiro não dizer"
+    },
+    "forWho": "Para quem são estes bilhetes?",
+    "forMe": "Todos para mim",
+    "forOthers": "Alguns para outras pessoas",
+    "forOthersHint": "Cada pessoa recebe o seu próprio bilhete. Adicione um e-mail para lho enviar; todos os bilhetes ficam também em Os meus bilhetes.",
+    "ticketFor": "Bilhete {number} · {type}",
+    "removePerson": "Remover",
+    "personName": "Nome completo",
+    "personEmail": "E-mail (opcional)",
+    "personEmailHint": "Enviaremos o bilhete para este endereço.",
+    "addPerson": "Adicionar uma pessoa",
+    "restYours": "Os bilhetes que não atribuir a ninguém ficam consigo.",
+    "recipientErrors": {
+      "recipientName": "Introduza o nome da pessoa (de 2 a 120 caracteres).",
+      "recipientEmail": "Introduza um e-mail válido ou deixe em branco.",
+      "recipientIsBuyer": "Esse é o seu próprio e-mail: os seus bilhetes já lhe chegam.",
+      "recipientsTooMany": "Pode enviar bilhetes a no máximo 20 pessoas por encomenda."
+    }
   },
   "order": {
     "legend": "Ingressos",
@@ -62,9 +101,16 @@
     "free": "Grátis",
     "howMany": "Quantos ingressos {name}",
     "limit": "Até {count, plural, one {{count, number, ::group-off} ingresso} other {{count, number, ::group-off} ingressos}} por pessoa.",
+    "limitLeft": "Você já tem {held, plural, one {# ingresso} other {# ingressos}}; pode obter mais {count, plural, one {#} other {#}}.",
+    "maxReached": "Você já tem o máximo de ingressos permitido ({count, plural, one {# ingresso} other {# ingressos}} por pessoa).",
+    "maxReachedHint": "Eles estão em Meus ingressos e no e-mail da sua conta.",
+    "seeMyTickets": "Ver meus ingressos",
     "pending": "Garantindo seus ingressos...",
     "request": "{count, plural, one {Solicitar um ingresso} other {Solicitar {count, number, ::group-off} ingressos}}",
-    "get": "{count, plural, one {Garantir ingresso} other {Garantir {count, number, ::group-off} ingressos}}"
+    "get": "{count, plural, one {Garantir ingresso} other {Garantir {count, number, ::group-off} ingressos}}",
+    "groupOf": "Grupo de {count}",
+    "admits": "para {count} pessoas",
+    "priceAdmits": "{price} · para {count} pessoas"
   },
   "paid": {
     "legend": "Ingressos pagos",
@@ -85,6 +131,37 @@
     "payTotal": "Pagar com Paystack · {total}",
     "payNote": "Você vai pagar na página segura do Paystack. Seus ingressos ficam reservados por 10 minutos."
   },
+  "verify": {
+    "emailHint": "Enviaremos um código de 6 dígitos por e-mail para confirmá-lo. Seus ingressos são enviados para este endereço.",
+    "emailPlaceholder": "voce@email.com",
+    "continue": "Continuar",
+    "sending": "Enviando o código...",
+    "nameFirst": "Primeiro, informe seu nome completo.",
+    "codeTitle": "Digite o código que enviamos por e-mail",
+    "codeSent": "Enviamos um código de 6 dígitos para <address>{email}</address>. Ele expira em alguns minutos.",
+    "codeLabel": "Código de 6 dígitos",
+    "checking": "Verificando...",
+    "changeEmail": "Alterar e-mail",
+    "resend": "Reenviar código",
+    "resendIn": "Reenviar código em {seconds} s",
+    "resent": "Enviamos um novo código.",
+    "signedIn": "E-mail confirmado.",
+    "confirmed": "E-mail confirmado. Os ingressos são enviados para este e-mail.",
+    "confirmFirst": "Confirme seu e-mail para continuar.",
+    "captchaWait": "Aguarde um momento enquanto verificamos que você não é um robô e tente novamente.",
+    "captchaLoad": "A verificação contra robôs não carregou. Atualize a página e tente novamente.",
+    "captchaFailed": "A verificação contra robôs não foi aprovada. Tente novamente.",
+    "verifyFailed": "Não foi possível verificar o código agora. Tente novamente em instantes."
+  },
+  "discount": {
+    "toggle": "Tem um código de desconto?",
+    "label": "Código de desconto",
+    "apply": "Aplicar",
+    "remove": "Remover",
+    "removeLabel": "Remover o código {code}",
+    "applied": "Código {code} aplicado",
+    "checking": "Verificando o código {code}..."
+  },
   "errors": {
     "eventNotFound": "Não foi possível encontrar este evento.",
     "sessionEnded": "Sua sessão terminou. Entre novamente para garantir ingressos.",
@@ -93,6 +170,57 @@
     "paymentFailed": "Não conseguimos iniciar seu pagamento. Tente novamente.",
     "chooseTicket": "Escolha pelo menos um ingresso.",
     "ticketRange": "Escolha entre 1 e 10 ingressos.",
-    "nonRefundable": "Marque \"{text}\" para continuar."
+    "nonRefundable": "Marque \"{text}\" para continuar.",
+    "codeFormat": "Informe um código de 3 a 32 letras, números, - ou _.",
+    "phoneRequired": "Introduza o seu número de telefone.",
+    "phoneInvalid": "Introduza um número de telefone válido para o país escolhido.",
+    "recipientName": "Introduza o nome de cada pessoa (de 2 a 120 caracteres).",
+    "recipientEmail": "Introduza um e-mail válido para cada pessoa ou deixe em branco.",
+    "recipientIsBuyer": "Esse é o seu próprio e-mail: os seus bilhetes já lhe chegam.",
+    "recipientsTooMany": "Pode enviar bilhetes a no máximo 20 pessoas por encomenda."
+  },
+  "meta": {
+    "cardAlt": "{title}: data, local e ingressos"
+  },
+  "trust": {
+    "paystack": "Pagamento seguro pelo Paystack",
+    "refunds": "Reembolsos: {policy}",
+    "refundsLink": "Política de reembolso",
+    "email": "Os ingressos são enviados para o e-mail da sua conta"
+  },
+  "map": {
+    "open": "Abrir no Google Maps",
+    "show": "Mostrar mapa",
+    "title": "Mapa de {place}",
+    "imageAlt": "Mapa mostrando {place}"
+  },
+  "summary": {
+    "ticketsTitle": "Ingressos",
+    "getTickets": "Comprar ingressos",
+    "register": "Inscrever-se",
+    "joinWaitlist": "Entrar na lista de espera",
+    "soldOut": "Esgotado",
+    "closed": "Inscrições encerradas",
+    "cancelled": "Evento cancelado",
+    "notOnSale": "Ainda não está à venda",
+    "readMore": "Ler mais",
+    "aboutDirections": "Sobre e como chegar",
+    "soldOutNote": "Todos os ingressos foram garantidos.",
+    "waitlistNote": "Os ingressos esgotaram. Entre na lista de espera e enviaremos um e-mail se uma vaga for liberada."
+  },
+  "booking": {
+    "metaTitle": "Ingressos para {title}",
+    "back": "Voltar ao evento",
+    "detailsTitle": "Dados da inscrição",
+    "detailsLead": "Escolha seus ingressos e informe quem vai participar.",
+    "summaryTitle": "Resumo",
+    "confirm": "Confirmar inscrição",
+    "sendRequest": "Enviar solicitação",
+    "completeForm": "Preencha os dados obrigatórios para continuar.",
+    "free": "Grátis",
+    "discount": "Desconto ({code})",
+    "line": "{name} × {count}",
+    "unavailable": "Não é possível reservar ingressos no momento",
+    "groupLine": "{name} × {count} ({entries, plural, one {# entrada} other {# entradas}})"
   }
 }

@@ -24,11 +24,12 @@ const eslintConfig = [
     ],
   },
   {
-    // Change 3 (FR-22.1): user-visible text lives in messages/, not in components. The admin
+    // Change 3 (FR-22.1): user-visible text lives in messages/, not in components. The style guide
+    // (staff only, Change 4) is English like admin. The admin
     // dashboard stays English (D69). NOT_YET_TRANSLATED lists files whose text moves in I3; it
     // only ever shrinks.
     files: ["src/**/*.tsx"],
-    ignores: ["src/app/\\(site\\)/admin/**", ...NOT_YET_TRANSLATED],
+    ignores: ["src/app/\\(site\\)/admin/**", "src/app/\\(site\\)/style-guide/**", ...NOT_YET_TRANSLATED],
     rules: {
       "react/jsx-no-literals": ["error", { noStrings: false, ignoreProps: true, allowedStrings: ["·", "—", "–", "-", "/", "|", "×", "…", "→", "←", "↑", "↓", "%", "+", "*", "(", ")", ":", ",", ".", "!", "?", "&nbsp;", "▾", "✓", "G-vent", "Z", "🌐"] }],
     },

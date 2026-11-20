@@ -1,0 +1,84 @@
+/* Scrim, then the panel centred inside it (the panel sits in the overlay so it can scroll). */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-dialog);
+  display: grid;
+  place-items: center;
+  padding: var(--space-4);
+  overflow-y: auto;
+  background: color-mix(in srgb, var(--tone-ink) 60%, transparent);
+}
+.overlay[data-state="open"] { animation: fade var(--duration-base) var(--ease-out); }
+
+.content {
+  position: relative;
+  display: grid;
+  gap: var(--space-4);
+  width: 100%;
+  max-width: 480px;
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: var(--shadow-3);
+  outline: none;
+}
+.content[data-state="open"] { animation: rise var(--duration-base) var(--ease-out); }
+
+.header { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-3); }
+.headings { display: grid; gap: var(--space-1); min-width: 0; }
+.title { margin: 0; font-size: var(--text-heading-2); line-height: var(--leading-heading-2); font-weight: var(--weight-bold); }
+.description { margin: 0; color: var(--color-text-soft); font-size: var(--text-body); line-height: var(--leading-body); }
+.close {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: var(--control-height);
+  height: var(--control-height);
+  margin-block-start: calc(var(--space-2) * -1);
+  margin-inline-end: calc(var(--space-2) * -1);
+  border: 0;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+.close:hover { background: var(--color-surface-raised); color: var(--color-text); }
+.close:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.body { min-width: 0; font-size: var(--text-body); line-height: var(--leading-body); }
+.footer { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--space-3); }
+
+.grabber { display: none; }
+
+@media (max-width: 639px) {
+  .sheetOverlay { place-items: end stretch; padding: 0; }
+  .sheet {
+    max-width: none;
+    max-height: 90dvh;
+    overflow-y: auto;
+    padding: var(--space-2) var(--space-5) calc(var(--space-5) + env(safe-area-inset-bottom));
+    border-block-end: 0;
+    border-inline: 0;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  }
+  .sheet[data-state="open"] { animation: slideUp var(--duration-base) var(--ease-out); }
+  .sheet .grabber {
+    display: block;
+    justify-self: center;
+    width: 36px;
+    height: 4px;
+    border-radius: var(--radius-full);
+    background: var(--color-border-strong);
+  }
+  .footer { flex-direction: column-reverse; align-items: stretch; }
+}
+
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes rise { from { opacity: 0; transform: translateY(var(--space-2)) scale(0.98); } to { opacity: 1; transform: none; } }
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay[data-state="open"], .content[data-state="open"], .sheet[data-state="open"] { animation: none; }
+}

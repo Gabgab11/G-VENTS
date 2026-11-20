@@ -1,0 +1,29 @@
+/* SiteHeader (Change 4, DS4). One row at every width: on phones the links move into the menu sheet. */
+.header { display: flex; align-items: center; gap: var(--space-5); min-height: 64px; padding: var(--space-3) 0 var(--space-5); }
+.header :global(.back-link) { display: grid; place-items: center; flex: none; width: 40px; height: 40px; padding: 0; border-radius: var(--radius-full); border: 1px solid var(--color-border-strong); background: var(--color-surface); color: var(--color-text); font-size: var(--text-heading-3); line-height: 1; cursor: pointer; }
+.header :global(.back-link):hover { background: var(--color-surface-raised); }
+.logo { flex: none; font-family: var(--font-display); font-weight: var(--weight-heavy); font-size: var(--text-logo); line-height: var(--leading-logo); letter-spacing: -0.4px; white-space: nowrap; color: var(--color-text); text-decoration: none; }
+.logo b { color: var(--color-brand-z); }
+.nav { display: flex; gap: var(--space-1); margin-inline-end: auto; }
+.link { padding: var(--space-2) var(--space-3); border-radius: var(--radius-full); color: var(--color-text-muted); font-size: var(--text-body-sm); font-weight: var(--weight-semibold); text-decoration: none; white-space: nowrap; }
+.link:hover { color: var(--color-text); background: var(--color-surface); }
+.link[aria-current="page"] { color: var(--color-text); background: var(--color-surface); }
+.actions { display: flex; align-items: center; gap: var(--space-2); margin-inline-start: auto; }
+.actions > * { flex: none; white-space: nowrap; }
+.wide { display: contents; }
+/* Doubled class: Button.module.css sets display and may load after this file on some pages. */
+.menuButton.menuButton { display: none; }
+.sheetNav { display: grid; gap: var(--space-1); }
+.sheetLink { display: flex; align-items: center; min-height: var(--control-height); padding: 0 var(--space-3); border-radius: var(--radius-md); color: var(--color-text); font-size: var(--text-body); font-weight: var(--weight-semibold); text-decoration: none; }
+.sheetLink:hover, .sheetLink[aria-current="page"] { background: var(--color-surface-raised); }
+.sheetRow { display: flex; align-items: center; gap: var(--space-3); padding-top: var(--space-4); margin-top: var(--space-4); border-top: 1px solid var(--color-border); }
+.sheetRow :global(.lang-menu > summary) { padding: var(--space-2) var(--space-3); border: 1px solid var(--color-border-strong); }
+.sheetRow :global(.lang-menu .lang-code) { display: inline; }
+.sheetRow :global(.lang-menu .lang-list) { inset-inline-end: auto; inset-inline-start: 0; }
+@media (max-width: 720px) {
+  .header { gap: var(--space-3); }
+  .nav { display: none; }
+  .wide { display: none; }
+  .menuButton.menuButton { display: inline-flex; }
+}
+@media print { .header { display: none; } }

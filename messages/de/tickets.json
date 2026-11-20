@@ -82,7 +82,8 @@
       "button": "{name} einchecken"
     },
     "foot": "Dieses Ticket gehört {name}. Jeder mit diesem Link kann es sehen, teilen Sie es also nur mit Personen, denen Sie vertrauen.",
-    "print": "Drucken oder als PDF speichern"
+    "print": "Drucken oder als PDF speichern",
+    "groupNote": "Teil einer Gruppe von {count}. Jede Person hat ein eigenes Ticket."
   },
   "email": {
     "label": "Ticket per E-Mail senden",

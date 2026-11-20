@@ -13,7 +13,10 @@
     "no_recipients": "Nobody in this audience can receive emails yet.",
     "not_found": "This announcement could not be found.",
     "segment_invalid": "Choose who receives this announcement.",
-    "unsubscribe_unknown": "This unsubscribe link is not valid."
+    "unsubscribe_unknown": "This unsubscribe link is not valid.",
+    "fields_required": "Add a subject and a message.",
+    "quota_exceeded": "This would go over your announcement emails for this month. Choose a smaller audience or wait for the monthly reset.",
+    "template_invalid": "Choose one of the announcement templates."
   },
   "auth": {
     "anonymous_not_allowed": "Sign in with your email or Google to continue.",
@@ -27,6 +30,22 @@
   },
   "db": {
     "busy": "We are very busy right now. Please try again in a moment."
+  },
+  "discount": {
+    "invalid": "This code isn't valid for this event.",
+    "expired": "This code isn't active right now: it has ended or hasn't started yet.",
+    "used_up": "This code has been used as many times as it can be.",
+    "not_for_ticket": "This code doesn't apply to the tickets you chose.",
+    "whole_order": "This code would make the whole order free, and paid orders can't be free. Leave out the code or add another ticket.",
+    "code_format": "Use 3 to 32 letters, digits, - or _.",
+    "code_taken": "This event already has that code.",
+    "limit_invalid": "The limit must be at least 1 and at least the uses so far.",
+    "locked": "This code has been used, so its kind and amount can't change. Pause it and create a new one.",
+    "no_paid_types": "Discount codes apply to paid tickets, and this event has none.",
+    "not_found": "Discount code not found.",
+    "ticket_types_invalid": "Choose this event's paid ticket types; codes don't apply to free tickets.",
+    "value_invalid": "Enter a percentage from 1 to 100, or an amount above 0.",
+    "window_invalid": "The end must be after the start."
   },
   "event": {
     "already_cancelled": "This event is already cancelled.",
@@ -45,6 +64,9 @@
     "forbidden": "You don't have permission to do that for this event.",
     "has_paid_registrations": "Events with paid tickets can't be deleted.",
     "host_owes_money": "You owe G-ventZ money from refunds, so new paid events can't be published until it is repaid from your sales.",
+    "image_not_found": "That picture was already removed.",
+    "images_full": "This event already has 5 pictures. Remove one to add another.",
+    "images_order_invalid": "The pictures changed in the meantime. Reload the page and try again.",
     "location_invalid": "Check the venue details and try again.",
     "not_found": "Event not found.",
     "not_published": "This event is not published.",
@@ -62,7 +84,10 @@
     "time_invalid": "Use a valid date and time.",
     "time_not_in_zone": "That time doesn't exist in this time zone because the clocks change. Pick another time.",
     "time_zone_required": "Choose the event's time zone.",
-    "title_length": "Event name must be 3 to 140 characters."
+    "title_length": "Event name must be 3 to 140 characters.",
+    "group_size_invalid": "A group ticket admits 1 to 20 people.",
+    "group_size_locked": "This ticket type already has sales, so its group size can't change. Add a new ticket type instead.",
+    "ticket_description_invalid": "A ticket description can be up to 300 characters."
   },
   "export": {
     "busy": "An export is already running. Please try again in a minute."
@@ -70,11 +95,24 @@
   "flyer": {
     "not_uploaded": "Upload the image first.",
     "path_invalid": "That upload doesn't belong to this event.",
-    "size": "Flyers can be at most 5 MB.",
+    "size": "Pictures can be at most 5 MB.",
     "storage_unavailable": "Flyer uploads are unavailable right now. Please try again shortly.",
     "type": "Use a JPEG, PNG or WebP image."
   },
   "host": {
+    "cannot_follow_self": "You can't follow yourself.",
+    "handle_invalid": "Use 3 to 30 letters, digits or hyphens, starting and ending with a letter or digit, with no double hyphens.",
+    "handle_reserved": "This handle is reserved. Choose another.",
+    "handle_taken": "This handle is taken. Choose another.",
+    "bio_invalid": "The bio is too long.",
+    "location_invalid": "The location is too long.",
+    "social_invalid": "Use an https:// link to that profile.",
+    "image_path_invalid": "That upload doesn't belong to your profile.",
+    "image_not_uploaded": "Upload the image first.",
+    "image_type": "Use a JPEG, PNG or WebP image.",
+    "image_size": "Profile images can be at most 5 MB.",
+    "storage_unavailable": "Image uploads are unavailable right now. Please try again shortly.",
+    "unsubscribe_unknown": "This unsubscribe link is not valid.",
     "already_suspended": "This host is already suspended.",
     "cannot_suspend_self": "You can't suspend your own account.",
     "not_suspended": "This host is not suspended.",
@@ -122,7 +160,14 @@
     "sales_not_started": "Ticket sales have not started yet.",
     "sold_out": "That ticket type is sold out.",
     "ticket_type_unavailable": "That ticket type isn't available.",
-    "transition_not_allowed": "This order cannot be changed that way."
+    "transition_not_allowed": "This order cannot be changed that way.",
+    "recipients_too_many": "You can send tickets to at most 20 people in this order.",
+    "recipient_name_invalid": "Enter each person's name (2 to 120 characters).",
+    "recipient_email_invalid": "Enter a valid email address for each person, or leave it blank.",
+    "recipient_is_buyer": "That's your own email: your tickets already come to you.",
+    "recipients_exceed_tickets": "This order doesn't have that many tickets to send to other people.",
+    "buyer_phone_invalid": "Enter your phone number with its country code, like +2348012345678.",
+    "buyer_gender_invalid": "Choose female, male or prefer not to say."
   },
   "payment": {
     "forbidden": "You do not have permission to do that.",
@@ -204,7 +249,8 @@
   "ticket": {
     "email_limit": "This ticket has been emailed several times this hour. Please try again later.",
     "email_unavailable": "We couldn't send the email right now. Please try again.",
-    "not_found": "Ticket not found."
+    "not_found": "Ticket not found.",
+    "first_ticket_is_buyers": "Ticket 1 is yours. Send one of the other tickets instead."
   },
   "validation": {
     "failed": "Some fields are not valid."
@@ -215,5 +261,16 @@
   },
   "webhook": {
     "signature_invalid": "Invalid signature."
+  },
+  "team": {
+    "already_member": "This person is already on the team.",
+    "email_invalid": "Enter a valid email address.",
+    "invite_gone": "This invitation has expired or was already used. Ask for a new one.",
+    "invite_not_found": "Invitation not found.",
+    "invite_wrong_account": "This invitation is for another email address. Sign in with the invited, confirmed email to accept it.",
+    "last_admin": "You're the only co-host left, so you can't step down. Make someone else a co-host first.",
+    "member_not_found": "This person is not on the team.",
+    "owner_fixed": "The event owner's role can't be changed or removed.",
+    "role_invalid": "Choose a role."
   }
 }

@@ -6,7 +6,19 @@
       "canManage": "You can edit this event. <link>Manage event</link>"
     },
     "coverAlt": "Flyer for {title}",
+    "gallery": {
+      "label": "Pictures of {title}",
+      "roleDescription": "gallery",
+      "alt": "Picture {number} of {total}: {title}",
+      "position": "Picture {number} of {total}",
+      "previous": "Previous picture",
+      "next": "Next picture",
+      "show": "Show picture {number} of {total}",
+      "showMore": "Show picture {number} of {total} ({count, plural, one {# more picture} other {# more pictures}})"
+    },
     "hostedBy": "Hosted by",
+    "hostFallback": "G-ventZ host",
+    "visitProfile": "Visit profile",
     "going": "{count, plural, one {{count, number, ::group-off} person going} other {{count, number, ::group-off} people going}}",
     "privateEvent": "Private event",
     "timeLine": "{range} · {zone} time",
@@ -44,17 +56,44 @@
   "signUp": {
     "welcome": "Welcome! Create a free account or sign in to get your tickets. It takes a few seconds with Google or a 6-digit email code.",
     "cta": "Get tickets",
-    "haveAccount": "Already have an account? <link>Sign in</link>"
+    "haveAccount": "Already have an account? <link>Sign in</link>",
+    "newHere": "New here? <link>Create a free account</link>"
   },
   "guest": {
     "name": "Your full name",
     "email": "Email",
     "emailNote": "All your tickets are sent to your account email.",
-    "othersLegend": "Names for the other tickets (optional; you can forward each ticket)",
-    "ticketNumber": "Ticket {number}",
-    "namePlaceholder": "Guest name",
+    "emailThis": "Tickets go to this email.",
     "choose": "Choose",
-    "socialPlaceholder": "@handle or profile link"
+    "socialPlaceholder": "@handle or profile link",
+    "phoneCountry": "Country code",
+    "phone": "Phone number",
+    "phoneHint": "The host may use it to contact you about the event.",
+    "phonePlaceholder": "Your number",
+    "gender": "Gender (optional)",
+    "genderNone": "Choose",
+    "genders": {
+      "female": "Female",
+      "male": "Male",
+      "unspecified": "Prefer not to say"
+    },
+    "forWho": "Who are these tickets for?",
+    "forMe": "All for me",
+    "forOthers": "Some for other people",
+    "forOthersHint": "Each person gets their own ticket. Add an email to send it to them; every ticket also stays in your My tickets.",
+    "ticketFor": "Ticket {number} · {type}",
+    "removePerson": "Remove",
+    "personName": "Their full name",
+    "personEmail": "Their email (optional)",
+    "personEmailHint": "We'll email their ticket to this address.",
+    "addPerson": "Add a person",
+    "restYours": "Tickets you don't give to anyone stay with you.",
+    "recipientErrors": {
+      "recipientName": "Enter the person's name (2 to 120 characters).",
+      "recipientEmail": "Enter a valid email address, or leave it blank.",
+      "recipientIsBuyer": "That's your own email: your tickets already come to you.",
+      "recipientsTooMany": "You can send tickets to at most 20 people in one order."
+    }
   },
   "order": {
     "legend": "Tickets",
@@ -62,9 +101,16 @@
     "free": "Free",
     "howMany": "How many {name} tickets",
     "limit": "Up to {count, plural, one {{count, number, ::group-off} ticket} other {{count, number, ::group-off} tickets}} per person.",
+    "limitLeft": "You have {held, plural, one {# ticket} other {# tickets}} already; you can get {count, plural, one {# more} other {# more}}.",
+    "maxReached": "You have the most tickets allowed ({count, plural, one {# ticket} other {# tickets}} per person).",
+    "maxReachedHint": "They're in My tickets and in your account email.",
+    "seeMyTickets": "See my tickets",
     "pending": "Getting your tickets...",
     "request": "{count, plural, one {Request a ticket} other {Request {count, number, ::group-off} tickets}}",
-    "get": "{count, plural, one {Get ticket} other {Get {count, number, ::group-off} tickets}}"
+    "get": "{count, plural, one {Get ticket} other {Get {count, number, ::group-off} tickets}}",
+    "groupOf": "Group of {count}",
+    "admits": "admits {count}",
+    "priceAdmits": "{price} · admits {count}"
   },
   "paid": {
     "legend": "Paid tickets",
@@ -85,6 +131,37 @@
     "payTotal": "Pay with Paystack · {total}",
     "payNote": "You'll pay on Paystack's secure page. Your tickets are held for 10 minutes."
   },
+  "verify": {
+    "emailHint": "We'll email you a 6-digit code to confirm it. Your tickets are sent to this address.",
+    "emailPlaceholder": "you@email.com",
+    "continue": "Continue",
+    "sending": "Sending code...",
+    "nameFirst": "Enter your full name first.",
+    "codeTitle": "Enter the code we emailed you",
+    "codeSent": "We sent a 6-digit code to <address>{email}</address>. It expires in a few minutes.",
+    "codeLabel": "6-digit code",
+    "checking": "Checking...",
+    "changeEmail": "Change email",
+    "resend": "Resend code",
+    "resendIn": "Resend code in {seconds}s",
+    "resent": "We sent a new code.",
+    "signedIn": "Email confirmed.",
+    "confirmed": "Email confirmed. Tickets go to this email.",
+    "confirmFirst": "Confirm your email to continue.",
+    "captchaWait": "Please wait a moment while we check you're not a robot, then try again.",
+    "captchaLoad": "The robot check didn't load. Refresh the page and try again.",
+    "captchaFailed": "The robot check didn't pass. Please try again.",
+    "verifyFailed": "We couldn't check the code right now. Try again in a moment."
+  },
+  "discount": {
+    "toggle": "Got a discount code?",
+    "label": "Discount code",
+    "apply": "Apply",
+    "remove": "Remove",
+    "removeLabel": "Remove the code {code}",
+    "applied": "Code {code} applied",
+    "checking": "Checking code {code}..."
+  },
   "errors": {
     "eventNotFound": "This event could not be found.",
     "sessionEnded": "Your session has ended. Sign in again to get tickets.",
@@ -93,6 +170,57 @@
     "paymentFailed": "We couldn't start your payment. Please try again.",
     "chooseTicket": "Choose at least one ticket.",
     "ticketRange": "Choose between 1 and 10 tickets.",
-    "nonRefundable": "Tick \"{text}\" to continue."
+    "nonRefundable": "Tick \"{text}\" to continue.",
+    "codeFormat": "Enter a code of 3 to 32 letters, digits, - or _.",
+    "phoneRequired": "Enter your phone number.",
+    "phoneInvalid": "Enter a valid phone number for the country you chose.",
+    "recipientName": "Enter each person's name (2 to 120 characters).",
+    "recipientEmail": "Enter a valid email address for each person, or leave it blank.",
+    "recipientIsBuyer": "That's your own email: your tickets already come to you.",
+    "recipientsTooMany": "You can send tickets to at most 20 people in one order."
+  },
+  "meta": {
+    "cardAlt": "{title}: date, place and tickets"
+  },
+  "trust": {
+    "paystack": "Secure payment by Paystack",
+    "refunds": "Refunds: {policy}",
+    "refundsLink": "Refund policy",
+    "email": "Tickets go to your account email"
+  },
+  "map": {
+    "open": "Open in Google Maps",
+    "show": "Show map",
+    "title": "Map of {place}",
+    "imageAlt": "Map showing {place}"
+  },
+  "summary": {
+    "ticketsTitle": "Tickets",
+    "getTickets": "Buy tickets",
+    "register": "Register",
+    "joinWaitlist": "Join the waiting list",
+    "soldOut": "Sold out",
+    "closed": "Registration closed",
+    "cancelled": "Event cancelled",
+    "notOnSale": "Not on sale yet",
+    "readMore": "Read more",
+    "aboutDirections": "About & directions",
+    "soldOutNote": "Every ticket has been taken.",
+    "waitlistNote": "Tickets are sold out. Join the waiting list and we'll email you if a place frees up."
+  },
+  "booking": {
+    "metaTitle": "Tickets for {title}",
+    "back": "Back to the event",
+    "detailsTitle": "Registration details",
+    "detailsLead": "Choose your tickets and tell us who's coming.",
+    "summaryTitle": "Summary",
+    "confirm": "Confirm registration",
+    "sendRequest": "Send request",
+    "completeForm": "Fill in the required details to continue.",
+    "free": "Free",
+    "discount": "Discount ({code})",
+    "line": "{name} × {count}",
+    "unavailable": "Tickets can't be booked right now",
+    "groupLine": "{name} × {count} ({entries, plural, one {# entry} other {# entries}})"
   }
 }

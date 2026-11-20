@@ -1,0 +1,8 @@
+.filters { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--space-4); }
+.filters > :not(.filterActions) { flex: 1 1 14rem; }
+.filterActions { display: flex; gap: var(--space-2); }
+.buyer { color: var(--color-text); font-weight: var(--weight-semibold); text-decoration: none; }
+.buyer:hover { text-decoration: underline; }
+.pager { display: flex; justify-content: space-between; align-items: center; gap: var(--space-4); }
+.muted { color: var(--color-text-muted); font-size: var(--text-body-sm); line-height: var(--leading-body-sm); }
+@media (max-width: 640px) { .filters > :not(.filterActions) { flex-basis: 100%; } }

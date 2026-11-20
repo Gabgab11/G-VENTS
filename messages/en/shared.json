@@ -1,4 +1,5 @@
 {
+  "hostProfile": { "verified": "Verified host" },
   "errorPage": {
     "title": "Something went wrong",
     "body": "We couldn't load this page. Please try again in a moment.",
@@ -39,6 +40,22 @@
       "refunded": { "title": "Refunded", "body": "This order was refunded. The tickets no longer work." },
       "partiallyRefunded": { "title": "Partly refunded", "body": "Some tickets were refunded; the others still work." },
       "disputed": { "title": "Payment disputed", "body": "The payment is disputed with the bank. Your tickets still work for now." }
+    },
+    "groupTicket": "Ticket {position} of {size} · {type}",
+    "sentTo": "Sent to <b>{email}</b>",
+    "resend": {
+      "button": "Resend",
+      "buttonLabel": "Resend {name}'s ticket",
+      "title": "Resend {name}'s ticket",
+      "body": "We'll email the ticket to this address. Correct it if it was mistyped.",
+      "email": "Email",
+      "cancel": "Cancel",
+      "send": "Send ticket",
+      "close": "Close",
+      "sent": "Sent to {email}",
+      "failed": "We couldn't send the ticket. Please try again.",
+      "invalidEmail": "Enter a valid email address.",
+      "signedOut": "Your session has ended. Sign in again."
     }
   },
   "sellReason": {
@@ -107,5 +124,20 @@
     "charity": "Charity",
     "family": "Family",
     "other": "Other"
+  },
+  "price": { "free": "Free", "from": "From {price}" },
+  "share": {
+    "share": "Share",
+    "title": "Share this event",
+    "close": "Close",
+    "email": "Email",
+    "copy": "Copy link",
+    "copied": "Link copied",
+    "copyManual": "The link is selected; copy it from here.",
+    "linkLabel": "Event link",
+    "poster": "QR poster",
+    "posterScan": "Scan to open the event",
+    "posterFailed": "Couldn't make the poster. Please try again.",
+    "preview": "Preview of the share card"
   }
 }

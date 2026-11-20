@@ -1,0 +1,172 @@
+{
+  "shell": {
+    "skip": "Zum Inhalt springen",
+    "nav": "Veranstalterbereich",
+    "home": "Start",
+    "events": "Events",
+    "orders": "Bestellungen & Gäste",
+    "payouts": "Auszahlungen",
+    "settings": "Einstellungen",
+    "admin": "Admin",
+    "scan": "Scannen",
+    "more": "Mehr",
+    "viewSite": "Events entdecken",
+    "myTickets": "Meine Tickets",
+    "account": "Konto",
+    "signOut": "Abmelden",
+    "homepage": "G-ventZ-Startseite",
+    "close": "Schließen"
+  },
+  "home": {
+    "profileBanner": { "title": "Richten Sie Ihr Profil ein", "body": "Wählen Sie einen Benutzernamen und fügen Sie ein Bild hinzu, damit Gäste Sie finden und Ihnen folgen können.", "action": "Profil einrichten", "dismiss": "Ausblenden" },
+    "title": "Start",
+    "welcome": "Willkommen bei G-ventZ",
+    "welcomeNamed": "Willkommen, {name}",
+    "welcomeLead": "Bringen wir Ihr erstes Event online. Das dauert nur wenige Minuten.",
+    "create": "Event erstellen",
+    "periodLabel": "Zeitraum",
+    "period": { "week": "7 Tage", "month": "30 Tage", "quarter": "90 Tage", "year": "12 Monate" },
+    "vs": { "week": "den vorherigen 7 Tagen", "month": "den vorherigen 30 Tagen", "quarter": "den vorherigen 90 Tagen", "year": "den vorherigen 12 Monaten" },
+    "delta": {
+      "up": "{percent} % mehr als in {vs}",
+      "down": "{percent} % weniger als in {vs}",
+      "flat": "Unverändert gegenüber {vs}"
+    },
+    "noCompare": "Noch keine Vergleichswerte",
+    "noPaid": "Keine kostenpflichtigen Verkäufe in diesem Zeitraum",
+    "metricsLabel": "Zahlen für den Zeitraum",
+    "metrics": {
+      "ticketsSold": "Tickets",
+      "revenue": "Umsatz",
+      "checkIns": "Check-ins",
+      "upcoming": "Anstehende Events",
+      "upcomingContext": "Veröffentlicht und noch nicht begonnen"
+    },
+    "checklist": {
+      "title": "Einrichtung",
+      "progress": "{done} von {total} erledigt",
+      "done": "Erledigt",
+      "createdEvent": "Event erstellen",
+      "createdEventHint": "Fügen Sie die Grunddaten, Datum und Ort sowie Ihre Tickets hinzu.",
+      "createdEventAction": "Erstellen Sie Ihr erstes Event",
+      "sharedEvent": "Event teilen",
+      "sharedEventHint": "Senden Sie den Link. Er zeigt Ihren Flyer, das Datum und den Preis.",
+      "sharedEventAction": "Teilen",
+      "payoutReady": "Auszahlungen einrichten, um Tickets zu verkaufen",
+      "payoutReadyHint": "Beantragen Sie kostenpflichtige Tickets und fügen Sie das Bankkonto hinzu, auf das die Verkäufe ausgezahlt werden.",
+      "payoutReadyAction": "Einrichten",
+      "twoStep": "Zwei-Schritt-Anmeldung aktivieren",
+      "twoStepHint": "Schützt Ihre Events und Auszahlungen, falls jemand jemals Ihr E-Mail-Konto übernimmt.",
+      "twoStepAction": "Aktivieren"
+    },
+    "next": {
+      "title": "Nächstes Event",
+      "all": "Alle Events",
+      "none": "Keine anstehenden Events",
+      "sold": "{sold, plural, one {# Ticket} other {# Tickets}}",
+      "soldOf": "{sold} von {capacity} Tickets",
+      "draft": "Entwurf",
+      "manage": "Verwalten",
+      "scan": "Tickets scannen"
+    },
+    "payout": {
+      "title": "Auszahlungen",
+      "view": "Auszahlungen ansehen",
+      "active": "Bereit zum Verkauf",
+      "activeHint": "Paystack zahlt jeden Verkauf auf Ihr Bankkonto aus. G-ventZ verwahrt Ihr Geld nie.",
+      "apply": "Kostenpflichtige Tickets beantragen",
+      "status": {
+        "not_applied": "Nur kostenlose Tickets",
+        "application_submitted": "Antrag wird geprüft",
+        "application_declined": "Antrag abgelehnt",
+        "approval_revoked": "Kostenpflichtige Tickets gestoppt",
+        "payout_account_pending": "Bankkonto wird geprüft",
+        "payments_off": "Kostenpflichtige Tickets nicht verfügbar",
+        "country_off": "In Ihrem Land noch nicht verfügbar",
+        "owes_money": "Offener Betrag",
+        "suspended": "Konto gesperrt"
+      },
+      "hint": {
+        "not_applied": "Beantragen Sie den Verkauf kostenpflichtiger Tickets. Für kostenlose Events ist nichts weiter nötig.",
+        "application_submitted": "Wir antworten in der Regel innerhalb von zwei Werktagen.",
+        "application_declined": "Den Grund finden Sie auf der Seite „Auszahlungen“.",
+        "approval_revoked": "Was passiert ist, erfahren Sie auf der Seite „Auszahlungen“.",
+        "payout_account_pending": "Paystack bestätigt gerade Ihr Bankkonto.",
+        "payments_off": "Kostenpflichtige Tickets sind derzeit für alle pausiert.",
+        "country_off": "Sie können weiterhin kostenlose Events veranstalten.",
+        "owes_money": "Erstattungen oder Rückbuchungen haben einen offenen Betrag hinterlassen; er wird mit Ihren nächsten Verkäufen verrechnet.",
+        "suspended": "Wenden Sie sich an den Support, um mehr zu erfahren."
+      }
+    },
+    "orders": {
+      "title": "Neueste Bestellungen",
+      "all": "Alle Bestellungen",
+      "none": "Noch keine Bestellungen",
+      "guest": "Gast",
+      "free": "Kostenlos",
+      "tickets": "{count, plural, one {# Ticket} other {# Tickets}}"
+    }
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "tabsLabel": "Bereiche der Einstellungen",
+    "tabs": { "profile": "Profil", "security": "Sicherheit", "appearance": "Darstellung", "language": "Sprache" },
+    "appearance": {
+      "title": "Dashboard-Stil",
+      "hint": "Die Farben Ihres Veranstalterbereichs. Nur Sie sehen sie; Ihre Event-Seiten behalten ihren eigenen Stil."
+    },
+    "language": {
+      "title": "Sprache",
+      "hint": "Die Sprache von G-ventZ und der E-Mails, die wir Ihnen senden."
+    }
+  },
+  "scan": {
+    "title": "Tickets scannen",
+    "lead": "Wählen Sie das Event, für das Sie Gäste einchecken.",
+    "none": "Derzeit nichts zu scannen",
+    "noneHint": "Veröffentlichte Events, für die Sie Gäste einchecken können, erscheinen hier, bis sie enden.",
+    "events": "Ihre Events",
+    "open": "Scannen"
+  },
+  "orders": {
+    "title": "Bestellungen & Gäste",
+    "lead": "Alle Bestellungen Ihrer Events. Öffnen Sie eine, um ihre Gäste zu sehen.",
+    "caption": "{total, plural, one {# Bestellung} other {# Bestellungen}}",
+    "guest": "Gast",
+    "free": "Kostenlos",
+    "none": "Noch keine Bestellungen",
+    "noneHint": "Bestellungen erscheinen hier, sobald sich jemand anmeldet oder ein Ticket kauft.",
+    "noneFiltered": "Keine Bestellungen entsprechen diesen Filtern",
+    "filter": { "event": "Event", "allEvents": "Alle Events", "status": "Status", "allStatuses": "Alle Status", "apply": "Anzeigen", "clear": "Zurücksetzen" },
+    "col": { "buyer": "Käufer", "event": "Event", "tickets": "Tickets", "amount": "Betrag", "status": "Status", "when": "Bestellt" },
+    "status": {
+      "completed": "Bestätigt",
+      "pending_approval": "Wartet auf Freigabe",
+      "waitlisted": "Warteliste",
+      "declined": "Abgelehnt",
+      "cancelled": "Storniert",
+      "awaiting_payment": "Zahlung ausstehend",
+      "expired": "Abgelaufen",
+      "failed": "Zahlung fehlgeschlagen",
+      "partially_refunded": "Teilweise erstattet",
+      "refunded": "Erstattet",
+      "disputed": "Angefochten"
+    },
+    "pages": "Seiten",
+    "previous": "Zurück",
+    "next": "Weiter",
+    "page": "Seite {page} von {pages}"
+  },
+  "payouts": {
+    "title": "Abrechnungen nach Event",
+    "caption": "Verkäufe, Gebühren und Ihr Anteil, je Event",
+    "csv": "CSV herunterladen",
+    "failed": "Die Abrechnungen konnten nicht geladen werden. Bitte versuchen Sie es erneut.",
+    "none": "Noch keine kostenpflichtigen Verkäufe",
+    "noneHint": "Sobald Sie kostenpflichtige Tickets verkaufen, erscheinen hier die Verkäufe und Gebühren jedes Events.",
+    "col": { "event": "Event", "orders": "Bestellungen", "gross": "Von Gästen bezahlt", "paystack": "Paystack-Gebühr", "gventz": "G-ventZ-Gebühr", "refunds": "Erstattungen", "net": "Ihr Anteil" },
+    "total": "Gesamt",
+    "totalIn": "Gesamt, {currency}",
+    "note": "Die G-ventZ-Gebühr enthält die Mehrwertsteuer. Paystack zahlt jeden Verkauf gemäß seinem Abrechnungsplan auf Ihr Bankkonto aus; G-ventZ verwahrt Ihr Geld nie."
+  }
+}

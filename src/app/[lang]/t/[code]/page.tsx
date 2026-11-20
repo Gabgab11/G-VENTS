@@ -1,5 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import Link from "next/link";
+import { cache } from "react";
 import { notFound } from "next/navigation";
 import { timezoneLabel } from "@/lib/dates";
 import { intlLocale, safeZone } from "@/lib/format";
@@ -14,12 +15,18 @@ import { TICKET_CSS } from "./ticket-css";
 import { pageFonts } from "@/app/fonts";
 import SiteHeader from "@/components/SiteHeader";
 
-// Tickets are private to whoever holds the link.
-export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
-  const { lang } = await params;
+// One API call per request, shared by the metadata and the page.
+const loadTicket = cache(getTicket);
+
+// Tickets are private to whoever holds the link. An unknown code is a real 404: the metadata resolves
+// before the page streams.
+export async function generateMetadata({ params }: { params: Promise<{ lang: string; code: string }> }) {
+  const { lang, code } = await params;
   setRequestLocale(lang);
+  if (!(await loadTicket(code.toLowerCase()))) notFound();
   const t = await getTranslations("tickets.ticket");
-  return { title: t("meta.title"), robots: { index: false, follow: false } };
+  // Tickets are private: no index, and no link preview (the site card would otherwise be inherited).
+  return { title: t("meta.title"), robots: { index: false, follow: false }, openGraph: null, twitter: null };
 }
 
 /** A message id under tickets.ticket.status, with its tone. */
@@ -78,7 +85,7 @@ export default async function TicketPage({
   const code = rawCode.toLowerCase();
   if (!isTicketCode(code)) notFound();
 
-  const ticket = await getTicket(code);
+  const ticket = await loadTicket(code);
   if (!ticket) notFound();
 
   const { event } = ticket;
@@ -133,6 +140,7 @@ export default async function TicketPage({
             <div className="tk-field">
               <div className="tk-label">{t("ticket")}</div>
               <div className="tk-value">{ticket.ticketType} · {t("free")}{ofTotal}</div>
+              {ticket.groupSize > 1 && <div className="tk-small">{t("groupNote", { count: ticket.groupSize })}</div>}
             </div>
             <div className="tk-field wide">
               <div className="tk-label">{t("where")}</div>

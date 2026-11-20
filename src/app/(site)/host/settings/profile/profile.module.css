@@ -1,0 +1,27 @@
+/* Settings → Profile (Change 4 chunk 4, FR-32). Tokens only; logical properties so Arabic mirrors. */
+.form { display: grid; gap: var(--space-5); }
+.form > section { display: grid; gap: var(--space-4); }
+.lead { margin: 0; color: var(--color-text-muted); font-size: var(--text-body-sm); line-height: var(--leading-body-sm); }
+
+.handleHint { display: grid; gap: var(--space-1); }
+.address { font-weight: var(--weight-semibold); color: var(--color-text-soft); overflow-wrap: anywhere; }
+.check { margin: calc(-1 * var(--space-3)) 0 0; min-block-size: 1lh; font-size: var(--text-body-sm); line-height: var(--leading-body-sm); color: var(--color-text-muted); }
+.check[data-tone="good"] { color: var(--color-success); font-weight: var(--weight-semibold); }
+
+.links { display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.footer { display: grid; gap: var(--space-3); justify-items: start; }
+
+.pictures { display: grid; gap: var(--space-5); margin-block-start: var(--space-5); }
+.slot { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--space-4); align-items: start; }
+.slot[data-kind="cover"] { grid-template-columns: minmax(0, 1fr); }
+.slotPreview { display: grid; }
+.avatarPreview.avatarPreview { inline-size: 88px; block-size: 88px; font-size: var(--text-heading-2); }
+.coverPreview { position: relative; aspect-ratio: 3 / 1; max-inline-size: 560px; border-radius: var(--radius-md); overflow: hidden; background: var(--grad-brand); }
+.coverPreview img { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; }
+.slotText { display: grid; gap: var(--space-2); justify-items: start; min-inline-size: 0; }
+.slotLabel { font-weight: var(--weight-semibold); }
+.slotHint { margin: 0; color: var(--color-text-muted); font-size: var(--text-body-sm); line-height: var(--leading-body-sm); }
+.slotActions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.slotMessage { margin: 0; min-block-size: 1lh; font-size: var(--text-body-sm); color: var(--color-text-muted); }
+.slotMessage[data-tone="error"] { color: var(--color-danger); }
+.slotMessage[data-tone="ok"] { color: var(--color-success); }

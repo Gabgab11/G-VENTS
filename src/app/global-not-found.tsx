@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Button } from "@/design";
 import { getLocale, getTranslations } from "next-intl/server";
 import RootShell, { baseMetadata, baseViewport } from "@/app/RootShell";
 import type { Locale } from "@/i18n/languages";
@@ -21,8 +21,8 @@ export default async function GlobalNotFound() {
         <h1>{t("title")}</h1>
         <p className="muted">{t("body")}</p>
         <div className="actions">
-          <Link href="/discover" className="btn-white">{t("discover")}</Link>
-          <Link href="/" className="btn-ghost">{t("home")}</Link>
+          <Button href="/discover" variant="primary">{t("discover")}</Button>
+          <Button href="/" variant="secondary">{t("home")}</Button>
         </div>
       </main>
     </RootShell>

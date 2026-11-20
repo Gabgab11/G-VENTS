@@ -1,4 +1,5 @@
 {
+  "hostProfile": { "verified": "Verifizierter Veranstalter" },
   "errorPage": {
     "title": "Etwas ist schiefgelaufen",
     "body": "Diese Seite konnte nicht geladen werden. Bitte versuchen Sie es gleich noch einmal.",
@@ -72,6 +73,22 @@
         "title": "Zahlung angefochten",
         "body": "Die Zahlung wird bei der Bank angefochten. Ihre Tickets sind vorerst weiterhin gültig."
       }
+    },
+    "groupTicket": "Ticket {position} von {size} · {type}",
+    "sentTo": "Gesendet an <b>{email}</b>",
+    "resend": {
+      "button": "Erneut senden",
+      "buttonLabel": "Ticket von {name} erneut senden",
+      "title": "Ticket von {name} erneut senden",
+      "body": "Wir senden das Ticket an diese Adresse. Korrigieren Sie sie, falls sie falsch eingegeben wurde.",
+      "email": "E-Mail-Adresse",
+      "cancel": "Abbrechen",
+      "send": "Ticket senden",
+      "close": "Schließen",
+      "sent": "Gesendet an {email}",
+      "failed": "Das Ticket konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
+      "invalidEmail": "Geben Sie eine gültige E-Mail-Adresse ein.",
+      "signedOut": "Ihre Sitzung ist abgelaufen. Melden Sie sich erneut an."
     }
   },
   "sellReason": {
@@ -146,5 +163,20 @@
     "charity": "Wohltätigkeit",
     "family": "Familie",
     "other": "Sonstiges"
+  },
+  "price": { "free": "Kostenlos", "from": "Ab {price}" },
+  "share": {
+    "share": "Teilen",
+    "title": "Diese Veranstaltung teilen",
+    "close": "Schließen",
+    "email": "E-Mail",
+    "copy": "Link kopieren",
+    "copied": "Link kopiert",
+    "copyManual": "Der Link ist markiert; kopieren Sie ihn hier.",
+    "linkLabel": "Link zur Veranstaltung",
+    "poster": "QR-Poster",
+    "posterScan": "Scannen, um die Veranstaltung zu öffnen",
+    "posterFailed": "Das Poster konnte nicht erstellt werden. Bitte versuchen Sie es erneut.",
+    "preview": "Vorschau der Teilen-Karte"
   }
 }

@@ -1,0 +1,22 @@
+.themes { display: grid; gap: var(--space-6); grid-template-columns: repeat(auto-fit, minmax(min(100%, 520px), 1fr)); margin-block: var(--space-6) var(--space-16); }
+.theme { display: grid; gap: var(--space-8); align-content: start; padding: var(--space-6); border-radius: var(--radius-lg); background: var(--color-bg); color: var(--color-text); border: 1px solid var(--color-border); }
+.themeName { margin: 0; font-family: var(--font-display); font-size: var(--text-heading-2); line-height: var(--leading-heading-2); }
+.section { display: grid; gap: var(--space-4); }
+.sectionTitle { margin: 0; font-size: var(--text-caption); line-height: var(--leading-caption); font-weight: var(--weight-bold); letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-muted); }
+.swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--space-3); }
+.swatch { display: flex; align-items: center; gap: var(--space-2); font-size: var(--text-caption); color: var(--color-text-soft); min-width: 0; }
+.swatch code { overflow-wrap: anywhere; }
+.chip { inline-size: 32px; block-size: 32px; flex: none; border-radius: var(--radius-md); border: 1px solid var(--color-border); }
+.typeList { display: grid; gap: var(--space-3); }
+.typeRow { display: grid; grid-template-columns: 110px 1fr; gap: var(--space-3); align-items: baseline; min-width: 0; }
+.typeRow code, .scaleRow code { font-size: var(--text-caption); color: var(--color-text-muted); }
+.typeRow span { overflow-wrap: anywhere; }
+.scale { display: grid; gap: var(--space-2); }
+.scaleRow { display: grid; grid-template-columns: 110px 1fr; align-items: center; gap: var(--space-3); }
+.bar { block-size: 12px; border-radius: var(--radius-sm); background: var(--color-accent); }
+.shapes { display: flex; flex-wrap: wrap; gap: var(--space-4); }
+.shape { display: grid; place-items: center; inline-size: 120px; block-size: 72px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); font-size: var(--text-caption); color: var(--color-text-soft); }
+.row { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+.stack { display: grid; gap: var(--space-3); }
+.grid { display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+.muted { margin: 0; color: var(--color-text-muted); }

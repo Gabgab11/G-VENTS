@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 // Each section: [id, has its own first paragraph, bullets]. Text: legal.privacy.sections.{id}.{title, p1, b1..}.
 const SECTIONS: [string, boolean, number][] = [
   ["introduction", true, 0],
-  ["informationWeCollect", false, 4],
+  ["informationWeCollect", false, 6],
   ["howWeUseYourInformation", false, 0],
   ["sharingWithEventHosts", false, 0],
   ["thirdPartyServices", false, 0],

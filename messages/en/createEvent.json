@@ -1,4 +1,46 @@
 {
+  "pictures": {
+    "label": "Pictures",
+    "count": "{count} of {max}",
+    "help": "Up to {max} pictures in JPG, PNG or WebP, each up to 5 MB. The first is the main picture: it appears on cards, link previews and tickets. Drag the pictures or use the arrows to change the order.",
+    "add": "Add pictures",
+    "addMore": "Add more",
+    "main": "Main",
+    "alt": "Picture {number}",
+    "earlier": "Move picture {number} earlier",
+    "later": "Move picture {number} later",
+    "makeMain": "Make picture {number} the main picture",
+    "makeMainShort": "Make main",
+    "remove": "Remove picture {number}",
+    "uploading": "Uploading…",
+    "full": "An event can have up to {max} pictures. Remove one to add another.",
+    "none": "No pictures yet. The cover style is used instead.",
+    "wrongType": "{name} can't be used. Choose a JPG, PNG or WebP image.",
+    "tooLarge": "{name} is larger than 5 MB. Please resize it and try again.",
+    "wrongTypePlain": "Choose a JPG, PNG or WebP image.",
+    "tooLargePlain": "Pictures can be at most 5 MB.",
+    "signedOut": "Your session has ended. Sign in again to add pictures.",
+    "failed": "The pictures couldn't be saved. Please try again.",
+    "moved": "Picture moved to position {number} of {total}.",
+    "madeMain": "This is now the main picture.",
+    "removed": "Picture removed."
+  },
+  "stepper": {
+    "title": "Create event",
+    "stepOf": "Step {step} of {total}: {name}",
+    "progress": "Progress",
+    "basics": "Basics",
+    "when": "When & where",
+    "tickets": "Tickets",
+    "publish": "Look & publish",
+    "completed": "(completed)",
+    "back": "Back",
+    "continue": "Continue",
+    "where": "Where",
+    "look": "Look",
+    "preview": "Cover preview: {title}",
+    "publishButton": "Publish"
+  },
   "form": {
     "title": "Create an event",
     "intro": "Add the details, then share one link so guests can register.",
@@ -41,7 +83,14 @@
       "pricePlaceholder": "e.g. 5000",
       "remove": "Remove ticket",
       "add": "+ Add ticket type",
-      "perPerson": "Max tickets per person"
+      "perPerson": "Max tickets per person",
+      "description": "Description (optional)",
+      "descriptionCount": "{count}/{max} characters",
+      "descriptionPlaceholder": "What's included, such as a table for four near the stage",
+      "group": "Group ticket",
+      "groupHelp": "One purchase admits several people, such as a table.",
+      "admits": "Admits how many people?",
+      "admitsHint": "From {min} to {max}. The quantity counts people, so 10 tables of 4 is 40."
     },
     "options": {
       "label": "Event options",
@@ -167,7 +216,10 @@
     "noTickets": "Add at least one ticket.",
     "maxTickets": "Add at most {max} ticket types.",
     "perBuyer": "Choose a limit from 1 to 10 tickets per person.",
-    "country": "Choose a country from the list."
+    "country": "Choose a country from the list.",
+    "venue": "Enter the venue name.",
+    "groupSize": "A group ticket \"{name}\" must admit 2 to 20 people.",
+    "ticketDescription": "The description for \"{name}\" can be up to {max} characters."
   },
   "save": {
     "failed": "We couldn't save the event. Please try again.",

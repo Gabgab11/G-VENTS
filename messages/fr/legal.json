@@ -154,7 +154,9 @@
         "b1": "Données du compte (nom, adresse e-mail)",
         "b2": "Données relatives aux événements et aux inscriptions",
         "b3": "Billets et historique d’enregistrement",
-        "b4": "Informations sur l’appareil et l’utilisation"
+        "b4": "Informations sur l’appareil et l’utilisation",
+        "b5": "Votre numéro de téléphone et, si vous choisissez de l'indiquer, votre genre, lorsque vous obtenez des billets. L'organisateur de l'événement peut les voir.",
+        "b6": "Les noms et adresses e-mail des personnes à qui vous envoyez des billets"
       },
       "howWeUseYourInformation": {
         "title": "Comment nous utilisons vos informations"

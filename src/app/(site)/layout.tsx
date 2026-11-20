@@ -1,5 +1,7 @@
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
+import SiteFooter from "@/design/layout/SiteFooter";
+import FooterGate from "@/design/layout/FooterGate";
 import RootShell, { baseMetadata, baseViewport } from "@/app/RootShell";
 import { pickAreas, SITE_CLIENT_AREAS } from "@/i18n/messages";
 import type { Catalogue } from "@/i18n/catalogue";
@@ -16,7 +18,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
   const messages = (await getMessages()) as Catalogue;
   return (
     <RootShell lang={lang}>
-      <NextIntlClientProvider messages={pickAreas(messages, SITE_CLIENT_AREAS)}>{children}</NextIntlClientProvider>
+      <NextIntlClientProvider messages={pickAreas(messages, SITE_CLIENT_AREAS)}>{children}<FooterGate><SiteFooter /></FooterGate></NextIntlClientProvider>
     </RootShell>
   );
 }

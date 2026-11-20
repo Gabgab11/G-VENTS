@@ -1,0 +1,19 @@
+.tooltip {
+  z-index: var(--z-menu);
+  max-width: 280px;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  background: var(--color-inverse);
+  color: var(--color-on-inverse);
+  box-shadow: var(--shadow-2);
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  font-weight: var(--weight-semibold);
+  transform-origin: var(--radix-tooltip-content-transform-origin);
+}
+.tooltip[data-state="delayed-open"],
+.tooltip[data-state="instant-open"] { animation: show var(--duration-base) var(--ease-out); }
+@keyframes show { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .tooltip[data-state="delayed-open"], .tooltip[data-state="instant-open"] { animation: none; }
+}

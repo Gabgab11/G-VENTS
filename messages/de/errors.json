@@ -13,7 +13,10 @@
     "no_recipients": "Niemand in dieser Zielgruppe kann bisher E-Mails empfangen.",
     "not_found": "Diese Mitteilung wurde nicht gefunden.",
     "segment_invalid": "Wählen Sie, wer diese Mitteilung erhält.",
-    "unsubscribe_unknown": "Dieser Abmeldelink ist ungültig."
+    "unsubscribe_unknown": "Dieser Abmeldelink ist ungültig.",
+    "fields_required": "Fügen Sie einen Betreff und eine Nachricht hinzu.",
+    "quota_exceeded": "Damit würden Sie Ihre Ankündigungs-E-Mails für diesen Monat überschreiten. Wählen Sie eine kleinere Zielgruppe oder warten Sie auf die monatliche Zurücksetzung.",
+    "template_invalid": "Wählen Sie eine der Ankündigungsvorlagen."
   },
   "auth": {
     "anonymous_not_allowed": "Melden Sie sich mit Ihrer E-Mail-Adresse oder Google an, um fortzufahren.",
@@ -27,6 +30,22 @@
   },
   "db": {
     "busy": "Gerade ist viel los. Bitte versuchen Sie es gleich noch einmal."
+  },
+  "discount": {
+    "invalid": "Dieser Code ist für diese Veranstaltung nicht gültig.",
+    "expired": "Dieser Code ist derzeit nicht aktiv: Er ist abgelaufen oder hat noch nicht begonnen.",
+    "used_up": "Dieser Code wurde bereits so oft wie möglich verwendet.",
+    "not_for_ticket": "Dieser Code gilt nicht für die gewählten Tickets.",
+    "whole_order": "Mit diesem Code wäre die gesamte Bestellung kostenlos, und kostenpflichtige Bestellungen können nicht kostenlos sein. Lassen Sie den Code weg oder fügen Sie ein weiteres Ticket hinzu.",
+    "code_format": "Verwenden Sie 3 bis 32 Buchstaben, Ziffern, - oder _.",
+    "code_taken": "Diese Veranstaltung hat diesen Code bereits.",
+    "limit_invalid": "Das Limit muss mindestens 1 betragen und darf nicht unter den bisherigen Nutzungen liegen.",
+    "locked": "Dieser Code wurde bereits genutzt, daher können Art und Betrag nicht mehr geändert werden. Pausieren Sie ihn und erstellen Sie einen neuen.",
+    "no_paid_types": "Rabattcodes gelten für bezahlte Tickets, und diese Veranstaltung hat keine.",
+    "not_found": "Rabattcode nicht gefunden.",
+    "ticket_types_invalid": "Wählen Sie bezahlte Ticketarten dieser Veranstaltung; Codes gelten nicht für kostenlose Tickets.",
+    "value_invalid": "Geben Sie einen Prozentsatz von 1 bis 100 oder einen Betrag über 0 ein.",
+    "window_invalid": "Das Ende muss nach dem Beginn liegen."
   },
   "event": {
     "already_cancelled": "Diese Veranstaltung ist bereits abgesagt.",
@@ -45,6 +64,9 @@
     "forbidden": "Sie haben keine Berechtigung, das für diese Veranstaltung zu tun.",
     "has_paid_registrations": "Veranstaltungen mit kostenpflichtigen Tickets können nicht gelöscht werden.",
     "host_owes_money": "Sie schulden G-ventZ Geld aus Erstattungen. Neue kostenpflichtige Veranstaltungen können erst veröffentlicht werden, wenn dies aus Ihren Verkäufen beglichen ist.",
+    "image_not_found": "Dieses Bild wurde bereits entfernt.",
+    "images_full": "Diese Veranstaltung hat bereits 5 Bilder. Entfernen Sie eines, um ein weiteres hinzuzufügen.",
+    "images_order_invalid": "Die Bilder haben sich inzwischen geändert. Laden Sie die Seite neu und versuchen Sie es erneut.",
     "location_invalid": "Prüfen Sie die Angaben zum Veranstaltungsort und versuchen Sie es erneut.",
     "not_found": "Veranstaltung nicht gefunden.",
     "not_published": "Diese Veranstaltung ist nicht veröffentlicht.",
@@ -62,7 +84,10 @@
     "time_invalid": "Verwenden Sie ein gültiges Datum und eine gültige Uhrzeit.",
     "time_not_in_zone": "Diese Uhrzeit gibt es in dieser Zeitzone wegen der Zeitumstellung nicht. Wählen Sie eine andere Uhrzeit.",
     "time_zone_required": "Wählen Sie die Zeitzone der Veranstaltung.",
-    "title_length": "Der Name der Veranstaltung muss 3 bis 140 Zeichen lang sein."
+    "title_length": "Der Name der Veranstaltung muss 3 bis 140 Zeichen lang sein.",
+    "group_size_invalid": "Ein Gruppenticket gewährt 1 bis 20 Personen Einlass.",
+    "group_size_locked": "Für diesen Tickettyp gibt es bereits Verkäufe, daher kann die Gruppengröße nicht mehr geändert werden. Legen Sie stattdessen einen neuen Tickettyp an.",
+    "ticket_description_invalid": "Eine Ticketbeschreibung darf höchstens 300 Zeichen lang sein."
   },
   "export": {
     "busy": "Es läuft bereits ein Export. Bitte versuchen Sie es in einer Minute erneut."
@@ -70,11 +95,24 @@
   "flyer": {
     "not_uploaded": "Laden Sie zuerst das Bild hoch.",
     "path_invalid": "Dieser Upload gehört nicht zu dieser Veranstaltung.",
-    "size": "Flyer dürfen höchstens 5 MB groß sein.",
+    "size": "Bilder dürfen höchstens 5 MB groß sein.",
     "storage_unavailable": "Flyer-Uploads sind gerade nicht verfügbar. Bitte versuchen Sie es in Kürze erneut.",
     "type": "Verwenden Sie ein JPEG-, PNG- oder WebP-Bild."
   },
   "host": {
+    "cannot_follow_self": "Sie können sich nicht selbst folgen.",
+    "handle_invalid": "Verwenden Sie 3 bis 30 Buchstaben, Ziffern oder Bindestriche, beginnend und endend mit einem Buchstaben oder einer Ziffer, ohne doppelte Bindestriche.",
+    "handle_reserved": "Dieser Benutzername ist reserviert. Bitte wählen Sie einen anderen.",
+    "handle_taken": "Dieser Benutzername ist vergeben. Bitte wählen Sie einen anderen.",
+    "bio_invalid": "Der Text über Sie ist zu lang.",
+    "location_invalid": "Die Ortsangabe ist zu lang.",
+    "social_invalid": "Verwenden Sie einen https://-Link zu diesem Profil.",
+    "image_path_invalid": "Dieser Upload gehört nicht zu Ihrem Profil.",
+    "image_not_uploaded": "Laden Sie zuerst das Bild hoch.",
+    "image_type": "Verwenden Sie ein JPEG-, PNG- oder WebP-Bild.",
+    "image_size": "Profilbilder dürfen höchstens 5 MB groß sein.",
+    "storage_unavailable": "Das Hochladen von Bildern ist gerade nicht möglich. Bitte versuchen Sie es in Kürze erneut.",
+    "unsubscribe_unknown": "Dieser Abmeldelink ist ungültig.",
     "already_suspended": "Dieser Veranstalter ist bereits gesperrt.",
     "cannot_suspend_self": "Sie können Ihr eigenes Konto nicht sperren.",
     "not_suspended": "Dieser Veranstalter ist nicht gesperrt.",
@@ -122,7 +160,14 @@
     "sales_not_started": "Der Ticketverkauf hat noch nicht begonnen.",
     "sold_out": "Diese Ticketart ist ausverkauft.",
     "ticket_type_unavailable": "Diese Ticketart ist nicht verfügbar.",
-    "transition_not_allowed": "Diese Bestellung kann so nicht geändert werden."
+    "transition_not_allowed": "Diese Bestellung kann so nicht geändert werden.",
+    "recipients_too_many": "Sie können in dieser Bestellung Tickets an höchstens 20 Personen senden.",
+    "recipient_name_invalid": "Geben Sie für jede Person den Namen ein (2 bis 120 Zeichen).",
+    "recipient_email_invalid": "Geben Sie für jede Person eine gültige E-Mail-Adresse ein oder lassen Sie das Feld leer.",
+    "recipient_is_buyer": "Das ist Ihre eigene E-Mail-Adresse: Ihre Tickets erhalten Sie bereits.",
+    "recipients_exceed_tickets": "Diese Bestellung hat nicht so viele Tickets, die Sie an andere senden können.",
+    "buyer_phone_invalid": "Geben Sie Ihre Telefonnummer mit Ländervorwahl ein, etwa +2348012345678.",
+    "buyer_gender_invalid": "Wählen Sie weiblich, männlich oder keine Angabe."
   },
   "payment": {
     "forbidden": "Sie haben keine Berechtigung dazu.",
@@ -204,7 +249,8 @@
   "ticket": {
     "email_limit": "Dieses Ticket wurde in dieser Stunde bereits mehrmals per E-Mail gesendet. Bitte versuchen Sie es später erneut.",
     "email_unavailable": "Wir konnten die E-Mail gerade nicht senden. Bitte versuchen Sie es erneut.",
-    "not_found": "Ticket nicht gefunden."
+    "not_found": "Ticket nicht gefunden.",
+    "first_ticket_is_buyers": "Ticket 1 gehört Ihnen. Senden Sie stattdessen eines der anderen Tickets."
   },
   "validation": {
     "failed": "Einige Felder sind ungültig."
@@ -215,5 +261,16 @@
   },
   "webhook": {
     "signature_invalid": "Ungültige Signatur."
+  },
+  "team": {
+    "already_member": "Diese Person ist bereits im Team.",
+    "email_invalid": "Geben Sie eine gültige E-Mail-Adresse ein.",
+    "invite_gone": "Diese Einladung ist abgelaufen oder wurde bereits verwendet. Bitten Sie um eine neue.",
+    "invite_not_found": "Einladung nicht gefunden.",
+    "invite_wrong_account": "Diese Einladung gilt für eine andere E-Mail-Adresse. Melden Sie sich mit der eingeladenen, bestätigten Adresse an, um sie anzunehmen.",
+    "last_admin": "Sie sind der einzige verbleibende Mitveranstalter und können diese Rolle daher nicht abgeben. Machen Sie zuerst eine andere Person zum Mitveranstalter.",
+    "member_not_found": "Diese Person ist nicht im Team.",
+    "owner_fixed": "Die Rolle des Eigentümers kann weder geändert noch entfernt werden.",
+    "role_invalid": "Wählen Sie eine Rolle."
   }
 }

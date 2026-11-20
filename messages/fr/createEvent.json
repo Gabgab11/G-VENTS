@@ -1,4 +1,46 @@
 {
+  "pictures": {
+    "label": "Images",
+    "count": "{count} sur {max}",
+    "help": "Jusqu’à {max} images JPG, PNG ou WebP, de 5 Mo maximum chacune. La première est l’image principale : elle apparaît sur les cartes, les aperçus de liens et les billets. Faites glisser les images ou utilisez les flèches pour modifier l’ordre.",
+    "add": "Ajouter des images",
+    "addMore": "En ajouter",
+    "main": "Principale",
+    "alt": "Image {number}",
+    "earlier": "Avancer l’image {number} d’une position",
+    "later": "Reculer l’image {number} d’une position",
+    "makeMain": "Faire de l’image {number} l’image principale",
+    "makeMainShort": "Définir comme principale",
+    "remove": "Supprimer l’image {number}",
+    "uploading": "Envoi en cours…",
+    "full": "Un événement peut avoir jusqu’à {max} images. Supprimez-en une pour en ajouter une autre.",
+    "none": "Aucune image pour l’instant. Le style de couverture est utilisé à la place.",
+    "wrongType": "{name} ne peut pas être utilisée. Choisissez une image JPG, PNG ou WebP.",
+    "tooLarge": "{name} dépasse 5 Mo. Veuillez la redimensionner et réessayer.",
+    "wrongTypePlain": "Choisissez une image JPG, PNG ou WebP.",
+    "tooLargePlain": "Les images ne peuvent pas dépasser 5 Mo.",
+    "signedOut": "Votre session a pris fin. Reconnectez-vous pour ajouter des images.",
+    "failed": "Les images n’ont pas pu être enregistrées. Veuillez réessayer.",
+    "moved": "Image déplacée en position {number} sur {total}.",
+    "madeMain": "C’est maintenant l’image principale.",
+    "removed": "Image supprimée."
+  },
+  "stepper": {
+    "title": "Créer un événement",
+    "stepOf": "Étape {step} sur {total} : {name}",
+    "progress": "Progression",
+    "basics": "Informations de base",
+    "when": "Date et lieu",
+    "tickets": "Billets",
+    "publish": "Apparence et publication",
+    "completed": "(terminée)",
+    "back": "Retour",
+    "continue": "Continuer",
+    "where": "Lieu",
+    "look": "Apparence",
+    "preview": "Aperçu de la couverture : {title}",
+    "publishButton": "Publier"
+  },
   "form": {
     "title": "Créer un événement",
     "intro": "Ajoutez les détails, puis partagez un seul lien pour que les invités s’inscrivent.",
@@ -41,7 +83,14 @@
       "pricePlaceholder": "ex. 5000",
       "remove": "Retirer le billet",
       "add": "+ Ajouter un type de billet",
-      "perPerson": "Billets maximum par personne"
+      "perPerson": "Billets maximum par personne",
+      "description": "Description (facultatif)",
+      "descriptionCount": "{count}/{max} caractères",
+      "descriptionPlaceholder": "Ce qui est inclus, par exemple une table pour quatre près de la scène",
+      "group": "Billet de groupe",
+      "groupHelp": "Un achat fait entrer plusieurs personnes, comme une table.",
+      "admits": "Combien de personnes ?",
+      "admitsHint": "De {min} à {max}. La quantité compte des personnes : 10 tables de 4 font 40."
     },
     "options": {
       "label": "Options de l’événement",
@@ -167,7 +216,10 @@
     "noTickets": "Ajoutez au moins un billet.",
     "maxTickets": "Ajoutez au maximum {max} types de billets.",
     "perBuyer": "Choisissez une limite de 1 à 10 billets par personne.",
-    "country": "Choisissez un pays dans la liste."
+    "country": "Choisissez un pays dans la liste.",
+    "venue": "Indiquez le nom du lieu.",
+    "groupSize": "Le billet de groupe « {name} » doit faire entrer de 2 à 20 personnes.",
+    "ticketDescription": "La description de « {name} » peut compter jusqu'à {max} caractères."
   },
   "save": {
     "failed": "Nous n’avons pas pu enregistrer l’événement. Veuillez réessayer.",

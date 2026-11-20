@@ -13,7 +13,10 @@
     "no_recipients": "Personne dans ce public ne peut encore recevoir d'e-mails.",
     "not_found": "Cette annonce est introuvable.",
     "segment_invalid": "Choisissez qui reçoit cette annonce.",
-    "unsubscribe_unknown": "Ce lien de désinscription n'est pas valide."
+    "unsubscribe_unknown": "Ce lien de désinscription n'est pas valide.",
+    "fields_required": "Ajoutez un objet et un message.",
+    "quota_exceeded": "Cela dépasserait vos e-mails d'annonce de ce mois. Choisissez un public plus restreint ou attendez la réinitialisation mensuelle.",
+    "template_invalid": "Choisissez l'un des modèles d'annonce."
   },
   "auth": {
     "anonymous_not_allowed": "Connectez-vous avec votre e-mail ou Google pour continuer.",
@@ -27,6 +30,22 @@
   },
   "db": {
     "busy": "Nous sommes très sollicités en ce moment. Veuillez réessayer dans un instant."
+  },
+  "discount": {
+    "invalid": "Ce code n'est pas valable pour cet événement.",
+    "expired": "Ce code n'est pas actif pour le moment : il a expiré ou n'a pas encore commencé.",
+    "used_up": "Ce code a déjà été utilisé le nombre maximal de fois.",
+    "not_for_ticket": "Ce code ne s'applique pas aux billets choisis.",
+    "whole_order": "Ce code rendrait toute la commande gratuite, et les commandes payantes ne peuvent pas être gratuites. Retirez le code ou ajoutez un autre billet.",
+    "code_format": "Utilisez de 3 à 32 lettres, chiffres, - ou _.",
+    "code_taken": "Cet événement a déjà ce code.",
+    "limit_invalid": "La limite doit être d'au moins 1 et pas inférieure aux utilisations actuelles.",
+    "locked": "Ce code a déjà été utilisé : son type et son montant ne peuvent plus changer. Mettez-le en pause et créez-en un nouveau.",
+    "no_paid_types": "Les codes de réduction s'appliquent aux billets payants, et cet événement n'en a aucun.",
+    "not_found": "Code de réduction introuvable.",
+    "ticket_types_invalid": "Choisissez des types de billets payants de cet événement ; les codes ne s'appliquent pas aux billets gratuits.",
+    "value_invalid": "Saisissez un pourcentage de 1 à 100, ou un montant supérieur à 0.",
+    "window_invalid": "La fin doit être postérieure au début."
   },
   "event": {
     "already_cancelled": "Cet événement est déjà annulé.",
@@ -45,6 +64,9 @@
     "forbidden": "Vous n'avez pas l'autorisation de faire cela pour cet événement.",
     "has_paid_registrations": "Les événements avec des billets payants ne peuvent pas être supprimés.",
     "host_owes_money": "Vous devez de l'argent à G-ventZ à la suite de remboursements : vous ne pourrez publier de nouveaux événements payants qu'une fois cette somme remboursée par vos ventes.",
+    "image_not_found": "Cette image a déjà été supprimée.",
+    "images_full": "Cet événement a déjà 5 images. Supprimez-en une pour en ajouter une autre.",
+    "images_order_invalid": "Les images ont changé entre-temps. Rechargez la page et réessayez.",
     "location_invalid": "Vérifiez les informations du lieu et réessayez.",
     "not_found": "Événement introuvable.",
     "not_published": "Cet événement n'est pas publié.",
@@ -62,7 +84,10 @@
     "time_invalid": "Utilisez une date et une heure valides.",
     "time_not_in_zone": "Cette heure n'existe pas dans ce fuseau horaire en raison du changement d'heure. Choisissez une autre heure.",
     "time_zone_required": "Choisissez le fuseau horaire de l'événement.",
-    "title_length": "Le nom de l'événement doit contenir de 3 à 140 caractères."
+    "title_length": "Le nom de l'événement doit contenir de 3 à 140 caractères.",
+    "group_size_invalid": "Un billet de groupe fait entrer de 1 à 20 personnes.",
+    "group_size_locked": "Ce type de billet a déjà des ventes : sa taille de groupe ne peut plus changer. Ajoutez plutôt un nouveau type de billet.",
+    "ticket_description_invalid": "La description d'un billet peut compter jusqu'à 300 caractères."
   },
   "export": {
     "busy": "Un export est déjà en cours. Veuillez réessayer dans une minute."
@@ -70,11 +95,24 @@
   "flyer": {
     "not_uploaded": "Téléversez d'abord l'image.",
     "path_invalid": "Ce fichier n'appartient pas à cet événement.",
-    "size": "Les flyers peuvent peser au maximum 5 Mo.",
+    "size": "Les images peuvent peser au maximum 5 Mo.",
     "storage_unavailable": "Le téléversement des flyers est indisponible pour le moment. Veuillez réessayer sous peu.",
     "type": "Utilisez une image JPEG, PNG ou WebP."
   },
   "host": {
+    "cannot_follow_self": "Vous ne pouvez pas vous suivre vous-même.",
+    "handle_invalid": "Utilisez de 3 à 30 lettres, chiffres ou tirets, commençant et finissant par une lettre ou un chiffre, sans double tiret.",
+    "handle_reserved": "Cet identifiant est réservé. Choisissez-en un autre.",
+    "handle_taken": "Cet identifiant est déjà pris. Choisissez-en un autre.",
+    "bio_invalid": "La bio est trop longue.",
+    "location_invalid": "Le lieu est trop long.",
+    "social_invalid": "Utilisez un lien https:// vers ce profil.",
+    "image_path_invalid": "Cette image n'appartient pas à votre profil.",
+    "image_not_uploaded": "Importez d'abord l'image.",
+    "image_type": "Utilisez une image JPEG, PNG ou WebP.",
+    "image_size": "Les images du profil ne doivent pas dépasser 5 Mo.",
+    "storage_unavailable": "L'importation d'images est indisponible pour le moment. Veuillez réessayer dans quelques instants.",
+    "unsubscribe_unknown": "Ce lien de désabonnement n'est pas valide.",
     "already_suspended": "Cet organisateur est déjà suspendu.",
     "cannot_suspend_self": "Vous ne pouvez pas suspendre votre propre compte.",
     "not_suspended": "Cet organisateur n'est pas suspendu.",
@@ -122,7 +160,14 @@
     "sales_not_started": "La vente des billets n'a pas encore commencé.",
     "sold_out": "Ce type de billet est épuisé.",
     "ticket_type_unavailable": "Ce type de billet n'est pas disponible.",
-    "transition_not_allowed": "Cette commande ne peut pas être modifiée de cette façon."
+    "transition_not_allowed": "Cette commande ne peut pas être modifiée de cette façon.",
+    "recipients_too_many": "Vous pouvez envoyer des billets à 20 personnes au maximum dans cette commande.",
+    "recipient_name_invalid": "Saisissez le nom de chaque personne (2 à 120 caractères).",
+    "recipient_email_invalid": "Saisissez une adresse e-mail valide pour chaque personne ou laissez le champ vide.",
+    "recipient_is_buyer": "C'est votre propre adresse : vos billets vous parviennent déjà.",
+    "recipients_exceed_tickets": "Cette commande n'a pas autant de billets à envoyer à d'autres personnes.",
+    "buyer_phone_invalid": "Saisissez votre numéro de téléphone avec l'indicatif du pays, par exemple +2348012345678.",
+    "buyer_gender_invalid": "Choisissez femme, homme ou je préfère ne pas le dire."
   },
   "payment": {
     "forbidden": "Vous n'avez pas l'autorisation de faire cela.",
@@ -204,7 +249,8 @@
   "ticket": {
     "email_limit": "Ce billet a été envoyé par e-mail plusieurs fois au cours de la dernière heure. Veuillez réessayer plus tard.",
     "email_unavailable": "Nous n'avons pas pu envoyer l'e-mail pour le moment. Veuillez réessayer.",
-    "not_found": "Billet introuvable."
+    "not_found": "Billet introuvable.",
+    "first_ticket_is_buyers": "Le billet 1 est le vôtre. Envoyez plutôt l'un des autres billets."
   },
   "validation": {
     "failed": "Certains champs ne sont pas valides."
@@ -215,5 +261,16 @@
   },
   "webhook": {
     "signature_invalid": "Signature non valide."
+  },
+  "team": {
+    "already_member": "Cette personne fait déjà partie de l'équipe.",
+    "email_invalid": "Saisissez une adresse e-mail valide.",
+    "invite_gone": "Cette invitation a expiré ou a déjà été utilisée. Demandez-en une nouvelle.",
+    "invite_not_found": "Invitation introuvable.",
+    "invite_wrong_account": "Cette invitation est destinée à une autre adresse e-mail. Connectez-vous avec l'adresse invitée et confirmée pour l'accepter.",
+    "last_admin": "Vous êtes le seul co-organisateur restant : vous ne pouvez pas quitter ce rôle. Nommez d'abord une autre personne co-organisateur.",
+    "member_not_found": "Cette personne ne fait pas partie de l'équipe.",
+    "owner_fixed": "Le rôle du propriétaire de l'événement ne peut être ni modifié ni retiré.",
+    "role_invalid": "Choisissez un rôle."
   }
 }

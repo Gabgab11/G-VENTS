@@ -87,11 +87,15 @@ export function decimalString(minor: number, digits: number): string {
   return digits === 0 ? `${sign}${abs}` : `${sign}${abs.slice(0, -digits)}.${abs.slice(-digits)}`;
 }
 
-/** Integer minor units → "₦2,500.00" (English), "2 500,00 NGN" (French), and so on. */
-export function formatMoney(minor: number, currency: string, lang: Locale): string {
+/**
+ * Integer minor units → "₦2,500.00" (English), "2 500,00 NGN" (French), and so on.
+ * `compact` drops the decimals of a whole amount ("₦5,000"), for short labels like "From ₦5,000".
+ */
+export function formatMoney(minor: number, currency: string, lang: Locale, compact = false): string {
   const digits = minorDigits(currency);
   try {
-    const fmt = new Intl.NumberFormat(intlLocale(lang, "money"), { style: "currency", currency });
+    const whole = digits > 0 && minor % 10 ** digits === 0;
+    const fmt = new Intl.NumberFormat(intlLocale(lang, "money"), { style: "currency", currency, ...(compact && whole ? { minimumFractionDigits: 0, maximumFractionDigits: 0 } : {}) });
     // Intl formats a numeric string exactly (no float in between).
     return fmt.format(decimalString(minor, digits) as unknown as number);
   } catch {

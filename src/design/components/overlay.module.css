@@ -1,0 +1,22 @@
+/* Shared surfaces for menus, popovers and tooltips (shadow-2, menu layer). */
+.floating {
+  z-index: var(--z-menu);
+  min-width: 200px;
+  max-width: min(360px, calc(100vw - var(--space-8)));
+  padding: var(--space-1);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  box-shadow: var(--shadow-2);
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+  transform-origin: var(--radix-popper-transform-origin);
+}
+.floating[data-state="open"],
+.floating[data-state="delayed-open"],
+.floating[data-state="instant-open"] { animation: pop var(--duration-base) var(--ease-out); }
+@keyframes pop { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .floating[data-state="open"], .floating[data-state="delayed-open"], .floating[data-state="instant-open"] { animation: none; }
+}

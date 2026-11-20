@@ -1,0 +1,41 @@
+/* SiteFooter (Change 4, DS4). Global, not a CSS module, because FooterWordmark and LanguageSwitcher
+   render their own class names inside it. Every value comes from src/design/tokens.css. */
+.site-footer { padding: var(--space-12) var(--gutter) 0; background: var(--tone-ink); color: var(--color-text); font-family: var(--font-sans); }
+.site-footer a { color: inherit; text-decoration: none; }
+.site-footer a:hover { color: var(--color-accent); }
+.site-footer-main { display: grid; grid-template-columns: minmax(280px, 1.7fr) repeat(3, minmax(130px, 1fr)) minmax(170px, 1fr); gap: var(--space-12); padding-bottom: var(--space-12); }
+.site-footer-brand p { max-width: 390px; margin: 0; color: var(--color-text-soft); font-family: var(--font-display); font-size: var(--text-heading-2); line-height: var(--leading-heading-2); font-weight: var(--weight-bold); }
+.site-footer-logo { display: inline-block; margin-bottom: var(--space-4); font-family: var(--font-display); font-size: var(--text-heading-2); font-weight: var(--weight-heavy); letter-spacing: -0.4px; }
+.site-footer-logo b { color: var(--color-brand-z); }
+.site-footer-title { margin: 0 0 var(--space-5); color: var(--color-accent); font-size: var(--text-body-sm); font-weight: var(--weight-bold); }
+.site-footer-links { display: grid; gap: var(--space-3); font-size: var(--text-body); }
+.site-footer-label { margin: 0 0 var(--space-2); color: var(--color-text-muted); font-size: var(--text-body-sm); }
+.site-footer-contact + .site-footer-contact { margin-top: var(--space-5); }
+.site-footer-bottom { display: flex; justify-content: space-between; align-items: center; gap: var(--space-4); padding: var(--space-5) 0; border-top: 1px solid var(--color-border); color: var(--color-text-muted); font-size: var(--text-body-sm); }
+.site-footer-bottom p { margin: 0; }
+.site-footer-meta { display: flex; align-items: center; gap: var(--space-5); flex-wrap: wrap; }
+.site-footer-legal { display: flex; gap: var(--space-5); flex-wrap: wrap; }
+.site-footer .socials { display: flex; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+.site-footer .socials a, .site-footer .socials-soon { display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid var(--color-border-strong); border-radius: var(--radius-full); color: var(--color-text); }
+.site-footer .socials a:hover { color: var(--color-accent); border-color: var(--color-accent); }
+.site-footer .socials-soon { opacity: .45; cursor: default; }
+/* The big wordmark across the top, fading out at the bottom. Letters rise with the scroll (FooterWordmark.tsx). */
+.hp-footer-wordmark { overflow: hidden; white-space: nowrap; margin: 0 calc(-1 * var(--gutter)) var(--space-6); padding: .06em var(--space-6) 0; color: var(--color-text); font-family: var(--font-display); font-size: 32vw; font-weight: var(--weight-heavy); letter-spacing: -.07em; line-height: .8; text-align: start; -webkit-mask-image: linear-gradient(to bottom, black 78%, transparent 100%); mask-image: linear-gradient(to bottom, black 78%, transparent 100%); user-select: none; pointer-events: none; }
+.hp-footer-wordmark .wm-fit { display: inline-block; transform: none; transition: none; will-change: auto; }
+.hp-footer-wordmark span { display: inline-block; transform-origin: 50% 100%; will-change: transform; transition: transform .5s cubic-bezier(.2, .8, .3, 1); }
+.hp-footer-wordmark .wm-z { color: var(--color-brand-z); }
+@media (max-width: 900px) {
+  .site-footer-main { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-8) var(--space-5); }
+  .site-footer-brand { grid-column: 1 / -1; }
+}
+@media (max-width: 640px) {
+  .site-footer { padding: var(--space-10) var(--space-5) 0; }
+  .site-footer-main { grid-template-columns: 1fr 1fr; gap: var(--space-8) var(--space-4); }
+  .site-footer-bottom { align-items: flex-start; flex-direction: column; }
+}
+@media (prefers-reduced-motion: reduce) { .hp-footer-wordmark span { transition: none; } }
+
+/* In the host area on phones the bottom tab bar is fixed over the page: keep the footer's last row clear of it. */
+@media (max-width: 959px) {
+  body:has([data-host-shell]) .site-footer { padding-block-end: calc(var(--bottom-bar-height) + env(safe-area-inset-bottom)); }
+}
