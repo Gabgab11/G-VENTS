@@ -5,5 +5,5 @@
   "src/app/[lang]/discover/discover.css": 20,
   "src/app/[lang]/page.tsx": 11,
   "src/app/[lang]/t/[code]/ticket-css.ts": 28,
-  "src/app/globals.css": 14
+  "src/app/globals.css": 9
 }

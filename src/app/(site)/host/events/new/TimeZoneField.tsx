@@ -5,7 +5,8 @@ import Combobox from "@/components/Combobox";
 import { useTranslations } from "next-intl";
 import { mainZones, zoneOptions } from "@/lib/time-zones";
 import { useFormat } from "@/i18n/format-hooks";
-import { Select } from "@/design";
+import { Button, Select } from "@/design";
+import styles from "./TimeZoneField.module.css";
 
 // The event's time zone, shown rather than asked for. Most hosts never touch it: it comes from the
 // venue (its coordinates), from the country when the country has one zone, or from the host's
@@ -61,15 +62,15 @@ export default function TimeZoneField({ online, context }: { online: boolean; co
   const needsChoice = !online && !zone && context.countryZones.length > 1;
 
   return (
-    <div className="field tz-field">
-      <span>{t("label")}</span>
+    <div className={styles.field}>
+      <span className={styles.label}>{t("label")}</span>
       {needsChoice && !picking ? (
         <>
           <Select value="" onChange={(e) => setChosen(e.target.value)} aria-label={t("inCountry", { country: context.countryName })}>
             <option value="" disabled>{t("choose")}</option>
             {clocks.map((z) => <option key={z} value={z}>{name(z)}</option>)}
           </Select>
-          <span className="muted small">{t("several", { country: context.countryName })}</span>
+          <span className={styles.hint}>{t("several", { country: context.countryName })}</span>
         </>
       ) : picking ? (
         <>
@@ -82,20 +83,20 @@ export default function TimeZoneField({ online, context }: { online: boolean; co
             placeholder={t("searchPlaceholder")}
             emptyText={t("noMatch")}
           />
-          <button type="button" className="link-btn" onClick={() => setPicking(false)}>{t("cancel")}</button>
+          <Button variant="ghost" size="sm" className={styles.cancel} onClick={() => setPicking(false)}>{t("cancel")}</Button>
         </>
       ) : (
-        <div className="tz-current">
-          <span className="tz-name" aria-live="polite">{zone ? name(zone) : "…"}</span>
-          <button type="button" className="link-btn" onClick={() => setPicking(true)}>{t("change")}</button>
+        <div className={styles.current}>
+          <span className={styles.name} aria-live="polite">{zone ? name(zone) : "…"}</span>
+          <Button variant="ghost" size="sm" onClick={() => setPicking(true)}>{t("change")}</Button>
           {chosen && auto && chosen !== auto && (
-            <button type="button" className="link-btn" onClick={() => setChosen("")}>
+            <Button variant="ghost" size="sm" onClick={() => setChosen("")}>
               {online ? t("useDevice") : context.venueZone ? t("useVenue") : t("useCountry")}
-            </button>
+            </Button>
           )}
         </div>
       )}
-      {!needsChoice && !picking && source && <span className="muted small">{t("sourceLine", { source })}</span>}
+      {!needsChoice && !picking && source && <span className={styles.hint}>{t("sourceLine", { source })}</span>}
       <input type="hidden" name="time_zone" value={posted} />
     </div>
   );

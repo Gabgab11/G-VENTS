@@ -1,0 +1,19 @@
+/* Country, state and venue on create event (step 2) and the event's Details tab. The venue search
+   list shares the Combobox's styles (src/components/Combobox.module.css). */
+
+.pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-3); }
+@media (max-width: 600px) { .pair { grid-template-columns: minmax(0, 1fr); } }
+
+.hint { font-size: var(--text-body-sm); line-height: var(--leading-body-sm); color: var(--color-text-muted); }
+.note { margin-block: -4px var(--space-2); margin-inline: 0; }
+
+.map {
+  display: block;
+  inline-size: 100%;
+  block-size: 220px;
+  margin-block: var(--space-1) 10px;
+  border: 0;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  filter: grayscale(.2) contrast(1.05);
+}

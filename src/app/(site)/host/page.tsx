@@ -6,6 +6,7 @@ import { formatDateTime, formatMoney, formatRelative } from "@/lib/format";
 import { themeBackground } from "@/lib/themes";
 import type { Locale } from "@/i18n/languages";
 import { Badge, Button, Card, CardHeader, EmptyState, PageHeader, Stat, TabLink, TabLinks } from "@/design";
+import { statusTone } from "./orders/query";
 import { deltaOf, PERIOD_KEY, PERIODS, periodOf, stepsDone } from "./host-format";
 import styles from "./host.module.css";
 
@@ -18,11 +19,12 @@ const ICON = { size: 20, strokeWidth: 1.75, "aria-hidden": true } as const;
 // orders for active ones. One request (GET /v1/host/home), per NFR-13.
 export default async function HostHomePage({ searchParams }: { searchParams: Promise<{ period?: string }> }) {
   const period = periodOf((await searchParams).period);
-  const [home, me, t, lang] = await Promise.all([
+  const [home, me, t, lang, statusT] = await Promise.all([
     (await api()).GET("/v1/host/home", { params: { query: { period } } }).then(data),
     (await api()).GET("/v1/me").then(data).catch(() => null),
     getTranslations("host.home"),
     getLocale() as Promise<Locale>,
+    getTranslations("host.orders.status"),
   ]);
   const first = (me?.fullName ?? "").trim().split(/\s+/)[0];
 
@@ -105,6 +107,7 @@ export default async function HostHomePage({ searchParams }: { searchParams: Pro
                 <span className={styles.orderWho}>
                   <strong>{o.buyerName ?? t("orders.guest")}</strong>
                   <span className={styles.muted}>{o.eventTitle} · {t("orders.tickets", { count: o.tickets })}</span>
+                  {o.status !== "completed" && statusT.has(o.status) && <Badge tone={statusTone(o.status)} style={{ justifySelf: "start" }}>{statusT(o.status)}</Badge>}
                 </span>
                 <span className={styles.orderAmount}>
                   <strong>{o.kind === "free" ? t("orders.free") : formatMoney(o.amountMinor, o.currency, lang, true)}</strong>

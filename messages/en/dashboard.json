@@ -183,7 +183,7 @@
       "settings": "Settings"
     },
     "tabsLabel": "Event sections",
-    "youAre": "You are {role, select, owner {owner} admin {admin} editor {editor} checkin {checkin} finance {finance} viewer {viewer} other {{role}}}",
+    "youAre": "Your role: {role, select, owner {owner} admin {co-host} editor {editor} checkin {door staff} finance {finance} viewer {viewer} other {{role}}}",
     "scan": "Scan tickets at the door"
   },
   "overview": {

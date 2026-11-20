@@ -67,5 +67,6 @@
 
 @media (max-width: 640px) {
   .step { flex-wrap: wrap; }
+  .stepText { flex-basis: calc(100% - 20px - var(--space-3)); }
   .step > :last-child:not(.stepText) { margin-inline-start: calc(20px + var(--space-3)); }
 }

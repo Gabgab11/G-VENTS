@@ -5,7 +5,8 @@ import { api, data } from "@/lib/api/server";
 import type { components } from "@/lib/api/schema";
 import { formatMoney, formatRelative, intlLocale } from "@/lib/format";
 import type { Locale } from "@/i18n/languages";
-import { Card, CardHeader, EmptyState, Stat } from "@/design";
+import { Badge, Card, CardHeader, EmptyState, Stat } from "@/design";
+import { statusTone } from "@/app/(site)/host/orders/query";
 import CopyLink from "./CopyLink";
 import { SalesPanel } from "./SalesPanel";
 import { dayBars, dayLabel } from "./overview-data";
@@ -40,8 +41,9 @@ async function loadOrders(event: EventDashboard): Promise<HostOrder[] | null> {
 export default async function OverviewTab({ event, url, sales }: { event: EventDashboard; url: string; sales: Sales | null }) {
   const { counts } = event;
   const salesView = can(event, "sales.view");
-  const [t, lang, settlements, orders] = await Promise.all([
+  const [t, statusT, lang, settlements, orders] = await Promise.all([
     getTranslations("dashboard.overview"),
+    getTranslations("host.orders.status"),
     getLocale() as Promise<Locale>,
     sales && salesView ? loadSettlements(event) : Promise.resolve(null),
     can(event, "orders.view") ? loadOrders(event) : Promise.resolve(null),
@@ -97,6 +99,7 @@ export default async function OverviewTab({ event, url, sales }: { event: EventD
                 <span className={styles.listMain}>
                   <strong>{o.buyerName ?? t("guest")}</strong>
                   <span className={styles.muted}>{t("tickets", { count: o.tickets })}</span>
+                  {o.status !== "completed" && statusT.has(o.status) && <Badge tone={statusTone(o.status)} style={{ justifySelf: "start" }}>{statusT(o.status)}</Badge>}
                 </span>
                 <span className={styles.listMain}>
                   <strong>{o.kind === "free" ? t("free") : formatMoney(o.amountMinor, o.currency, lang, true)}</strong>

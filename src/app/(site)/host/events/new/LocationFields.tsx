@@ -9,7 +9,9 @@ import { countryDetails, locatePlace, placeDetails, searchPlaces, type PlaceDeta
 import type { CountryReference } from "@/lib/reference";
 import { MAPS_URL_HINT_KEY, MAPS_URL_MAX, isGoogleMapsUrl } from "@/lib/maps-url";
 import type { ZoneContext } from "./TimeZoneField";
-import { Field, Input } from "@/design";
+import { Button, Field, Input } from "@/design";
+import combo from "@/components/Combobox.module.css";
+import styles from "./LocationFields.module.css";
 
 type Place = { placeId: string; address: string; city: string; lat: number | null; lng: number | null; timeZone: string | null };
 
@@ -132,7 +134,7 @@ export default function LocationFields({
 
   return (
     <>
-      <div className="row2">
+      <div className={styles.pair}>
         <Combobox
           name="country_code"
           label={t("country")}
@@ -175,8 +177,8 @@ export default function LocationFields({
         onPlaced={placed}
         onForget={() => { setPlace(null); setNote(""); }}
       />
-      {note && <p className="muted small venue-note" role="status">{note}</p>}
-      {src && <iframe className="ev-map venue-map" src={src} title={t("mapOf", { venue: venue || t("theVenue") })} loading="lazy" referrerPolicy="strict-origin-when-cross-origin" />}
+      {note && <p className={`${styles.hint} ${styles.note}`} role="status">{note}</p>}
+      {src && <iframe className={styles.map} src={src} title={t("mapOf", { venue: venue || t("theVenue") })} loading="lazy" referrerPolicy="strict-origin-when-cross-origin" />}
 
       <Field
         label={t("mapsLink")}
@@ -344,10 +346,11 @@ function VenueSearch({
   const showList = available && open && !place && resultsFor !== "" && venue.trim().length >= MIN_CHARS;
 
   return (
-    <label className="field">
-      <span>{t("label")}</span>
-      <div className="combo">
+    <label className={combo.field}>
+      <span className={combo.label}>{t("label")}</span>
+      <div className={combo.combo}>
         <Input
+          className={combo.input}
           name="venue"
           maxLength={300}
           autoComplete="off"
@@ -363,16 +366,16 @@ function VenueSearch({
           onBlur={() => { setOpen(false); void locate(); }}
           onKeyDown={onKeyDown}
         />
-        {loading && <span className="combo-spin" aria-hidden><span className="spinner" /></span>}
+        {loading && <span className={combo.spin} aria-hidden><span className={combo.spinner} /></span>}
         {showList && (
-          <ul className="combo-list" id={listId} role="listbox">
+          <ul className={combo.list} id={listId} role="listbox">
             {suggestions.map((s, i) => (
               <li
                 key={s.placeId}
                 id={`${listId}-${i}`}
                 role="option"
                 aria-selected={i === active}
-                className={`combo-opt ${i === active ? "active" : ""}`}
+                className={i === active ? `${combo.option} ${combo.active}` : combo.option}
                 onMouseDown={(e) => { e.preventDefault(); pick(s); }}
                 onMouseEnter={() => setActive(i)}
               >
@@ -381,21 +384,21 @@ function VenueSearch({
               </li>
             ))}
             {suggestions.length === 0 && resultsFor === venue.trim() && (
-              <li className="combo-empty">{t("noMatches")}</li>
+              <li className={combo.empty}>{t("noMatches")}</li>
             )}
-            <li className="combo-opt combo-keep" role="option" aria-selected={false}
+            <li className={`${combo.option} ${combo.keep}`} role="option" aria-selected={false}
               onMouseDown={(e) => { e.preventDefault(); keepTyped(); }}>
               {t("useTyped", { text: venue.trim() })}
             </li>
           </ul>
         )}
       </div>
-      <span className="muted small" aria-live="polite">
+      <span className={styles.hint} aria-live="polite">
         {loading === "search" ? t("searching")
           : loading === "details" ? t("gettingAddress")
           : loading === "locate" ? t("locating")
           : problem ? problem
-          : place?.address && located ? t.rich("found", { address: place.address, button: (c) => <button type="button" className="link-btn" onClick={forget}>{c}</button> })
+          : place?.address && located ? t.rich("found", { address: place.address, button: (c) => <Button variant="ghost" size="sm" onClick={forget}>{c}</Button> })
           : place?.address ? t("address", { address: place.address })
           : available ? (regionListed && region ? t("suggestionsIn", { region }) : t("pickOrType"))
           : null}

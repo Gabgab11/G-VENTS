@@ -1,0 +1,79 @@
+/* Date and time wheel picker (create event, step 2). Rows are ITEM (44px) tall in DateTimeWheel.tsx. */
+
+.field { display: grid; gap: var(--space-2); }
+
+.trigger {
+  block-size: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-block: 0;
+  padding-inline: 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+.trigger:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.trigger[data-invalid] { border-color: var(--color-danger); }
+.day { font-weight: var(--weight-semibold); }
+.time, .empty { color: var(--color-text-muted); }
+
+.panel {
+  display: grid;
+  gap: var(--space-3);
+  padding: 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+.columns { display: grid; grid-template-columns: 2.4fr 1fr 1fr 1fr; gap: var(--space-2); }
+.group { display: grid; gap: 6px; min-inline-size: 0; }
+.head {
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  text-align: center;
+}
+
+.wheel {
+  position: relative;
+  block-size: 220px;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  mask-image: linear-gradient(transparent, var(--tone-ink) 30%, var(--tone-ink) 70%, transparent);
+  -webkit-mask-image: linear-gradient(transparent, var(--tone-ink) 30%, var(--tone-ink) 70%, transparent);
+}
+.wheel::-webkit-scrollbar { display: none; }
+.item {
+  display: block;
+  inline-size: 100%;
+  block-size: 44px;
+  padding: 0;
+  scroll-snap-align: center;
+  border: 0;
+  background: none;
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: var(--text-body-lg);
+  text-align: center;
+  cursor: pointer;
+}
+.item:focus-visible { outline: 2px solid var(--color-focus); outline-offset: -2px; }
+.item[aria-selected="true"] { color: var(--color-text); font-weight: var(--weight-bold); }
+
+.foot { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.summary { font-size: var(--text-body-sm); line-height: var(--leading-body-sm); color: var(--color-text-muted); }
+
+@media (prefers-reduced-motion: reduce) { .wheel { scroll-behavior: auto; } }

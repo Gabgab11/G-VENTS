@@ -51,8 +51,8 @@ export function directionsUrl(location: Location): string | null {
 export type VenueMapLabels = {
   /** "Open in Google Maps" */
   open: string;
-  /** "Show map" */
-  show: string;
+  /** Unused since the map shows by default; optional so callers can drop it. */
+  show?: string;
   /** The embed's title, e.g. "Map of {place}" */
   mapTitle: string;
   /** The static image's alt text */
@@ -67,7 +67,7 @@ export default function VenueMap({ location, title, subtitle, labels }: { locati
   return (
     <div className="ev-venue">
       {/* eslint-disable-next-line @next/next/no-img-element -- a fixed-size image from the Maps Static API */}
-      {image && <img className="ev-venue-image" src={image} alt={labels.imageAlt} width={640} height={320} loading="lazy" />}
+      {image && !embed && <img className="ev-venue-image" src={image} alt={labels.imageAlt} width={640} height={320} loading="lazy" />}
       <div className="ev-venue-body">
         <MapPin size={20} strokeWidth={1.75} aria-hidden className="ev-venue-pin" />
         <div className="ev-venue-text">
@@ -75,7 +75,7 @@ export default function VenueMap({ location, title, subtitle, labels }: { locati
           {subtitle && <div className="ev-fact-sub">{subtitle}</div>}
         </div>
       </div>
-      <ShowMap src={embed} title={labels.mapTitle} showLabel={labels.show} openLabel={labels.open} directions={directions} />
+      <ShowMap src={embed} title={labels.mapTitle} openLabel={labels.open} directions={directions} />
     </div>
   );
 }

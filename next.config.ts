@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { HOST_REDIRECTS } from "./src/lib/host-redirects";
 import createNextIntlPlugin from "next-intl/plugin";
 import { securityHeaders } from "./src/lib/csp";
 
@@ -19,18 +20,9 @@ const nextConfig: NextConfig = {
     config.module.rules.push({ test: /[\\/]src[\\/]design[\\/](index|client|cx|token-list)\.ts$/, sideEffects: false });
     return config;
   },
-  // The host area moved under /host (Change 4 chunk 3, HA1). Old addresses, including links in emails
-  // already sent, keep working; the query string is carried over.
+  // The host area moved under /host (src/lib/host-redirects.ts).
   async redirects() {
-    return [
-      { source: "/dashboard", destination: "/host", permanent: true },
-      { source: "/dashboard/:id/scan", destination: "/host/events/:id/scan", permanent: true },
-      { source: "/dashboard/:id/guests.csv", destination: "/host/events/:id/guests.csv", permanent: true },
-      { source: "/dashboard/:id", destination: "/host/events/:id", permanent: true },
-      { source: "/events/new", destination: "/host/events/new", permanent: true },
-      { source: "/account/payouts", destination: "/host/payouts", permanent: true },
-      { source: "/account/security", destination: "/host/settings/security", permanent: true },
-    ];
+    return [...HOST_REDIRECTS];
   },
   async headers() {
     return [

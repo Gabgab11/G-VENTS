@@ -5,6 +5,7 @@ import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { intlLocale } from "@/lib/format";
 import type { Locale } from "@/i18n/languages";
 import { Button } from "@/design";
+import styles from "./DateTimeWheel.module.css";
 
 // Apple-style wheel picker for a date and a time. It writes two hidden inputs so the
 // server action reads the same fields it did before (date/time or end_date/end_time).
@@ -45,7 +46,7 @@ function Wheel<T extends string | number>({
   const pad = ((VISIBLE - 1) / 2) * ITEM;
 
   return (
-    <div className="wheel-col" role="listbox" aria-label={label} ref={ref} onScroll={onScroll}
+    <div className={styles.wheel} role="listbox" aria-label={label} ref={ref} onScroll={onScroll}
       style={{ paddingTop: pad, paddingBottom: pad }}>
       {options.map((o) => (
         <button
@@ -53,7 +54,7 @@ function Wheel<T extends string | number>({
           key={String(o.value)}
           role="option"
           aria-selected={o.value === value}
-          className={`wheel-item ${o.value === value ? "on" : ""}`}
+          className={styles.item}
           onClick={() => onChange(o.value)}
         >
           {o.label}
@@ -175,44 +176,44 @@ export default function DateTimeWheel({
   }
 
   return (
-    <div className="wheel-field">
+    <div className={styles.field}>
       <input type="hidden" name={dateName} value={filled ? date : ""} />
       <input type="hidden" name={timeName} value={filled ? time : ""} />
 
-      <button type="button" className={`wheel-trigger ${invalid && !filled ? "bad" : ""}`}
+      <button type="button" className={styles.trigger} data-invalid={invalid && !filled ? "" : undefined}
         onClick={() => (open ? setOpen(false) : openPicker())} aria-expanded={open}>
         {filled ? (
           <>
-            <span className="wheel-trigger-day">{formatDay(date, lang)}</span>
-            <span className="wheel-trigger-time">{formatTime(time, lang)}</span>
+            <span className={styles.day}>{formatDay(date, lang)}</span>
+            <span className={styles.time}>{formatTime(time, lang)}</span>
           </>
         ) : (
-          <span className="wheel-trigger-empty">{t("choose", { label })}</span>
+          <span className={styles.empty}>{t("choose", { label })}</span>
         )}
       </button>
 
       {open && (
-        <div className="wheel-panel">
-          <div className="wheel-columns">
-            <div className="wheel-group wide">
-              <div className="wheel-head">{t("day")}</div>
+        <div className={styles.panel}>
+          <div className={styles.columns}>
+            <div className={styles.group}>
+              <div className={styles.head}>{t("day")}</div>
               <Wheel label={t("day")} options={dayOptions(draftDate, lang)} value={draftDate} onChange={setDraftDate} />
             </div>
-            <div className="wheel-group">
-              <div className="wheel-head">{t("hour")}</div>
+            <div className={styles.group}>
+              <div className={styles.head}>{t("hour")}</div>
               <Wheel label={t("hour")} options={HOURS} value={draft.hour} onChange={(hour) => setDraft({ ...draft, hour })} />
             </div>
-            <div className="wheel-group">
-              <div className="wheel-head">{t("min")}</div>
+            <div className={styles.group}>
+              <div className={styles.head}>{t("min")}</div>
               <Wheel label={t("minute")} options={MINUTES} value={draft.minute} onChange={(minute) => setDraft({ ...draft, minute })} />
             </div>
-            <div className="wheel-group">
-              <div className="wheel-head">&nbsp;</div>
+            <div className={styles.group}>
+              <div className={styles.head}>&nbsp;</div>
               <Wheel label={t("period")} options={periods} value={draft.period} onChange={(period) => setDraft({ ...draft, period })} />
             </div>
           </div>
-          <div className="wheel-foot">
-            <span className="muted small">{formatDay(draftDate, lang)} · {formatTime(joinTime(draft.hour, draft.minute, draft.period), lang)}</span>
+          <div className={styles.foot}>
+            <span className={styles.summary}>{formatDay(draftDate, lang)} · {formatTime(joinTime(draft.hour, draft.minute, draft.period), lang)}</span>
             <Button variant="accent" onClick={done}>{t("done")}</Button>
           </div>
         </div>
