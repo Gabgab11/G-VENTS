@@ -51,6 +51,7 @@
     "name": "Your full name",
     "email": "Email",
     "emailNote": "All your tickets are sent to your account email.",
+    "emailThis": "Tickets go to this email.",
     "othersLegend": "Names for the other tickets (optional; you can forward each ticket)",
     "ticketNumber": "Ticket {number}",
     "namePlaceholder": "Guest name",
@@ -114,5 +115,33 @@
     "show": "Show map",
     "title": "Map of {place}",
     "imageAlt": "Map showing {place}"
+  },
+  "summary": {
+    "ticketsTitle": "Tickets",
+    "getTickets": "Get tickets",
+    "register": "Register",
+    "joinWaitlist": "Join the waiting list",
+    "soldOut": "Sold out",
+    "closed": "Registration closed",
+    "cancelled": "Event cancelled",
+    "notOnSale": "Not on sale yet",
+    "readMore": "Read more",
+    "aboutDirections": "About & directions",
+    "soldOutNote": "Every ticket has been taken.",
+    "waitlistNote": "Tickets are sold out. Join the waiting list and we'll email you if a place frees up."
+  },
+  "booking": {
+    "metaTitle": "Tickets for {title}",
+    "back": "Back to the event",
+    "detailsTitle": "Registration details",
+    "detailsLead": "Choose your tickets and tell us who's coming.",
+    "summaryTitle": "Summary",
+    "confirm": "Confirm registration",
+    "sendRequest": "Send request",
+    "completeForm": "Fill in the required details to continue.",
+    "free": "Free",
+    "discount": "Discount ({code})",
+    "line": "{name} × {count}",
+    "unavailable": "Tickets can't be booked right now"
   }
 }

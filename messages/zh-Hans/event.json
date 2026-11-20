@@ -51,6 +51,7 @@
     "name": "您的全名",
     "email": "邮箱",
     "emailNote": "您的所有门票都会发送到您的账户邮箱。",
+    "emailThis": "门票将发送到此电子邮箱。",
     "othersLegend": "其他门票的姓名（可选；每张门票都可以转发）",
     "ticketNumber": "门票 {number}",
     "namePlaceholder": "嘉宾姓名",
@@ -114,5 +115,33 @@
     "show": "显示地图",
     "title": "{place}的地图",
     "imageAlt": "显示{place}的地图"
+  },
+  "summary": {
+    "ticketsTitle": "门票",
+    "getTickets": "获取门票",
+    "register": "报名",
+    "joinWaitlist": "加入候补名单",
+    "soldOut": "已售罄",
+    "closed": "报名已截止",
+    "cancelled": "活动已取消",
+    "notOnSale": "尚未开售",
+    "readMore": "阅读全文",
+    "aboutDirections": "活动介绍与路线",
+    "soldOutNote": "所有门票均已售出。",
+    "waitlistNote": "门票已售罄。加入候补名单后，如有名额空出，我们会通过电子邮件通知您。"
+  },
+  "booking": {
+    "metaTitle": "{title}的门票",
+    "back": "返回活动",
+    "detailsTitle": "报名信息",
+    "detailsLead": "请选择门票并告诉我们谁将参加。",
+    "summaryTitle": "摘要",
+    "confirm": "确认报名",
+    "sendRequest": "发送申请",
+    "completeForm": "请填写必填信息后继续。",
+    "free": "免费",
+    "discount": "折扣（{code}）",
+    "line": "{name} × {count}",
+    "unavailable": "目前无法预订门票"
   }
 }

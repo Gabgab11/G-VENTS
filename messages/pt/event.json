@@ -51,6 +51,7 @@
     "name": "Seu nome completo",
     "email": "E-mail",
     "emailNote": "Todos os seus ingressos são enviados para o e-mail da sua conta.",
+    "emailThis": "Os ingressos são enviados para este e-mail.",
     "othersLegend": "Nomes para os outros ingressos (opcional; você pode encaminhar cada ingresso)",
     "ticketNumber": "Ingresso {number}",
     "namePlaceholder": "Nome do convidado",
@@ -114,5 +115,33 @@
     "show": "Mostrar mapa",
     "title": "Mapa de {place}",
     "imageAlt": "Mapa mostrando {place}"
+  },
+  "summary": {
+    "ticketsTitle": "Ingressos",
+    "getTickets": "Garantir ingressos",
+    "register": "Inscrever-se",
+    "joinWaitlist": "Entrar na lista de espera",
+    "soldOut": "Esgotado",
+    "closed": "Inscrições encerradas",
+    "cancelled": "Evento cancelado",
+    "notOnSale": "Ainda não está à venda",
+    "readMore": "Ler mais",
+    "aboutDirections": "Sobre e como chegar",
+    "soldOutNote": "Todos os ingressos foram garantidos.",
+    "waitlistNote": "Os ingressos esgotaram. Entre na lista de espera e enviaremos um e-mail se uma vaga for liberada."
+  },
+  "booking": {
+    "metaTitle": "Ingressos para {title}",
+    "back": "Voltar ao evento",
+    "detailsTitle": "Dados da inscrição",
+    "detailsLead": "Escolha seus ingressos e informe quem vai participar.",
+    "summaryTitle": "Resumo",
+    "confirm": "Confirmar inscrição",
+    "sendRequest": "Enviar solicitação",
+    "completeForm": "Preencha os dados obrigatórios para continuar.",
+    "free": "Grátis",
+    "discount": "Desconto ({code})",
+    "line": "{name} × {count}",
+    "unavailable": "Não é possível reservar ingressos no momento"
   }
 }

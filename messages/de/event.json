@@ -51,6 +51,7 @@
     "name": "Ihr vollständiger Name",
     "email": "E-Mail",
     "emailNote": "Alle Ihre Tickets werden an die E-Mail-Adresse Ihres Kontos gesendet.",
+    "emailThis": "Die Tickets werden an diese E-Mail-Adresse gesendet.",
     "othersLegend": "Namen für die weiteren Tickets (optional; Sie können jedes Ticket weiterleiten)",
     "ticketNumber": "Ticket {number}",
     "namePlaceholder": "Name des Gastes",
@@ -114,5 +115,33 @@
     "show": "Karte anzeigen",
     "title": "Karte von {place}",
     "imageAlt": "Karte mit {place}"
+  },
+  "summary": {
+    "ticketsTitle": "Tickets",
+    "getTickets": "Tickets holen",
+    "register": "Anmelden",
+    "joinWaitlist": "Auf die Warteliste",
+    "soldOut": "Ausverkauft",
+    "closed": "Anmeldung geschlossen",
+    "cancelled": "Veranstaltung abgesagt",
+    "notOnSale": "Noch nicht im Verkauf",
+    "readMore": "Weiterlesen",
+    "aboutDirections": "Info und Anfahrt",
+    "soldOutNote": "Alle Tickets sind vergeben.",
+    "waitlistNote": "Die Tickets sind ausverkauft. Tragen Sie sich in die Warteliste ein; wir benachrichtigen Sie per E-Mail, sobald ein Platz frei wird."
+  },
+  "booking": {
+    "metaTitle": "Tickets für {title}",
+    "back": "Zurück zur Veranstaltung",
+    "detailsTitle": "Anmeldedaten",
+    "detailsLead": "Wählen Sie Ihre Tickets und teilen Sie uns mit, wer kommt.",
+    "summaryTitle": "Übersicht",
+    "confirm": "Anmeldung bestätigen",
+    "sendRequest": "Anfrage senden",
+    "completeForm": "Füllen Sie die Pflichtfelder aus, um fortzufahren.",
+    "free": "Kostenlos",
+    "discount": "Rabatt ({code})",
+    "line": "{name} × {count}",
+    "unavailable": "Tickets können derzeit nicht gebucht werden"
   }
 }

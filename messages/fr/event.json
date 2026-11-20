@@ -51,6 +51,7 @@
     "name": "Votre nom complet",
     "email": "E-mail",
     "emailNote": "Tous vos billets sont envoyés à l'adresse e-mail de votre compte.",
+    "emailThis": "Les billets sont envoyés à cette adresse e-mail.",
     "othersLegend": "Noms pour les autres billets (facultatif ; vous pouvez transférer chaque billet)",
     "ticketNumber": "Billet {number}",
     "namePlaceholder": "Nom de l'invité",
@@ -114,5 +115,33 @@
     "show": "Afficher la carte",
     "title": "Carte de {place}",
     "imageAlt": "Carte indiquant {place}"
+  },
+  "summary": {
+    "ticketsTitle": "Billets",
+    "getTickets": "Obtenir des billets",
+    "register": "S'inscrire",
+    "joinWaitlist": "Rejoindre la liste d'attente",
+    "soldOut": "Complet",
+    "closed": "Inscriptions closes",
+    "cancelled": "Événement annulé",
+    "notOnSale": "Pas encore en vente",
+    "readMore": "Lire la suite",
+    "aboutDirections": "À propos et itinéraire",
+    "soldOutNote": "Tous les billets ont été pris.",
+    "waitlistNote": "Les billets sont épuisés. Rejoignez la liste d'attente et nous vous écrirons si une place se libère."
+  },
+  "booking": {
+    "metaTitle": "Billets pour {title}",
+    "back": "Retour à l'événement",
+    "detailsTitle": "Informations d'inscription",
+    "detailsLead": "Choisissez vos billets et indiquez-nous qui viendra.",
+    "summaryTitle": "Récapitulatif",
+    "confirm": "Confirmer l'inscription",
+    "sendRequest": "Envoyer la demande",
+    "completeForm": "Remplissez les informations obligatoires pour continuer.",
+    "free": "Gratuit",
+    "discount": "Réduction ({code})",
+    "line": "{name} × {count}",
+    "unavailable": "Les billets ne peuvent pas être réservés pour le moment"
   }
 }
