@@ -118,7 +118,7 @@ export default async function HostProfilePage({ params, searchParams }: { params
                 {p.verified && <Badge verified className={s.badge}>{shared("hostProfile.verified")}</Badge>}
               </h1>
               <p className={s.meta}>
-                <span className={s.metaItem} dir="ltr">@{p.handle}</span>
+                <span className={s.metaItem} dir="ltr">{`@${p.handle}`}</span>
                 {p.location && <span className={s.metaItem}><MapPin size={16} strokeWidth={1.75} aria-hidden /><bdi>{p.location}</bdi></span>}
                 <FollowerCount />
               </p>
