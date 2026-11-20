@@ -72,7 +72,10 @@
     "time_invalid": "请使用有效的日期和时间。",
     "time_not_in_zone": "由于时钟调整，该时间在此时区中不存在。请选择其他时间。",
     "time_zone_required": "请选择活动的时区。",
-    "title_length": "活动名称必须为 3 到 140 个字符。"
+    "title_length": "活动名称必须为 3 到 140 个字符。",
+    "group_size_invalid": "团体票可供 1 至 20 人入场。",
+    "group_size_locked": "此票种已有销售，团体人数无法更改。请改为添加新的票种。",
+    "ticket_description_invalid": "票种描述最多 300 个字符。"
   },
   "export": {
     "busy": "已有导出正在进行。请一分钟后再试。"
@@ -132,7 +135,14 @@
     "sales_not_started": "门票尚未开售。",
     "sold_out": "该票种已售罄。",
     "ticket_type_unavailable": "该票种不可用。",
-    "transition_not_allowed": "此订单无法以这种方式更改。"
+    "transition_not_allowed": "此订单无法以这种方式更改。",
+    "recipients_too_many": "此订单最多可将门票发送给 20 人。",
+    "recipient_name_invalid": "请输入每个人的姓名（2 至 120 个字符）。",
+    "recipient_email_invalid": "请为每个人输入有效的电子邮箱，或留空。",
+    "recipient_is_buyer": "这是您自己的邮箱：您的门票已会发送给您。",
+    "recipients_exceed_tickets": "此订单没有这么多可发送给他人的门票。",
+    "buyer_phone_invalid": "请输入带国家/地区代码的电话号码，例如 +2348012345678。",
+    "buyer_gender_invalid": "请选择女、男或不愿透露。"
   },
   "payment": {
     "forbidden": "您无权执行此操作。",
@@ -214,7 +224,8 @@
   "ticket": {
     "email_limit": "此门票在一小时内已多次通过电子邮件发送。请稍后再试。",
     "email_unavailable": "我们暂时无法发送电子邮件。请重试。",
-    "not_found": "未找到门票。"
+    "not_found": "未找到门票。",
+    "first_ticket_is_buyers": "第 1 张门票属于您。请发送其他门票。"
   },
   "validation": {
     "failed": "部分字段无效。"

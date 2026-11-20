@@ -72,6 +72,22 @@
         "title": "Paiement contesté",
         "body": "Le paiement fait l'objet d'une contestation auprès de la banque. Vos billets restent valables pour l'instant."
       }
+    },
+    "groupTicket": "Billet {position} sur {size} · {type}",
+    "sentTo": "Envoyé à <b>{email}</b>",
+    "resend": {
+      "button": "Renvoyer",
+      "buttonLabel": "Renvoyer le billet de {name}",
+      "title": "Renvoyer le billet de {name}",
+      "body": "Nous enverrons le billet à cette adresse. Corrigez-la si elle était mal saisie.",
+      "email": "Adresse e-mail",
+      "cancel": "Annuler",
+      "send": "Envoyer le billet",
+      "close": "Fermer",
+      "sent": "Envoyé à {email}",
+      "failed": "Nous n'avons pas pu envoyer le billet. Veuillez réessayer.",
+      "invalidEmail": "Saisissez une adresse e-mail valide.",
+      "signedOut": "Votre session a expiré. Reconnectez-vous."
     }
   },
   "sellReason": {

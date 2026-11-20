@@ -154,7 +154,9 @@
         "b1": "Account details (name, email address)",
         "b2": "Event and registration details",
         "b3": "Tickets and check-in records",
-        "b4": "Device and usage information"
+        "b4": "Device and usage information",
+        "b5": "Your phone number, and your gender if you choose to give it, when you get tickets. The event's host can see them.",
+        "b6": "The names and email addresses of people you send tickets to"
       },
       "howWeUseYourInformation": {
         "title": "How We Use Your Information"

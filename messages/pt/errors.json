@@ -72,7 +72,10 @@
     "time_invalid": "Use uma data e hora válidas.",
     "time_not_in_zone": "Esse horário não existe neste fuso horário por causa da mudança de horário. Escolha outro horário.",
     "time_zone_required": "Escolha o fuso horário do evento.",
-    "title_length": "O nome do evento deve ter de 3 a 140 caracteres."
+    "title_length": "O nome do evento deve ter de 3 a 140 caracteres.",
+    "group_size_invalid": "Um bilhete de grupo dá entrada a 1 a 20 pessoas.",
+    "group_size_locked": "Este tipo de bilhete já tem vendas, por isso o tamanho do grupo não pode mudar. Adicione antes um novo tipo de bilhete.",
+    "ticket_description_invalid": "A descrição de um bilhete pode ter até 300 caracteres."
   },
   "export": {
     "busy": "Já há uma exportação em andamento. Tente novamente em um minuto."
@@ -132,7 +135,14 @@
     "sales_not_started": "As vendas de ingressos ainda não começaram.",
     "sold_out": "Esse tipo de ingresso está esgotado.",
     "ticket_type_unavailable": "Esse tipo de ingresso não está disponível.",
-    "transition_not_allowed": "Este pedido não pode ser alterado dessa forma."
+    "transition_not_allowed": "Este pedido não pode ser alterado dessa forma.",
+    "recipients_too_many": "Pode enviar bilhetes a no máximo 20 pessoas nesta encomenda.",
+    "recipient_name_invalid": "Introduza o nome de cada pessoa (de 2 a 120 caracteres).",
+    "recipient_email_invalid": "Introduza um e-mail válido para cada pessoa ou deixe em branco.",
+    "recipient_is_buyer": "Esse é o seu próprio e-mail: os seus bilhetes já lhe chegam.",
+    "recipients_exceed_tickets": "Esta encomenda não tem tantos bilhetes para enviar a outras pessoas.",
+    "buyer_phone_invalid": "Introduza o seu número de telefone com o código do país, por exemplo +2348012345678.",
+    "buyer_gender_invalid": "Escolha feminino, masculino ou prefiro não dizer."
   },
   "payment": {
     "forbidden": "Você não tem permissão para fazer isso.",
@@ -214,7 +224,8 @@
   "ticket": {
     "email_limit": "Este ingresso já foi enviado por e-mail várias vezes nesta hora. Tente novamente mais tarde.",
     "email_unavailable": "Não foi possível enviar o e-mail agora. Tente novamente.",
-    "not_found": "Ingresso não encontrado."
+    "not_found": "Ingresso não encontrado.",
+    "first_ticket_is_buyers": "O bilhete 1 é seu. Envie antes um dos outros bilhetes."
   },
   "validation": {
     "failed": "Alguns campos não são válidos."

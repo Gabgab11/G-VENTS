@@ -72,7 +72,10 @@
     "time_invalid": "Use a valid date and time.",
     "time_not_in_zone": "That time doesn't exist in this time zone because the clocks change. Pick another time.",
     "time_zone_required": "Choose the event's time zone.",
-    "title_length": "Event name must be 3 to 140 characters."
+    "title_length": "Event name must be 3 to 140 characters.",
+    "group_size_invalid": "A group ticket admits 1 to 20 people.",
+    "group_size_locked": "This ticket type already has sales, so its group size can't change. Add a new ticket type instead.",
+    "ticket_description_invalid": "A ticket description can be up to 300 characters."
   },
   "export": {
     "busy": "An export is already running. Please try again in a minute."
@@ -132,7 +135,14 @@
     "sales_not_started": "Ticket sales have not started yet.",
     "sold_out": "That ticket type is sold out.",
     "ticket_type_unavailable": "That ticket type isn't available.",
-    "transition_not_allowed": "This order cannot be changed that way."
+    "transition_not_allowed": "This order cannot be changed that way.",
+    "recipients_too_many": "You can send tickets to at most 20 people in this order.",
+    "recipient_name_invalid": "Enter each person's name (2 to 120 characters).",
+    "recipient_email_invalid": "Enter a valid email address for each person, or leave it blank.",
+    "recipient_is_buyer": "That's your own email: your tickets already come to you.",
+    "recipients_exceed_tickets": "This order doesn't have that many tickets to send to other people.",
+    "buyer_phone_invalid": "Enter your phone number with its country code, like +2348012345678.",
+    "buyer_gender_invalid": "Choose female, male or prefer not to say."
   },
   "payment": {
     "forbidden": "You do not have permission to do that.",
@@ -214,7 +224,8 @@
   "ticket": {
     "email_limit": "This ticket has been emailed several times this hour. Please try again later.",
     "email_unavailable": "We couldn't send the email right now. Please try again.",
-    "not_found": "Ticket not found."
+    "not_found": "Ticket not found.",
+    "first_ticket_is_buyers": "Ticket 1 is yours. Send one of the other tickets instead."
   },
   "validation": {
     "failed": "Some fields are not valid."

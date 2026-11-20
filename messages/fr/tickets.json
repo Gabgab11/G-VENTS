@@ -82,7 +82,8 @@
       "button": "Enregistrer {name}"
     },
     "foot": "Ce billet appartient à {name}. Toute personne disposant de ce lien peut le voir : ne le partagez qu'avec des personnes de confiance.",
-    "print": "Imprimer ou enregistrer en PDF"
+    "print": "Imprimer ou enregistrer en PDF",
+    "groupNote": "Fait partie d'un groupe de {count}. Chaque personne a son propre billet."
   },
   "email": {
     "label": "M'envoyer mon billet par e-mail",

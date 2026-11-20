@@ -154,7 +154,9 @@
         "b1": "Kontodaten (Name, E-Mail-Adresse)",
         "b2": "Angaben zu Veranstaltungen und Anmeldungen",
         "b3": "Tickets und Check-in-Protokolle",
-        "b4": "Geräte- und Nutzungsdaten"
+        "b4": "Geräte- und Nutzungsdaten",
+        "b5": "Ihre Telefonnummer und, wenn Sie es angeben möchten, Ihr Geschlecht, wenn Sie Tickets erhalten. Der Veranstalter kann diese Angaben sehen.",
+        "b6": "Die Namen und E-Mail-Adressen der Personen, denen Sie Tickets senden"
       },
       "howWeUseYourInformation": {
         "title": "Wie wir Ihre Daten verwenden"

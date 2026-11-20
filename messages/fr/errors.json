@@ -72,7 +72,10 @@
     "time_invalid": "Utilisez une date et une heure valides.",
     "time_not_in_zone": "Cette heure n'existe pas dans ce fuseau horaire en raison du changement d'heure. Choisissez une autre heure.",
     "time_zone_required": "Choisissez le fuseau horaire de l'événement.",
-    "title_length": "Le nom de l'événement doit contenir de 3 à 140 caractères."
+    "title_length": "Le nom de l'événement doit contenir de 3 à 140 caractères.",
+    "group_size_invalid": "Un billet de groupe fait entrer de 1 à 20 personnes.",
+    "group_size_locked": "Ce type de billet a déjà des ventes : sa taille de groupe ne peut plus changer. Ajoutez plutôt un nouveau type de billet.",
+    "ticket_description_invalid": "La description d'un billet peut compter jusqu'à 300 caractères."
   },
   "export": {
     "busy": "Un export est déjà en cours. Veuillez réessayer dans une minute."
@@ -132,7 +135,14 @@
     "sales_not_started": "La vente des billets n'a pas encore commencé.",
     "sold_out": "Ce type de billet est épuisé.",
     "ticket_type_unavailable": "Ce type de billet n'est pas disponible.",
-    "transition_not_allowed": "Cette commande ne peut pas être modifiée de cette façon."
+    "transition_not_allowed": "Cette commande ne peut pas être modifiée de cette façon.",
+    "recipients_too_many": "Vous pouvez envoyer des billets à 20 personnes au maximum dans cette commande.",
+    "recipient_name_invalid": "Saisissez le nom de chaque personne (2 à 120 caractères).",
+    "recipient_email_invalid": "Saisissez une adresse e-mail valide pour chaque personne ou laissez le champ vide.",
+    "recipient_is_buyer": "C'est votre propre adresse : vos billets vous parviennent déjà.",
+    "recipients_exceed_tickets": "Cette commande n'a pas autant de billets à envoyer à d'autres personnes.",
+    "buyer_phone_invalid": "Saisissez votre numéro de téléphone avec l'indicatif du pays, par exemple +2348012345678.",
+    "buyer_gender_invalid": "Choisissez femme, homme ou je préfère ne pas le dire."
   },
   "payment": {
     "forbidden": "Vous n'avez pas l'autorisation de faire cela.",
@@ -214,7 +224,8 @@
   "ticket": {
     "email_limit": "Ce billet a été envoyé par e-mail plusieurs fois au cours de la dernière heure. Veuillez réessayer plus tard.",
     "email_unavailable": "Nous n'avons pas pu envoyer l'e-mail pour le moment. Veuillez réessayer.",
-    "not_found": "Billet introuvable."
+    "not_found": "Billet introuvable.",
+    "first_ticket_is_buyers": "Le billet 1 est le vôtre. Envoyez plutôt l'un des autres billets."
   },
   "validation": {
     "failed": "Certains champs ne sont pas valides."

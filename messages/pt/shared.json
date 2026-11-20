@@ -72,6 +72,22 @@
         "title": "Pagamento contestado",
         "body": "O pagamento está sendo contestado junto ao banco. Por enquanto, seus ingressos continuam válidos."
       }
+    },
+    "groupTicket": "Bilhete {position} de {size} · {type}",
+    "sentTo": "Enviado para <b>{email}</b>",
+    "resend": {
+      "button": "Reenviar",
+      "buttonLabel": "Reenviar o bilhete de {name}",
+      "title": "Reenviar o bilhete de {name}",
+      "body": "Enviaremos o bilhete para este endereço. Corrija-o se estiver mal escrito.",
+      "email": "E-mail",
+      "cancel": "Cancelar",
+      "send": "Enviar bilhete",
+      "close": "Fechar",
+      "sent": "Enviado para {email}",
+      "failed": "Não foi possível enviar o bilhete. Tente novamente.",
+      "invalidEmail": "Introduza um e-mail válido.",
+      "signedOut": "A sua sessão terminou. Inicie sessão novamente."
     }
   },
   "sellReason": {

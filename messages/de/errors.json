@@ -72,7 +72,10 @@
     "time_invalid": "Verwenden Sie ein gültiges Datum und eine gültige Uhrzeit.",
     "time_not_in_zone": "Diese Uhrzeit gibt es in dieser Zeitzone wegen der Zeitumstellung nicht. Wählen Sie eine andere Uhrzeit.",
     "time_zone_required": "Wählen Sie die Zeitzone der Veranstaltung.",
-    "title_length": "Der Name der Veranstaltung muss 3 bis 140 Zeichen lang sein."
+    "title_length": "Der Name der Veranstaltung muss 3 bis 140 Zeichen lang sein.",
+    "group_size_invalid": "Ein Gruppenticket gewährt 1 bis 20 Personen Einlass.",
+    "group_size_locked": "Für diesen Tickettyp gibt es bereits Verkäufe, daher kann die Gruppengröße nicht mehr geändert werden. Legen Sie stattdessen einen neuen Tickettyp an.",
+    "ticket_description_invalid": "Eine Ticketbeschreibung darf höchstens 300 Zeichen lang sein."
   },
   "export": {
     "busy": "Es läuft bereits ein Export. Bitte versuchen Sie es in einer Minute erneut."
@@ -132,7 +135,14 @@
     "sales_not_started": "Der Ticketverkauf hat noch nicht begonnen.",
     "sold_out": "Diese Ticketart ist ausverkauft.",
     "ticket_type_unavailable": "Diese Ticketart ist nicht verfügbar.",
-    "transition_not_allowed": "Diese Bestellung kann so nicht geändert werden."
+    "transition_not_allowed": "Diese Bestellung kann so nicht geändert werden.",
+    "recipients_too_many": "Sie können in dieser Bestellung Tickets an höchstens 20 Personen senden.",
+    "recipient_name_invalid": "Geben Sie für jede Person den Namen ein (2 bis 120 Zeichen).",
+    "recipient_email_invalid": "Geben Sie für jede Person eine gültige E-Mail-Adresse ein oder lassen Sie das Feld leer.",
+    "recipient_is_buyer": "Das ist Ihre eigene E-Mail-Adresse: Ihre Tickets erhalten Sie bereits.",
+    "recipients_exceed_tickets": "Diese Bestellung hat nicht so viele Tickets, die Sie an andere senden können.",
+    "buyer_phone_invalid": "Geben Sie Ihre Telefonnummer mit Ländervorwahl ein, etwa +2348012345678.",
+    "buyer_gender_invalid": "Wählen Sie weiblich, männlich oder keine Angabe."
   },
   "payment": {
     "forbidden": "Sie haben keine Berechtigung dazu.",
@@ -214,7 +224,8 @@
   "ticket": {
     "email_limit": "Dieses Ticket wurde in dieser Stunde bereits mehrmals per E-Mail gesendet. Bitte versuchen Sie es später erneut.",
     "email_unavailable": "Wir konnten die E-Mail gerade nicht senden. Bitte versuchen Sie es erneut.",
-    "not_found": "Ticket nicht gefunden."
+    "not_found": "Ticket nicht gefunden.",
+    "first_ticket_is_buyers": "Ticket 1 gehört Ihnen. Senden Sie stattdessen eines der anderen Tickets."
   },
   "validation": {
     "failed": "Einige Felder sind ungültig."

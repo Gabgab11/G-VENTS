@@ -31,10 +31,46 @@ const same = (over: Partial<DetailsInput> = {}): DetailsInput => ({
   ...over,
 });
 
+describe("group tickets and descriptions (D90)", () => {
+  const rows = (a: Partial<DetailsInput["tickets"][number]>, b: Partial<DetailsInput["tickets"][number]> = {}) => same({
+    tickets: [
+      { id: "a", name: "Regular", quantity: "100", price: "5000", remove: false, groupSize: "1", description: "", ...a },
+      { id: "b", name: "VIP", quantity: "10", price: "15000", remove: false, groupSize: "1", description: "", ...b },
+    ],
+  });
+
+  it("sends a new group size and description for an unsold type", () => {
+    expect(detailsPatch(rows({}, { groupSize: "4", description: " Table near the stage " }), event)).toMatchObject({
+      ok: true, body: { ticketTypes: [{ id: "b", groupSize: 4, description: "Table near the stage" }] },
+    });
+  });
+
+  it("nothing changes when the form matches", () => {
+    expect(detailsPatch(rows({}), event)).toMatchObject({ ok: true, body: {} });
+  });
+
+  it("a sold type keeps its group size; bad sizes and long descriptions are refused", () => {
+    expect(detailsPatch(rows({ groupSize: "4" }), event)).toEqual({ ok: false, error: "ticket_group_locked" });
+    expect(detailsPatch(rows({}, { groupSize: "21" }), event)).toEqual({ ok: false, error: "ticket_group_size" });
+    expect(detailsPatch(rows({}, { description: "x".repeat(301) }), event)).toEqual({ ok: false, error: "ticket_description" });
+  });
+
+  it("a new group type", () => {
+    const input = same({ tickets: [...same().tickets, { id: "", name: "Table of 4", quantity: "40", price: "300000", remove: false, groupSize: "4", description: "Seats four" }] });
+    expect(detailsPatch(input, event)).toMatchObject({ ok: true, body: { ticketTypes: [{ name: "Table of 4", priceMinor: 30000000, quantity: 40, groupSize: 4, description: "Seats four" }] } });
+  });
+
+  it("reads the new fields from the form", () => {
+    const fd = new FormData();
+    for (const [k, v] of [["tt_id", "a"], ["tt_name", "Regular"], ["tt_quantity", ""], ["tt_price", "0"], ["tt_remove", "0"], ["tt_group_size", "4"], ["tt_desc", "Hi"]]) fd.append(k!, v!);
+    expect(readDetailsForm(fd).tickets[0]).toEqual({ id: "a", name: "Regular", quantity: "", price: "0", remove: false, groupSize: "4", description: "Hi" });
+  });
+});
+
 describe("ticket locks", () => {
   it("locks the price and removal once sold; quantity never below sold", () => {
-    expect(ticketLock({ sold: 0 })).toEqual({ priceLocked: false, minQuantity: 1, removable: true });
-    expect(ticketLock({ sold: 7 })).toEqual({ priceLocked: true, minQuantity: 7, removable: false });
+    expect(ticketLock({ sold: 0 })).toEqual({ priceLocked: false, groupLocked: false, minQuantity: 1, removable: true });
+    expect(ticketLock({ sold: 7 })).toEqual({ priceLocked: true, groupLocked: true, minQuantity: 7, removable: false });
   });
 });
 

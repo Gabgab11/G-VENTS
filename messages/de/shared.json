@@ -72,6 +72,22 @@
         "title": "Zahlung angefochten",
         "body": "Die Zahlung wird bei der Bank angefochten. Ihre Tickets sind vorerst weiterhin gültig."
       }
+    },
+    "groupTicket": "Ticket {position} von {size} · {type}",
+    "sentTo": "Gesendet an <b>{email}</b>",
+    "resend": {
+      "button": "Erneut senden",
+      "buttonLabel": "Ticket von {name} erneut senden",
+      "title": "Ticket von {name} erneut senden",
+      "body": "Wir senden das Ticket an diese Adresse. Korrigieren Sie sie, falls sie falsch eingegeben wurde.",
+      "email": "E-Mail-Adresse",
+      "cancel": "Abbrechen",
+      "send": "Ticket senden",
+      "close": "Schließen",
+      "sent": "Gesendet an {email}",
+      "failed": "Das Ticket konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
+      "invalidEmail": "Geben Sie eine gültige E-Mail-Adresse ein.",
+      "signedOut": "Ihre Sitzung ist abgelaufen. Melden Sie sich erneut an."
     }
   },
   "sellReason": {

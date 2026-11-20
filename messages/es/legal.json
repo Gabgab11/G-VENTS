@@ -154,7 +154,9 @@
         "b1": "Datos de la cuenta (nombre, dirección de correo electrónico)",
         "b2": "Datos de eventos y de inscripciones",
         "b3": "Entradas y registros de check-in",
-        "b4": "Información del dispositivo y de uso"
+        "b4": "Información del dispositivo y de uso",
+        "b5": "Su número de teléfono y, si decide indicarlo, su género, cuando obtiene entradas. El organizador del evento puede verlos.",
+        "b6": "Los nombres y correos electrónicos de las personas a las que envía entradas"
       },
       "howWeUseYourInformation": {
         "title": "Cómo utilizamos su información"

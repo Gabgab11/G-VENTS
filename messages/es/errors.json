@@ -72,7 +72,10 @@
     "time_invalid": "Use una fecha y hora válidas.",
     "time_not_in_zone": "Esa hora no existe en esta zona horaria por el cambio de hora. Elija otra hora.",
     "time_zone_required": "Elija la zona horaria del evento.",
-    "title_length": "El nombre del evento debe tener de 3 a 140 caracteres."
+    "title_length": "El nombre del evento debe tener de 3 a 140 caracteres.",
+    "group_size_invalid": "Una entrada de grupo admite de 1 a 20 personas.",
+    "group_size_locked": "Este tipo de entrada ya tiene ventas, así que su tamaño de grupo no puede cambiar. Añada un nuevo tipo de entrada.",
+    "ticket_description_invalid": "La descripción de una entrada puede tener hasta 300 caracteres."
   },
   "export": {
     "busy": "Ya hay una exportación en curso. Inténtelo de nuevo en un minuto."
@@ -132,7 +135,14 @@
     "sales_not_started": "La venta de entradas aún no ha empezado.",
     "sold_out": "Ese tipo de entrada está agotado.",
     "ticket_type_unavailable": "Ese tipo de entrada no está disponible.",
-    "transition_not_allowed": "Este pedido no se puede cambiar de esa forma."
+    "transition_not_allowed": "Este pedido no se puede cambiar de esa forma.",
+    "recipients_too_many": "Puede enviar entradas a un máximo de 20 personas en este pedido.",
+    "recipient_name_invalid": "Introduzca el nombre de cada persona (de 2 a 120 caracteres).",
+    "recipient_email_invalid": "Introduzca un correo electrónico válido para cada persona o déjelo en blanco.",
+    "recipient_is_buyer": "Ese es su propio correo: sus entradas ya le llegan a usted.",
+    "recipients_exceed_tickets": "Este pedido no tiene tantas entradas para enviar a otras personas.",
+    "buyer_phone_invalid": "Introduzca su número de teléfono con el prefijo del país, por ejemplo +2348012345678.",
+    "buyer_gender_invalid": "Elija mujer, hombre o prefiero no decirlo."
   },
   "payment": {
     "forbidden": "No tiene permiso para hacer eso.",
@@ -214,7 +224,8 @@
   "ticket": {
     "email_limit": "Esta entrada se ha enviado por correo varias veces en esta hora. Inténtelo de nuevo más tarde.",
     "email_unavailable": "No pudimos enviar el correo en este momento. Inténtelo de nuevo.",
-    "not_found": "No se encontró la entrada."
+    "not_found": "No se encontró la entrada.",
+    "first_ticket_is_buyers": "La entrada 1 es suya. Envíe otra de las entradas."
   },
   "validation": {
     "failed": "Algunos campos no son válidos."

@@ -72,6 +72,22 @@
         "title": "付款有争议",
         "body": "该付款正在与银行进行争议处理。您的门票目前仍然有效。"
       }
+    },
+    "groupTicket": "第 {position} 张，共 {size} 张 · {type}",
+    "sentTo": "已发送至 <b>{email}</b>",
+    "resend": {
+      "button": "重新发送",
+      "buttonLabel": "重新发送 {name} 的门票",
+      "title": "重新发送 {name} 的门票",
+      "body": "我们会将门票发送到此地址。如有输入错误，请更正。",
+      "email": "电子邮箱",
+      "cancel": "取消",
+      "send": "发送门票",
+      "close": "关闭",
+      "sent": "已发送至 {email}",
+      "failed": "无法发送门票，请重试。",
+      "invalidEmail": "请输入有效的电子邮箱。",
+      "signedOut": "您的会话已结束，请重新登录。"
     }
   },
   "sellReason": {
