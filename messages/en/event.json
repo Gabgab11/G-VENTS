@@ -7,6 +7,7 @@
     },
     "coverAlt": "Flyer for {title}",
     "hostedBy": "Hosted by",
+    "hostFallback": "G-ventZ host",
     "going": "{count, plural, one {{count, number, ::group-off} person going} other {{count, number, ::group-off} people going}}",
     "privateEvent": "Private event",
     "timeLine": "{range} · {zone} time",

@@ -131,16 +131,21 @@ export default async function EventPage({ params }: { params: Promise<{ lang: st
             {event.coverUrl ? <img src={event.coverUrl} alt={t("page.coverAlt", { title: event.title })} /> : <span className={s.coverTitle}>{event.title}</span>}
           </div>
 
-          {event.hostName && (
-            <div className={s.sideBlock}>
-              <div className={s.label}>{t("page.hostedBy")}</div>
-              {/* TODO(chunk 4): link the host card to the host's profile, /h/{handle}, once it exists. */}
-              <div className={s.hostCard}>
-                <Avatar name={event.hostName} size={36} aria-hidden />
-                <span>{event.hostName}</span>
+          {/* The host card, always under the picture (EventPorte-style): who's hosting, then the tags. */}
+          <Card className={s.hostBox}>
+            <div className={s.hostCard}>
+              <Avatar name={event.hostName ?? t("page.hostFallback")} size={48} aria-hidden />
+              <div className={s.hostText}>
+                <span className={s.label}>{t("page.hostedBy")}</span>
+                {/* TODO(chunk 4): link to the host's profile, /h/{handle}, with "Visit profile" and the verified badge. */}
+                <strong>{event.hostName ?? t("page.hostFallback")}</strong>
               </div>
             </div>
-          )}
+            <div className={s.tags}>
+              <Badge plain>{isCategory(event.category) ? root(categoryLabelKey(event.category)) : event.category}</Badge>
+              {event.visibility === "private" && <Badge plain>{t("page.privateEvent")}</Badge>}
+            </div>
+          </Card>
 
           {/* The API returns the count only to the event's team. */}
           {event.attendeeCount !== null && event.attendeeCount > 0 && (
@@ -148,11 +153,6 @@ export default async function EventPage({ params }: { params: Promise<{ lang: st
               <div className={s.label}>{t("page.going", { count: event.attendeeCount })}</div>
             </div>
           )}
-
-          <div className={s.tags}>
-            <Badge plain>{isCategory(event.category) ? root(categoryLabelKey(event.category)) : event.category}</Badge>
-            {event.visibility === "private" && <Badge plain>{t("page.privateEvent")}</Badge>}
-          </div>
         </aside>
 
         <div className={s.main}>

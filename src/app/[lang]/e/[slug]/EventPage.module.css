@@ -15,7 +15,10 @@
 .flyer img { display: block; inline-size: 100%; block-size: auto; border-radius: var(--radius-lg); box-shadow: var(--shadow-3); }
 .sideBlock { display: grid; gap: var(--space-2); padding-block-end: var(--space-4); border-block-end: 1px solid var(--color-border); }
 .label { margin: 0; font-size: var(--text-body-sm); font-weight: var(--weight-semibold); color: var(--color-text-muted); }
-.hostCard { display: flex; align-items: center; gap: var(--space-3); font-weight: var(--weight-semibold); }
+.hostBox { display: grid; gap: var(--space-4); }
+.hostCard { display: flex; align-items: center; gap: var(--space-3); padding-block-end: var(--space-4); border-block-end: 1px solid var(--color-border); }
+.hostText { display: grid; gap: 2px; min-inline-size: 0; }
+.hostText strong { font-size: var(--text-body-lg); line-height: var(--leading-body-lg); }
 .tags { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 
 /* Right: title, facts, a short description, the tickets card. */
@@ -74,7 +77,7 @@
   .cover { order: 0; inline-size: 100%; max-inline-size: 420px; margin-inline: auto; }
   .flyer { max-inline-size: none; }
   .main { order: 1; }
-  .sideBlock, .tags { order: 2; }
+  .sideBlock, .hostBox { order: 2; }
   .title { font-size: var(--text-heading-1); line-height: var(--leading-heading-1); }
   .share { display: none; }
   .aboutGrid { grid-template-columns: 1fr; }

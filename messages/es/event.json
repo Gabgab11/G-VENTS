@@ -7,6 +7,7 @@
     },
     "coverAlt": "Cartel de {title}",
     "hostedBy": "Organizado por",
+    "hostFallback": "Organizador en G-ventZ",
     "going": "{count, plural, one {{count, number, ::group-off} persona asistirá} other {{count, number, ::group-off} personas asistirán}}",
     "privateEvent": "Evento privado",
     "timeLine": "{range} · hora de {zone}",

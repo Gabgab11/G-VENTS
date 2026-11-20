@@ -7,6 +7,7 @@
     },
     "coverAlt": "Flyer für {title}",
     "hostedBy": "Veranstaltet von",
+    "hostFallback": "G-ventZ-Veranstalter",
     "going": "{count, plural, one {{count, number, ::group-off} Person nimmt teil} other {{count, number, ::group-off} Personen nehmen teil}}",
     "privateEvent": "Private Veranstaltung",
     "timeLine": "{range} · Ortszeit {zone}",

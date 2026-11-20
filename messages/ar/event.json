@@ -7,6 +7,7 @@
     },
     "coverAlt": "ملصق {title}",
     "hostedBy": "يستضيفها",
+    "hostFallback": "منظِّم على G-ventZ",
     "going": "{count, plural, zero {لا أحد سيحضر} one {شخص واحد سيحضر} two {شخصان سيحضران} few {{count, number, ::group-off} أشخاص سيحضرون} many {{count, number, ::group-off} شخصًا سيحضرون} other {{count, number, ::group-off} شخص سيحضرون}}",
     "privateEvent": "فعالية خاصة",
     "timeLine": "{range} · بتوقيت {zone}",

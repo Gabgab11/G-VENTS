@@ -7,6 +7,7 @@
     },
     "coverAlt": "{title} 的海报",
     "hostedBy": "主办方",
+    "hostFallback": "G-ventZ 主办方",
     "going": "{count, plural, other {{count, number, ::group-off} 人参加}}",
     "privateEvent": "私密活动",
     "timeLine": "{range} · {zone}时间",
