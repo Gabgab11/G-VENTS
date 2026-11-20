@@ -63,6 +63,10 @@
     "free": "Grátis",
     "howMany": "Quantos ingressos {name}",
     "limit": "Até {count, plural, one {{count, number, ::group-off} ingresso} other {{count, number, ::group-off} ingressos}} por pessoa.",
+    "limitLeft": "Você já tem {held, plural, one {# ingresso} other {# ingressos}}; pode obter mais {count, plural, one {#} other {#}}.",
+    "maxReached": "Você já tem o máximo de ingressos permitido ({count, plural, one {# ingresso} other {# ingressos}} por pessoa).",
+    "maxReachedHint": "Eles estão em Meus ingressos e no e-mail da sua conta.",
+    "seeMyTickets": "Ver meus ingressos",
     "pending": "Garantindo seus ingressos...",
     "request": "{count, plural, one {Solicitar um ingresso} other {Solicitar {count, number, ::group-off} ingressos}}",
     "get": "{count, plural, one {Garantir ingresso} other {Garantir {count, number, ::group-off} ingressos}}"

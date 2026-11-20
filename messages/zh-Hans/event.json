@@ -63,6 +63,10 @@
     "free": "免费",
     "howMany": "{name} 门票数量",
     "limit": "每人最多 {count, plural, other {{count, number, ::group-off} 张门票}}。",
+    "limitLeft": "您已有 {held, plural, other {# 张门票}}，还可再获取 {count, plural, other {# 张}}。",
+    "maxReached": "您已达到每人可获取的门票上限（每人 {count, plural, other {# 张}}）。",
+    "maxReachedHint": "门票在“我的门票”中，也已发送到您的账户邮箱。",
+    "seeMyTickets": "查看我的门票",
     "pending": "正在获取您的门票...",
     "request": "{count, plural, other {申请 {count, number, ::group-off} 张门票}}",
     "get": "{count, plural, other {获取 {count, number, ::group-off} 张门票}}"

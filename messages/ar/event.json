@@ -63,6 +63,10 @@
     "free": "مجانية",
     "howMany": "عدد تذاكر {name}",
     "limit": "{count, plural, zero {لا تذاكر للشخص الواحد.} one {تذكرة واحدة كحد أقصى للشخص الواحد.} two {تذكرتان كحد أقصى للشخص الواحد.} few {حتى {count, number, ::group-off} تذاكر للشخص الواحد.} many {حتى {count, number, ::group-off} تذكرة للشخص الواحد.} other {حتى {count, number, ::group-off} تذكرة للشخص الواحد.}}",
+    "limitLeft": "لديك بالفعل {held, plural, zero {لا تذاكر} one {تذكرة واحدة} two {تذكرتان} few {# تذاكر} many {# تذكرة} other {# تذكرة}}، ويمكنك الحصول على {count, plural, zero {لا شيء} one {تذكرة أخرى} two {تذكرتين أخريين} few {# تذاكر أخرى} many {# تذكرة أخرى} other {# تذكرة أخرى}}.",
+    "maxReached": "لديك الحد الأقصى المسموح به من التذاكر ({count, plural, zero {لا تذاكر} one {تذكرة واحدة} two {تذكرتان} few {# تذاكر} many {# تذكرة} other {# تذكرة}} لكل شخص).",
+    "maxReachedHint": "تجدها في «تذاكري» وفي البريد الإلكتروني لحسابك.",
+    "seeMyTickets": "عرض تذاكري",
     "pending": "جارٍ الحصول على تذاكرك...",
     "request": "{count, plural, zero {اطلب التذاكر} one {اطلب تذكرة} two {اطلب تذكرتين} few {اطلب {count, number, ::group-off} تذاكر} many {اطلب {count, number, ::group-off} تذكرة} other {اطلب {count, number, ::group-off} تذكرة}}",
     "get": "{count, plural, zero {احصل على التذاكر} one {احصل على التذكرة} two {احصل على تذكرتين} few {احصل على {count, number, ::group-off} تذاكر} many {احصل على {count, number, ::group-off} تذكرة} other {احصل على {count, number, ::group-off} تذكرة}}"

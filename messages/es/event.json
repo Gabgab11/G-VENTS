@@ -63,6 +63,10 @@
     "free": "Gratis",
     "howMany": "Cuántas entradas {name}",
     "limit": "Hasta {count, plural, one {{count, number, ::group-off} entrada} other {{count, number, ::group-off} entradas}} por persona.",
+    "limitLeft": "Ya tiene {held, plural, one {# entrada} other {# entradas}}; puede obtener {count, plural, one {# más} other {# más}}.",
+    "maxReached": "Ya tiene el máximo de entradas permitido ({count, plural, one {# entrada} other {# entradas}} por persona).",
+    "maxReachedHint": "Están en Mis entradas y en el correo de su cuenta.",
+    "seeMyTickets": "Ver mis entradas",
     "pending": "Consiguiendo sus entradas...",
     "request": "{count, plural, one {Solicitar una entrada} other {Solicitar {count, number, ::group-off} entradas}}",
     "get": "{count, plural, one {Conseguir entrada} other {Conseguir {count, number, ::group-off} entradas}}"

@@ -12,6 +12,8 @@ type Props = {
   ticketTypes: PageTicketType[];
   questions: PageQuestion[];
   perBuyerLimit: number;
+  /** Tickets the buyer already holds for this event (counted against the limit). */
+  held?: number;
   userEmail: string;
   defaultName: string;
   requireApproval: boolean;
@@ -19,7 +21,7 @@ type Props = {
 
 // One order for up to the event's per-person limit (U4, US-3.1): a quantity per ticket type,
 // optional names for the other guests, the event's questions once.
-export default function OrderForm({ eventId, ticketTypes, questions, perBuyerLimit, userEmail, defaultName, requireApproval }: Props) {
+export default function OrderForm({ eventId, ticketTypes, questions, perBuyerLimit, held = 0, userEmail, defaultName, requireApproval }: Props) {
   const t = useTranslations("event.order");
   const [state, action, pending] = useActionState<OrderState, FormData>(placeOrder, undefined);
   const first = ticketTypes.find((tt) => tt.remaining === null || tt.remaining > 0);
@@ -53,7 +55,7 @@ export default function OrderForm({ eventId, ticketTypes, questions, perBuyerLim
             </label>
           );
         })}
-        <p className="muted small">{t("limit", { count: perBuyerLimit })}</p>
+        <p className="muted small">{held > 0 ? t("limitLeft", { count: perBuyerLimit, held }) : t("limit", { count: perBuyerLimit })}</p>
       </fieldset>
 
       <GuestDetails idPrefix="free" total={total} questions={questions} userEmail={userEmail} defaultName={defaultName} />

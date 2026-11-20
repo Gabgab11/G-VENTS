@@ -14,6 +14,8 @@ type Props = {
   ticketTypes: PageTicketType[];
   questions: PageQuestion[];
   perBuyerLimit: number;
+  /** Tickets the buyer already holds for this event (counted against the limit). */
+  held?: number;
   userEmail: string;
   defaultName: string;
   refundPolicy: string | null;
@@ -24,7 +26,7 @@ type Props = {
 // breakdown from the API's quote, the non-refundable tick box next to the event's refund policy and
 // the organizer statement, then "Pay with Paystack". A sold-out type can be chosen to join its
 // waiting list (WL1).
-export default function PaidOrderForm({ eventId, ticketTypes, questions, perBuyerLimit, userEmail, defaultName, refundPolicy, feeChoice }: Props) {
+export default function PaidOrderForm({ eventId, ticketTypes, questions, perBuyerLimit, held = 0, userEmail, defaultName, refundPolicy, feeChoice }: Props) {
   const t = useTranslations("event.paid");
   const root = useTranslations();
   const format = useFormat();
@@ -83,7 +85,7 @@ export default function PaidOrderForm({ eventId, ticketTypes, questions, perBuye
             </select>
           </label>
         ))}
-        <p className="muted small">{root("event.order.limit", { count: perBuyerLimit })}</p>
+        <p className="muted small">{held > 0 ? root("event.order.limitLeft", { count: perBuyerLimit, held }) : root("event.order.limit", { count: perBuyerLimit })}</p>
       </fieldset>
 
       {total > 0 && !waitlist && (

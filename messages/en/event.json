@@ -63,6 +63,10 @@
     "free": "Free",
     "howMany": "How many {name} tickets",
     "limit": "Up to {count, plural, one {{count, number, ::group-off} ticket} other {{count, number, ::group-off} tickets}} per person.",
+    "limitLeft": "You have {held, plural, one {# ticket} other {# tickets}} already; you can get {count, plural, one {# more} other {# more}}.",
+    "maxReached": "You have the most tickets allowed ({count, plural, one {# ticket} other {# tickets}} per person).",
+    "maxReachedHint": "They're in My tickets and in your account email.",
+    "seeMyTickets": "See my tickets",
     "pending": "Getting your tickets...",
     "request": "{count, plural, one {Request a ticket} other {Request {count, number, ::group-off} tickets}}",
     "get": "{count, plural, one {Get ticket} other {Get {count, number, ::group-off} tickets}}"

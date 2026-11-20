@@ -23,7 +23,7 @@ import ThemeStage from "@/components/ThemeStage";
 import VenueMap, { directionsUrl } from "@/components/VenueMap";
 import SiteHeader from "@/components/SiteHeader";
 import ShareButton from "@/components/ShareButton";
-import { Avatar, Button } from "@/design";
+import { Avatar, Banner, Button } from "@/design";
 
 // The public event page from gventz-api (U6a), laid out like Luma: the cover and host on the left;
 // the date, place and tickets on the right; then the description and the venue map. The API decides
@@ -80,6 +80,9 @@ export default async function EventPage({ params }: { params: Promise<{ lang: st
   if (!event) notFound();
 
   const signedIn = !!session;
+  // The per-person limit counts tickets the viewer already holds (confirmed, pending and waitlisted).
+  const held = event.viewerTickets ?? 0;
+  const ticketsLeft = Math.max(0, event.perBuyerLimit - held);
   const me = signedIn ? await (await api()).GET("/v1/me").then(data).catch(() => null) : null;
 
   const date = {
@@ -249,28 +252,35 @@ export default async function EventPage({ params }: { params: Promise<{ lang: st
               {!event.canManage && signedIn && bothKinds && (
                 <p className="muted small">{t("tickets.separateOrders")}</p>
               )}
-              {!event.canManage && canOrderFree && signedIn && (
+              {!event.canManage && signedIn && ticketsLeft === 0 && (
+                <Banner tone="info" title={t("order.maxReached", { count: event.perBuyerLimit })} action={<Button href="/my-tickets" size="sm" variant="secondary">{t("order.seeMyTickets")}</Button>}>
+                  {t("order.maxReachedHint")}
+                </Banner>
+              )}
+              {!event.canManage && canOrderFree && signedIn && ticketsLeft > 0 && (
                 <section className="pay-kind" aria-labelledby={bothKinds ? "free-title" : undefined}>
                   {bothKinds && <h3 className="pay-kind-title" id="free-title">{t("tickets.freeTitle")}</h3>}
                   <OrderForm
                     eventId={event.id}
                     ticketTypes={freeTypes}
                     questions={event.questions}
-                    perBuyerLimit={event.perBuyerLimit}
+                    perBuyerLimit={ticketsLeft}
+                    held={held}
                     userEmail={me?.email ?? session.user.email ?? ""}
                     defaultName={me?.fullName ?? ""}
                     requireApproval={event.requireApproval}
                   />
                 </section>
               )}
-              {!event.canManage && canOrderPaid && signedIn && (
+              {!event.canManage && canOrderPaid && signedIn && ticketsLeft > 0 && (
                 <section className="pay-kind" aria-labelledby={bothKinds ? "paid-title" : undefined}>
                   {bothKinds && <h3 className="pay-kind-title" id="paid-title">{t("tickets.paidTitle")}</h3>}
                   <PaidOrderForm
                     eventId={event.id}
                     ticketTypes={paidTypes}
                     questions={event.questions}
-                    perBuyerLimit={event.perBuyerLimit}
+                    perBuyerLimit={ticketsLeft}
+                    held={held}
                     userEmail={me?.email ?? session.user.email ?? ""}
                     defaultName={me?.fullName ?? ""}
                     refundPolicy={event.refundPolicy}

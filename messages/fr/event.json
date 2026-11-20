@@ -63,6 +63,10 @@
     "free": "Gratuit",
     "howMany": "Combien de billets {name}",
     "limit": "Jusqu'à {count, plural, one {{count, number, ::group-off} billet} other {{count, number, ::group-off} billets}} par personne.",
+    "limitLeft": "Vous avez déjà {held, plural, one {# billet} other {# billets}} ; vous pouvez en obtenir {count, plural, one {# de plus} other {# de plus}}.",
+    "maxReached": "Vous avez le nombre maximal de billets autorisé ({count, plural, one {# billet} other {# billets}} par personne).",
+    "maxReachedHint": "Ils se trouvent dans Mes billets et dans l'e-mail de votre compte.",
+    "seeMyTickets": "Voir mes billets",
     "pending": "Obtention de vos billets...",
     "request": "{count, plural, one {Demander un billet} other {Demander {count, number, ::group-off} billets}}",
     "get": "{count, plural, one {Obtenir le billet} other {Obtenir {count, number, ::group-off} billets}}"

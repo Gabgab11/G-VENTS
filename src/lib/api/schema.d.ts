@@ -2220,6 +2220,8 @@ export interface components {
             registrationOpen: boolean;
             /** @description Most tickets one person can get */
             perBuyerLimit: number;
+            /** @description Tickets you already hold for this event, as counted against perBuyerLimit; null when signed out */
+            viewerTickets: number | null;
             /** @description Owner, admin or editor */
             canManage: boolean;
             /** @enum {string|null} */
@@ -2419,6 +2421,8 @@ export interface components {
             registrationOpen: boolean;
             /** @description Most tickets one person can get */
             perBuyerLimit: number;
+            /** @description Tickets you already hold for this event, as counted against perBuyerLimit; null when signed out */
+            viewerTickets: number | null;
             /** @description Owner, admin or editor */
             canManage: boolean;
             /** @enum {string|null} */

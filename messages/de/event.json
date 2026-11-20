@@ -63,6 +63,10 @@
     "free": "Kostenlos",
     "howMany": "Wie viele {name}-Tickets",
     "limit": "Bis zu {count, plural, one {{count, number, ::group-off} Ticket} other {{count, number, ::group-off} Tickets}} pro Person.",
+    "limitLeft": "Sie haben bereits {held, plural, one {# Ticket} other {# Tickets}}; Sie können noch {count, plural, one {# weiteres} other {# weitere}} erhalten.",
+    "maxReached": "Sie haben bereits die maximal erlaubte Anzahl an Tickets ({count, plural, one {# Ticket} other {# Tickets}} pro Person).",
+    "maxReachedHint": "Sie finden sie unter Meine Tickets und in der E-Mail Ihres Kontos.",
+    "seeMyTickets": "Meine Tickets ansehen",
     "pending": "Ihre Tickets werden geholt...",
     "request": "{count, plural, one {Ein Ticket anfragen} other {{count, number, ::group-off} Tickets anfragen}}",
     "get": "{count, plural, one {Ticket holen} other {{count, number, ::group-off} Tickets holen}}"
