@@ -4,7 +4,7 @@ import { randomUUID } from "node:crypto";
 import { serverEnv } from "@/lib/env";
 import { apiHeaders, clientIpFor } from "@/lib/api/headers";
 import { onCloudflare } from "@/lib/platform";
-import { cardApiPath, cardLanguage } from "@/lib/share-card-path";
+import { cardApiPath, cardLanguage, movedCardPath, type ShareCard } from "@/lib/share-card-path";
 
 // The share cards (Change 4, FR-29.1, D81) are drawn by gventz-api since the website moved to
 // Cloudflare Workers Free (next/og's renderer didn't fit the Worker's 3 MiB limit). The website
@@ -26,8 +26,11 @@ function notFound(): Response {
   return new Response("Not found", { status: 404, headers: { "Cache-Control": "public, max-age=60", "Content-Type": "text/plain; charset=utf-8" } });
 }
 
-/** The card for this request (`kind` event with its slug, or the site card) from the API. */
-export async function proxyShareCard(request: Request, card: { kind: "event"; slug: string } | { kind: "site" }): Promise<Response> {
+/**
+ * The card for this request (an event's by slug, a host's by handle, or the site card) from the API.
+ * A host card for an old handle comes back as a 308 to the new handle's /api/og/h/… address.
+ */
+export async function proxyShareCard(request: Request, card: ShareCard): Promise<Response> {
   const search = new URL(request.url).searchParams;
   const lang = cardLanguage(search.get("lang"));
   const version = search.get("v");
@@ -48,6 +51,7 @@ export async function proxyShareCard(request: Request, card: { kind: "event"; sl
     upstream = await fetch(`${env.apiUrl}${path}`, {
       headers: apiHeaders({ accessToken: null, bffKey: env.bffSharedSecret, clientIp: clientIpFor((name) => request.headers.get(name), onCloudflare()), requestId: randomUUID() }),
       cache: "no-store",
+      redirect: "manual",
       signal: AbortSignal.timeout(TIMEOUT_MS),
     });
   } catch (error) {
@@ -55,6 +59,12 @@ export async function proxyShareCard(request: Request, card: { kind: "event"; sl
     return new Response("Share card unavailable", { status: 502, headers: { "Cache-Control": "no-store", "Content-Type": "text/plain; charset=utf-8" } });
   }
   if (upstream.status === 404) return notFound();
+  if (upstream.status >= 300 && upstream.status < 400) {
+    const moved = card.kind === "host" ? movedCardPath(upstream.headers.get("location"), new URL(request.url).search) : null;
+    if (moved) return new Response(null, { status: 308, headers: { Location: moved, "Cache-Control": "public, max-age=300" } });
+    console.error(`[og] share card from the API answered ${upstream.status} without a card address`);
+    return new Response("Share card unavailable", { status: 502, headers: { "Cache-Control": "no-store", "Content-Type": "text/plain; charset=utf-8" } });
+  }
   if (!upstream.ok || upstream.headers.get("content-type") !== "image/png") {
     console.error(`[og] share card from the API answered ${upstream.status}`);
     return new Response("Share card unavailable", { status: 502, headers: { "Cache-Control": "no-store", "Content-Type": "text/plain; charset=utf-8" } });

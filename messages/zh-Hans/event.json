@@ -18,6 +18,7 @@
     },
     "hostedBy": "主办方",
     "hostFallback": "G-ventZ 主办方",
+    "visitProfile": "查看主页",
     "going": "{count, plural, other {{count, number, ::group-off} 人参加}}",
     "privateEvent": "私密活动",
     "timeLine": "{range} · {zone}时间",

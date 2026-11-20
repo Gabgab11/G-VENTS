@@ -1,4 +1,5 @@
 {
+  "hostProfile": { "verified": "Verified host" },
   "errorPage": {
     "title": "Something went wrong",
     "body": "We couldn't load this page. Please try again in a moment.",

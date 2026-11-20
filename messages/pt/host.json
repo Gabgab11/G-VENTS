@@ -18,6 +18,7 @@
     "close": "Fechar"
   },
   "home": {
+    "profileBanner": { "title": "Configure seu perfil", "body": "Escolha um nome de usuário e adicione uma imagem para que os convidados possam encontrar e seguir você.", "action": "Configurar perfil", "dismiss": "Dispensar" },
     "title": "Início",
     "welcome": "Boas-vindas ao G-ventZ",
     "welcomeNamed": "Boas-vindas, {name}",
@@ -109,7 +110,7 @@
   "settings": {
     "title": "Configurações",
     "tabsLabel": "Seções das configurações",
-    "tabs": { "security": "Segurança", "appearance": "Aparência", "language": "Idioma" },
+    "tabs": { "profile": "Perfil", "security": "Segurança", "appearance": "Aparência", "language": "Idioma" },
     "appearance": {
       "title": "Estilo do painel",
       "hint": "As cores da sua área do organizador. Só você as vê; as páginas dos seus eventos mantêm o próprio estilo."

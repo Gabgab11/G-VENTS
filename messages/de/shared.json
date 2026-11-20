@@ -1,4 +1,5 @@
 {
+  "hostProfile": { "verified": "Verifizierter Veranstalter" },
   "errorPage": {
     "title": "Etwas ist schiefgelaufen",
     "body": "Diese Seite konnte nicht geladen werden. Bitte versuchen Sie es gleich noch einmal.",

@@ -18,6 +18,7 @@
     "close": "关闭"
   },
   "home": {
+    "profileBanner": { "title": "设置您的主页", "body": "选择用户名并添加图片，让宾客能够找到并关注您。", "action": "设置主页", "dismiss": "关闭" },
     "title": "首页",
     "welcome": "欢迎使用 G-ventZ",
     "welcomeNamed": "欢迎，{name}",
@@ -109,7 +110,7 @@
   "settings": {
     "title": "设置",
     "tabsLabel": "设置分区",
-    "tabs": { "security": "安全", "appearance": "外观", "language": "语言" },
+    "tabs": { "profile": "主页", "security": "安全", "appearance": "外观", "language": "语言" },
     "appearance": {
       "title": "控制台风格",
       "hint": "您的主办方后台的配色。仅您本人可见；您的活动页面保留各自的风格。"

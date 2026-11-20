@@ -1,4 +1,5 @@
 {
+  "hostProfile": { "verified": "已认证主办方" },
   "errorPage": {
     "title": "出错了",
     "body": "无法加载此页面。请稍后重试。",

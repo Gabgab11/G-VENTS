@@ -18,6 +18,7 @@
     "close": "Close"
   },
   "home": {
+    "profileBanner": { "title": "Set up your profile", "body": "Choose a handle and add a picture, so guests can find and follow you.", "action": "Set up profile", "dismiss": "Dismiss" },
     "title": "Home",
     "welcome": "Welcome to G-ventZ",
     "welcomeNamed": "Welcome, {name}",
@@ -109,7 +110,7 @@
   "settings": {
     "title": "Settings",
     "tabsLabel": "Settings sections",
-    "tabs": { "security": "Security", "appearance": "Appearance", "language": "Language" },
+    "tabs": { "profile": "Profile", "security": "Security", "appearance": "Appearance", "language": "Language" },
     "appearance": {
       "title": "Dashboard style",
       "hint": "The colours of your host area. Only you see it; your event pages keep their own style."

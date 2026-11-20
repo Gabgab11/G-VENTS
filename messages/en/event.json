@@ -18,6 +18,7 @@
     },
     "hostedBy": "Hosted by",
     "hostFallback": "G-ventZ host",
+    "visitProfile": "Visit profile",
     "going": "{count, plural, one {{count, number, ::group-off} person going} other {{count, number, ::group-off} people going}}",
     "privateEvent": "Private event",
     "timeLine": "{range} · {zone} time",

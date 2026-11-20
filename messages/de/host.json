@@ -18,6 +18,7 @@
     "close": "Schließen"
   },
   "home": {
+    "profileBanner": { "title": "Richten Sie Ihr Profil ein", "body": "Wählen Sie einen Benutzernamen und fügen Sie ein Bild hinzu, damit Gäste Sie finden und Ihnen folgen können.", "action": "Profil einrichten", "dismiss": "Ausblenden" },
     "title": "Start",
     "welcome": "Willkommen bei G-ventZ",
     "welcomeNamed": "Willkommen, {name}",
@@ -109,7 +110,7 @@
   "settings": {
     "title": "Einstellungen",
     "tabsLabel": "Bereiche der Einstellungen",
-    "tabs": { "security": "Sicherheit", "appearance": "Darstellung", "language": "Sprache" },
+    "tabs": { "profile": "Profil", "security": "Sicherheit", "appearance": "Darstellung", "language": "Sprache" },
     "appearance": {
       "title": "Dashboard-Stil",
       "hint": "Die Farben Ihres Veranstalterbereichs. Nur Sie sehen sie; Ihre Event-Seiten behalten ihren eigenen Stil."

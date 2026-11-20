@@ -1,4 +1,5 @@
 {
+  "hostProfile": { "verified": "Organizador verificado" },
   "errorPage": {
     "title": "Algo deu errado",
     "body": "Não conseguimos carregar esta página. Tente novamente em instantes.",

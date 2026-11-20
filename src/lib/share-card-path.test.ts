@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { cardApiPath, cardLanguage } from "./share-card-path";
+import { cardApiPath, cardLanguage, movedCardPath } from "./share-card-path";
 
 describe("share card addresses (D81)", () => {
   it("uses the lang parameter only when it is a switched-on language", () => {
@@ -25,5 +25,19 @@ describe("share card addresses (D81)", () => {
     expect(cardApiPath({ kind: "event", slug: "../../v1/admin" }, "en", null)).toBeNull();
     expect(cardApiPath({ kind: "event", slug: "a?b" }, "en", null)).toBeNull();
     expect(cardApiPath({ kind: "event", slug: "x".repeat(201) }, "en", null)).toBeNull();
+  });
+
+  it("points at a host's profile card, and refuses handles that could leave the path", () => {
+    expect(cardApiPath({ kind: "host", handle: "ada-events" }, "fr", "k3x")).toBe("/v1/share-cards/hosts/ada-events.png?lang=fr&v=k3x");
+    expect(cardApiPath({ kind: "host", handle: "@Ada" }, "en", null)).toBe("/v1/share-cards/hosts/%40Ada.png?lang=en");
+    for (const bad of ["", "../admin", "a/b", "a.png", "x".repeat(41), "a?b"]) expect(cardApiPath({ kind: "host", handle: bad }, "en", null), bad).toBeNull();
+  });
+
+  it("follows a moved profile card to the new handle's address, keeping the query", () => {
+    expect(movedCardPath("/v1/share-cards/hosts/new-name.png?lang=fr&v=1", "?v=1&lang=fr")).toBe("/api/og/h/new-name?v=1&lang=fr");
+    expect(movedCardPath("https://api.gventz.com/v1/share-cards/hosts/new-name.png", "")).toBe("/api/og/h/new-name");
+    expect(movedCardPath("/v1/admin", "")).toBeNull();
+    expect(movedCardPath("https://evil.example/v1/share-cards/hosts/x/../../y.png", "")).toBeNull();
+    expect(movedCardPath(null, "")).toBeNull();
   });
 });
