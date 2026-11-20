@@ -153,11 +153,6 @@ textarea.input { resize: vertical; }
 .spread { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
 .tag { font-size: var(--text-caption); font-weight: 700; padding: 5px 10px; border-radius: var(--radius-full); background: var(--surface-hi); text-transform: capitalize; }
 .ok { color: var(--color-success); font-weight: 600; font-size: var(--text-body-sm); }
-.tier-pick { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: var(--radius-lg); background: var(--surface); border: 1.5px solid var(--line); cursor: pointer; }
-.tier-pick.disabled { opacity: .5; cursor: default; }
-.tier-pick .grow { flex: 1; font-weight: 700; }
-.tier-pick input { accent-color: var(--gold); width: 18px; height: 18px; }
-.register { margin-top: 4px; }
 .done { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 20px; display: grid; gap: 6px; }
 .check { display: inline-flex; align-items: center; gap: 8px; font-size: var(--text-body-sm); color: var(--text); cursor: pointer; }
 .check input { width: 18px; height: 18px; accent-color: var(--gold); }
@@ -213,66 +208,17 @@ input, select, textarea, button { max-width: 100%; min-width: 0; }
 /* An error line inside a legacy field. */
 .field .error.small { font-size: var(--text-body-sm); margin: 0; }
 
-/* Orders and My tickets (U6a) */
-.register .qty { width: 72px; flex: none; padding: 8px 10px; }
-
 /* Door scanner (U6a) */
 .scanner { display: grid; gap: 12px; }
 
-/* ---------- Event page (Luma-style layout) ---------- */
-.ev { max-width: none; margin: 0 auto; padding: 24px clamp(18px, 7vw, 180px) 72px; }
-.ev-notices { display: grid; gap: 8px; margin-bottom: 18px; }
-.ev-notice { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 10px 14px; font-size: var(--text-body-sm); color: var(--muted); }
-.ev-notice-warn { border-color: color-mix(in srgb, var(--color-danger) 45%, transparent); color: var(--color-danger); }
-/* Flyer column: big but bounded (about 500px), so wide screens get space, not a giant poster. */
-.ev-grid { display: grid; grid-template-columns: minmax(300px, 500px) minmax(0, 1fr); gap: clamp(40px, 5vw, 96px); align-items: start; }
-.ev-side { display: grid; gap: 22px; position: sticky; top: 24px; }
-.ev-cover { position: relative; aspect-ratio: 1 / 1; border-radius: var(--radius-lg); overflow: hidden; display: flex; align-items: flex-end; padding: 20px; box-shadow: var(--shadow-3); }
-.ev-cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
-/* With a flyer: the whole poster at its own shape, filling the column (never cropped). */
-.ev-cover-flyer { aspect-ratio: auto; padding: 0; display: flex; justify-content: center; background: none !important; box-shadow: none; border-radius: 0; overflow: visible; }
-.ev-cover-flyer img { position: static; display: block; width: 100%; height: auto; border-radius: var(--radius-lg); box-shadow: var(--shadow-3); }
-/* A tall poster can be taller than the screen, so the side column scrolls with the page then. */
-.ev-side:has(.ev-cover-flyer) { position: static; }
-.ev-cover-title { color: #fff; font-size: var(--text-heading-2); font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; text-shadow: 0 2px 14px color-mix(in srgb, var(--tone-ink) 30%, transparent); word-break: break-word; }
-.ev-side-block { display: grid; gap: 10px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
-.ev-label { font-size: var(--text-body-sm); font-weight: 600; color: var(--muted); }
-.ev-host { display: flex; align-items: center; gap: 10px; font-weight: 600; }
-.ev-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-.ev-tag { font-size: var(--text-body-sm); color: var(--muted); background: var(--surface); border: 1px solid var(--line); padding: 5px 11px; border-radius: var(--radius-full); }
-.ev-main { display: grid; gap: 26px; min-width: 0; }
-.ev-title { font-size: clamp(32px, 4.6vw, 48px); line-height: 1.05; letter-spacing: -0.03em; font-weight: 800; margin: 0; word-break: break-word; }
-.ev-facts { display: grid; gap: 16px; }
-.ev-fact { display: flex; gap: 14px; align-items: center; }
+/* ---------- Event facts, order cards and the venue card (the event page itself is EventPage.module.css) ---------- */
 .ev-fact-title { font-weight: 700; font-size: var(--text-body); }
 .ev-fact-title a:hover { text-decoration: underline; }
 .ev-fact-sub { color: var(--muted); font-size: var(--text-body-sm); margin-top: 2px; }
 .ev-cal { width: 46px; height: 46px; border-radius: var(--radius-md); border: 1px solid var(--line); background: var(--surface); overflow: hidden; display: grid; grid-template-rows: 16px 1fr; text-align: center; flex: none; }
 .ev-cal span { font-size: var(--text-caption); font-weight: 800; letter-spacing: .08em; background: var(--surface-hi); color: var(--muted); line-height: 16px; }
 .ev-cal b { font-size: var(--text-heading-3); line-height: 28px; }
-.ev-icon { width: 46px; height: 46px; border-radius: var(--radius-md); border: 1px solid var(--line); background: var(--surface); display: grid; place-items: center; color: var(--muted); flex: none; }
-.ev-card { background: color-mix(in srgb, var(--surface) 88%, transparent); border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; backdrop-filter: blur(8px); }
-.ev-card-head { padding: 12px 18px; font-size: var(--text-body-sm); font-weight: 700; color: var(--muted); background: var(--surface-hi); border-bottom: 1px solid var(--line); }
-.ev-card-body { padding: 18px; display: grid; gap: 14px; }
-.ev-signup { display: grid; gap: 12px; }
-.ev-signup p { margin: 0; line-height: 1.5; }
-.ev-cta { width: 100%; }
-.ev-section { display: grid; gap: 10px; padding-top: 20px; border-top: 1px solid var(--line); }
-.ev-h2 { font-size: var(--text-body-sm); font-weight: 700; color: var(--muted); margin: 0 0 4px; }
-.ev-desc { white-space: pre-line; line-height: 1.65; margin: 0; }
 .ev-map { width: 100%; height: 260px; border: 0; border-radius: var(--radius-lg); margin-top: 8px; filter: grayscale(.2) contrast(1.05); background: var(--surface); }
-/* Change 4 chunk 2: title with Share, host card, ticket list for everyone, trust line, venue card, phone sticky bar. */
-.ev-titlerow { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-4); }
-.ev-share { flex: none; padding-block-start: var(--space-2); }
-.ev-hostcard { display: flex; align-items: center; gap: var(--space-3); font-weight: 600; }
-.ev-types { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); }
-.ev-types li { display: flex; justify-content: space-between; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); border: 1px solid var(--color-border); border-radius: var(--radius-lg); }
-.ev-type-name { font-weight: 700; min-width: 0; overflow-wrap: anywhere; }
-.ev-type-price { font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
-.ev-trust { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); font-size: var(--text-caption); color: var(--color-text-muted); }
-.ev-trust li { display: flex; align-items: center; gap: var(--space-2); }
-.ev-trust svg { flex: none; }
-.ev-trust a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 .ev-venue { display: grid; gap: var(--space-3); padding: var(--space-4); border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-surface); }
 .ev-venue-image { display: block; inline-size: 100%; block-size: auto; aspect-ratio: 2 / 1; object-fit: cover; border-radius: var(--radius-md); background: var(--color-surface-raised); }
 .ev-venue-body { display: flex; gap: var(--space-3); align-items: flex-start; }
@@ -280,29 +226,6 @@ input, select, textarea, button { max-width: 100%; min-width: 0; }
 .ev-venue-text { min-width: 0; }
 .ev-venue-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 .ev-venue .ev-map { margin-block-start: 0; }
-.ev-sticky { display: none; }
-@media (max-width: 820px) {
-  .ev-grid { grid-template-columns: 1fr; gap: 28px; }
-  /* Phones: cover, then title and tickets, then host and tags (Luma's order). */
-  .ev-side { display: contents; }
-  .ev-cover { order: 0; }
-  .ev-main { order: 1; }
-  .ev-side-block, .ev-tags { order: 2; }
-  .ev-cover { max-width: 420px; width: 100%; margin: 0 auto; }
-  .ev-cover-flyer { max-width: none; }
-  .ev-title { font-size: var(--text-heading-1); }
-  .ev-share { display: none; }
-  .ev-sticky {
-    position: sticky; inset-block-end: 0; z-index: var(--z-sticky);
-    display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
-    margin-block-start: var(--space-6); margin-inline: calc(-1 * clamp(18px, 7vw, 180px));
-    padding: var(--space-3) var(--space-4); padding-block-end: max(var(--space-3), env(safe-area-inset-bottom));
-    background: var(--color-surface); border-block-start: 1px solid var(--color-border); box-shadow: var(--shadow-2);
-  }
-  .ev:has(.ev-sticky) { padding-block-end: 0; }
-  .ev-sticky-price { font-weight: 700; min-width: 0; overflow-wrap: anywhere; }
-  .ev-sticky-actions { display: flex; align-items: center; gap: var(--space-2); margin-inline-start: auto; flex: none; }
-}
 
 /* ---------- Tickets: order result and My tickets ---------- */
 .oc { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 18px; display: grid; gap: 14px; }
@@ -393,14 +316,6 @@ input, select, textarea, button { max-width: 100%; min-width: 0; }
 .offline { min-height: 100dvh; display: grid; place-items: center; padding: 24px 16px; }
 .offline-card { max-width: 420px; display: grid; gap: 14px; }
 
-/* Event page: the host's view of the tickets card (no order form for the people running the event). */
-.ev-host { display: grid; gap: 14px; }
-.ev-host-types { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
-.ev-host-types li { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--radius-lg); }
-.ev-host-name { font-weight: 700; }
-.ev-host-actions { display: flex; flex-wrap: wrap; gap: 10px; }
-.ev-host-actions .ev-cta { flex: 1 1 200px; text-align: center; }
-
 /* The account corner of headers (AccountLink): pill links and the account menu. The header itself is SiteHeader.module.css. */
 .site-account { display: inline-flex; align-items: center; min-height: 36px; padding: 0 var(--space-4); background: var(--color-surface); cursor: pointer; font-family: inherit; color: var(--color-text); text-decoration: none; font-size: var(--text-body-sm); font-weight: var(--weight-semibold); border: 1px solid var(--color-border-strong); border-radius: var(--radius-full); white-space: nowrap; }
 .site-account:hover { background: var(--color-surface-raised); }
@@ -457,9 +372,6 @@ body::before {
 .pay-details summary:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: var(--radius-sm); }
 .pay-details[open] summary { margin-bottom: 12px; }
 .fee-example { margin: 0; color: var(--text-soft); overflow-wrap: anywhere; }
-.pay-kind { display: grid; gap: 10px; }
-.pay-kind + .pay-kind { border-top: 1px solid var(--line); padding-top: 16px; }
-.pay-kind-title { margin: 0; font-size: var(--text-body); font-weight: 800; }
 .pay-breakdown { display: grid; gap: 6px; padding: 12px 14px; border-radius: var(--radius-md); background: var(--surface-hi); font-size: var(--text-body-sm); }
 .pay-breakdown p { margin: 0; }
 .pay-line { display: flex; justify-content: space-between; gap: 12px; font-variant-numeric: tabular-nums; }
@@ -467,10 +379,6 @@ body::before {
 .pay-line > span:last-child { white-space: nowrap; }
 .pay-total { font-weight: 800; }
 .pay-line.pay-total { border-top: 1px solid var(--line); padding-top: 8px; margin-top: 2px; }
-.pay-terms { display: grid; gap: 8px; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--radius-md); }
-.pay-terms p { margin: 0; }
-.pay-terms .check { align-items: flex-start; }
-.pay-terms .check input { margin-top: 1px; flex: none; }
 .pay-status-title { margin: 0; font-size: var(--text-heading-3); font-weight: 800; }
 .pay-status.pay-completed { border-color: color-mix(in srgb, var(--color-success) 55%, transparent); }
 .pay-status.pay-expired, .pay-status.pay-failed, .pay-status.pay-disputed { border-color: color-mix(in srgb, var(--color-danger) 55%, transparent); }
@@ -537,7 +445,7 @@ body::before {
 .input[aria-invalid="true"] { border-color: var(--color-danger); }
 .error { font-size: var(--text-body-sm); }
 
-.panel, .review, .done, .oc, .stat, .ev-card, .auth-card {
+.panel, .review, .done, .oc, .stat, .auth-card {
   background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: none;
 }
 .panel, .review, .done, .oc { padding: var(--space-5); }
@@ -561,7 +469,6 @@ body::before {
 .tag::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--color-text-muted); flex: none; }
 
 .ok-note { background: var(--color-success-soft); border-color: transparent; border-radius: var(--radius-lg); }
-.ev-notice-warn { background: var(--color-danger-soft); border-color: transparent; color: var(--color-text); }
 
 .switch span { background: var(--color-border-strong); }
 .switch input:checked + span { background: var(--color-accent); }
@@ -569,4 +476,4 @@ body::before {
 .seg button.on, .seg a.on { background: var(--color-inverse); color: var(--color-on-inverse); }
 .link-btn { color: var(--color-text-muted); }
 .link-btn:hover { color: var(--color-text); }
-.check input, .tier-pick input { accent-color: var(--color-accent); }
+.check input { accent-color: var(--color-accent); }

@@ -12,13 +12,19 @@ const metadataOf = (src: string) => src.slice(src.indexOf("export async function
 
 describe("unknown events and tickets answer 404", () => {
   it("has no loading.tsx between the language layout and the event and ticket pages", () => {
-    for (const p of ["loading.tsx", "e/loading.tsx", "e/[slug]/loading.tsx", "t/loading.tsx", "t/[code]/loading.tsx"]) {
+    for (const p of ["loading.tsx", "e/loading.tsx", "e/[slug]/loading.tsx", "e/[slug]/tickets/loading.tsx", "t/loading.tsx", "t/[code]/loading.tsx"]) {
       expect(existsSync(join(app, p)), p).toBe(false);
     }
   });
 
   it("calls notFound() from the event page's metadata", () => {
     expect(metadataOf(read("e/[slug]/page.tsx"))).toMatch(/if \(!event\) notFound\(\)/);
+  });
+
+  it("calls notFound() from the booking page's metadata, and keeps it out of search", () => {
+    const meta = metadataOf(read("e/[slug]/tickets/page.tsx"));
+    expect(meta).toMatch(/if \(!event\) notFound\(\)/);
+    expect(meta).toMatch(/robots: \{ index: false/);
   });
 
   it("calls notFound() from the ticket page's metadata", () => {
