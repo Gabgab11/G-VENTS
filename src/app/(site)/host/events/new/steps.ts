@@ -3,6 +3,7 @@
 // Pure, so the form, the server action and the tests share it.
 
 import { MAPS_URL_HINT_KEY, isGoogleMapsUrl } from "@/lib/maps-url";
+import { parseGroupSize } from "@/lib/group-tickets";
 
 export const STEPS = ["basics", "when", "tickets", "publish"] as const;
 export type StepKey = (typeof STEPS)[number];
@@ -13,7 +14,7 @@ const FIELD_STEP: Record<string, number> = {
   title: 0, category: 0, description: 0,
   date: 1, time: 1, end_date: 1, end_time: 1, time_zone: 1, is_online: 1,
   country_code: 1, country: 1, region: 1, venue: 1, place_id: 1, address: 1, city: 1, lat: 1, lng: 1, maps_url: 1,
-  tier_name: 2, tier_qty: 2, tier_price: 2, fee_choice: 2, per_buyer_limit: 2,
+  tier_name: 2, tier_qty: 2, tier_price: 2, tier_desc: 2, tier_group_size: 2, fee_choice: 2, per_buyer_limit: 2,
   flyer: 3, image_pending: 3, cover_theme: 3, visibility: 3, show_attendee_count: 3, require_approval: 3, refund_policy: 3, intent: 3,
 };
 
@@ -69,10 +70,12 @@ export function checkStep(step: number, form: FormValues): StepProblem | null {
   if (step === 2) {
     const names = form.getAll("tier_name").map(str);
     const quantities = form.getAll("tier_qty").map(str);
+    const sizes = form.getAll("tier_group_size").map(str);
     if (!names.some(Boolean)) return { field: "tier_name", key: `${V}.noTickets` };
     for (let i = 0; i < names.length; i++) {
       const q = quantities[i] ?? "";
       if (names[i] && q !== "" && !/^[1-9]\d*$/.test(q)) return { field: "tier_qty", key: `${V}.quantity`, values: { name: names[i]! } };
+      if (names[i] && parseGroupSize(sizes[i]) === null) return { field: "tier_group_size", key: `${V}.groupSize`, values: { name: names[i]! } };
     }
     return null;
   }
@@ -104,6 +107,8 @@ const KEY_FIELD: Record<string, string> = {
   [`${V}.price`]: "tier_price",
   [`${V}.noTickets`]: "tier_name",
   [`${V}.maxTickets`]: "tier_name",
+  [`${V}.groupSize`]: "tier_group_size",
+  [`${V}.ticketDescription`]: "tier_desc",
   [`${V}.perBuyer`]: "per_buyer_limit",
 };
 

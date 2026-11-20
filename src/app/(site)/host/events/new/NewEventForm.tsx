@@ -8,6 +8,7 @@ import { createEvent, type CreateEventState } from "@/app/(site)/events/actions"
 import { CATEGORIES, categoryLabelKey } from "@/lib/categories";
 import { THEMES, themeBackground } from "@/lib/themes";
 import { currencySymbol } from "@/lib/money";
+import { GROUP_MAX, GROUP_MIN, TICKET_DESCRIPTION_MAX } from "@/lib/group-tickets";
 import { FEE_CHOICES, feeChoiceKey, sellReasonKey, type FeeChoice } from "@/lib/payment-text";
 import { Badge, Banner, Button, Card, CardHeader, Field, Input, Link, PageHeader, Select, Textarea } from "@/design";
 import { Switch } from "@/design/client";
@@ -21,7 +22,7 @@ import { uploadPicture } from "@/lib/picture-upload";
 import { LAST_STEP, STEPS, canVisit, checkStep, nextStep, previousStep, stepOfField } from "./steps";
 import styles from "./NewEventForm.module.css";
 
-type Tier = { id: number; name: string; price: string; qty: string };
+type Tier = { id: number; name: string; price: string; qty: string; desc: string; group: boolean; size: string };
 /** A problem shown on a step: the message and, when known, the field to point at. */
 type StepError = { step: number; message: string; field?: string };
 
@@ -76,7 +77,7 @@ export default function NewEventForm({
   const focusAfter = useRef<{ field?: string } | null>(null);
   const [title, setTitle] = useState("");
   const [theme, setTheme] = useState(defaultTheme);
-  const [tiers, setTiers] = useState<Tier[]>([{ id: 1, name: t("form.tickets.defaultName"), price: "0", qty: "" }]);
+  const [tiers, setTiers] = useState<Tier[]>([{ id: 1, name: t("form.tickets.defaultName"), price: "0", qty: "", desc: "", group: false, size: "4" }]);
   const [visibility, setVisibility] = useState<"public" | "private">("public");
   const [isFree, setIsFree] = useState(true);
   const [online, setOnline] = useState(false);
@@ -217,7 +218,7 @@ export default function NewEventForm({
     startTransition(() => formAction(data));
   }
 
-  function updateTier(id: number, key: keyof Omit<Tier, "id">, value: string) {
+  function updateTier<K extends keyof Omit<Tier, "id">>(id: number, key: K, value: Tier[K]) {
     setTiers((list) => list.map((x) => (x.id === id ? { ...x, [key]: value } : x)));
   }
 
@@ -372,12 +373,31 @@ export default function NewEventForm({
                   </>
                 )}
                 {isFree && <input type="hidden" name="tier_price" value="0" />}
+                <Field label={t("form.tickets.description")} hint={t("form.tickets.descriptionCount", { count: tier.desc.length, max: TICKET_DESCRIPTION_MAX })}>
+                  <Textarea name="tier_desc" rows={2} maxLength={TICKET_DESCRIPTION_MAX} value={tier.desc} placeholder={t("form.tickets.descriptionPlaceholder")}
+                    onChange={(e) => updateTier(tier.id, "desc", e.target.value)} />
+                </Field>
+                <div className={styles.option}>
+                  <div className={styles.optionText}>
+                    <span className={styles.label} id={`tier-group-${tier.id}`}>{t("form.tickets.group")}</span>
+                    <span className={styles.hint} id={`tier-group-help-${tier.id}`}>{t("form.tickets.groupHelp")}</span>
+                  </div>
+                  <Switch checked={tier.group} onCheckedChange={(on) => updateTier(tier.id, "group", on)} aria-labelledby={`tier-group-${tier.id}`} aria-describedby={`tier-group-help-${tier.id}`} />
+                </div>
+                {tier.group ? (
+                  <Field label={t("form.tickets.admits")} hint={t("form.tickets.admitsHint", { min: GROUP_MIN, max: GROUP_MAX })} className={styles.narrow}>
+                    <Input name="tier_group_size" type="number" inputMode="numeric" min={GROUP_MIN} max={GROUP_MAX} step={1} required value={tier.size}
+                      onChange={(e) => updateTier(tier.id, "size", e.target.value)} />
+                  </Field>
+                ) : (
+                  <input type="hidden" name="tier_group_size" value="1" />
+                )}
                 {tiers.length > 1 && (
                   <Button variant="ghost" size="sm" className={styles.start} onClick={() => setTiers((x) => x.filter((y) => y.id !== tier.id))}>{t("form.tickets.remove")}</Button>
                 )}
               </div>
             ))}
-            <Button variant="secondary" className={styles.start} onClick={() => setTiers((x) => [...x, { id: nextId++, name: "", price: isFree ? "0" : "", qty: "" }])}>{t("form.tickets.add")}</Button>
+            <Button variant="secondary" className={styles.start} onClick={() => setTiers((x) => [...x, { id: nextId++, name: "", price: isFree ? "0" : "", qty: "", desc: "", group: false, size: "4" }])}>{t("form.tickets.add")}</Button>
             <Field label={t("form.tickets.perPerson")}>
               <Select name="per_buyer_limit" defaultValue="10">
                 {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => <option key={n} value={n}>{n}</option>)}

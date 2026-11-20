@@ -95,6 +95,7 @@ button.indicatorButton:focus-visible { outline: 2px solid var(--color-focus); ou
 .group { display: grid; gap: var(--space-2); align-content: start; }
 .row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
 .start { justify-self: start; }
+.narrow { max-inline-size: 240px; }
 
 .pair { display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); }
 

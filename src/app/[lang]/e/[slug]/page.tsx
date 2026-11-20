@@ -20,6 +20,8 @@ import ShareButton from "@/components/ShareButton";
 import { Avatar, Badge, Banner, Button, Card, cx } from "@/design";
 import { eventCta, orderableTypes, type EventCta } from "./event-cta";
 import AboutSection from "./AboutSection";
+import TicketTypeInfo from "./tickets/TicketTypeInfo";
+import { groupSizeOf, isSoldOut } from "@/lib/group-tickets";
 import Gallery from "./Gallery";
 import { bookingPath, eventDate, eventPath, eventPlace } from "./event-view";
 import { codeParam, withCode } from "./tickets/discount-code";
@@ -210,15 +212,18 @@ export default async function EventPage({ params, searchParams }: { params: Prom
               <ul className={s.types}>
                 {event.ticketTypes.map((tt) => (
                   <li key={tt.id}>
-                    <span className={s.typeName}>{tt.name}</span>
+                    <TicketTypeInfo type={tt} />
                     <span className={s.typePrice}>
                       {team ? (
                         <>
                           {tt.priceMinor === 0 ? t("host.free") : format.money(tt.priceMinor, tt.currency)}
+                          {groupSizeOf(tt) > 1 && ` · ${t("order.admits", { count: groupSizeOf(tt) })}`}
                           <span className={s.muted}>{` · ${tt.quantity !== null ? t("host.takenOf", { sold: tt.sold, quantity: tt.quantity }) : t("host.taken", { sold: tt.sold })}`}</span>
                         </>
-                      ) : tt.remaining !== null && tt.remaining <= 0 ? (
+                      ) : isSoldOut(tt) ? (
                         <span className={s.muted}>{t("order.soldOut")}</span>
+                      ) : groupSizeOf(tt) > 1 ? (
+                        t("order.priceAdmits", { price: tt.priceMinor === 0 ? t("order.free") : format.money(tt.priceMinor, tt.currency), count: groupSizeOf(tt) })
                       ) : tt.priceMinor === 0 ? t("order.free") : format.money(tt.priceMinor, tt.currency)}
                     </span>
                   </li>

@@ -4,8 +4,15 @@
 // all of this again and answers with a message to show.
 import { isCategory } from "@/lib/categories";
 import { decimalString, minorDigits } from "@/lib/format";
+import { TICKET_DESCRIPTION_MAX, parseGroupSize } from "@/lib/group-tickets";
 
-export type TicketRowInput = { id: string; name: string; quantity: string; price: string; remove: boolean };
+export type TicketRowInput = {
+  id: string; name: string; quantity: string; price: string; remove: boolean;
+  /** People per purchase as typed ("1" = not a group, D90); absent = unchanged. */
+  groupSize?: string;
+  /** Absent = unchanged; blank removes it. */
+  description?: string;
+};
 
 export type DetailsInput = {
   title: string;
@@ -17,7 +24,10 @@ export type DetailsInput = {
   tickets: TicketRowInput[];
 };
 
-export type TicketTypeForPatch = { id: string; name: string; priceMinor: number; currency: string; quantity: number | null; sold: number };
+export type TicketTypeForPatch = {
+  id: string; name: string; priceMinor: number; currency: string; quantity: number | null; sold: number;
+  groupSize?: number; description?: string | null;
+};
 
 export type EventForPatch = {
   title: string;
@@ -31,7 +41,10 @@ export type EventForPatch = {
   ticketTypes: TicketTypeForPatch[];
 };
 
-export type TicketChange = { id?: string; remove?: boolean; name?: string; priceMinor?: number; quantity?: number | null };
+export type TicketChange = {
+  id?: string; remove?: boolean; name?: string; priceMinor?: number; quantity?: number | null;
+  groupSize?: number; description?: string | null;
+};
 
 export type DetailsBody = {
   title?: string;
@@ -46,7 +59,7 @@ export type DetailsBody = {
 export const DETAILS_ERRORS = [
   "title_length", "category", "starts_at", "ends_at", "ends_before_start", "time_zone",
   "ticket_name", "ticket_quantity", "ticket_quantity_below_sold", "ticket_price", "ticket_price_locked",
-  "ticket_has_sales", "ticket_count",
+  "ticket_has_sales", "ticket_count", "ticket_group_size", "ticket_group_locked", "ticket_description",
 ] as const;
 export type DetailsError = (typeof DETAILS_ERRORS)[number];
 
@@ -54,9 +67,16 @@ export type DetailsResult = { ok: true; body: DetailsBody; rescheduled: boolean 
 
 export const MAX_TICKET_TYPES = 20;
 
-/** What the host may change on one ticket type. */
-export function ticketLock(t: { sold: number }): { priceLocked: boolean; minQuantity: number; removable: boolean } {
-  return { priceLocked: t.sold > 0, minQuantity: Math.max(1, t.sold), removable: t.sold === 0 };
+/** What the host may change on one ticket type: price, group size (D90) and removal only before any sale. */
+export function ticketLock(t: { sold: number }): { priceLocked: boolean; groupLocked: boolean; minQuantity: number; removable: boolean } {
+  return { priceLocked: t.sold > 0, groupLocked: t.sold > 0, minQuantity: Math.max(1, t.sold), removable: t.sold === 0 };
+}
+
+/** A typed description: trimmed, null when blank, undefined when too long. */
+function parseDescription(raw: string): string | null | undefined {
+  const s = raw.trim();
+  if (s === "") return null;
+  return s.length <= TICKET_DESCRIPTION_MAX ? s : undefined;
 }
 
 /** Integer minor units → the price as typed in the form ("5000", "12.50"). */
@@ -168,11 +188,15 @@ export function detailsPatch(input: DetailsInput, e: EventForPatch): DetailsResu
     if (name.length < 1 || name.length > 80) return { ok: false, error: "ticket_name" };
     const quantity = parseQuantity(row.quantity);
     if (quantity === undefined) return { ok: false, error: "ticket_quantity" };
+    const groupSize = row.groupSize === undefined ? undefined : parseGroupSize(row.groupSize);
+    if (groupSize === null) return { ok: false, error: "ticket_group_size" };
+    const description = row.description === undefined ? undefined : parseDescription(row.description);
+    if (row.description !== undefined && description === undefined) return { ok: false, error: "ticket_description" };
 
     if (!existing) {
       const priceMinor = parsePrice(row.price, currency);
       if (priceMinor === null) return { ok: false, error: "ticket_price" };
-      changes.push({ name, priceMinor, quantity });
+      changes.push({ name, priceMinor, quantity, ...(groupSize && groupSize > 1 ? { groupSize } : {}), ...(description ? { description } : {}) });
       continue;
     }
 
@@ -187,6 +211,11 @@ export function detailsPatch(input: DetailsInput, e: EventForPatch): DetailsResu
       if (lock.priceLocked) return { ok: false, error: "ticket_price_locked" };
       change.priceMinor = priceMinor;
     }
+    if (groupSize !== undefined && groupSize !== (existing.groupSize ?? 1)) {
+      if (lock.groupLocked) return { ok: false, error: "ticket_group_locked" };
+      change.groupSize = groupSize;
+    }
+    if (description !== undefined && description !== (existing.description ?? null)) change.description = description;
     if (Object.keys(change).length > 1) changes.push(change);
   }
   if (kept < 1 || kept > MAX_TICKET_TYPES) return { ok: false, error: "ticket_count" };
@@ -204,6 +233,8 @@ export function readDetailsForm(fd: { get(name: string): unknown; getAll(name: s
   const quantities = list("tt_quantity");
   const prices = list("tt_price");
   const removes = list("tt_remove");
+  const sizes = fd.getAll("tt_group_size").length > 0 ? list("tt_group_size") : null;
+  const descriptions = fd.getAll("tt_desc").length > 0 ? list("tt_desc") : null;
   return {
     title: str(fd.get("title")).slice(0, 200),
     description: str(fd.get("description")).slice(0, 10000),
@@ -217,6 +248,8 @@ export function readDetailsForm(fd: { get(name: string): unknown; getAll(name: s
       quantity: quantities[i] ?? "",
       price: prices[i] ?? "",
       remove: removes[i] === "1",
+      ...(sizes ? { groupSize: sizes[i] ?? "" } : {}),
+      ...(descriptions ? { description: (descriptions[i] ?? "").slice(0, 1000) } : {}),
     })),
   };
 }

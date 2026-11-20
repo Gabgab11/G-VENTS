@@ -4,6 +4,7 @@ import { checkbox, field } from "@/lib/forms";
 import { isThemeKey } from "@/lib/themes";
 import { MAPS_URL_HINT_KEY, MAPS_URL_MAX, isGoogleMapsUrl } from "@/lib/maps-url";
 import { wholeUnitsToMinor } from "@/lib/money";
+import { TICKET_DESCRIPTION_MAX, parseGroupSize } from "@/lib/group-tickets";
 import { createTranslator } from "next-intl";
 import createEventEn from "../../../../messages/en/createEvent.json";
 import sharedEn from "../../../../messages/en/shared.json";
@@ -78,6 +79,9 @@ export function createEventBody(formData: FormData, paid: PaidSetup = null, t: T
   const names = formData.getAll("tier_name").map(String);
   const quantities = formData.getAll("tier_qty").map(String);
   const prices = formData.getAll("tier_price").map(String);
+  // One of each per row (D90): the group size ("1" when the row isn't a group) and the description.
+  const sizes = formData.getAll("tier_group_size").map(String);
+  const descriptions = formData.getAll("tier_desc").map(String);
   const ticketTypes: CreateEventBody["ticketTypes"] = [];
   for (let i = 0; i < names.length; i++) {
     const name = names[i]!.trim().slice(0, 80);
@@ -93,7 +97,18 @@ export function createEventBody(formData: FormData, paid: PaidSetup = null, t: T
       if (minor === null) return { error: t(`${V}.price`, { name, currency: paid.currency }) };
       priceMinor = minor;
     }
-    ticketTypes.push({ name, priceMinor, groupSize: 1, ...(priceMinor > 0 && paid ? { currency: paid.currency } : {}), ...(quantity !== null ? { quantity } : {}) });
+    const groupSize = parseGroupSize(sizes[i]);
+    if (groupSize === null) return { error: t(`${V}.groupSize`, { name }) };
+    const description = (descriptions[i] ?? "").trim();
+    if (description.length > TICKET_DESCRIPTION_MAX) return { error: t(`${V}.ticketDescription`, { name, max: TICKET_DESCRIPTION_MAX }) };
+    ticketTypes.push({
+      name,
+      priceMinor,
+      groupSize,
+      ...(description ? { description } : {}),
+      ...(priceMinor > 0 && paid ? { currency: paid.currency } : {}),
+      ...(quantity !== null ? { quantity } : {}),
+    });
   }
   if (ticketTypes.length === 0) return { error: t(`${V}.noTickets`) };
   if (ticketTypes.length > MAX_TIERS) return { error: t(`${V}.maxTickets`, { max: MAX_TIERS }) };

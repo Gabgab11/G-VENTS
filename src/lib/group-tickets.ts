@@ -4,6 +4,21 @@
 
 type Sized = { groupSize?: number | null };
 
+/** A ticket type's description, shown under its name. */
+export const TICKET_DESCRIPTION_MAX = 300;
+/** People one group purchase admits. */
+export const GROUP_MIN = 2;
+export const GROUP_MAX = 20;
+
+/** A host form's group size: missing or "1" is an ordinary ticket; else a whole number from 2 to 20, or null. */
+export function parseGroupSize(raw: string | undefined): number | null {
+  const s = (raw ?? "").trim();
+  if (s === "" || s === "1") return 1;
+  if (!/^\d+$/.test(s)) return null;
+  const n = Number(s);
+  return n >= GROUP_MIN && n <= GROUP_MAX ? n : null;
+}
+
 /** People admitted per purchase; 1 for an ordinary ticket. */
 export function groupSizeOf(type: Sized): number {
   const n = type.groupSize ?? 1;

@@ -28,7 +28,7 @@ export default async function DetailsTab({ event: e }: { event: EventDashboard }
         event={{
           title: e.title, description: e.description, category: e.category, startsAtLocal: e.startsAtLocal, endsAtLocal: e.endsAtLocal,
           timeZone: e.timeZone, status: e.status, counts: e.counts,
-          ticketTypes: e.ticketTypes.map((tt) => ({ id: tt.id, name: tt.name, priceMinor: tt.priceMinor, currency: tt.currency, quantity: tt.quantity, sold: tt.sold })),
+          ticketTypes: e.ticketTypes.map((tt) => ({ id: tt.id, name: tt.name, priceMinor: tt.priceMinor, currency: tt.currency, quantity: tt.quantity, sold: tt.sold, groupSize: tt.groupSize, description: tt.description })),
         }}
       />
 

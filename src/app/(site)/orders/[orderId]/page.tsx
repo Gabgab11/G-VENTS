@@ -9,6 +9,7 @@ import { isUuid } from "@/lib/forms";
 import { siteOrigin } from "@/lib/ticket";
 import OrderCard from "@/components/OrderCard";
 import SiteHeader from "@/components/SiteHeader";
+import ToastArea from "@/components/ToastArea";
 import PaymentStatus from "./PaymentStatus";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -34,14 +35,16 @@ export default async function OrderPage({ params }: { params: Promise<{ orderId:
   }
 
   return (
-    <main className="tickets-page">
-      <SiteHeader back={order.event ? `/e/${order.event.slug}` : "/my-tickets"} />
-      <h1>{order.status === "completed" ? t("headingIn") : order.payment ? t("headingOrder") : t("headingTickets")}</h1>
-      {order.payment && <PaymentStatus orderId={order.id} payment={order.payment} eventSlug={order.event?.slug ?? null} />}
-      {(!order.payment || order.tickets.length > 0) && <OrderCard order={order} origin={await siteOrigin()} showQr />}
-      <p className="muted small">
-        {t.rich(order.status === "completed" ? "footCompleted" : "foot", { link: (c) => <Link href="/my-tickets" className="gold">{c}</Link> })}
-      </p>
-    </main>
+    <ToastArea>
+      <main className="tickets-page">
+        <SiteHeader back={order.event ? `/e/${order.event.slug}` : "/my-tickets"} />
+        <h1>{order.status === "completed" ? t("headingIn") : order.payment ? t("headingOrder") : t("headingTickets")}</h1>
+        {order.payment && <PaymentStatus orderId={order.id} payment={order.payment} eventSlug={order.event?.slug ?? null} />}
+        {(!order.payment || order.tickets.length > 0) && <OrderCard order={order} origin={await siteOrigin()} showQr />}
+        <p className="muted small">
+          {t.rich(order.status === "completed" ? "footCompleted" : "foot", { link: (c) => <Link href="/my-tickets" className="gold">{c}</Link> })}
+        </p>
+      </main>
+    </ToastArea>
   );
 }
