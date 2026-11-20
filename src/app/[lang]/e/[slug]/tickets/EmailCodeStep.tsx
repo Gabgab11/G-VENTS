@@ -4,6 +4,7 @@ import { useEffect, useReducer, useRef, useState, type KeyboardEvent } from "rea
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { sendEmailCode, verifyEmailCode } from "@/app/(site)/auth/actions";
+import { refreshSession } from "@/lib/use-session";
 import { normalizeEmail } from "@/lib/email-code";
 import { env } from "@/lib/env";
 import OtpInput from "@/components/OtpInput";
@@ -104,6 +105,7 @@ export default function EmailCodeStep({ idPrefix, nameField, onSignedIn }: Props
     dispatch({ type: "verified" });
     onSignedIn();
     router.refresh();
+    void refreshSession(); // the header's Sign in → Account
   }
 
   function onEmailKey(e: KeyboardEvent<HTMLInputElement>) {

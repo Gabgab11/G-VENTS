@@ -6,6 +6,13 @@ export type BrowserSession = { signedIn: boolean; isStaff: boolean; isHost: bool
 
 const SIGNED_OUT: BrowserSession = { signedIn: false, isStaff: false, isHost: false };
 let pending: Promise<BrowserSession> | null = null;
+const listeners = new Set<(s: BrowserSession) => void>();
+
+/** Ask again (e.g. right after an inline sign-in) and update every component using useSession. */
+export function refreshSession(): Promise<BrowserSession> {
+  pending = null;
+  return loadSession().then((s) => { listeners.forEach((l) => l(s)); return s; });
+}
 
 /** One /api/session request per page load, shared by every component that asks. */
 export function loadSession(): Promise<BrowserSession> {
@@ -31,7 +38,8 @@ export function useSession(): BrowserSession {
   useEffect(() => {
     let live = true;
     void loadSession().then((s) => { if (live) setSession(s); });
-    return () => { live = false; };
+    listeners.add(setSession);
+    return () => { live = false; listeners.delete(setSession); };
   }, []);
   return session;
 }
