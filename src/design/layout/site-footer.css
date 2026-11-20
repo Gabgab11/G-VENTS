@@ -34,3 +34,8 @@
   .site-footer-bottom { align-items: flex-start; flex-direction: column; }
 }
 @media (prefers-reduced-motion: reduce) { .hp-footer-wordmark span { transition: none; } }
+
+/* In the host area on phones the bottom tab bar is fixed over the page: keep the footer's last row clear of it. */
+@media (max-width: 959px) {
+  body:has([data-host-shell]) .site-footer { padding-block-end: calc(var(--bottom-bar-height) + env(safe-area-inset-bottom)); }
+}

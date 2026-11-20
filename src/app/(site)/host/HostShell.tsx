@@ -45,7 +45,7 @@ export default function HostShell({ name, email, isStaff, labels: l, children }:
   const aria = (href: string) => (isCurrent(pathname, href) ? ("page" as const) : undefined);
 
   return (
-    <div className={styles.shell}>
+    <div className={styles.shell} data-host-shell="">
       <a href="#host-main" className={styles.skip}>{l.skip}</a>
       <form ref={signOutForm} action={signOut} hidden />
 

@@ -8,7 +8,6 @@ import HeroHover from "@/app/HeroHover";
 import HeroActions from "@/app/HeroActions";
 import { pageFonts } from "@/app/fonts";
 import SiteHeader from "@/components/SiteHeader";
-import SiteFooter from "@/design/layout/SiteFooter";
 import "./discover/discover.css";
 import Rail from "./discover/Rail";
 import EventTile from "./discover/EventTile";
@@ -240,7 +239,6 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
         </div>
       </section>
 
-      <SiteFooter />
     </main>
   );
 }
