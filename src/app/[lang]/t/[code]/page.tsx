@@ -140,6 +140,7 @@ export default async function TicketPage({
             <div className="tk-field">
               <div className="tk-label">{t("ticket")}</div>
               <div className="tk-value">{ticket.ticketType} · {t("free")}{ofTotal}</div>
+              {ticket.groupSize > 1 && <div className="tk-small">{t("groupNote", { count: ticket.groupSize })}</div>}
             </div>
             <div className="tk-field wide">
               <div className="tk-label">{t("where")}</div>

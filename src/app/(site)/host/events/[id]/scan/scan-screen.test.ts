@@ -13,6 +13,11 @@ describe("scanScreen", () => {
     expect(scanScreen({ result: "green", reason: "checked_in", ticket }, t, "en")).toEqual({ tone: "green", title: "Welcome in", detail: "Tolu Ade · Regular · 2 of 3" });
   });
 
+  it("a group ticket says Group of N (D90)", () => {
+    expect(scanScreen({ result: "green", reason: "checked_in", ticket: { ...ticket, ticketType: "Table", groupSize: 4, number: 2, total: 5 } }, t, "en").detail)
+      .toBe("Tolu Ade · Table · Group of 4 · 2 of 5");
+  });
+
   it("red: already used says when and by whom", () => {
     const s = scanScreen({ result: "red", reason: "already_used", ticket: { ...ticket, checkedInAt: "2026-12-05T18:02:00Z", checkedInByName: "Door 2" } }, t, "en");
     expect(s.tone).toBe("red");

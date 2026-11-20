@@ -10,6 +10,8 @@ export type ScanResult = {
     ticketType: string;
     number: number | null;
     total: number | null;
+    /** People per purchase of the ticket's type (D90); above 1 the screen says "Group of N". */
+    groupSize?: number;
     checkedInAt: string | null;
     checkedInByName: string | null;
   } | null;
@@ -31,7 +33,7 @@ function time(iso: string | null, lang: Locale): string {
 export function scanScreen(scan: ScanResult, t: ScanTranslate, lang: Locale): ScanScreen {
   const ticket = scan.ticket;
   const who = ticket
-    ? `${ticket.displayName} · ${ticket.ticketType}${ticket.number && ticket.total && ticket.total > 1 ? ` · ${t("ticketNumber", { number: ticket.number, total: ticket.total })}` : ""}`
+    ? `${ticket.displayName} · ${ticket.ticketType}${(ticket.groupSize ?? 1) > 1 ? ` · ${t("groupOf", { count: ticket.groupSize! })}` : ""}${ticket.number && ticket.total && ticket.total > 1 ? ` · ${t("ticketNumber", { number: ticket.number, total: ticket.total })}` : ""}`
     : "";
   if (scan.result === "green") return { tone: "green", title: t("welcome"), detail: who };
   if (scan.reason === "already_used" && ticket) {

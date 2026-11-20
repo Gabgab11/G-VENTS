@@ -60,6 +60,9 @@ export default async function GuestsTab({ event, query }: { event: EventDashboar
   };
 
   const filtered = Boolean(q || status || ticketTypeId);
+  // The buyer's phone and gender (4b) come only to roles that can see guests' contact details.
+  const contact = can(event, "guests.export") || list.items.some((r) => r.buyerPhone || r.buyerGender);
+  const genderLabel = (g: GuestRow["buyerGender"]) => (g ? t(`guests.gender.${g}`) : null);
 
   return (
     <div className={styles.stack}>
@@ -138,6 +141,7 @@ export default async function GuestsTab({ event, query }: { event: EventDashboar
             <tr>
               <Th>{t("guests.colGuest")}</Th>
               <Th>{t("guests.colTicket")}</Th>
+              {contact && <Th>{t("guests.colContact")}</Th>}
               <Th>{t("guests.statusLabel")}</Th>
               <Th><span className="sr-only">{t("guests.colActions")}</span></Th>
             </tr>
@@ -149,12 +153,21 @@ export default async function GuestsTab({ event, query }: { event: EventDashboar
                   <span className={styles.guestCell}>
                     <strong>{r.displayName}</strong>
                     <span className={styles.muted}>{r.buyerEmail}{r.displayName !== r.buyerName ? ` · ${t("guests.bookedBy", { name: r.buyerName })}` : ""}</span>
+                    {r.recipientEmail && <span className={styles.muted}>{t.rich("guests.sentTo", { email: r.recipientEmail, b: (c) => <bdi>{c}</bdi> })}</span>}
                     {r.answers.map((a) => <span className={styles.muted} key={a.questionId}>{a.label}: {a.value}</span>)}
                   </span>
                 </Td>
                 <Td label={t("guests.colTicket")}>
                   {r.ticketType}{r.number && r.total && r.total > 1 ? ` · ${t("guests.ticketNumber", { number: r.number, total: r.total })}` : ""}
                 </Td>
+                {contact && (
+                  <Td label={t("guests.colContact")}>
+                    <span className={styles.guestCell}>
+                      {r.buyerPhone ? <a href={`tel:${r.buyerPhone}`} dir="ltr">{r.buyerPhone}</a> : <span className={styles.muted}>{"—"}</span>}
+                      {genderLabel(r.buyerGender) && <span className={styles.muted}>{genderLabel(r.buyerGender)}</span>}
+                    </span>
+                  </Td>
+                )}
                 <Td label={t("guests.statusLabel")}>
                   <span className={styles.badgeRow}>
                     <Badge tone={toneOf(r.status)}>{statusLabel(r.status)}</Badge>
