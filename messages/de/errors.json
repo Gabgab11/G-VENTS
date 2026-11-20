@@ -203,6 +203,12 @@
     "time_zone_not_found": "Für diesen Ort wurde keine Zeitzone gefunden."
   },
   "refund": {
+    "provider_insufficient_balance": "Paystack kann diese Erstattung noch nicht senden: Das G-ventZ-Guthaben reicht nicht aus. Sie ist eingereiht und wird automatisch gesendet.",
+    "provider_already_reversed": "Laut Paystack wurde diese Zahlung bereits erstattet.",
+    "provider_amount_too_high": "Von Paystack abgelehnt: Die Erstattung ist höher als der verbleibende Betrag dieser Zahlung.",
+    "provider_amount_too_low": "Von Paystack abgelehnt: Der Erstattungsbetrag ist zu niedrig.",
+    "provider_transaction_not_found": "Paystack konnte diese Zahlung nicht finden.",
+    "provider_currency_mismatch": "Von Paystack abgelehnt: Die Währung der Erstattung passt nicht zur Zahlung.",
     "needs_approval": "Diese Erstattung übersteigt, was Ihr Team derzeit selbst auszahlen kann. Wenden Sie sich an den G-ventZ-Support, wir prüfen sie.",
     "not_refundable": "Dieses Ticket kann nicht erstattet werden: Es ist kein bezahltes, bestätigtes Ticket oder wurde bereits erstattet.",
     "provider_rejected": "Paystack konnte diese Erstattung nicht starten. Versuchen Sie es später erneut oder wenden Sie sich an den G-ventZ-Support.",
@@ -277,6 +283,9 @@
     "role_invalid": "Wählen Sie eine Rolle."
   },
   "support": {
+    "message_invalid": "Schreiben Sie eine Nachricht mit 10 bis 4.000 Zeichen.",
+    "captcha_invalid": "Bitte führen Sie die Sicherheitsprüfung durch und versuchen Sie es erneut.",
+    "captcha_unavailable": "Die Sicherheitsprüfung ist gerade nicht verfügbar. Bitte versuchen Sie es gleich noch einmal.",
     "captcha_failed": "Die Sicherheitsprüfung ist fehlgeschlagen. Laden Sie die Seite neu und versuchen Sie es erneut.",
     "rate_limited": "Sie haben in kurzer Zeit mehrere Nachrichten gesendet. Warten Sie etwas oder schreiben Sie an support@gventz.com.",
     "name_invalid": "Geben Sie Ihren Namen ein (2 bis 100 Zeichen).",

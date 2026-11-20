@@ -39,11 +39,11 @@ export async function sendSupportMessage(input: ContactInput & { captchaToken?: 
   }
   const captchaToken = typeof input.captchaToken === "string" && input.captchaToken ? input.captchaToken.slice(0, 4096) : undefined;
   try {
-    // A plain POST: the endpoint is new, so the generated client may not know its path yet.
     data(
-      await (await api()).POST("/v1/support/messages" as never, {
-        body: { ...checked.body, ...(captchaToken ? { captchaToken } : {}), language: locale } as never,
-      } as never),
+      await (await api()).POST("/v1/support/messages", {
+        params: { header: { "accept-language": locale } },
+        body: { ...checked.body, ...(captchaToken ? { captchaToken } : {}), language: locale as never },
+      }),
     );
     return { ok: true };
   } catch (error) {
@@ -59,7 +59,7 @@ async function failure(error: unknown, locale: string, generic: string): Promise
   const errors = await getTranslations({ locale, namespace: "errors" });
   const known = (code: string | undefined) => (code && /^[a-z_]+\.[a-z_]+$/.test(code) && errors.has(code) ? errors(code) : null);
   if (error.status === 429) return { ok: false, error: known(error.code) ?? errors("rate_limit.exceeded") };
-  const captcha = error.code === "support.captcha_failed" || error.code === "auth.captcha_failed";
+  const captcha = error.code === "support.captcha_invalid" || error.code === "support.captcha_failed" || error.code === "auth.captcha_failed";
   const fields: Partial<Record<ContactField, string>> = {};
   for (const issue of error.problem.errors ?? []) {
     const text = known(issue.code);

@@ -203,6 +203,12 @@
     "time_zone_not_found": "Aucun fuseau horaire trouvé pour ce lieu."
   },
   "refund": {
+    "provider_insufficient_balance": "Paystack ne peut pas encore envoyer ce remboursement : le solde de G-ventZ est insuffisant. Il est en file d'attente et partira automatiquement.",
+    "provider_already_reversed": "Paystack indique que ce paiement a déjà été remboursé.",
+    "provider_amount_too_high": "Refus de Paystack : le remboursement dépasse ce qui reste de ce paiement.",
+    "provider_amount_too_low": "Refus de Paystack : le montant du remboursement est trop faible.",
+    "provider_transaction_not_found": "Paystack n'a pas trouvé ce paiement.",
+    "provider_currency_mismatch": "Refus de Paystack : la devise du remboursement ne correspond pas à celle du paiement.",
     "needs_approval": "Ce remboursement dépasse ce que votre équipe peut envoyer elle-même pour le moment. Contactez l'assistance G-ventZ et nous l'examinerons.",
     "not_refundable": "Ce billet ne peut pas être remboursé : il ne s'agit pas d'un billet payant confirmé, ou il a déjà été remboursé.",
     "provider_rejected": "Paystack n’a pas pu lancer ce remboursement. Réessayez plus tard, ou contactez l’assistance G-ventZ.",
@@ -277,6 +283,9 @@
     "role_invalid": "Choisissez un rôle."
   },
   "support": {
+    "message_invalid": "Écrivez un message de 10 à 4 000 caractères.",
+    "captcha_invalid": "Veuillez effectuer la vérification de sécurité et réessayer.",
+    "captcha_unavailable": "La vérification de sécurité n'est pas disponible pour le moment. Réessayez dans un instant.",
     "captcha_failed": "La vérification de sécurité a échoué. Actualisez la page et réessayez.",
     "rate_limited": "Vous avez envoyé plusieurs messages en peu de temps. Patientez un peu, ou écrivez à support@gventz.com.",
     "name_invalid": "Saisissez votre nom (2 à 100 caractères).",
