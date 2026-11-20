@@ -28,6 +28,13 @@
   "db": {
     "busy": "We are very busy right now. Please try again in a moment."
   },
+  "discount": {
+    "invalid": "This code isn't valid for this event.",
+    "expired": "This code isn't active right now: it has ended or hasn't started yet.",
+    "used_up": "This code has been used as many times as it can be.",
+    "not_for_ticket": "This code doesn't apply to the tickets you chose.",
+    "whole_order": "This code would make the whole order free, and paid orders can't be free. Leave out the code or add another ticket."
+  },
   "event": {
     "already_cancelled": "This event is already cancelled.",
     "buyer_limit_invalid": "Choose a limit from 1 to 10 tickets per person.",

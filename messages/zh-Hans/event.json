@@ -102,6 +102,37 @@
     "payTotal": "使用 Paystack 付款 · {total}",
     "payNote": "您将在 Paystack 的安全页面付款。您的门票将保留 10 分钟。"
   },
+  "verify": {
+    "emailHint": "我们将通过电子邮件向您发送一个 6 位数验证码以确认该地址。您的门票将发送到此地址。",
+    "emailPlaceholder": "you@email.com",
+    "continue": "继续",
+    "sending": "正在发送验证码...",
+    "nameFirst": "请先输入您的全名。",
+    "codeTitle": "请输入我们通过电子邮件发送的验证码",
+    "codeSent": "我们已向 <address>{email}</address> 发送了 6 位数验证码，几分钟后失效。",
+    "codeLabel": "6 位数验证码",
+    "checking": "正在验证...",
+    "changeEmail": "更改电子邮件",
+    "resend": "重新发送验证码",
+    "resendIn": "{seconds} 秒后可重新发送",
+    "resent": "我们已向您发送新的验证码。",
+    "signedIn": "电子邮件已确认。",
+    "confirmed": "电子邮件已确认。门票将发送到此地址。",
+    "confirmFirst": "请确认您的电子邮件后继续。",
+    "captchaWait": "请稍候，我们正在确认您不是机器人，然后再试一次。",
+    "captchaLoad": "人机验证未能加载。请刷新页面后重试。",
+    "captchaFailed": "人机验证未通过。请重试。",
+    "verifyFailed": "目前无法验证该验证码。请稍后再试。"
+  },
+  "discount": {
+    "toggle": "有折扣码吗？",
+    "label": "折扣码",
+    "apply": "使用",
+    "remove": "移除",
+    "removeLabel": "移除折扣码 {code}",
+    "applied": "已使用折扣码 {code}",
+    "checking": "正在验证折扣码 {code}..."
+  },
   "errors": {
     "eventNotFound": "找不到此活动。",
     "sessionEnded": "您的会话已结束。请重新登录以获取门票。",
@@ -110,7 +141,8 @@
     "paymentFailed": "我们无法发起您的付款，请重试。",
     "chooseTicket": "请至少选择一张门票。",
     "ticketRange": "请选择 1 到 10 张门票。",
-    "nonRefundable": "请勾选“{text}”以继续。"
+    "nonRefundable": "请勾选“{text}”以继续。",
+    "codeFormat": "请输入由 3 至 32 个字母、数字、- 或 _ 组成的折扣码。"
   },
   "meta": {
     "cardAlt": "{title}：日期、地点和门票"

@@ -102,6 +102,37 @@
     "payTotal": "Mit Paystack bezahlen · {total}",
     "payNote": "Sie bezahlen auf der sicheren Seite von Paystack. Ihre Tickets werden 10 Minuten lang reserviert."
   },
+  "verify": {
+    "emailHint": "Wir senden Ihnen einen 6-stelligen Code per E-Mail, um sie zu bestätigen. Ihre Tickets werden an diese Adresse gesendet.",
+    "emailPlaceholder": "sie@email.de",
+    "continue": "Weiter",
+    "sending": "Code wird gesendet...",
+    "nameFirst": "Bitte geben Sie zuerst Ihren vollständigen Namen ein.",
+    "codeTitle": "Geben Sie den Code aus der E-Mail ein",
+    "codeSent": "Wir haben einen 6-stelligen Code an <address>{email}</address> gesendet. Er läuft in wenigen Minuten ab.",
+    "codeLabel": "6-stelliger Code",
+    "checking": "Wird geprüft...",
+    "changeEmail": "E-Mail-Adresse ändern",
+    "resend": "Code erneut senden",
+    "resendIn": "Code erneut senden in {seconds} s",
+    "resent": "Wir haben Ihnen einen neuen Code gesendet.",
+    "signedIn": "E-Mail-Adresse bestätigt.",
+    "confirmed": "E-Mail-Adresse bestätigt. Die Tickets werden an diese Adresse gesendet.",
+    "confirmFirst": "Bestätigen Sie Ihre E-Mail-Adresse, um fortzufahren.",
+    "captchaWait": "Bitte warten Sie einen Moment, während wir prüfen, dass Sie kein Roboter sind, und versuchen Sie es dann erneut.",
+    "captchaLoad": "Die Roboterprüfung wurde nicht geladen. Laden Sie die Seite neu und versuchen Sie es erneut.",
+    "captchaFailed": "Die Roboterprüfung war nicht erfolgreich. Bitte versuchen Sie es erneut.",
+    "verifyFailed": "Der Code kann gerade nicht geprüft werden. Versuchen Sie es gleich noch einmal."
+  },
+  "discount": {
+    "toggle": "Haben Sie einen Rabattcode?",
+    "label": "Rabattcode",
+    "apply": "Anwenden",
+    "remove": "Entfernen",
+    "removeLabel": "Code {code} entfernen",
+    "applied": "Code {code} angewendet",
+    "checking": "Code {code} wird geprüft..."
+  },
   "errors": {
     "eventNotFound": "Diese Veranstaltung wurde nicht gefunden.",
     "sessionEnded": "Ihre Sitzung ist abgelaufen. Melden Sie sich erneut an, um Tickets zu erhalten.",
@@ -110,7 +141,8 @@
     "paymentFailed": "Wir konnten Ihre Zahlung nicht starten. Bitte versuchen Sie es erneut.",
     "chooseTicket": "Wählen Sie mindestens ein Ticket.",
     "ticketRange": "Wählen Sie zwischen 1 und 10 Tickets.",
-    "nonRefundable": "Setzen Sie das Häkchen bei „{text}“, um fortzufahren."
+    "nonRefundable": "Setzen Sie das Häkchen bei „{text}“, um fortzufahren.",
+    "codeFormat": "Geben Sie einen Code aus 3 bis 32 Buchstaben, Ziffern, - oder _ ein."
   },
   "meta": {
     "cardAlt": "{title}: Datum, Ort und Tickets"

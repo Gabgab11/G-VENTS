@@ -28,6 +28,13 @@
   "db": {
     "busy": "Nous sommes très sollicités en ce moment. Veuillez réessayer dans un instant."
   },
+  "discount": {
+    "invalid": "Ce code n'est pas valable pour cet événement.",
+    "expired": "Ce code n'est pas actif pour le moment : il a expiré ou n'a pas encore commencé.",
+    "used_up": "Ce code a déjà été utilisé le nombre maximal de fois.",
+    "not_for_ticket": "Ce code ne s'applique pas aux billets choisis.",
+    "whole_order": "Ce code rendrait toute la commande gratuite, et les commandes payantes ne peuvent pas être gratuites. Retirez le code ou ajoutez un autre billet."
+  },
   "event": {
     "already_cancelled": "Cet événement est déjà annulé.",
     "buyer_limit_invalid": "Choisissez une limite de 1 à 10 billets par personne.",

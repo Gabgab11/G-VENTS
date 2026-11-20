@@ -102,6 +102,37 @@
     "payTotal": "Pagar com Paystack · {total}",
     "payNote": "Você vai pagar na página segura do Paystack. Seus ingressos ficam reservados por 10 minutos."
   },
+  "verify": {
+    "emailHint": "Enviaremos um código de 6 dígitos por e-mail para confirmá-lo. Seus ingressos são enviados para este endereço.",
+    "emailPlaceholder": "voce@email.com",
+    "continue": "Continuar",
+    "sending": "Enviando o código...",
+    "nameFirst": "Primeiro, informe seu nome completo.",
+    "codeTitle": "Digite o código que enviamos por e-mail",
+    "codeSent": "Enviamos um código de 6 dígitos para <address>{email}</address>. Ele expira em alguns minutos.",
+    "codeLabel": "Código de 6 dígitos",
+    "checking": "Verificando...",
+    "changeEmail": "Alterar e-mail",
+    "resend": "Reenviar código",
+    "resendIn": "Reenviar código em {seconds} s",
+    "resent": "Enviamos um novo código.",
+    "signedIn": "E-mail confirmado.",
+    "confirmed": "E-mail confirmado. Os ingressos são enviados para este e-mail.",
+    "confirmFirst": "Confirme seu e-mail para continuar.",
+    "captchaWait": "Aguarde um momento enquanto verificamos que você não é um robô e tente novamente.",
+    "captchaLoad": "A verificação contra robôs não carregou. Atualize a página e tente novamente.",
+    "captchaFailed": "A verificação contra robôs não foi aprovada. Tente novamente.",
+    "verifyFailed": "Não foi possível verificar o código agora. Tente novamente em instantes."
+  },
+  "discount": {
+    "toggle": "Tem um código de desconto?",
+    "label": "Código de desconto",
+    "apply": "Aplicar",
+    "remove": "Remover",
+    "removeLabel": "Remover o código {code}",
+    "applied": "Código {code} aplicado",
+    "checking": "Verificando o código {code}..."
+  },
   "errors": {
     "eventNotFound": "Não foi possível encontrar este evento.",
     "sessionEnded": "Sua sessão terminou. Entre novamente para garantir ingressos.",
@@ -110,7 +141,8 @@
     "paymentFailed": "Não conseguimos iniciar seu pagamento. Tente novamente.",
     "chooseTicket": "Escolha pelo menos um ingresso.",
     "ticketRange": "Escolha entre 1 e 10 ingressos.",
-    "nonRefundable": "Marque \"{text}\" para continuar."
+    "nonRefundable": "Marque \"{text}\" para continuar.",
+    "codeFormat": "Informe um código de 3 a 32 letras, números, - ou _."
   },
   "meta": {
     "cardAlt": "{title}: data, local e ingressos"

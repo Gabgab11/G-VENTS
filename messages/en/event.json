@@ -102,6 +102,37 @@
     "payTotal": "Pay with Paystack · {total}",
     "payNote": "You'll pay on Paystack's secure page. Your tickets are held for 10 minutes."
   },
+  "verify": {
+    "emailHint": "We'll email you a 6-digit code to confirm it. Your tickets are sent to this address.",
+    "emailPlaceholder": "you@email.com",
+    "continue": "Continue",
+    "sending": "Sending code...",
+    "nameFirst": "Enter your full name first.",
+    "codeTitle": "Enter the code we emailed you",
+    "codeSent": "We sent a 6-digit code to <address>{email}</address>. It expires in a few minutes.",
+    "codeLabel": "6-digit code",
+    "checking": "Checking...",
+    "changeEmail": "Change email",
+    "resend": "Resend code",
+    "resendIn": "Resend code in {seconds}s",
+    "resent": "We sent a new code.",
+    "signedIn": "Email confirmed.",
+    "confirmed": "Email confirmed. Tickets go to this email.",
+    "confirmFirst": "Confirm your email to continue.",
+    "captchaWait": "Please wait a moment while we check you're not a robot, then try again.",
+    "captchaLoad": "The robot check didn't load. Refresh the page and try again.",
+    "captchaFailed": "The robot check didn't pass. Please try again.",
+    "verifyFailed": "We couldn't check the code right now. Try again in a moment."
+  },
+  "discount": {
+    "toggle": "Got a discount code?",
+    "label": "Discount code",
+    "apply": "Apply",
+    "remove": "Remove",
+    "removeLabel": "Remove the code {code}",
+    "applied": "Code {code} applied",
+    "checking": "Checking code {code}..."
+  },
   "errors": {
     "eventNotFound": "This event could not be found.",
     "sessionEnded": "Your session has ended. Sign in again to get tickets.",
@@ -110,7 +141,8 @@
     "paymentFailed": "We couldn't start your payment. Please try again.",
     "chooseTicket": "Choose at least one ticket.",
     "ticketRange": "Choose between 1 and 10 tickets.",
-    "nonRefundable": "Tick \"{text}\" to continue."
+    "nonRefundable": "Tick \"{text}\" to continue.",
+    "codeFormat": "Enter a code of 3 to 32 letters, digits, - or _."
   },
   "meta": {
     "cardAlt": "{title}: date, place and tickets"

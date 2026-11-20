@@ -28,6 +28,13 @@
   "db": {
     "busy": "Tenemos mucha actividad en este momento. Inténtelo de nuevo en un momento."
   },
+  "discount": {
+    "invalid": "Este código no es válido para este evento.",
+    "expired": "Este código no está activo en este momento: ha finalizado o aún no ha comenzado.",
+    "used_up": "Este código ya se ha usado el máximo de veces permitido.",
+    "not_for_ticket": "Este código no se aplica a las entradas que ha elegido.",
+    "whole_order": "Este código haría gratuito todo el pedido, y los pedidos de pago no pueden ser gratuitos. Omita el código o añada otra entrada."
+  },
   "event": {
     "already_cancelled": "Este evento ya está cancelado.",
     "buyer_limit_invalid": "Elija un límite de 1 a 10 entradas por persona.",

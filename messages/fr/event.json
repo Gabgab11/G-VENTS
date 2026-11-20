@@ -102,6 +102,37 @@
     "payTotal": "Payer avec Paystack · {total}",
     "payNote": "Vous paierez sur la page sécurisée de Paystack. Vos billets sont réservés pendant 10 minutes."
   },
+  "verify": {
+    "emailHint": "Nous vous enverrons un code à 6 chiffres par e-mail pour la confirmer. Vos billets sont envoyés à cette adresse.",
+    "emailPlaceholder": "vous@email.com",
+    "continue": "Continuer",
+    "sending": "Envoi du code...",
+    "nameFirst": "Saisissez d'abord votre nom complet.",
+    "codeTitle": "Saisissez le code reçu par e-mail",
+    "codeSent": "Nous avons envoyé un code à 6 chiffres à <address>{email}</address>. Il expire dans quelques minutes.",
+    "codeLabel": "Code à 6 chiffres",
+    "checking": "Vérification...",
+    "changeEmail": "Modifier l'adresse e-mail",
+    "resend": "Renvoyer le code",
+    "resendIn": "Renvoyer le code dans {seconds} s",
+    "resent": "Nous vous avons envoyé un nouveau code.",
+    "signedIn": "Adresse e-mail confirmée.",
+    "confirmed": "Adresse e-mail confirmée. Les billets sont envoyés à cette adresse.",
+    "confirmFirst": "Confirmez votre adresse e-mail pour continuer.",
+    "captchaWait": "Veuillez patienter un instant pendant que nous vérifions que vous n'êtes pas un robot, puis réessayez.",
+    "captchaLoad": "La vérification anti-robot ne s'est pas chargée. Actualisez la page et réessayez.",
+    "captchaFailed": "La vérification anti-robot a échoué. Veuillez réessayer.",
+    "verifyFailed": "Nous ne pouvons pas vérifier le code pour le moment. Réessayez dans un instant."
+  },
+  "discount": {
+    "toggle": "Vous avez un code de réduction ?",
+    "label": "Code de réduction",
+    "apply": "Appliquer",
+    "remove": "Retirer",
+    "removeLabel": "Retirer le code {code}",
+    "applied": "Code {code} appliqué",
+    "checking": "Vérification du code {code}..."
+  },
   "errors": {
     "eventNotFound": "Cet événement est introuvable.",
     "sessionEnded": "Votre session a expiré. Reconnectez-vous pour obtenir des billets.",
@@ -110,7 +141,8 @@
     "paymentFailed": "Nous n'avons pas pu lancer votre paiement. Veuillez réessayer.",
     "chooseTicket": "Choisissez au moins un billet.",
     "ticketRange": "Choisissez entre 1 et 10 billets.",
-    "nonRefundable": "Cochez « {text} » pour continuer."
+    "nonRefundable": "Cochez « {text} » pour continuer.",
+    "codeFormat": "Saisissez un code de 3 à 32 lettres, chiffres, - ou _."
   },
   "meta": {
     "cardAlt": "{title} : date, lieu et billets"
