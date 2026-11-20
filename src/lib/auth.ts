@@ -27,7 +27,7 @@ export async function requireUser(returnTo: string): Promise<{ user: User }> {
  */
 export const requireEvent = cache(async (eventId: string): Promise<EventDashboard> => {
   if (!isUuid(eventId)) notFound();
-  await requireUser(`/dashboard/${eventId}`);
+  await requireUser(`/host/events/${eventId}`);
   try {
     return data(await (await api()).GET("/v1/events/{id}", { params: { path: { id: eventId } } }));
   } catch (error) {

@@ -1,7 +1,7 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { BarChart3 } from "lucide-react";
 import { can, type EventDashboard } from "@/lib/auth";
-import { api, apiFetch, data } from "@/lib/api/server";
+import { api, data } from "@/lib/api/server";
 import type { components } from "@/lib/api/schema";
 import { formatMoney, formatRelative, intlLocale } from "@/lib/format";
 import type { Locale } from "@/i18n/languages";
@@ -14,7 +14,7 @@ import styles from "./workspace.module.css";
 type Sales = components["schemas"]["EventSalesDto"];
 type Settlements = components["schemas"]["EventSettlementsDto"];
 /** GET /v1/host/orders item (new in chunk 3; read raw until schema.d.ts has it). */
-type HostOrder = { id: string; eventId: string; buyerName: string | null; tickets: number; amountMinor: number; currency: string; kind: string; status: string; createdAt: string };
+type HostOrder = components["schemas"]["HostOrderDto"];
 
 /** Sales per day (settlements `days`), for roles that may see sales; null when unavailable. */
 async function loadSettlements(event: EventDashboard): Promise<Settlements | null> {
@@ -29,10 +29,8 @@ async function loadSettlements(event: EventDashboard): Promise<Settlements | nul
 /** The event's latest orders (GET /v1/host/orders?eventId=); fails soft. */
 async function loadOrders(event: EventDashboard): Promise<HostOrder[] | null> {
   try {
-    const res = await apiFetch(`/v1/host/orders?eventId=${encodeURIComponent(event.id)}&pageSize=5`);
-    if (!res.ok) return null;
-    const body = (await res.json()) as { items?: HostOrder[] };
-    return Array.isArray(body.items) ? body.items.filter((o) => o.eventId === event.id).slice(0, 5) : null;
+    const page = data(await (await api()).GET("/v1/host/orders", { params: { query: { eventId: event.id, pageSize: 5 } } }));
+    return page.items;
   } catch {
     return null;
   }

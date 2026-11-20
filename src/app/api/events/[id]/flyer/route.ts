@@ -52,8 +52,8 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   }
   const site = new URL(request.url).origin;
   if (!outcome.ok && outcome.code === "signed_out") {
-    return Response.redirect(`${site}/sign-in?next=${encodeURIComponent(`/host/events/${id}?tab=settings`)}`, 303);
+    return Response.redirect(`${site}/sign-in?next=${encodeURIComponent(`/host/events/${id}?tab=details`)}`, 303);
   }
   const query = outcome.ok ? "ok=flyer_uploaded" : `err=${encodeURIComponent(outcome.code)}`;
-  return Response.redirect(`${site}/host/events/${id}?tab=settings&${query}`, 303);
+  return Response.redirect(`${site}/host/events/${id}?tab=details&${query}`, 303);
 }

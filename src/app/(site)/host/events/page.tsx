@@ -9,12 +9,12 @@ import { localizedPath } from "@/i18n/routing";
 import type { Locale } from "@/i18n/languages";
 import ShareButton from "@/components/ShareButton";
 import { Badge, Banner, Button, Card, EmptyState, PageHeader, TabLink, TabLinks, type BadgeTone } from "@/design";
-import { EVENT_FILTERS, filterOf, listHref, pageOf, roleCanCheckIn, roleCanEdit, soldText, sumByCurrency, type GrossLine } from "./events-list";
+import { EVENT_FILTERS, filterOf, listHref, pageOf, roleCanCheckIn, roleCanEdit, soldText, sumByCurrency } from "./events-list";
 import RowMenu from "./RowMenu";
 import styles from "./events.module.css";
 
 // The API adds `capacity` and `gross` to GET /v1/me/events (chunk 3); optional until schema.d.ts is regenerated.
-type HostEvent = components["schemas"]["HostEventDto"] & { capacity?: number | null; gross?: GrossLine[] };
+type HostEvent = components["schemas"]["HostEventDto"];
 
 const ICON = { size: 20, strokeWidth: 1.75, "aria-hidden": true } as const;
 const SMALL_ICON = { size: 16, strokeWidth: 1.75, "aria-hidden": true } as const;
@@ -26,13 +26,13 @@ export default async function HostEventsPage({ searchParams }: { searchParams: P
   const sp = await searchParams;
   const filter = filterOf(sp.filter);
   const page = pageOf(sp.page);
-  const query = { page, pageSize: 50, filter } as { page: number; pageSize: number };
+  const query = { page, pageSize: 50, filter };
   const [list, t, lang] = await Promise.all([
     (await api()).GET("/v1/me/events", { params: { query } }).then(data),
     getTranslations("dashboard"),
     getLocale() as Promise<Locale>,
   ]);
-  const items = list.items as HostEvent[];
+  const items: HostEvent[] = list.items;
   const pages = Math.max(1, Math.ceil(list.total / list.pageSize));
   const n = (x: number) => x.toLocaleString(lang);
 

@@ -113,7 +113,7 @@ export default async function EventPage({ params }: { params: Promise<{ lang: st
   };
   // The phone's sticky bar: the price and the one thing to do next.
   const mainAction = event.canManage
-    ? { href: `/dashboard/${event.id}`, label: t("host.manage") }
+    ? { href: `/host/events/${event.id}`, label: t("host.manage") }
     : canOrder
       ? { href: signedIn ? "#tickets" : signInHref, label: t("signUp.cta") }
       : null;
@@ -129,7 +129,7 @@ export default async function EventPage({ params }: { params: Promise<{ lang: st
         <div className="ev-notices">
           {event.status === "draft" && <p className="ev-notice">{t("page.notices.draft")}</p>}
           {event.status === "cancelled" && <p className="ev-notice ev-notice-warn">{t("page.notices.cancelled")}</p>}
-          {event.canManage && <p className="ev-notice">{t.rich("page.notices.canManage", { link: (c) => <Link href={`/dashboard/${event.id}`} className="gold">{c}</Link> })}</p>}
+          {event.canManage && <p className="ev-notice">{t.rich("page.notices.canManage", { link: (c) => <Link href={`/host/events/${event.id}`} className="gold">{c}</Link> })}</p>}
         </div>
       )}
 
@@ -222,8 +222,8 @@ export default async function EventPage({ params }: { params: Promise<{ lang: st
                   </ul>
                   <p className="muted small">{t("host.note")}</p>
                   <div className="ev-host-actions">
-                    <Button href={`/dashboard/${event.id}?tab=guests`} variant="accent" fullWidth className="ev-cta">{t("host.seeGuests")}</Button>
-                    <Button href={`/dashboard/${event.id}`} variant="secondary" fullWidth className="ev-cta">{t("host.manage")}</Button>
+                    <Button href={`/host/events/${event.id}?tab=guests`} variant="accent" fullWidth className="ev-cta">{t("host.seeGuests")}</Button>
+                    <Button href={`/host/events/${event.id}`} variant="secondary" fullWidth className="ev-cta">{t("host.manage")}</Button>
                   </div>
                 </div>
               )}
