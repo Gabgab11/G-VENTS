@@ -13,7 +13,7 @@ import { inviteProblem, isInviteToken, landingPath } from "@/app/(site)/host/eve
 const page = (token: string) => `/team-invites/${token}`;
 
 export async function acceptInvite(token: string) {
-  if (!isInviteToken(token)) redirect(`${page("invalid")}`);
+  if (!isInviteToken(token)) redirect("/host");
   let target: string;
   try {
     const accepted = data(await (await api()).POST("/v1/team-invites/{token}/accept", { params: { path: { token } } }));

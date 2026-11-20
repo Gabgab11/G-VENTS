@@ -62,12 +62,22 @@ export function activityValues(item: ActivityItem): { subject: string | null; ro
   const role = text(item.action === "team.role_changed" ? meta.to : meta.role);
   const amountMinor = typeof meta.amountMinor === "number" && Number.isInteger(meta.amountMinor) ? meta.amountMinor : null;
   return {
-    subject: item.subjectName ?? (item.action.startsWith("team.") ? item.subject : null),
+    subject: item.subjectName || (item.action.startsWith("team.") ? item.subject : null),
     role,
     at: item.action === "event.rescheduled" ? text(meta.startsAt) : null,
     amountMinor,
     currency: text(meta.currency),
   };
+}
+
+/**
+ * A person's name for a sentence: their own name, else the team list's name or email for that user
+ * id, else the subject as recorded when it isn't a bare id (an invited email); null when unknown.
+ */
+export function personLabel(nameOrSubject: string | null | undefined, names: Readonly<Record<string, string>>): string | null {
+  if (!nameOrSubject) return null;
+  if (Object.hasOwn(names, nameOrSubject)) return names[nameOrSubject]!;
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-/i.test(nameOrSubject) ? null : nameOrSubject;
 }
 
 /** Merges a further page into the list, keeping order and leaving out entries already shown. */

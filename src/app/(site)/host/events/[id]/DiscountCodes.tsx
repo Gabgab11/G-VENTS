@@ -180,7 +180,11 @@ function CodeDialog({ eventId, code, ticketTypes, currency, timeZone, onDone }: 
   }));
   const [error, setError] = useState<{ message: string; field?: string } | null>(null);
   const [pending, startTransition] = useTransition();
-  const set = (patch: Partial<DiscountInput>) => setForm((f) => ({ ...f, ...patch }));
+  const set = (patch: Partial<DiscountInput>) => {
+    setForm((f) => ({ ...f, ...patch }));
+    // A field's own error clears once it's changed.
+    if (error?.field && error.field in patch) setError(null);
+  };
   const fieldError = (name: string) => (error?.field === name ? error.message : undefined);
   const kind = form.kind as DiscountKind;
 

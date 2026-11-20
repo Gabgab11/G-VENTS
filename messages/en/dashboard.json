@@ -191,7 +191,10 @@
       "details": "Details",
       "registration": "Registration",
       "announcements": "Announcements",
-      "settings": "Settings"
+      "settings": "Settings",
+      "promote": "Promote",
+      "team": "Team",
+      "activity": "Activity"
     },
     "tabsLabel": "Event sections",
     "youAre": "Your role: {role, select, owner {owner} admin {co-host} editor {editor} checkin {door staff} finance {finance} viewer {viewer} other {{role}}}",
@@ -371,7 +374,75 @@
     "draft": "Draft",
     "sent": "Sent",
     "sending": "Sending",
-    "emailed": "{sent} of {total} emailed"
+    "emailed": "{sent} of {total} emailed",
+    "loadFailed": "Announcements couldn't be loaded. Please try again.",
+    "template": "Template",
+    "templates": {
+      "blank": {
+        "name": "Blank message",
+        "help": "Only your subject and message."
+      },
+      "reminder": {
+        "name": "Reminder",
+        "help": "Opens with the event's date and time."
+      },
+      "reschedule": {
+        "name": "New date",
+        "help": "Opens with the event's new date and time."
+      },
+      "lineup": {
+        "name": "Line-up news",
+        "help": "Introduces news about the programme."
+      },
+      "thanks": {
+        "name": "Thank you",
+        "help": "Thanks guests for coming. Can be sent after the event starts."
+      },
+      "feedback": {
+        "name": "Feedback",
+        "help": "Asks guests what they thought. Can be sent after the event starts."
+      }
+    },
+    "messageHintTemplate": "The template adds one line before your message; your words are sent as written.",
+    "segmentOption": "{label} ({count, number})",
+    "recipients": "{count, plural, one {# guest will receive this} other {# guests will receive this}}",
+    "sendButton": "Send…",
+    "draftOnly": "Only the owner and co-hosts can send. Save a draft and they can send it.",
+    "draftSavedToast": "Draft saved.",
+    "sentToast": "{count, plural, one {Sending to # guest.} other {Sending to # guests.}}",
+    "sentOn": "Sent {date}",
+    "notSent": "{count, plural, one {# not sent} other {# not sent}}",
+    "confirmTitle": "{count, plural, one {Send to # guest?} other {Send to # guests?}}",
+    "confirmBody": "This uses one of the {sends, number} announcements left for this event and {count, number} of the {emails, number} emails left this month. It can't be undone.",
+    "confirmSend": "Send now",
+    "blocks": {
+      "draft": "Publish the event before sending announcements.",
+      "started": "This event has started. Only the Thank you and Feedback templates can be sent now.",
+      "sends": "You've sent all the announcements allowed for this event.",
+      "emails": "You've used all your announcement emails for this month.",
+      "quota": "This audience is larger than the emails you have left this month. Choose a smaller audience.",
+      "empty": "Nobody in this audience can receive emails yet."
+    },
+    "errors": {
+      "subject": "Add a subject.",
+      "body": "Add a message.",
+      "template": "Choose one of the templates."
+    },
+    "preview": {
+      "title": "Preview",
+      "fromHost": "Message from the host of {title}",
+      "emptySubject": "Your subject",
+      "emptyBody": "Your message appears here.",
+      "lead": {
+        "reminder": "{title} is coming up on {date}, {time}.",
+        "reschedule": "{title} has a new date: {date}, {time}.",
+        "lineup": "News about the line-up for {title} on {date}.",
+        "thanks": "Thank you for coming to {title}.",
+        "feedback": "How was {title}? The host would like to hear what you thought."
+      },
+      "footer": "You're getting this because you registered for {title} on G-ventZ. <link>Stop announcements for this event</link>.",
+      "note": "Each guest gets G-ventZ's wording in their own language; your subject and message are sent as written."
+    }
   },
   "settings": {
     "styleTitle": "Page style",
@@ -516,5 +587,225 @@
     "forbidden": "Only the owner, admins and finance can export the guest list.",
     "notFound": "Not found",
     "failed": "The export didn't work. Please try again."
+  },
+  "tools": {
+    "close": "Close",
+    "cancel": "Cancel"
+  },
+  "promote": {
+    "title": "Discount codes",
+    "intro": "Codes lower the price of paid tickets. Fees are worked out on the lower price.",
+    "newCode": "New code",
+    "loadFailed": "Discount codes couldn't be loaded. Please try again.",
+    "draftNote": "Codes work once the event is published.",
+    "noPaid": "No paid tickets yet",
+    "noPaidHint": "Discount codes apply to paid tickets. Add a paid ticket type in Details first.",
+    "empty": "No discount codes yet",
+    "emptyHint": "Create a code and share its link: the discount is applied when guests open it.",
+    "free": "Free ticket",
+    "allTickets": "All paid tickets",
+    "removedType": "Removed ticket type",
+    "valid": {
+      "always": "Always",
+      "from": "From {date}",
+      "until": "Until {date}",
+      "between": "{start} – {end}"
+    },
+    "cols": {
+      "code": "Code",
+      "discount": "Discount",
+      "used": "Used",
+      "valid": "Valid",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "usedOf": "{uses, number} / {max, number}",
+    "usedNoLimit": "{uses, number} · no limit",
+    "states": {
+      "active": "Active",
+      "paused": "Paused",
+      "scheduled": "Scheduled",
+      "ended": "Ended",
+      "usedUp": "Used up"
+    },
+    "menuLabel": "Actions for {code}",
+    "copyLink": "Copy share link",
+    "copied": "Link copied",
+    "copiedHint": "Guests who open it get {code} applied.",
+    "copyFailed": "Copy this link",
+    "pause": "Pause",
+    "resume": "Resume",
+    "edit": "Edit",
+    "pausedToast": "{code} is paused.",
+    "resumedToast": "{code} is active again.",
+    "createdToast": "{code} created.",
+    "savedToast": "Changes to {code} saved.",
+    "dialog": {
+      "newTitle": "New discount code",
+      "editTitle": "Edit {code}",
+      "create": "Create code",
+      "save": "Save changes",
+      "locked": "This code has been used, so only its usage limit and end date can change.",
+      "code": "Code",
+      "codeHint": "3 to 32 letters, numbers, - or _. Guests can type it in any case.",
+      "kind": "Discount",
+      "kinds": {
+        "percent": "Percentage off",
+        "fixed": "Fixed amount off",
+        "free": "Free ticket"
+      },
+      "valuePercent": "Percentage (1 to 100)",
+      "valueFixed": "Amount off each ticket ({currency})",
+      "valueFixedHint": "In whole {currency}.",
+      "maxUses": "Usage limit",
+      "maxUsesHint": "How many orders can use it. Leave empty for no limit.",
+      "maxUsesUsed": "Used {uses, number} times so far. Leave empty for no limit.",
+      "startsAt": "Starts",
+      "startsHint": "Leave empty to start now.",
+      "endsAt": "Ends",
+      "endsHint": "Leave empty to keep it running.",
+      "zone": "Times are in the event's time zone: {zone}.",
+      "ticketTypes": "Applies to",
+      "ticketTypesHint": "Choose none to apply it to every paid ticket type."
+    },
+    "errors": {
+      "code": "Use 3 to 32 letters, numbers, - or _.",
+      "kind": "Choose a kind of discount.",
+      "percent": "Enter a percentage from 1 to 100.",
+      "fixed": "Enter a whole amount above 0.",
+      "maxUses": "Enter a whole number of at least 1, and not below the uses so far, or leave it empty.",
+      "time": "Enter a valid date and time.",
+      "window": "The end must be after the start.",
+      "ticketTypes": "Choose from this event's paid ticket types.",
+      "notFound": "This code no longer exists. Reload the page."
+    }
+  },
+  "team": {
+    "title": "Team",
+    "intro": "People who help run this event. Each person signs in with their own account.",
+    "loadFailed": "The team couldn't be loaded. Please try again.",
+    "readOnly": "Only the owner and co-hosts can invite people or change roles.",
+    "unnamed": "Team member",
+    "you": "(you)",
+    "joined": "Joined {date}",
+    "roleLabel": "Role of {name}",
+    "changedToast": "{name} is now {role}.",
+    "remove": "Remove",
+    "removeLabel": "Remove {name} from the team",
+    "removeTitle": "Remove {name} from the team?",
+    "removeBody": "They lose access to this event straight away. You can invite them again later.",
+    "removeConfirm": "Remove from team",
+    "removedToast": "{name} was removed from the team.",
+    "roles": {
+      "owner": {
+        "name": "Owner",
+        "help": "Created the event and can do everything, including deleting it."
+      },
+      "admin": {
+        "name": "Co-host",
+        "help": "Can do everything except delete the event."
+      },
+      "checkin": {
+        "name": "Door staff",
+        "help": "Scans tickets at the door. Nothing else."
+      },
+      "editor": {
+        "name": "Editor",
+        "help": "Edits details, questions and pictures, and checks guests in."
+      },
+      "finance": {
+        "name": "Finance",
+        "help": "Sees sales, exports guests and issues refunds."
+      },
+      "viewer": {
+        "name": "Viewer",
+        "help": "Sees the event and its guests without changing anything."
+      }
+    },
+    "invite": {
+      "title": "Invite someone",
+      "email": "Email address",
+      "emailHint": "They accept by signing in with this email.",
+      "role": "Role",
+      "moreRoles": "More roles",
+      "fewerRoles": "Fewer roles",
+      "send": "Send invitation",
+      "sentToast": "Invitation sent to {email}."
+    },
+    "pending": {
+      "title": "Pending invitations",
+      "none": "No pending invitations.",
+      "expires": "Expires {date}",
+      "invitedBy": "Invited by {name}",
+      "resend": "Resend",
+      "resendLabel": "Resend the invitation to {email}",
+      "resentToast": "A new invitation was sent to {email}.",
+      "revoke": "Withdraw",
+      "revokeLabel": "Withdraw the invitation to {email}",
+      "revokedToast": "The invitation to {email} was withdrawn."
+    },
+    "errors": {
+      "email": "Enter a valid email address.",
+      "role": "Choose a role.",
+      "inviteGone": "This invitation is no longer open. Reload the page."
+    }
+  },
+  "activity": {
+    "title": "Activity",
+    "loadFailed": "The activity couldn't be loaded. Please try again.",
+    "filter": "Show",
+    "kinds": {
+      "all": "All activity",
+      "event": "Event changes",
+      "team": "Team",
+      "guest": "Check-ins",
+      "refund": "Refunds",
+      "images": "Pictures"
+    },
+    "empty": "Nothing has happened yet",
+    "noneOfKind": "Nothing of this kind in the entries loaded",
+    "noneOfKindHint": "Load more to look further back.",
+    "loadMore": "Load more",
+    "someone": "A team member",
+    "system": "G-ventZ",
+    "newDate": "New date: {date}",
+    "unknown": "<b>{actor}</b> · {action}",
+    "actions": {
+      "eventCreated": "<b>{actor}</b> created the event",
+      "eventEdited": "<b>{actor}</b> edited the event details",
+      "eventRescheduled": "<b>{actor}</b> changed the date and time",
+      "eventPublished": "<b>{actor}</b> published the event",
+      "eventUnpublished": "<b>{actor}</b> unpublished the event",
+      "eventCancelled": "<b>{actor}</b> cancelled the event",
+      "teamInvited": "<b>{actor}</b> invited {subject} as {role}",
+      "teamInviteRevoked": "<b>{actor}</b> withdrew the invitation to {subject}",
+      "teamInviteAccepted": "<b>{actor}</b> joined the team as {role}",
+      "teamRoleChanged": "<b>{actor}</b> changed the role of {subject} to {role}",
+      "teamMemberRemoved": "<b>{actor}</b> removed {subject} from the team",
+      "guestCheckedIn": "<b>{actor}</b> checked in a guest",
+      "refundRequested": "<b>{actor}</b> started a refund",
+      "refundProcessed": "<b>{actor}</b> completed a refund",
+      "imagesAdded": "<b>{actor}</b> added a picture",
+      "imagesRemoved": "<b>{actor}</b> removed a picture",
+      "imagesReordered": "<b>{actor}</b> reordered the pictures"
+    },
+    "someoneElse": "a team member"
+  },
+  "invite": {
+    "metaTitle": "Team invitation",
+    "title": "Join the event team",
+    "unavailableTitle": "Invitation unavailable",
+    "body": "You've been invited to help run an event on G-ventZ. Accept to join its team.",
+    "signedInAs": "Signed in as <b>{email}</b>.",
+    "accept": "Accept invitation",
+    "switchAccount": "Switch account",
+    "toHost": "Go to your events",
+    "wrongAccountHint": "Switching signs you out here, then brings you back to this invitation.",
+    "problems": {
+      "wrong_account": "This invitation is for another email address. Sign in with the invited email to accept it.",
+      "gone": "This invitation has expired, was withdrawn or was already used. Ask the host for a new one.",
+      "not_found": "This invitation link isn't valid. Check that you opened the whole link from the email.",
+      "failed": "The invitation couldn't be accepted. Please try again."
+    }
   }
 }

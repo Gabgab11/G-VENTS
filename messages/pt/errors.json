@@ -13,7 +13,10 @@
     "no_recipients": "Ninguém neste público pode receber e-mails ainda.",
     "not_found": "Este comunicado não foi encontrado.",
     "segment_invalid": "Escolha quem recebe este comunicado.",
-    "unsubscribe_unknown": "Este link de cancelamento de inscrição não é válido."
+    "unsubscribe_unknown": "Este link de cancelamento de inscrição não é válido.",
+    "fields_required": "Adicione um assunto e uma mensagem.",
+    "quota_exceeded": "Isto ultrapassaria seus e-mails de aviso deste mês. Escolha um público menor ou aguarde a renovação mensal.",
+    "template_invalid": "Escolha um dos modelos de aviso."
   },
   "auth": {
     "anonymous_not_allowed": "Entre com seu e-mail ou com o Google para continuar.",
@@ -33,7 +36,16 @@
     "expired": "Este código não está ativo agora: já terminou ou ainda não começou.",
     "used_up": "Este código já foi usado o número máximo de vezes.",
     "not_for_ticket": "Este código não se aplica aos ingressos escolhidos.",
-    "whole_order": "Este código deixaria o pedido inteiro gratuito, e pedidos pagos não podem ser gratuitos. Remova o código ou adicione outro ingresso."
+    "whole_order": "Este código deixaria o pedido inteiro gratuito, e pedidos pagos não podem ser gratuitos. Remova o código ou adicione outro ingresso.",
+    "code_format": "Use de 3 a 32 letras, dígitos, - ou _.",
+    "code_taken": "Este evento já tem esse código.",
+    "limit_invalid": "O limite deve ser de pelo menos 1 e não inferior aos usos até agora.",
+    "locked": "Este código já foi usado, então o tipo e o valor não podem mudar. Pause-o e crie um novo.",
+    "no_paid_types": "Os códigos de desconto se aplicam a ingressos pagos, e este evento não tem nenhum.",
+    "not_found": "Código de desconto não encontrado.",
+    "ticket_types_invalid": "Escolha tipos de ingresso pagos deste evento; os códigos não se aplicam a ingressos gratuitos.",
+    "value_invalid": "Informe uma porcentagem de 1 a 100 ou um valor maior que 0.",
+    "window_invalid": "O término deve ser depois do início."
   },
   "event": {
     "already_cancelled": "Este evento já está cancelado.",
@@ -249,5 +261,16 @@
   },
   "webhook": {
     "signature_invalid": "Assinatura inválida."
+  },
+  "team": {
+    "already_member": "Esta pessoa já faz parte da equipe.",
+    "email_invalid": "Informe um endereço de e-mail válido.",
+    "invite_gone": "Este convite expirou ou já foi usado. Peça um novo.",
+    "invite_not_found": "Convite não encontrado.",
+    "invite_wrong_account": "Este convite é para outro endereço de e-mail. Entre com o e-mail convidado e confirmado para aceitá-lo.",
+    "last_admin": "Você é o único coanfitrião restante, então não pode deixar a função. Primeiro torne outra pessoa coanfitriã.",
+    "member_not_found": "Esta pessoa não faz parte da equipe.",
+    "owner_fixed": "A função do proprietário do evento não pode ser alterada nem removida.",
+    "role_invalid": "Escolha uma função."
   }
 }

@@ -13,7 +13,10 @@
     "no_recipients": "Niemand in dieser Zielgruppe kann bisher E-Mails empfangen.",
     "not_found": "Diese Mitteilung wurde nicht gefunden.",
     "segment_invalid": "Wählen Sie, wer diese Mitteilung erhält.",
-    "unsubscribe_unknown": "Dieser Abmeldelink ist ungültig."
+    "unsubscribe_unknown": "Dieser Abmeldelink ist ungültig.",
+    "fields_required": "Fügen Sie einen Betreff und eine Nachricht hinzu.",
+    "quota_exceeded": "Damit würden Sie Ihre Ankündigungs-E-Mails für diesen Monat überschreiten. Wählen Sie eine kleinere Zielgruppe oder warten Sie auf die monatliche Zurücksetzung.",
+    "template_invalid": "Wählen Sie eine der Ankündigungsvorlagen."
   },
   "auth": {
     "anonymous_not_allowed": "Melden Sie sich mit Ihrer E-Mail-Adresse oder Google an, um fortzufahren.",
@@ -33,7 +36,16 @@
     "expired": "Dieser Code ist derzeit nicht aktiv: Er ist abgelaufen oder hat noch nicht begonnen.",
     "used_up": "Dieser Code wurde bereits so oft wie möglich verwendet.",
     "not_for_ticket": "Dieser Code gilt nicht für die gewählten Tickets.",
-    "whole_order": "Mit diesem Code wäre die gesamte Bestellung kostenlos, und kostenpflichtige Bestellungen können nicht kostenlos sein. Lassen Sie den Code weg oder fügen Sie ein weiteres Ticket hinzu."
+    "whole_order": "Mit diesem Code wäre die gesamte Bestellung kostenlos, und kostenpflichtige Bestellungen können nicht kostenlos sein. Lassen Sie den Code weg oder fügen Sie ein weiteres Ticket hinzu.",
+    "code_format": "Verwenden Sie 3 bis 32 Buchstaben, Ziffern, - oder _.",
+    "code_taken": "Diese Veranstaltung hat diesen Code bereits.",
+    "limit_invalid": "Das Limit muss mindestens 1 betragen und darf nicht unter den bisherigen Nutzungen liegen.",
+    "locked": "Dieser Code wurde bereits genutzt, daher können Art und Betrag nicht mehr geändert werden. Pausieren Sie ihn und erstellen Sie einen neuen.",
+    "no_paid_types": "Rabattcodes gelten für bezahlte Tickets, und diese Veranstaltung hat keine.",
+    "not_found": "Rabattcode nicht gefunden.",
+    "ticket_types_invalid": "Wählen Sie bezahlte Ticketarten dieser Veranstaltung; Codes gelten nicht für kostenlose Tickets.",
+    "value_invalid": "Geben Sie einen Prozentsatz von 1 bis 100 oder einen Betrag über 0 ein.",
+    "window_invalid": "Das Ende muss nach dem Beginn liegen."
   },
   "event": {
     "already_cancelled": "Diese Veranstaltung ist bereits abgesagt.",
@@ -249,5 +261,16 @@
   },
   "webhook": {
     "signature_invalid": "Ungültige Signatur."
+  },
+  "team": {
+    "already_member": "Diese Person ist bereits im Team.",
+    "email_invalid": "Geben Sie eine gültige E-Mail-Adresse ein.",
+    "invite_gone": "Diese Einladung ist abgelaufen oder wurde bereits verwendet. Bitten Sie um eine neue.",
+    "invite_not_found": "Einladung nicht gefunden.",
+    "invite_wrong_account": "Diese Einladung gilt für eine andere E-Mail-Adresse. Melden Sie sich mit der eingeladenen, bestätigten Adresse an, um sie anzunehmen.",
+    "last_admin": "Sie sind der einzige verbleibende Mitveranstalter und können diese Rolle daher nicht abgeben. Machen Sie zuerst eine andere Person zum Mitveranstalter.",
+    "member_not_found": "Diese Person ist nicht im Team.",
+    "owner_fixed": "Die Rolle des Eigentümers kann weder geändert noch entfernt werden.",
+    "role_invalid": "Wählen Sie eine Rolle."
   }
 }

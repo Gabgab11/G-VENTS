@@ -191,7 +191,10 @@
       "details": "Detalhes",
       "registration": "Inscrição",
       "announcements": "Anúncios",
-      "settings": "Configurações"
+      "settings": "Configurações",
+      "promote": "Divulgação",
+      "team": "Equipe",
+      "activity": "Atividade"
     },
     "tabsLabel": "Seções do evento",
     "youAre": "Você é {role, select, owner {proprietário} admin {administrador} editor {editor} checkin {responsável pelo check-in} finance {financeiro} viewer {leitor} other {{role}}}",
@@ -371,7 +374,75 @@
     "draft": "Rascunho",
     "sent": "Enviado",
     "sending": "Enviando",
-    "emailed": "{sent} de {total} enviados por e-mail"
+    "emailed": "{sent} de {total} enviados por e-mail",
+    "loadFailed": "Não foi possível carregar os avisos. Tente novamente.",
+    "template": "Modelo",
+    "templates": {
+      "blank": {
+        "name": "Mensagem em branco",
+        "help": "Apenas o seu assunto e a sua mensagem."
+      },
+      "reminder": {
+        "name": "Lembrete",
+        "help": "Começa com a data e o horário do evento."
+      },
+      "reschedule": {
+        "name": "Nova data",
+        "help": "Começa com a nova data e o novo horário do evento."
+      },
+      "lineup": {
+        "name": "Novidades da programação",
+        "help": "Apresenta novidades sobre a programação."
+      },
+      "thanks": {
+        "name": "Agradecimento",
+        "help": "Agradece aos convidados pela presença. Pode ser enviado depois do início do evento."
+      },
+      "feedback": {
+        "name": "Opinião",
+        "help": "Pergunta aos convidados o que acharam. Pode ser enviado depois do início do evento."
+      }
+    },
+    "messageHintTemplate": "O modelo adiciona uma linha antes da sua mensagem; suas palavras são enviadas como escritas.",
+    "segmentOption": "{label} ({count, number})",
+    "recipients": "{count, plural, one {# convidado vai receber isto} other {# convidados vão receber isto}}",
+    "sendButton": "Enviar…",
+    "draftOnly": "Apenas o proprietário e os coanfitriões podem enviar. Salve um rascunho para que eles o enviem.",
+    "draftSavedToast": "Rascunho salvo.",
+    "sentToast": "{count, plural, one {Enviando para # convidado.} other {Enviando para # convidados.}}",
+    "sentOn": "Enviado em {date}",
+    "notSent": "{count, plural, one {# não enviado} other {# não enviados}}",
+    "confirmTitle": "{count, plural, one {Enviar para # convidado?} other {Enviar para # convidados?}}",
+    "confirmBody": "Isto usa um dos {sends, number} avisos restantes para este evento e {count, number} dos {emails, number} e-mails restantes deste mês. Não é possível desfazer.",
+    "confirmSend": "Enviar agora",
+    "blocks": {
+      "draft": "Publique o evento antes de enviar avisos.",
+      "started": "Este evento já começou. Agora só podem ser enviados os modelos Agradecimento e Opinião.",
+      "sends": "Você enviou todos os avisos permitidos para este evento.",
+      "emails": "Você usou todos os seus e-mails de aviso deste mês.",
+      "quota": "Este público é maior do que os e-mails que restam neste mês. Escolha um público menor.",
+      "empty": "Ninguém neste público pode receber e-mails ainda."
+    },
+    "errors": {
+      "subject": "Adicione um assunto.",
+      "body": "Adicione uma mensagem.",
+      "template": "Escolha um dos modelos."
+    },
+    "preview": {
+      "title": "Pré-visualização",
+      "fromHost": "Mensagem do anfitrião de {title}",
+      "emptySubject": "Seu assunto",
+      "emptyBody": "Sua mensagem aparece aqui.",
+      "lead": {
+        "reminder": "{title} está chegando: {date}, {time}.",
+        "reschedule": "{title} tem uma nova data: {date}, {time}.",
+        "lineup": "Novidades sobre a programação de {title}, em {date}.",
+        "thanks": "Obrigado por participar de {title}.",
+        "feedback": "O que você achou de {title}? O anfitrião gostaria de saber sua opinião."
+      },
+      "footer": "Você está recebendo isto porque se inscreveu em {title} na G-ventZ. <link>Parar de receber avisos deste evento</link>.",
+      "note": "Cada convidado recebe o texto da G-ventZ no próprio idioma; seu assunto e sua mensagem são enviados como escritos."
+    }
   },
   "settings": {
     "styleTitle": "Estilo da página",
@@ -516,5 +587,225 @@
     "forbidden": "Só o proprietário, administradores e o financeiro podem exportar a lista de convidados.",
     "notFound": "Não encontrado",
     "failed": "A exportação não funcionou. Tente novamente."
+  },
+  "tools": {
+    "close": "Fechar",
+    "cancel": "Cancelar"
+  },
+  "promote": {
+    "title": "Códigos de desconto",
+    "intro": "Os códigos reduzem o preço dos ingressos pagos. As taxas são calculadas sobre o preço reduzido.",
+    "newCode": "Novo código",
+    "loadFailed": "Não foi possível carregar os códigos de desconto. Tente novamente.",
+    "draftNote": "Os códigos funcionam quando o evento é publicado.",
+    "noPaid": "Ainda não há ingressos pagos",
+    "noPaidHint": "Os códigos de desconto se aplicam a ingressos pagos. Primeiro adicione um tipo de ingresso pago em Detalhes.",
+    "empty": "Ainda não há códigos de desconto",
+    "emptyHint": "Crie um código e compartilhe o link: o desconto é aplicado quando os convidados o abrem.",
+    "free": "Ingresso gratuito",
+    "allTickets": "Todos os ingressos pagos",
+    "removedType": "Tipo de ingresso removido",
+    "valid": {
+      "always": "Sempre",
+      "from": "A partir de {date}",
+      "until": "Até {date}",
+      "between": "{start} – {end}"
+    },
+    "cols": {
+      "code": "Código",
+      "discount": "Desconto",
+      "used": "Usos",
+      "valid": "Validade",
+      "status": "Status",
+      "actions": "Ações"
+    },
+    "usedOf": "{uses, number} / {max, number}",
+    "usedNoLimit": "{uses, number} · sem limite",
+    "states": {
+      "active": "Ativo",
+      "paused": "Pausado",
+      "scheduled": "Agendado",
+      "ended": "Encerrado",
+      "usedUp": "Esgotado"
+    },
+    "menuLabel": "Ações para {code}",
+    "copyLink": "Copiar link de compartilhamento",
+    "copied": "Link copiado",
+    "copiedHint": "Quem abrir o link terá {code} aplicado.",
+    "copyFailed": "Copie este link",
+    "pause": "Pausar",
+    "resume": "Retomar",
+    "edit": "Editar",
+    "pausedToast": "{code} está pausado.",
+    "resumedToast": "{code} está ativo novamente.",
+    "createdToast": "{code} criado.",
+    "savedToast": "Alterações em {code} salvas.",
+    "dialog": {
+      "newTitle": "Novo código de desconto",
+      "editTitle": "Editar {code}",
+      "create": "Criar código",
+      "save": "Salvar alterações",
+      "locked": "Este código já foi usado, então apenas o limite de uso e a data de término podem mudar.",
+      "code": "Código",
+      "codeHint": "De 3 a 32 letras, números, - ou _. Os convidados podem digitá-lo em maiúsculas ou minúsculas.",
+      "kind": "Desconto",
+      "kinds": {
+        "percent": "Porcentagem de desconto",
+        "fixed": "Valor fixo de desconto",
+        "free": "Ingresso gratuito"
+      },
+      "valuePercent": "Porcentagem (de 1 a 100)",
+      "valueFixed": "Desconto por ingresso ({currency})",
+      "valueFixedHint": "Em unidades inteiras de {currency}.",
+      "maxUses": "Limite de uso",
+      "maxUsesHint": "Quantos pedidos podem usá-lo. Deixe em branco para não ter limite.",
+      "maxUsesUsed": "Usado {uses, number} vezes até agora. Deixe em branco para não ter limite.",
+      "startsAt": "Início",
+      "startsHint": "Deixe em branco para começar agora.",
+      "endsAt": "Término",
+      "endsHint": "Deixe em branco para que continue valendo.",
+      "zone": "Os horários estão no fuso horário do evento: {zone}.",
+      "ticketTypes": "Aplica-se a",
+      "ticketTypesHint": "Não escolha nenhum para aplicá-lo a todos os tipos de ingresso pagos."
+    },
+    "errors": {
+      "code": "Use de 3 a 32 letras, números, - ou _.",
+      "kind": "Escolha um tipo de desconto.",
+      "percent": "Informe uma porcentagem de 1 a 100.",
+      "fixed": "Informe um valor inteiro maior que 0.",
+      "maxUses": "Informe um número inteiro de pelo menos 1, não inferior aos usos até agora, ou deixe em branco.",
+      "time": "Informe uma data e um horário válidos.",
+      "window": "O término deve ser depois do início.",
+      "ticketTypes": "Escolha entre os tipos de ingresso pagos deste evento.",
+      "notFound": "Este código não existe mais. Recarregue a página."
+    }
+  },
+  "team": {
+    "title": "Equipe",
+    "intro": "As pessoas que ajudam a organizar este evento. Cada uma entra com a própria conta.",
+    "loadFailed": "Não foi possível carregar a equipe. Tente novamente.",
+    "readOnly": "Apenas o proprietário e os coanfitriões podem convidar pessoas ou mudar funções.",
+    "unnamed": "Membro da equipe",
+    "you": "(você)",
+    "joined": "Entrou em {date}",
+    "roleLabel": "Função de {name}",
+    "changedToast": "{name} agora é {role}.",
+    "remove": "Remover",
+    "removeLabel": "Remover {name} da equipe",
+    "removeTitle": "Remover {name} da equipe?",
+    "removeBody": "A pessoa perde o acesso a este evento imediatamente. Você pode convidá-la de novo mais tarde.",
+    "removeConfirm": "Remover da equipe",
+    "removedToast": "{name} foi removido da equipe.",
+    "roles": {
+      "owner": {
+        "name": "Proprietário",
+        "help": "Criou o evento e pode fazer tudo, inclusive excluí-lo."
+      },
+      "admin": {
+        "name": "Coanfitrião",
+        "help": "Pode fazer tudo, exceto excluir o evento."
+      },
+      "checkin": {
+        "name": "Equipe de entrada",
+        "help": "Lê os ingressos na entrada. Nada mais."
+      },
+      "editor": {
+        "name": "Editor",
+        "help": "Edita detalhes, perguntas e imagens, e faz o check-in dos convidados."
+      },
+      "finance": {
+        "name": "Financeiro",
+        "help": "Vê as vendas, exporta convidados e faz reembolsos."
+      },
+      "viewer": {
+        "name": "Leitor",
+        "help": "Vê o evento e os convidados sem alterar nada."
+      }
+    },
+    "invite": {
+      "title": "Convidar alguém",
+      "email": "Endereço de e-mail",
+      "emailHint": "A pessoa aceita entrando com este e-mail.",
+      "role": "Função",
+      "moreRoles": "Mais funções",
+      "fewerRoles": "Menos funções",
+      "send": "Enviar convite",
+      "sentToast": "Convite enviado para {email}."
+    },
+    "pending": {
+      "title": "Convites pendentes",
+      "none": "Nenhum convite pendente.",
+      "expires": "Expira em {date}",
+      "invitedBy": "Convidado por {name}",
+      "resend": "Reenviar",
+      "resendLabel": "Reenviar o convite para {email}",
+      "resentToast": "Um novo convite foi enviado para {email}.",
+      "revoke": "Retirar",
+      "revokeLabel": "Retirar o convite para {email}",
+      "revokedToast": "O convite para {email} foi retirado."
+    },
+    "errors": {
+      "email": "Informe um endereço de e-mail válido.",
+      "role": "Escolha uma função.",
+      "inviteGone": "Este convite não está mais aberto. Recarregue a página."
+    }
+  },
+  "activity": {
+    "title": "Atividade",
+    "loadFailed": "Não foi possível carregar a atividade. Tente novamente.",
+    "filter": "Mostrar",
+    "kinds": {
+      "all": "Toda a atividade",
+      "event": "Alterações no evento",
+      "team": "Equipe",
+      "guest": "Check-ins",
+      "refund": "Reembolsos",
+      "images": "Imagens"
+    },
+    "empty": "Nada aconteceu ainda",
+    "noneOfKind": "Nada deste tipo nos registros carregados",
+    "noneOfKindHint": "Carregue mais para ver registros anteriores.",
+    "loadMore": "Carregar mais",
+    "someone": "Um membro da equipe",
+    "system": "G-ventZ",
+    "newDate": "Nova data: {date}",
+    "unknown": "<b>{actor}</b> · {action}",
+    "actions": {
+      "eventCreated": "<b>{actor}</b> criou o evento",
+      "eventEdited": "<b>{actor}</b> editou os detalhes do evento",
+      "eventRescheduled": "<b>{actor}</b> mudou a data e o horário",
+      "eventPublished": "<b>{actor}</b> publicou o evento",
+      "eventUnpublished": "<b>{actor}</b> despublicou o evento",
+      "eventCancelled": "<b>{actor}</b> cancelou o evento",
+      "teamInvited": "<b>{actor}</b> convidou {subject} como {role}",
+      "teamInviteRevoked": "<b>{actor}</b> retirou o convite para {subject}",
+      "teamInviteAccepted": "<b>{actor}</b> entrou na equipe como {role}",
+      "teamRoleChanged": "<b>{actor}</b> mudou a função de {subject} para {role}",
+      "teamMemberRemoved": "<b>{actor}</b> removeu {subject} da equipe",
+      "guestCheckedIn": "<b>{actor}</b> fez o check-in de um convidado",
+      "refundRequested": "<b>{actor}</b> iniciou um reembolso",
+      "refundProcessed": "<b>{actor}</b> concluiu um reembolso",
+      "imagesAdded": "<b>{actor}</b> adicionou uma imagem",
+      "imagesRemoved": "<b>{actor}</b> removeu uma imagem",
+      "imagesReordered": "<b>{actor}</b> reordenou as imagens"
+    },
+    "someoneElse": "um membro da equipe"
+  },
+  "invite": {
+    "metaTitle": "Convite para a equipe",
+    "title": "Entre na equipe do evento",
+    "unavailableTitle": "Convite indisponível",
+    "body": "Você foi convidado para ajudar a organizar um evento na G-ventZ. Aceite para entrar na equipe.",
+    "signedInAs": "Conectado como <b>{email}</b>.",
+    "accept": "Aceitar convite",
+    "switchAccount": "Trocar de conta",
+    "toHost": "Ir para seus eventos",
+    "wrongAccountHint": "Ao trocar, você sai desta conta aqui e volta para este convite.",
+    "problems": {
+      "wrong_account": "Este convite é para outro endereço de e-mail. Entre com o e-mail convidado para aceitá-lo.",
+      "gone": "Este convite expirou, foi retirado ou já foi usado. Peça um novo ao anfitrião.",
+      "not_found": "Este link de convite não é válido. Verifique se você abriu o link completo do e-mail.",
+      "failed": "Não foi possível aceitar o convite. Tente novamente."
+    }
   }
 }

@@ -1,18 +1,21 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import { History } from "lucide-react";
 import { useFormat } from "@/i18n/format-hooks";
 import { Banner, Button, Card, CardHeader, EmptyState, Field, Select } from "@/design";
 import { loadActivity } from "./activity-actions";
-import { ACTIVITY_KINDS, activityLabelKey, activityValues, appendPage, filterActivity, isActivityKind, type ActivityItem, type ActivityKind } from "./activity-labels";
+import { ACTIVITY_KINDS, activityLabelKey, activityValues, personLabel, appendPage, filterActivity, isActivityKind, type ActivityItem, type ActivityKind } from "./activity-labels";
 import { MEMBER_ROLES } from "./team-roles";
 import styles from "./tools.module.css";
 
-type Props = { eventId: string; initial: ActivityItem[]; nextCursor: string | null; timeZone: string; currency: string; now: string };
+/** Names and emails keep their own direction inside a sentence (FSI … PDI), e.g. in Arabic. */
+const isolate = (text: string) => `\u2068${text}\u2069`;
 
-export default function ActivityList({ eventId, initial, nextCursor, timeZone, currency, now }: Props) {
+type Props = { eventId: string; initial: ActivityItem[]; nextCursor: string | null; timeZone: string; currency: string; now: string; names: Record<string, string> };
+
+export default function ActivityList({ eventId, initial, nextCursor, timeZone, currency, now, names }: Props) {
   const t = useTranslations("dashboard.activity");
   const team = useTranslations("dashboard.team");
   const format = useFormat();
@@ -37,11 +40,11 @@ export default function ActivityList({ eventId, initial, nextCursor, timeZone, c
   const roleName = (role: string | null) => (role && (MEMBER_ROLES as readonly string[]).includes(role) ? team(`roles.${role}.name`) : role ?? "");
   const line = (item: ActivityItem) => {
     const v = activityValues(item);
-    const actor = item.actor ? item.actor.name || t("someone") : t("system");
+    const actor = isolate(item.actor ? item.actor.name || personLabel(item.actor.id, names) || t("someone") : t("system"));
     const key = activityLabelKey(item.action);
-    const b = (chunks: React.ReactNode) => <strong>{chunks}</strong>;
+    const b = (chunks: ReactNode) => <strong>{chunks}</strong>;
     if (!key) return t.rich("unknown", { actor, action: item.action, b });
-    return t.rich(`actions.${key}`, { actor, subject: v.subject ?? t("someone"), role: roleName(v.role), b });
+    return t.rich(`actions.${key}`, { actor, subject: isolate(personLabel(v.subject, names) ?? t("someoneElse")), role: roleName(v.role), b });
   };
   const detail = (item: ActivityItem) => {
     const v = activityValues(item);

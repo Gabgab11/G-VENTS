@@ -61,7 +61,7 @@ function Team({ eventId, members, invites, canManage, selfId, timeZone }: Props)
               <li key={m.userId} className={styles.row}>
                 <Avatar name={name} size={36} />
                 <span className={styles.rowMain}>
-                  <strong>{name}{m.userId === selfId ? ` ${t("you")}` : ""}</strong>
+                  <strong><bdi>{name}</bdi>{m.userId === selfId ? ` ${t("you")}` : ""}</strong>
                   <span className={styles.muted}>
                     {[m.name && m.email ? m.email : null, m.joinedAt ? t("joined", { date: format.dateTime(m.joinedAt, timeZone, "compact") }) : null].filter(Boolean).join(" · ")}
                   </span>

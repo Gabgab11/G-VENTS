@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { createBody, discountValue, normalizeCode, parseMaxUses, shareUrl, updateBody, valueText, zonedInput, zonedToIso, type DiscountCode, type DiscountInput } from "./promote-form";
-import { activityKind, activityLabelKey, activityValues, appendPage, filterActivity, ACTIVITY_LABELS, type ActivityItem } from "./activity-labels";
+import { activityKind, activityLabelKey, activityValues, appendPage, personLabel, filterActivity, ACTIVITY_LABELS, type ActivityItem } from "./activity-labels";
 import { audienceCount, notSent, remaining, sendBlock, type Allowance } from "./announce";
 import { inviteProblem, isInviteToken, landingPath, roleOptions, sortMembers, type TeamMember } from "./team-roles";
 
@@ -116,6 +116,14 @@ describe("activity labels", () => {
     expect(activityValues(item("guest.checked_in", { subject: "ticket-id" })).subject).toBeNull();
     expect(activityValues(item("refund.requested", { meta: { amountMinor: 250000, currency: "NGN" } }))).toMatchObject({ amountMinor: 250000, currency: "NGN" });
     expect(activityValues(item("event.rescheduled", { meta: { startsAt: "2026-12-01T17:00:00Z" } })).at).toBe("2026-12-01T17:00:00Z");
+  });
+
+  it("names people from the team list, never as bare ids", () => {
+    const names = { "01a1d9b2-5be7-70f5-a17f-4da4c8c3095a": "ada@example.com" };
+    expect(personLabel("01a1d9b2-5be7-70f5-a17f-4da4c8c3095a", names)).toBe("ada@example.com");
+    expect(personLabel("01a1d9b2-0000-70f5-a17f-4da4c8c3095a", names)).toBeNull();
+    expect(personLabel("bo@example.com", names)).toBe("bo@example.com");
+    expect(personLabel("", names)).toBeNull();
   });
 
   it("appends a page without repeats", () => {

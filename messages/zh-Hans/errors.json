@@ -13,7 +13,10 @@
     "no_recipients": "此受众中暂时没有人可以接收电子邮件。",
     "not_found": "找不到此公告。",
     "segment_invalid": "请选择此公告的接收对象。",
-    "unsubscribe_unknown": "此退订链接无效。"
+    "unsubscribe_unknown": "此退订链接无效。",
+    "fields_required": "请添加主题和内容。",
+    "quota_exceeded": "这将超出您本月的公告邮件额度。请选择较小的受众，或等待每月额度重置。",
+    "template_invalid": "请选择一个公告模板。"
   },
   "auth": {
     "anonymous_not_allowed": "请使用电子邮件或 Google 登录以继续。",
@@ -33,7 +36,16 @@
     "expired": "此折扣码目前无效：已结束或尚未开始。",
     "used_up": "此折扣码的使用次数已达上限。",
     "not_for_ticket": "此折扣码不适用于您选择的门票。",
-    "whole_order": "使用此折扣码会使整个订单免费，而付费订单不能免费。请不使用此折扣码，或再添加一张门票。"
+    "whole_order": "使用此折扣码会使整个订单免费，而付费订单不能免费。请不使用此折扣码，或再添加一张门票。",
+    "code_format": "请使用 3 至 32 个字母、数字、- 或 _。",
+    "code_taken": "本活动已有此折扣码。",
+    "limit_invalid": "上限必须至少为 1，且不低于已使用次数。",
+    "locked": "此折扣码已被使用，其折扣方式和金额无法更改。请暂停它并创建新的折扣码。",
+    "no_paid_types": "折扣码适用于付费门票，而本活动没有付费门票。",
+    "not_found": "未找到折扣码。",
+    "ticket_types_invalid": "请选择本活动的付费门票类型；折扣码不适用于免费门票。",
+    "value_invalid": "请输入 1 至 100 之间的百分比，或大于 0 的金额。",
+    "window_invalid": "结束时间必须晚于开始时间。"
   },
   "event": {
     "already_cancelled": "此活动已取消。",
@@ -249,5 +261,16 @@
   },
   "webhook": {
     "signature_invalid": "签名无效。"
+  },
+  "team": {
+    "already_member": "此人已在团队中。",
+    "email_invalid": "请输入有效的电子邮箱。",
+    "invite_gone": "此邀请已过期或已被使用。请索取新的邀请。",
+    "invite_not_found": "未找到邀请。",
+    "invite_wrong_account": "此邀请发给的是另一个邮箱。请使用受邀且已验证的邮箱登录后接受。",
+    "last_admin": "您是唯一剩下的联合主办方，因此无法卸任。请先将其他人设为联合主办方。",
+    "member_not_found": "此人不在团队中。",
+    "owner_fixed": "活动所有者的角色无法更改或移除。",
+    "role_invalid": "请选择角色。"
   }
 }
