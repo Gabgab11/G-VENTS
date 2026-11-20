@@ -170,8 +170,19 @@
       "ticket_price": "Geben Sie Preise als Zahlen ein, zum Beispiel 5000 oder 12.50.",
       "ticket_price_locked": "Dieser Preis ist gesperrt, weil zu ihm bereits Tickets verkauft wurden.",
       "ticket_has_sales": "Eine Ticketart mit Verkäufen kann nicht entfernt werden.",
-      "ticket_count": "Ein Event braucht 1 bis 20 Ticketarten."
-    }
+      "ticket_count": "Ein Event braucht 1 bis 20 Ticketarten.",
+      "ticket_group_size": "Ein Gruppenticket muss 2 bis 20 Personen Einlass gewähren.",
+      "ticket_group_locked": "Ein Tickettyp mit Verkäufen behält seine Gruppengröße. Legen Sie stattdessen einen neuen Tickettyp an.",
+      "ticket_description": "Eine Ticketbeschreibung darf höchstens 300 Zeichen lang sein."
+    },
+    "typeDescription": "Beschreibung (optional)",
+    "typeDescriptionCount": "{count}/{max} Zeichen",
+    "typeDescriptionPlaceholder": "Was enthalten ist, etwa ein Tisch für vier nahe der Bühne",
+    "group": "Gruppenticket",
+    "groupHelp": "Ein Kauf gewährt mehreren Personen Einlass, etwa ein Tisch.",
+    "groupLocked": "Für diesen Tickettyp gibt es bereits Verkäufe, daher kann die Gruppengröße nicht mehr geändert werden. Legen Sie stattdessen einen neuen Tickettyp an.",
+    "admits": "Für wie viele Personen?",
+    "admitsHint": "Von {min} bis {max}. Die Menge zählt Personen: 10 Tische zu 4 sind 40."
   },
   "event": {
     "tabs": {
@@ -291,6 +302,13 @@
       "body": "{name} erhält <b>{amount}</b> zurück. Das Ticket wird sofort ungültig und sein Platz geht wieder in den Verkauf. Die Gebühr von G-ventZ und die Gebühr von Paystack werden nicht erstattet; Ihr Anteil wird von Ihren nächsten Verkäufen abgezogen.",
       "confirm": "{amount} an {name} erstatten",
       "button": "Ticket erstatten"
+    },
+    "colContact": "Kontakt des Käufers",
+    "sentTo": "Gesendet an <b>{email}</b>",
+    "gender": {
+      "female": "Weiblich",
+      "male": "Männlich",
+      "unspecified": "Keine Angabe"
     }
   },
   "registration": {
@@ -477,7 +495,8 @@
     },
     "ticketNumber": "{number} von {total}",
     "usedAt": "{who} · um {time}",
-    "usedAtBy": "{who} · um {time} von {name}"
+    "usedAtBy": "{who} · um {time} von {name}",
+    "groupOf": "Gruppe von {count}"
   },
   "csv": {
     "header": {
@@ -489,7 +508,10 @@
       "type": "Ticketart",
       "status": "Status",
       "registeredAt": "Angemeldet am",
-      "checkedInAt": "Eingecheckt am"
+      "checkedInAt": "Eingecheckt am",
+      "phone": "Telefon des Käufers",
+      "gender": "Geschlecht des Käufers",
+      "recipient": "E-Mail des Empfängers"
     },
     "forbidden": "Nur der Eigentümer, Admins und die Finanzabteilung können die Gästeliste exportieren.",
     "notFound": "Nicht gefunden",

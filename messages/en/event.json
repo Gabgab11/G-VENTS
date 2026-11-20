@@ -63,11 +63,36 @@
     "email": "Email",
     "emailNote": "All your tickets are sent to your account email.",
     "emailThis": "Tickets go to this email.",
-    "othersLegend": "Names for the other tickets (optional; you can forward each ticket)",
-    "ticketNumber": "Ticket {number}",
-    "namePlaceholder": "Guest name",
     "choose": "Choose",
-    "socialPlaceholder": "@handle or profile link"
+    "socialPlaceholder": "@handle or profile link",
+    "phoneCountry": "Country code",
+    "phone": "Phone number",
+    "phoneHint": "The host may use it to contact you about the event.",
+    "phonePlaceholder": "Your number",
+    "gender": "Gender (optional)",
+    "genderNone": "Choose",
+    "genders": {
+      "female": "Female",
+      "male": "Male",
+      "unspecified": "Prefer not to say"
+    },
+    "forWho": "Who are these tickets for?",
+    "forMe": "All for me",
+    "forOthers": "Some for other people",
+    "forOthersHint": "Each person gets their own ticket. Add an email to send it to them; every ticket also stays in your My tickets.",
+    "ticketFor": "Ticket {number} · {type}",
+    "removePerson": "Remove",
+    "personName": "Their full name",
+    "personEmail": "Their email (optional)",
+    "personEmailHint": "We'll email their ticket to this address.",
+    "addPerson": "Add a person",
+    "restYours": "Tickets you don't give to anyone stay with you.",
+    "recipientErrors": {
+      "recipientName": "Enter the person's name (2 to 120 characters).",
+      "recipientEmail": "Enter a valid email address, or leave it blank.",
+      "recipientIsBuyer": "That's your own email: your tickets already come to you.",
+      "recipientsTooMany": "You can send tickets to at most 20 people in one order."
+    }
   },
   "order": {
     "legend": "Tickets",
@@ -81,7 +106,10 @@
     "seeMyTickets": "See my tickets",
     "pending": "Getting your tickets...",
     "request": "{count, plural, one {Request a ticket} other {Request {count, number, ::group-off} tickets}}",
-    "get": "{count, plural, one {Get ticket} other {Get {count, number, ::group-off} tickets}}"
+    "get": "{count, plural, one {Get ticket} other {Get {count, number, ::group-off} tickets}}",
+    "groupOf": "Group of {count}",
+    "admits": "admits {count}",
+    "priceAdmits": "{price} · admits {count}"
   },
   "paid": {
     "legend": "Paid tickets",
@@ -142,7 +170,13 @@
     "chooseTicket": "Choose at least one ticket.",
     "ticketRange": "Choose between 1 and 10 tickets.",
     "nonRefundable": "Tick \"{text}\" to continue.",
-    "codeFormat": "Enter a code of 3 to 32 letters, digits, - or _."
+    "codeFormat": "Enter a code of 3 to 32 letters, digits, - or _.",
+    "phoneRequired": "Enter your phone number.",
+    "phoneInvalid": "Enter a valid phone number for the country you chose.",
+    "recipientName": "Enter each person's name (2 to 120 characters).",
+    "recipientEmail": "Enter a valid email address for each person, or leave it blank.",
+    "recipientIsBuyer": "That's your own email: your tickets already come to you.",
+    "recipientsTooMany": "You can send tickets to at most 20 people in one order."
   },
   "meta": {
     "cardAlt": "{title}: date, place and tickets"
@@ -185,6 +219,7 @@
     "free": "Free",
     "discount": "Discount ({code})",
     "line": "{name} × {count}",
-    "unavailable": "Tickets can't be booked right now"
+    "unavailable": "Tickets can't be booked right now",
+    "groupLine": "{name} × {count} ({entries, plural, one {# entry} other {# entries}})"
   }
 }

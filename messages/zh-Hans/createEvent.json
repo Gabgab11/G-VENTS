@@ -83,7 +83,14 @@
       "pricePlaceholder": "例如 5000",
       "remove": "移除门票",
       "add": "+ 添加门票类型",
-      "perPerson": "每人最多门票数"
+      "perPerson": "每人最多门票数",
+      "description": "描述（可选）",
+      "descriptionCount": "{count}/{max} 个字符",
+      "descriptionPlaceholder": "包含哪些内容，例如靠近舞台的四人桌",
+      "group": "团体票",
+      "groupHelp": "一次购买可供多人入场，例如一张桌位。",
+      "admits": "可入场多少人？",
+      "admitsHint": "{min} 至 {max} 人。数量按人数计算：10 张四人桌即为 40。"
     },
     "options": {
       "label": "活动选项",
@@ -210,7 +217,9 @@
     "maxTickets": "最多添加 {max} 种门票类型。",
     "perBuyer": "请选择每人 1 到 10 张门票的上限。",
     "country": "请从列表中选择国家/地区。",
-    "venue": "请输入场地名称。"
+    "venue": "请输入场地名称。",
+    "groupSize": "团体票“{name}”须可供 2 至 20 人入场。",
+    "ticketDescription": "“{name}”的描述最多 {max} 个字符。"
   },
   "save": {
     "failed": "无法保存活动。请重试。",

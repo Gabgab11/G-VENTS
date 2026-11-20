@@ -83,7 +83,14 @@
       "pricePlaceholder": "e.g. 5000",
       "remove": "Remove ticket",
       "add": "+ Add ticket type",
-      "perPerson": "Max tickets per person"
+      "perPerson": "Max tickets per person",
+      "description": "Description (optional)",
+      "descriptionCount": "{count}/{max} characters",
+      "descriptionPlaceholder": "What's included, such as a table for four near the stage",
+      "group": "Group ticket",
+      "groupHelp": "One purchase admits several people, such as a table.",
+      "admits": "Admits how many people?",
+      "admitsHint": "From {min} to {max}. The quantity counts people, so 10 tables of 4 is 40."
     },
     "options": {
       "label": "Event options",
@@ -210,7 +217,9 @@
     "maxTickets": "Add at most {max} ticket types.",
     "perBuyer": "Choose a limit from 1 to 10 tickets per person.",
     "country": "Choose a country from the list.",
-    "venue": "Enter the venue name."
+    "venue": "Enter the venue name.",
+    "groupSize": "A group ticket \"{name}\" must admit 2 to 20 people.",
+    "ticketDescription": "The description for \"{name}\" can be up to {max} characters."
   },
   "save": {
     "failed": "We couldn't save the event. Please try again.",

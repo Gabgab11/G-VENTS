@@ -63,11 +63,36 @@
     "email": "البريد الإلكتروني",
     "emailNote": "تُرسَل جميع تذاكرك إلى البريد الإلكتروني لحسابك.",
     "emailThis": "تُرسل التذاكر إلى هذا البريد الإلكتروني.",
-    "othersLegend": "أسماء للتذاكر الأخرى (اختياري؛ يمكنك إعادة توجيه كل تذكرة)",
-    "ticketNumber": "التذكرة {number}",
-    "namePlaceholder": "اسم الضيف",
     "choose": "اختر",
-    "socialPlaceholder": "@اسم المستخدم أو رابط الملف الشخصي"
+    "socialPlaceholder": "@اسم المستخدم أو رابط الملف الشخصي",
+    "phoneCountry": "رمز الدولة",
+    "phone": "رقم الهاتف",
+    "phoneHint": "قد يستخدمه المنظّم للتواصل معك بشأن الفعالية.",
+    "phonePlaceholder": "رقمك",
+    "gender": "الجنس (اختياري)",
+    "genderNone": "اختر",
+    "genders": {
+      "female": "أنثى",
+      "male": "ذكر",
+      "unspecified": "أفضّل عدم الإفصاح"
+    },
+    "forWho": "لمن هذه التذاكر؟",
+    "forMe": "كلها لي",
+    "forOthers": "بعضها لأشخاص آخرين",
+    "forOthersHint": "يحصل كل شخص على تذكرته الخاصة. أضف بريدًا إلكترونيًا لإرسالها إليه؛ وتبقى كل التذاكر أيضًا في تذاكري.",
+    "ticketFor": "التذكرة {number} · {type}",
+    "removePerson": "إزالة",
+    "personName": "اسمه الكامل",
+    "personEmail": "بريده الإلكتروني (اختياري)",
+    "personEmailHint": "سنرسل تذكرته إلى هذا العنوان.",
+    "addPerson": "إضافة شخص",
+    "restYours": "التذاكر التي لا تمنحها لأحد تبقى معك.",
+    "recipientErrors": {
+      "recipientName": "أدخل اسم الشخص (من 2 إلى 120 حرفًا).",
+      "recipientEmail": "أدخل بريدًا إلكترونيًا صالحًا أو اتركه فارغًا.",
+      "recipientIsBuyer": "هذا بريدك أنت: تصلك تذاكرك بالفعل.",
+      "recipientsTooMany": "يمكنك إرسال التذاكر إلى 20 شخصًا كحد أقصى في الطلب الواحد."
+    }
   },
   "order": {
     "legend": "التذاكر",
@@ -81,7 +106,10 @@
     "seeMyTickets": "عرض تذاكري",
     "pending": "جارٍ الحصول على تذاكرك...",
     "request": "{count, plural, zero {اطلب التذاكر} one {اطلب تذكرة} two {اطلب تذكرتين} few {اطلب {count, number, ::group-off} تذاكر} many {اطلب {count, number, ::group-off} تذكرة} other {اطلب {count, number, ::group-off} تذكرة}}",
-    "get": "{count, plural, zero {احصل على التذاكر} one {احصل على التذكرة} two {احصل على تذكرتين} few {احصل على {count, number, ::group-off} تذاكر} many {احصل على {count, number, ::group-off} تذكرة} other {احصل على {count, number, ::group-off} تذكرة}}"
+    "get": "{count, plural, zero {احصل على التذاكر} one {احصل على التذكرة} two {احصل على تذكرتين} few {احصل على {count, number, ::group-off} تذاكر} many {احصل على {count, number, ::group-off} تذكرة} other {احصل على {count, number, ::group-off} تذكرة}}",
+    "groupOf": "مجموعة من {count}",
+    "admits": "يدخل بها {count}",
+    "priceAdmits": "{price} · يدخل بها {count}"
   },
   "paid": {
     "legend": "تذاكر مدفوعة",
@@ -142,7 +170,13 @@
     "chooseTicket": "اختر تذكرة واحدة على الأقل.",
     "ticketRange": "اختر من 1 إلى 10 تذاكر.",
     "nonRefundable": "ضع علامة على «{text}» للمتابعة.",
-    "codeFormat": "أدخل رمزًا من 3 إلى 32 حرفًا أو رقمًا أو - أو _."
+    "codeFormat": "أدخل رمزًا من 3 إلى 32 حرفًا أو رقمًا أو - أو _.",
+    "phoneRequired": "أدخل رقم هاتفك.",
+    "phoneInvalid": "أدخل رقم هاتف صالحًا للدولة التي اخترتها.",
+    "recipientName": "أدخل اسم كل شخص (من 2 إلى 120 حرفًا).",
+    "recipientEmail": "أدخل بريدًا إلكترونيًا صالحًا لكل شخص أو اتركه فارغًا.",
+    "recipientIsBuyer": "هذا بريدك أنت: تصلك تذاكرك بالفعل.",
+    "recipientsTooMany": "يمكنك إرسال التذاكر إلى 20 شخصًا كحد أقصى في الطلب الواحد."
   },
   "meta": {
     "cardAlt": "{title}: التاريخ والمكان والتذاكر"
@@ -185,6 +219,7 @@
     "free": "مجانية",
     "discount": "خصم ({code})",
     "line": "{name} × {count}",
-    "unavailable": "لا يمكن حجز التذاكر حاليًا"
+    "unavailable": "لا يمكن حجز التذاكر حاليًا",
+    "groupLine": "{name} × {count} ({entries, plural, zero {لا دخول} one {دخول واحد} two {دخولان} few {# دخولات} many {# دخولًا} other {# دخول}})"
   }
 }

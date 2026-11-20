@@ -170,8 +170,19 @@
       "ticket_price": "请以数字输入价格，例如 5000 或 12.50。",
       "ticket_price_locked": "该价格已锁定，因为已有门票以此价格售出。",
       "ticket_has_sales": "已有销售的门票类型无法删除。",
-      "ticket_count": "一个活动需要 1 至 20 种门票类型。"
-    }
+      "ticket_count": "一个活动需要 1 至 20 种门票类型。",
+      "ticket_group_size": "团体票须可供 2 至 20 人入场。",
+      "ticket_group_locked": "已有销售的票种无法更改团体人数。请改为添加新的票种。",
+      "ticket_description": "票种描述最多 300 个字符。"
+    },
+    "typeDescription": "描述（可选）",
+    "typeDescriptionCount": "{count}/{max} 个字符",
+    "typeDescriptionPlaceholder": "包含哪些内容，例如靠近舞台的四人桌",
+    "group": "团体票",
+    "groupHelp": "一次购买可供多人入场，例如一张桌位。",
+    "groupLocked": "此票种已有销售，团体人数无法更改。请改为添加新的票种。",
+    "admits": "可入场多少人？",
+    "admitsHint": "{min} 至 {max} 人。数量按人数计算：10 张四人桌即为 40。"
   },
   "event": {
     "tabs": {
@@ -291,6 +302,13 @@
       "body": "{name} 将退回 <b>{amount}</b>。门票立即失效，名额重新开放销售。G-ventZ 的费用和 Paystack 的手续费不予退还；您的份额将从之后的销售中扣除。",
       "confirm": "向 {name} 退款 {amount}",
       "button": "退票"
+    },
+    "colContact": "购票人联系方式",
+    "sentTo": "已发送至 <b>{email}</b>",
+    "gender": {
+      "female": "女",
+      "male": "男",
+      "unspecified": "不愿透露"
     }
   },
   "registration": {
@@ -477,7 +495,8 @@
     },
     "ticketNumber": "第 {number} 张，共 {total} 张",
     "usedAt": "{who} · {time}",
-    "usedAtBy": "{who} · {time}，由 {name} 签到"
+    "usedAtBy": "{who} · {time}，由 {name} 签到",
+    "groupOf": "{count} 人团体票"
   },
   "csv": {
     "header": {
@@ -489,7 +508,10 @@
       "type": "票种",
       "status": "状态",
       "registeredAt": "报名时间",
-      "checkedInAt": "签到时间"
+      "checkedInAt": "签到时间",
+      "phone": "购票人电话",
+      "gender": "购票人性别",
+      "recipient": "收票人邮箱"
     },
     "forbidden": "只有所有者、管理员和财务人员可以导出来宾名单。",
     "notFound": "未找到",

@@ -170,8 +170,19 @@
       "ticket_price": "Saisissez les prix en chiffres, par exemple 5000 ou 12.50.",
       "ticket_price_locked": "Ce prix est verrouillé, car des billets ont déjà été vendus à ce prix.",
       "ticket_has_sales": "Un type de billet ayant des ventes ne peut pas être supprimé.",
-      "ticket_count": "Un événement doit avoir de 1 à 20 types de billets."
-    }
+      "ticket_count": "Un événement doit avoir de 1 à 20 types de billets.",
+      "ticket_group_size": "Un billet de groupe doit faire entrer de 2 à 20 personnes.",
+      "ticket_group_locked": "Un type de billet déjà vendu garde sa taille de groupe. Ajoutez plutôt un nouveau type de billet.",
+      "ticket_description": "La description d'un billet peut compter jusqu'à 300 caractères."
+    },
+    "typeDescription": "Description (facultatif)",
+    "typeDescriptionCount": "{count}/{max} caractères",
+    "typeDescriptionPlaceholder": "Ce qui est inclus, par exemple une table pour quatre près de la scène",
+    "group": "Billet de groupe",
+    "groupHelp": "Un achat fait entrer plusieurs personnes, comme une table.",
+    "groupLocked": "Ce type de billet a déjà des ventes : sa taille de groupe ne peut plus changer. Ajoutez plutôt un nouveau type de billet.",
+    "admits": "Combien de personnes ?",
+    "admitsHint": "De {min} à {max}. La quantité compte des personnes : 10 tables de 4 font 40."
   },
   "event": {
     "tabs": {
@@ -291,6 +302,13 @@
       "body": "{name} récupère <b>{amount}</b>. Le billet cesse immédiatement de fonctionner et sa place est remise en vente. Les frais de G-ventZ et de Paystack ne sont pas restitués ; votre part est déduite de vos prochaines ventes.",
       "confirm": "Rembourser {amount} à {name}",
       "button": "Rembourser le billet"
+    },
+    "colContact": "Contact de l'acheteur",
+    "sentTo": "Envoyé à <b>{email}</b>",
+    "gender": {
+      "female": "Femme",
+      "male": "Homme",
+      "unspecified": "Préfère ne pas le dire"
     }
   },
   "registration": {
@@ -477,7 +495,8 @@
     },
     "ticketNumber": "{number} sur {total}",
     "usedAt": "{who} · à {time}",
-    "usedAtBy": "{who} · à {time} par {name}"
+    "usedAtBy": "{who} · à {time} par {name}",
+    "groupOf": "Groupe de {count}"
   },
   "csv": {
     "header": {
@@ -489,7 +508,10 @@
       "type": "Type de billet",
       "status": "Statut",
       "registeredAt": "Inscrit le",
-      "checkedInAt": "Enregistré le"
+      "checkedInAt": "Enregistré le",
+      "phone": "Téléphone de l'acheteur",
+      "gender": "Genre de l'acheteur",
+      "recipient": "E-mail du destinataire"
     },
     "forbidden": "Seuls le propriétaire, les administrateurs et la finance peuvent exporter la liste des invités.",
     "notFound": "Introuvable",

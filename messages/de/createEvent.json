@@ -83,7 +83,14 @@
       "pricePlaceholder": "z. B. 5000",
       "remove": "Ticket entfernen",
       "add": "+ Ticketart hinzufügen",
-      "perPerson": "Max. Tickets pro Person"
+      "perPerson": "Max. Tickets pro Person",
+      "description": "Beschreibung (optional)",
+      "descriptionCount": "{count}/{max} Zeichen",
+      "descriptionPlaceholder": "Was enthalten ist, etwa ein Tisch für vier nahe der Bühne",
+      "group": "Gruppenticket",
+      "groupHelp": "Ein Kauf gewährt mehreren Personen Einlass, etwa ein Tisch.",
+      "admits": "Für wie viele Personen?",
+      "admitsHint": "Von {min} bis {max}. Die Menge zählt Personen: 10 Tische zu 4 sind 40."
     },
     "options": {
       "label": "Event-Optionen",
@@ -210,7 +217,9 @@
     "maxTickets": "Fügen Sie höchstens {max} Ticketarten hinzu.",
     "perBuyer": "Wählen Sie ein Limit von 1 bis 10 Tickets pro Person.",
     "country": "Wählen Sie ein Land aus der Liste.",
-    "venue": "Geben Sie den Namen des Veranstaltungsorts ein."
+    "venue": "Geben Sie den Namen des Veranstaltungsorts ein.",
+    "groupSize": "Das Gruppenticket „{name}“ muss 2 bis 20 Personen Einlass gewähren.",
+    "ticketDescription": "Die Beschreibung von „{name}“ darf höchstens {max} Zeichen lang sein."
   },
   "save": {
     "failed": "Wir konnten das Event nicht speichern. Bitte versuchen Sie es erneut.",

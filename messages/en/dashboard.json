@@ -170,8 +170,19 @@
       "ticket_price": "Enter prices as numbers, such as 5000 or 12.50.",
       "ticket_price_locked": "That price is locked because tickets have already been sold at it.",
       "ticket_has_sales": "A ticket type with sales can't be removed.",
-      "ticket_count": "An event needs 1 to 20 ticket types."
-    }
+      "ticket_count": "An event needs 1 to 20 ticket types.",
+      "ticket_group_size": "A group ticket must admit 2 to 20 people.",
+      "ticket_group_locked": "A ticket type with sales keeps its group size. Add a new ticket type instead.",
+      "ticket_description": "A ticket description can be up to 300 characters."
+    },
+    "typeDescription": "Description (optional)",
+    "typeDescriptionCount": "{count}/{max} characters",
+    "typeDescriptionPlaceholder": "What's included, such as a table for four near the stage",
+    "group": "Group ticket",
+    "groupHelp": "One purchase admits several people, such as a table.",
+    "groupLocked": "This ticket type has sales, so its group size can't change. Add a new ticket type instead.",
+    "admits": "Admits how many people?",
+    "admitsHint": "From {min} to {max}. The quantity counts people, so 10 tables of 4 is 40."
   },
   "event": {
     "tabs": {
@@ -291,6 +302,13 @@
       "body": "{name} gets <b>{amount}</b> back. The ticket stops working at once and its place goes back on sale. G-ventZ's fee and Paystack's charge aren't returned; your share is taken from your next sales.",
       "confirm": "Refund {amount} to {name}",
       "button": "Refund ticket"
+    },
+    "colContact": "Buyer contact",
+    "sentTo": "Sent to <b>{email}</b>",
+    "gender": {
+      "female": "Female",
+      "male": "Male",
+      "unspecified": "Prefers not to say"
     }
   },
   "registration": {
@@ -477,7 +495,8 @@
     },
     "ticketNumber": "{number} of {total}",
     "usedAt": "{who} · at {time}",
-    "usedAtBy": "{who} · at {time} by {name}"
+    "usedAtBy": "{who} · at {time} by {name}",
+    "groupOf": "Group of {count}"
   },
   "csv": {
     "header": {
@@ -489,7 +508,10 @@
       "type": "Ticket type",
       "status": "Status",
       "registeredAt": "Registered at",
-      "checkedInAt": "Checked in at"
+      "checkedInAt": "Checked in at",
+      "phone": "Buyer phone",
+      "gender": "Buyer gender",
+      "recipient": "Recipient email"
     },
     "forbidden": "Only the owner, admins and finance can export the guest list.",
     "notFound": "Not found",

@@ -170,8 +170,19 @@
       "ticket_price": "Informe os preços em números, como 5000 ou 12.50.",
       "ticket_price_locked": "Esse preço está bloqueado porque já foram vendidos ingressos a ele.",
       "ticket_has_sales": "Um tipo de ingresso com vendas não pode ser removido.",
-      "ticket_count": "Um evento precisa de 1 a 20 tipos de ingresso."
-    }
+      "ticket_count": "Um evento precisa de 1 a 20 tipos de ingresso.",
+      "ticket_group_size": "Um bilhete de grupo deve dar entrada a 2 a 20 pessoas.",
+      "ticket_group_locked": "Um tipo de bilhete com vendas mantém o tamanho do grupo. Adicione antes um novo tipo de bilhete.",
+      "ticket_description": "A descrição de um bilhete pode ter até 300 caracteres."
+    },
+    "typeDescription": "Descrição (opcional)",
+    "typeDescriptionCount": "{count}/{max} caracteres",
+    "typeDescriptionPlaceholder": "O que inclui, por exemplo uma mesa para quatro junto ao palco",
+    "group": "Bilhete de grupo",
+    "groupHelp": "Uma compra dá entrada a várias pessoas, como uma mesa.",
+    "groupLocked": "Este tipo de bilhete já tem vendas, por isso o tamanho do grupo não pode mudar. Adicione antes um novo tipo de bilhete.",
+    "admits": "Para quantas pessoas?",
+    "admitsHint": "De {min} a {max}. A quantidade conta pessoas: 10 mesas de 4 são 40."
   },
   "event": {
     "tabs": {
@@ -291,6 +302,13 @@
       "body": "{name} recebe <b>{amount}</b> de volta. O ingresso deixa de valer na hora e a vaga volta à venda. A taxa do G-ventZ e a tarifa do Paystack não são devolvidas; sua parte é descontada das próximas vendas.",
       "confirm": "Reembolsar {amount} para {name}",
       "button": "Reembolsar ingresso"
+    },
+    "colContact": "Contacto do comprador",
+    "sentTo": "Enviado para <b>{email}</b>",
+    "gender": {
+      "female": "Feminino",
+      "male": "Masculino",
+      "unspecified": "Prefere não dizer"
     }
   },
   "registration": {
@@ -477,7 +495,8 @@
     },
     "ticketNumber": "{number} de {total}",
     "usedAt": "{who} · às {time}",
-    "usedAtBy": "{who} · às {time} por {name}"
+    "usedAtBy": "{who} · às {time} por {name}",
+    "groupOf": "Grupo de {count}"
   },
   "csv": {
     "header": {
@@ -489,7 +508,10 @@
       "type": "Tipo de ingresso",
       "status": "Status",
       "registeredAt": "Inscrito em",
-      "checkedInAt": "Check-in em"
+      "checkedInAt": "Check-in em",
+      "phone": "Telefone do comprador",
+      "gender": "Género do comprador",
+      "recipient": "E-mail do destinatário"
     },
     "forbidden": "Só o proprietário, administradores e o financeiro podem exportar a lista de convidados.",
     "notFound": "Não encontrado",

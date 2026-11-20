@@ -63,11 +63,36 @@
     "email": "E-Mail",
     "emailNote": "Alle Ihre Tickets werden an die E-Mail-Adresse Ihres Kontos gesendet.",
     "emailThis": "Die Tickets werden an diese E-Mail-Adresse gesendet.",
-    "othersLegend": "Namen für die weiteren Tickets (optional; Sie können jedes Ticket weiterleiten)",
-    "ticketNumber": "Ticket {number}",
-    "namePlaceholder": "Name des Gastes",
     "choose": "Auswählen",
-    "socialPlaceholder": "@Name oder Profillink"
+    "socialPlaceholder": "@Name oder Profillink",
+    "phoneCountry": "Ländervorwahl",
+    "phone": "Telefonnummer",
+    "phoneHint": "Der Veranstalter kann Sie darüber zur Veranstaltung kontaktieren.",
+    "phonePlaceholder": "Ihre Nummer",
+    "gender": "Geschlecht (optional)",
+    "genderNone": "Auswählen",
+    "genders": {
+      "female": "Weiblich",
+      "male": "Männlich",
+      "unspecified": "Keine Angabe"
+    },
+    "forWho": "Für wen sind diese Tickets?",
+    "forMe": "Alle für mich",
+    "forOthers": "Einige für andere Personen",
+    "forOthersHint": "Jede Person erhält ein eigenes Ticket. Geben Sie eine E-Mail-Adresse an, um es ihr zu senden; alle Tickets bleiben außerdem in Meine Tickets.",
+    "ticketFor": "Ticket {number} · {type}",
+    "removePerson": "Entfernen",
+    "personName": "Vollständiger Name",
+    "personEmail": "E-Mail-Adresse (optional)",
+    "personEmailHint": "Wir senden das Ticket an diese Adresse.",
+    "addPerson": "Person hinzufügen",
+    "restYours": "Tickets, die Sie niemandem zuweisen, bleiben bei Ihnen.",
+    "recipientErrors": {
+      "recipientName": "Geben Sie den Namen der Person ein (2 bis 120 Zeichen).",
+      "recipientEmail": "Geben Sie eine gültige E-Mail-Adresse ein oder lassen Sie das Feld leer.",
+      "recipientIsBuyer": "Das ist Ihre eigene E-Mail-Adresse: Ihre Tickets erhalten Sie bereits.",
+      "recipientsTooMany": "Sie können Tickets pro Bestellung an höchstens 20 Personen senden."
+    }
   },
   "order": {
     "legend": "Tickets",
@@ -81,7 +106,10 @@
     "seeMyTickets": "Meine Tickets ansehen",
     "pending": "Ihre Tickets werden geholt...",
     "request": "{count, plural, one {Ein Ticket anfragen} other {{count, number, ::group-off} Tickets anfragen}}",
-    "get": "{count, plural, one {Ticket holen} other {{count, number, ::group-off} Tickets holen}}"
+    "get": "{count, plural, one {Ticket holen} other {{count, number, ::group-off} Tickets holen}}",
+    "groupOf": "Gruppe von {count}",
+    "admits": "für {count} Personen",
+    "priceAdmits": "{price} · für {count} Personen"
   },
   "paid": {
     "legend": "Kostenpflichtige Tickets",
@@ -142,7 +170,13 @@
     "chooseTicket": "Wählen Sie mindestens ein Ticket.",
     "ticketRange": "Wählen Sie zwischen 1 und 10 Tickets.",
     "nonRefundable": "Setzen Sie das Häkchen bei „{text}“, um fortzufahren.",
-    "codeFormat": "Geben Sie einen Code aus 3 bis 32 Buchstaben, Ziffern, - oder _ ein."
+    "codeFormat": "Geben Sie einen Code aus 3 bis 32 Buchstaben, Ziffern, - oder _ ein.",
+    "phoneRequired": "Geben Sie Ihre Telefonnummer ein.",
+    "phoneInvalid": "Geben Sie eine gültige Telefonnummer für das gewählte Land ein.",
+    "recipientName": "Geben Sie für jede Person den Namen ein (2 bis 120 Zeichen).",
+    "recipientEmail": "Geben Sie für jede Person eine gültige E-Mail-Adresse ein oder lassen Sie das Feld leer.",
+    "recipientIsBuyer": "Das ist Ihre eigene E-Mail-Adresse: Ihre Tickets erhalten Sie bereits.",
+    "recipientsTooMany": "Sie können Tickets pro Bestellung an höchstens 20 Personen senden."
   },
   "meta": {
     "cardAlt": "{title}: Datum, Ort und Tickets"
@@ -185,6 +219,7 @@
     "free": "Kostenlos",
     "discount": "Rabatt ({code})",
     "line": "{name} × {count}",
-    "unavailable": "Tickets können derzeit nicht gebucht werden"
+    "unavailable": "Tickets können derzeit nicht gebucht werden",
+    "groupLine": "{name} × {count} ({entries, plural, one {# Eintritt} other {# Eintritte}})"
   }
 }

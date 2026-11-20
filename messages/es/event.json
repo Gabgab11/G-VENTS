@@ -63,11 +63,36 @@
     "email": "Correo electrónico",
     "emailNote": "Todas sus entradas se envían al correo de su cuenta.",
     "emailThis": "Las entradas se envían a este correo electrónico.",
-    "othersLegend": "Nombres para las demás entradas (opcional; puede reenviar cada entrada)",
-    "ticketNumber": "Entrada {number}",
-    "namePlaceholder": "Nombre del invitado",
     "choose": "Elegir",
-    "socialPlaceholder": "@usuario o enlace al perfil"
+    "socialPlaceholder": "@usuario o enlace al perfil",
+    "phoneCountry": "Prefijo del país",
+    "phone": "Número de teléfono",
+    "phoneHint": "El organizador puede usarlo para contactarle sobre el evento.",
+    "phonePlaceholder": "Su número",
+    "gender": "Género (opcional)",
+    "genderNone": "Elija",
+    "genders": {
+      "female": "Mujer",
+      "male": "Hombre",
+      "unspecified": "Prefiero no decirlo"
+    },
+    "forWho": "¿Para quién son estas entradas?",
+    "forMe": "Todas para mí",
+    "forOthers": "Algunas para otras personas",
+    "forOthersHint": "Cada persona recibe su propia entrada. Añada un correo electrónico para enviársela; todas las entradas siguen también en Mis entradas.",
+    "ticketFor": "Entrada {number} · {type}",
+    "removePerson": "Quitar",
+    "personName": "Nombre completo",
+    "personEmail": "Correo electrónico (opcional)",
+    "personEmailHint": "Le enviaremos su entrada a esta dirección.",
+    "addPerson": "Añadir una persona",
+    "restYours": "Las entradas que no asigne a nadie se quedan con usted.",
+    "recipientErrors": {
+      "recipientName": "Introduzca el nombre de la persona (de 2 a 120 caracteres).",
+      "recipientEmail": "Introduzca un correo electrónico válido o déjelo en blanco.",
+      "recipientIsBuyer": "Ese es su propio correo: sus entradas ya le llegan a usted.",
+      "recipientsTooMany": "Puede enviar entradas a un máximo de 20 personas por pedido."
+    }
   },
   "order": {
     "legend": "Entradas",
@@ -81,7 +106,10 @@
     "seeMyTickets": "Ver mis entradas",
     "pending": "Consiguiendo sus entradas...",
     "request": "{count, plural, one {Solicitar una entrada} other {Solicitar {count, number, ::group-off} entradas}}",
-    "get": "{count, plural, one {Conseguir entrada} other {Conseguir {count, number, ::group-off} entradas}}"
+    "get": "{count, plural, one {Conseguir entrada} other {Conseguir {count, number, ::group-off} entradas}}",
+    "groupOf": "Grupo de {count}",
+    "admits": "admite {count}",
+    "priceAdmits": "{price} · admite {count}"
   },
   "paid": {
     "legend": "Entradas de pago",
@@ -142,7 +170,13 @@
     "chooseTicket": "Elija al menos una entrada.",
     "ticketRange": "Elija entre 1 y 10 entradas.",
     "nonRefundable": "Marque «{text}» para continuar.",
-    "codeFormat": "Introduzca un código de 3 a 32 letras, cifras, - o _."
+    "codeFormat": "Introduzca un código de 3 a 32 letras, cifras, - o _.",
+    "phoneRequired": "Introduzca su número de teléfono.",
+    "phoneInvalid": "Introduzca un número de teléfono válido para el país elegido.",
+    "recipientName": "Introduzca el nombre de cada persona (de 2 a 120 caracteres).",
+    "recipientEmail": "Introduzca un correo electrónico válido para cada persona o déjelo en blanco.",
+    "recipientIsBuyer": "Ese es su propio correo: sus entradas ya le llegan a usted.",
+    "recipientsTooMany": "Puede enviar entradas a un máximo de 20 personas por pedido."
   },
   "meta": {
     "cardAlt": "{title}: fecha, lugar y entradas"
@@ -185,6 +219,7 @@
     "free": "Gratis",
     "discount": "Descuento ({code})",
     "line": "{name} × {count}",
-    "unavailable": "No es posible reservar entradas en este momento"
+    "unavailable": "No es posible reservar entradas en este momento",
+    "groupLine": "{name} × {count} ({entries, plural, one {# entrada} other {# entradas}})"
   }
 }

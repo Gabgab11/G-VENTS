@@ -63,11 +63,36 @@
     "email": "E-mail",
     "emailNote": "Tous vos billets sont envoyés à l'adresse e-mail de votre compte.",
     "emailThis": "Les billets sont envoyés à cette adresse e-mail.",
-    "othersLegend": "Noms pour les autres billets (facultatif ; vous pouvez transférer chaque billet)",
-    "ticketNumber": "Billet {number}",
-    "namePlaceholder": "Nom de l'invité",
     "choose": "Choisir",
-    "socialPlaceholder": "@pseudo ou lien du profil"
+    "socialPlaceholder": "@pseudo ou lien du profil",
+    "phoneCountry": "Indicatif du pays",
+    "phone": "Numéro de téléphone",
+    "phoneHint": "L'organisateur peut l'utiliser pour vous contacter au sujet de l'événement.",
+    "phonePlaceholder": "Votre numéro",
+    "gender": "Genre (facultatif)",
+    "genderNone": "Choisir",
+    "genders": {
+      "female": "Femme",
+      "male": "Homme",
+      "unspecified": "Je préfère ne pas le dire"
+    },
+    "forWho": "Pour qui sont ces billets ?",
+    "forMe": "Tous pour moi",
+    "forOthers": "Certains pour d'autres personnes",
+    "forOthersHint": "Chaque personne reçoit son propre billet. Ajoutez une adresse e-mail pour le lui envoyer ; tous les billets restent aussi dans Mes billets.",
+    "ticketFor": "Billet {number} · {type}",
+    "removePerson": "Retirer",
+    "personName": "Nom complet",
+    "personEmail": "Adresse e-mail (facultatif)",
+    "personEmailHint": "Nous enverrons son billet à cette adresse.",
+    "addPerson": "Ajouter une personne",
+    "restYours": "Les billets attribués à personne restent les vôtres.",
+    "recipientErrors": {
+      "recipientName": "Saisissez le nom de la personne (2 à 120 caractères).",
+      "recipientEmail": "Saisissez une adresse e-mail valide ou laissez le champ vide.",
+      "recipientIsBuyer": "C'est votre propre adresse : vos billets vous parviennent déjà.",
+      "recipientsTooMany": "Vous pouvez envoyer des billets à 20 personnes au maximum par commande."
+    }
   },
   "order": {
     "legend": "Billets",
@@ -81,7 +106,10 @@
     "seeMyTickets": "Voir mes billets",
     "pending": "Obtention de vos billets...",
     "request": "{count, plural, one {Demander un billet} other {Demander {count, number, ::group-off} billets}}",
-    "get": "{count, plural, one {Obtenir le billet} other {Obtenir {count, number, ::group-off} billets}}"
+    "get": "{count, plural, one {Obtenir le billet} other {Obtenir {count, number, ::group-off} billets}}",
+    "groupOf": "Groupe de {count}",
+    "admits": "pour {count} personnes",
+    "priceAdmits": "{price} · pour {count} personnes"
   },
   "paid": {
     "legend": "Billets payants",
@@ -142,7 +170,13 @@
     "chooseTicket": "Choisissez au moins un billet.",
     "ticketRange": "Choisissez entre 1 et 10 billets.",
     "nonRefundable": "Cochez « {text} » pour continuer.",
-    "codeFormat": "Saisissez un code de 3 à 32 lettres, chiffres, - ou _."
+    "codeFormat": "Saisissez un code de 3 à 32 lettres, chiffres, - ou _.",
+    "phoneRequired": "Saisissez votre numéro de téléphone.",
+    "phoneInvalid": "Saisissez un numéro de téléphone valide pour le pays choisi.",
+    "recipientName": "Saisissez le nom de chaque personne (2 à 120 caractères).",
+    "recipientEmail": "Saisissez une adresse e-mail valide pour chaque personne ou laissez le champ vide.",
+    "recipientIsBuyer": "C'est votre propre adresse : vos billets vous parviennent déjà.",
+    "recipientsTooMany": "Vous pouvez envoyer des billets à 20 personnes au maximum par commande."
   },
   "meta": {
     "cardAlt": "{title} : date, lieu et billets"
@@ -185,6 +219,7 @@
     "free": "Gratuit",
     "discount": "Réduction ({code})",
     "line": "{name} × {count}",
-    "unavailable": "Les billets ne peuvent pas être réservés pour le moment"
+    "unavailable": "Les billets ne peuvent pas être réservés pour le moment",
+    "groupLine": "{name} × {count} ({entries, plural, one {# entrée} other {# entrées}})"
   }
 }

@@ -83,7 +83,14 @@
       "pricePlaceholder": "ex. 5000",
       "remove": "Retirer le billet",
       "add": "+ Ajouter un type de billet",
-      "perPerson": "Billets maximum par personne"
+      "perPerson": "Billets maximum par personne",
+      "description": "Description (facultatif)",
+      "descriptionCount": "{count}/{max} caractères",
+      "descriptionPlaceholder": "Ce qui est inclus, par exemple une table pour quatre près de la scène",
+      "group": "Billet de groupe",
+      "groupHelp": "Un achat fait entrer plusieurs personnes, comme une table.",
+      "admits": "Combien de personnes ?",
+      "admitsHint": "De {min} à {max}. La quantité compte des personnes : 10 tables de 4 font 40."
     },
     "options": {
       "label": "Options de l’événement",
@@ -210,7 +217,9 @@
     "maxTickets": "Ajoutez au maximum {max} types de billets.",
     "perBuyer": "Choisissez une limite de 1 à 10 billets par personne.",
     "country": "Choisissez un pays dans la liste.",
-    "venue": "Indiquez le nom du lieu."
+    "venue": "Indiquez le nom du lieu.",
+    "groupSize": "Le billet de groupe « {name} » doit faire entrer de 2 à 20 personnes.",
+    "ticketDescription": "La description de « {name} » peut compter jusqu'à {max} caractères."
   },
   "save": {
     "failed": "Nous n’avons pas pu enregistrer l’événement. Veuillez réessayer.",
