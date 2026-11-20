@@ -128,6 +128,17 @@
       },
       "mapLabel": "Gepunktete Weltkarte, auf der Lagos, Nigeria, markiert ist",
       "pin": "Lagos, Nigeria",
+      "cities": {
+        "london": "London, Vereinigtes Königreich",
+        "newYork": "New York, USA",
+        "saoPaulo": "São Paulo, Brasilien",
+        "capeTown": "Kapstadt, Südafrika",
+        "nairobi": "Nairobi, Kenia",
+        "dubai": "Dubai, VAE",
+        "mumbai": "Mumbai, Indien",
+        "tokyo": "Tokio, Japan",
+        "sydney": "Sydney, Australien"
+      },
       "caption": "G-ventZ hat seinen Sitz in Lagos, Nigeria.",
       "panelLabel": "Unser Team erreichen",
       "panelTitle": "Schreiben Sie uns",

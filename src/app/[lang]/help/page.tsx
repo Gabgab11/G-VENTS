@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowUpRight, CalendarPlus, Mail, ReceiptText, Tag, Ticket } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import Globe from "./Globe";
 import SiteHeader from "@/components/SiteHeader";
 import { withAlternates } from "@/i18n/seo";
 import { SUPPORT_EMAIL, contactCountryOptions } from "@/lib/contact";
@@ -91,14 +92,18 @@ export default async function HelpPage({ params }: { params: Promise<{ lang: str
           </div>
 
           <div>
-            <div className={styles.map} role="img" aria-label={t("contact.mapLabel")} dir="ltr">
-              <div className={styles.mapDots} aria-hidden />
-              <span className={styles.pin} aria-hidden>
-                <i className={styles.ping} />
-                <i className={`${styles.ping} ${styles.ping2}`} />
-                <em className={styles.pinLabel}>{t("contact.pin")}</em>
-              </span>
-            </div>
+            <Globe label={t("contact.mapLabel")} stops={[
+              { lon: 3.38, lat: 6.52, label: t("contact.pin") },
+              { lon: -0.13, lat: 51.51, label: t("contact.cities.london") },
+              { lon: -74.0, lat: 40.71, label: t("contact.cities.newYork") },
+              { lon: -46.63, lat: -23.55, label: t("contact.cities.saoPaulo") },
+              { lon: 18.42, lat: -33.92, label: t("contact.cities.capeTown") },
+              { lon: 36.82, lat: -1.29, label: t("contact.cities.nairobi") },
+              { lon: 55.27, lat: 25.2, label: t("contact.cities.dubai") },
+              { lon: 72.88, lat: 19.08, label: t("contact.cities.mumbai") },
+              { lon: 139.69, lat: 35.69, label: t("contact.cities.tokyo") },
+              { lon: 151.21, lat: -33.87, label: t("contact.cities.sydney") },
+            ]} />
             <p className={styles.caption}>{t("contact.caption")}</p>
           </div>
         </aside>

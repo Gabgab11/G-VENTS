@@ -128,6 +128,17 @@
       },
       "mapLabel": "Dotted world map highlighting Lagos, Nigeria",
       "pin": "Lagos, Nigeria",
+      "cities": {
+        "london": "London, United Kingdom",
+        "newYork": "New York, United States",
+        "saoPaulo": "São Paulo, Brazil",
+        "capeTown": "Cape Town, South Africa",
+        "nairobi": "Nairobi, Kenya",
+        "dubai": "Dubai, UAE",
+        "mumbai": "Mumbai, India",
+        "tokyo": "Tokyo, Japan",
+        "sydney": "Sydney, Australia"
+      },
       "caption": "G-ventZ is based in Lagos, Nigeria.",
       "panelLabel": "Reach our team",
       "panelTitle": "Send us a message",

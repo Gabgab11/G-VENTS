@@ -217,3 +217,26 @@
   .success > button { grid-column: 1 / -1; inline-size: 100%; }
   .map { inline-size: min(100%, 440px); }
 }
+
+/* The globe (Globe.tsx): a square canvas; the city name is an HTML pill that follows the pin. */
+.globe { position: relative; inline-size: min(100%, 520px); aspect-ratio: 1; margin-block: var(--space-2) var(--space-3); }
+.globeCanvas { display: block; inline-size: 100%; block-size: 100%; }
+.globeTag {
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 0;
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid color-mix(in srgb, var(--color-accent) 45%, transparent);
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+  color: var(--color-text);
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  font-weight: var(--weight-semibold);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--duration-base) var(--ease-out);
+}
+.globeTag[data-shown] { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .globeTag { transition: none; } }

@@ -128,6 +128,17 @@
       },
       "mapLabel": "点阵世界地图，标出尼日利亚拉各斯",
       "pin": "尼日利亚拉各斯",
+      "cities": {
+        "london": "英国伦敦",
+        "newYork": "美国纽约",
+        "saoPaulo": "巴西圣保罗",
+        "capeTown": "南非开普敦",
+        "nairobi": "肯尼亚内罗毕",
+        "dubai": "阿联酋迪拜",
+        "mumbai": "印度孟买",
+        "tokyo": "日本东京",
+        "sydney": "澳大利亚悉尼"
+      },
       "caption": "G-ventZ 总部位于尼日利亚拉各斯。",
       "panelLabel": "联系我们的团队",
       "panelTitle": "给我们留言",

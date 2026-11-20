@@ -128,6 +128,17 @@
       },
       "mapLabel": "Mapa-múndi pontilhado com Lagos, na Nigéria, em destaque",
       "pin": "Lagos, Nigéria",
+      "cities": {
+        "london": "Londres, Reino Unido",
+        "newYork": "Nova York, Estados Unidos",
+        "saoPaulo": "São Paulo, Brasil",
+        "capeTown": "Cidade do Cabo, África do Sul",
+        "nairobi": "Nairóbi, Quênia",
+        "dubai": "Dubai, EAU",
+        "mumbai": "Mumbai, Índia",
+        "tokyo": "Tóquio, Japão",
+        "sydney": "Sydney, Austrália"
+      },
       "caption": "A G-ventZ tem sede em Lagos, na Nigéria.",
       "panelLabel": "Fale com a nossa equipa",
       "panelTitle": "Envie-nos uma mensagem",
