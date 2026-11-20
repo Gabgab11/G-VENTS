@@ -67,15 +67,16 @@ export default function PictureManager({
   const refocus = useRef<{ key: string; action: string } | null>(null);
   const room = roomFor(pictures.length);
 
+  // While a change saves the buttons are disabled, so this waits until they're back.
   useEffect(() => {
     const target = refocus.current;
-    if (!target || !list.current) return;
+    if (!target || !list.current || busy) return;
     refocus.current = null;
     const item = list.current.querySelector<HTMLElement>(`[data-key="${CSS.escape(target.key)}"]`);
     const button = item?.querySelector<HTMLButtonElement>(`[data-action="${target.action}"]:not(:disabled)`)
       ?? item?.querySelector<HTMLButtonElement>("button:not(:disabled)");
     button?.focus();
-  }, [pictures]);
+  }, [pictures, busy]);
 
   function choose(files: FileList | null) {
     if (!files || files.length === 0) return;
@@ -185,7 +186,7 @@ export default function PictureManager({
       <input ref={input} type="file" multiple accept={PICTURE_TYPES.join(",")} className="sr-only" tabIndex={-1} aria-hidden
         onChange={(e) => choose(e.target.files)} />
 
-      {room === 0 && <p className={s.hint}>{t("full", { max: MAX_PICTURES })}</p>}
+      {room === 0 && shown !== t("full", { max: MAX_PICTURES }) && <p className={s.hint}>{t("full", { max: MAX_PICTURES })}</p>}
       {pictures.length === 0 && <p className={s.hint}>{t("none")}</p>}
       {shown && <p className={s.error} role="alert">{shown}</p>}
       <p className="sr-only" aria-live="polite">{announce}</p>

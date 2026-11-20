@@ -105,7 +105,7 @@ export default function Gallery({ pictures, title }: { pictures: Picture[]; titl
           >
             {/* eslint-disable-next-line @next/next/no-img-element -- a small copy of the picture above */}
             <img src={pictures[th.index]!.url} alt="" loading="lazy" decoding="async" draggable={false} />
-            {th.more > 0 && <span className={s.more} aria-hidden>{`+${th.more}`}</span>}
+            {th.more > 0 && <span className={s.more} dir="ltr" aria-hidden>{`+${th.more}`}</span>}
           </button>
         ))}
       </div>

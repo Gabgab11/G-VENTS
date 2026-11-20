@@ -21,7 +21,6 @@ export const ALLOWED = [
   /^src\/app\/\(site\)\/sign-in\/SignInArt\.tsx$/,
   /^src\/lib\/themes\.ts$/,
   /\/opengraph-image\.tsx$/,
-  /^src\/app\/api\/og\//, // share cards (D81): drawn by next/og, not styled by the site's CSS
   // Places that need literal colours: canvas drawing, QR codes, the browser's theme colour and app
   // manifest, category art, and pages rendered without the site's CSS (global error, maintenance).
   /^src\/components\/ThemeStage\.tsx$/,

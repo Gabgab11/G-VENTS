@@ -37,7 +37,7 @@
 .thumb:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
 .more {
   position: absolute; inset: 0; display: grid; place-items: center;
-  background: color-mix(in srgb, var(--tone-ink) 55%, transparent); color: var(--tone-paper);
+  background: color-mix(in srgb, var(--tone-ink) 65%, transparent); color: var(--tone-paper);
   font-size: var(--text-heading-3); font-weight: var(--weight-bold);
 }
 
