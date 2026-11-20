@@ -204,7 +204,10 @@
   },
   "refund": {
     "needs_approval": "此退款超出了您的团队目前可自行发放的额度。请联系 G-ventZ 客服，我们会进行审核。",
-    "not_refundable": "此门票无法退款：它不是已确认的付费门票，或已经退款。"
+    "not_refundable": "此门票无法退款：它不是已确认的付费门票，或已经退款。",
+    "provider_rejected": "Paystack 无法发起此退款。请稍后重试，或联系 G-ventZ 支持团队。",
+    "provider_unavailable": "Paystack 目前没有响应。请几分钟后重试。",
+    "in_progress": "这张门票的退款已在处理中。"
   },
   "registration": {
     "already_registered": "您已有此活动的门票。",
@@ -272,5 +275,14 @@
     "member_not_found": "此人不在团队中。",
     "owner_fixed": "活动所有者的角色无法更改或移除。",
     "role_invalid": "请选择角色。"
+  },
+  "support": {
+    "captcha_failed": "安全检查未通过。请刷新页面后重试。",
+    "rate_limited": "您在短时间内发送了多条留言。请稍等片刻，或发送邮件至 support@gventz.com。",
+    "name_invalid": "请输入您的姓名（2 到 100 个字符）。",
+    "email_invalid": "请输入有效的电子邮件地址。",
+    "country_invalid": "请选择您的国家/地区。",
+    "topic_invalid": "请选择主题。",
+    "message_length": "留言须为 10 到 4,000 个字符。"
   }
 }

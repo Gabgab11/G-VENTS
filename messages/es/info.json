@@ -87,9 +87,158 @@
   },
   "help": {
     "meta": {
-      "title": "Ayuda · G-ventZ"
+      "title": "Ayuda y contacto · G-ventZ",
+      "description": "Respuestas sobre entradas, reembolsos y organización de eventos en G-ventZ, y un formulario para escribir a nuestro equipo de soporte."
     },
-    "title": "Ayuda",
-    "text": "Invitados: contacten con el organizador del evento en el que se registraron. Organizadores: gestionen sus eventos desde su panel."
+    "eyebrow": "Ayuda y contacto",
+    "title": "¿Cómo podemos ayudarte?",
+    "text": "Encuentra respuestas rápidas abajo, o envíanos un mensaje y nuestro equipo te responderá por correo.",
+    "emailUs": "Escríbenos: <email></email>",
+    "quick": {
+      "label": "Ayuda rápida",
+      "tickets": {
+        "title": "Mis entradas",
+        "text": "Encuentra tus entradas, códigos QR y pedidos."
+      },
+      "refunds": {
+        "title": "Reembolsos",
+        "text": "Cómo funcionan los reembolsos y cómo pedir uno."
+      },
+      "pricing": {
+        "title": "Precios",
+        "text": "Cuánto cuesta vender entradas en G-ventZ."
+      },
+      "hosting": {
+        "title": "Organiza un evento",
+        "text": "Crea un evento, vende entradas y registra la llegada de tus invitados."
+      },
+      "legalLinks": "Lee nuestros <terms>Términos</terms> y nuestra <privacy>Política de privacidad</privacy>."
+    },
+    "contact": {
+      "label": "Contacto",
+      "title": "Hablemos.",
+      "text": "Si necesitas ayuda con una entrada, un reembolso o tus eventos, o quieres trabajar con G-ventZ, nuestro equipo está para escucharte.",
+      "note1": {
+        "title": "Cuéntanos qué necesitas",
+        "text": "Elige un tema y danos suficientes detalles para enviar tu consulta a la persona adecuada."
+      },
+      "note2": {
+        "title": "Te respondemos directamente",
+        "text": "Tu mensaje llega en privado al equipo de soporte de G-ventZ, y respondemos a la dirección de correo que indiques."
+      },
+      "mapLabel": "Mapa del mundo punteado que destaca Lagos, Nigeria",
+      "pin": "Lagos, Nigeria",
+      "caption": "G-ventZ tiene su sede en Lagos, Nigeria.",
+      "panelLabel": "Contacta con nuestro equipo",
+      "panelTitle": "Envíanos un mensaje",
+      "panelText": "Completa el formulario y te responderemos a la dirección de correo que indiques.",
+      "name": "Nombre completo",
+      "namePlaceholder": "Tu nombre completo",
+      "email": "Correo electrónico",
+      "emailPlaceholder": "tu@ejemplo.com",
+      "country": "País",
+      "countryPlaceholder": "Elige tu país",
+      "topic": "Tema",
+      "topicPlaceholder": "Elige un tema",
+      "topics": {
+        "tickets": "Entradas y pedidos",
+        "refunds": "Reembolsos",
+        "hosting": "Organización y pagos",
+        "account": "Cuenta",
+        "partnerships": "Alianzas",
+        "other": "Otro"
+      },
+      "message": "Mensaje",
+      "messagePlaceholder": "Cuéntanos cómo podemos ayudarte…",
+      "counter": "{count, number} / {max, number}",
+      "consent": "Al enviar este mensaje, aceptas que te contactemos sobre tu consulta.",
+      "send": "Enviar mensaje",
+      "sending": "Enviando…",
+      "sent": {
+        "title": "Mensaje recibido",
+        "text": "Gracias por escribirnos. Alguien de nuestro equipo te responderá pronto por correo.",
+        "again": "Enviar otro"
+      },
+      "errors": {
+        "fix": "Revisa los campos marcados.",
+        "nameLength": "Escribe tu nombre (de 2 a 100 caracteres).",
+        "emailInvalid": "Escribe una dirección de correo válida.",
+        "countryMissing": "Elige tu país.",
+        "topicMissing": "Elige un tema.",
+        "messageShort": "Cuéntanos un poco más (al menos 10 caracteres).",
+        "messageLong": "Tu mensaje debe tener menos de 4000 caracteres.",
+        "failed": "No pudimos enviar tu mensaje. Inténtalo de nuevo o escribe a support@gventz.com.",
+        "captchaWait": "Un momento mientras comprobamos tu navegador; luego envía de nuevo.",
+        "captchaLoad": "La comprobación de seguridad no se cargó. Actualiza la página e inténtalo de nuevo."
+      }
+    }
+  },
+  "about": {
+    "meta": {
+      "title": "Acerca de · G-ventZ",
+      "description": "G-ventZ es una plataforma de eventos de Lagos: los organizadores crean eventos y venden entradas, y los invitados encuentran eventos y guardan sus entradas en un solo lugar."
+    },
+    "eyebrow": "Acerca de G-ventZ",
+    "titleStart": "Cada celebración,",
+    "titleHighlight": "un solo lugar.",
+    "lead": "G-ventZ ayuda a crear eventos, vender entradas y recibir a los invitados, desde una owambe o un cumpleaños hasta un concierto o una conferencia.",
+    "audiences": "Para quién es G-ventZ",
+    "what": {
+      "title": "Qué es G-ventZ",
+      "p1": "G-ventZ es una plataforma de eventos. Los organizadores crean la página de un evento en minutos, comparten un solo enlace y dejan que los invitados se registren o compren entradas desde cualquier lugar. En la puerta, cada entrada tiene un código QR que el equipo del organizador escanea para registrar la llegada.",
+      "p2": "Los invitados inician sesión con Google o con un código enviado a su correo, encuentran eventos en Descubrir y guardan todas sus entradas en Mis entradas."
+    },
+    "guests": {
+      "label": "Para invitados",
+      "title": "Encuéntralo, resérvalo, ve.",
+      "points": {
+        "find": "Descubre eventos cerca de ti, o abre el enlace que compartió un organizador.",
+        "book": "Regístrate o paga en pocos pasos. Tus entradas llegan a tu correo confirmado.",
+        "ticket": "Cada entrada y su código QR quedan en Mis entradas.",
+        "refund": "Los reembolsos siguen la política del evento y nuestra política de reembolsos."
+      }
+    },
+    "hosts": {
+      "label": "Para organizadores",
+      "title": "Gestiona tu evento desde un solo lugar.",
+      "points": {
+        "create": "Crea eventos gratuitos o de pago, con tipos de entrada, preguntas y tu propio estilo.",
+        "sell": "Vende entradas con Paystack, con códigos de descuento y entradas de grupo.",
+        "manage": "Consulta tu lista de invitados, aprueba solicitudes, envía anuncios y registra la llegada con código QR.",
+        "team": "Invita a tu equipo con los roles adecuados y consulta cada cambio en el registro de actividad."
+      }
+    },
+    "money": {
+      "title": "Cómo funciona el dinero",
+      "text": "Las entradas de pago pasan por Paystack, un proveedor de pagos autorizado. G-ventZ nunca retiene tu dinero.",
+      "steps": {
+        "pay": {
+          "title": "Los invitados pagan con Paystack",
+          "text": "Con tarjeta, transferencia bancaria u otros métodos que Paystack ofrece en su país. G-ventZ nunca ve ni guarda los datos de la tarjeta."
+        },
+        "split": {
+          "title": "Cada venta va al banco del organizador",
+          "text": "Paystack divide cada pago: la parte del organizador va directamente a su cuenta bancaria y la comisión de G-ventZ se cobra al mismo tiempo."
+        },
+        "never": {
+          "title": "G-ventZ nunca retiene tu dinero",
+          "text": "No hay un monedero de G-ventZ de por medio. Los organizadores ven cada venta, las comisiones y lo que recibieron en su página de Pagos."
+        }
+      }
+    },
+    "where": {
+      "title": "Dónde estamos",
+      "text": "G-ventZ se crea y se gestiona desde Lagos, Nigeria. ¿Preguntas? Escribe a <email></email> o usa nuestro formulario de contacto."
+    },
+    "closing": {
+      "title": "¿Listo para tu próximo evento?",
+      "text": "Encuentra un plan para este fin de semana, o crea tu propio evento en minutos."
+    },
+    "cta": {
+      "discover": "Descubrir eventos",
+      "host": "Organizar un evento",
+      "contact": "Contáctanos",
+      "pricing": "Ver precios"
+    }
   }
 }

@@ -36,7 +36,7 @@ export function httpsRedirect(request: NextRequest): NextResponse | null {
 
 // Information pages: no session and no maintenance notice (they were outside the matcher before the
 // https redirect needed every page). Matched after any language prefix.
-const INFO_PAGE = /^\/(?:pricing|help|terms|privacy|refunds)/;
+const INFO_PAGE = /^\/(?:pricing|help|about|terms|privacy|refunds)/;
 
 // Per-language public pages (Change 3, W2): /fr/e/x is served from the [lang] tree; English has no
 // prefix and is rewritten to /en internally. No redirects by language (FR-24.3).

@@ -1,17 +1,21 @@
 import { api, data } from "@/lib/api/server";
 import { can, type EventDashboard } from "@/lib/auth";
 import type { components } from "@/lib/api/schema";
-import { approveOrder, checkInGuest, declineOrder, promoteFromWaitlist, refundTicket } from "./actions";
+import { approveOrder, checkInGuest, declineOrder, promoteFromWaitlist } from "./actions";
 import { refundStatusKey } from "@/lib/payment-text";
 import { getTranslations } from "next-intl/server";
 import { getFormat } from "@/i18n/format-server";
 import { Download, Users } from "lucide-react";
-import { Badge, Button, Card, CardHeader, Checkbox, EmptyState, Input, Select, Table, Td, Th, type BadgeTone } from "@/design";
+import { Badge, Button, Card, CardHeader, EmptyState, Input, Select, Table, Td, Th, type BadgeTone } from "@/design";
+import { ToastProvider } from "@/design/client";
+import { mfaState } from "@/lib/mfa";
+import RefundDialog from "./RefundDialog";
+import { canRefundRow, initialRefundView } from "./refund-dialog";
 import styles from "./workspace.module.css";
 
 type GuestRow = components["schemas"]["GuestRowResponse"];
 
-export type GuestQuery = { q?: string; status?: string; type?: string; sort?: string; page?: string };
+export type GuestQuery = { q?: string; status?: string; type?: string; sort?: string; page?: string; refund?: string };
 
 const STATUSES = ["confirmed", "pending", "waitlisted", "declined", "cancelled", "refunded", "checked_in", "not_checked_in"] as const;
 
@@ -54,6 +58,9 @@ export default async function GuestsTab({ event, query }: { event: EventDashboar
   const refund = can(event, "orders.refund");
   const currencyOf = (ticketTypeId: string) => event.ticketTypes.find((t) => t.id === ticketTypeId)?.currency ?? "NGN";
   const pendingGroups = groupPending(list.items);
+  // Refunds need two-step sign-in (the API answers auth.mfa_required until then): ask only when a row offers one.
+  const refundable = refund && list.items.some(canRefundRow);
+  const refundStart = refundable ? initialRefundView(await mfaState().then((m) => m.level).catch(() => null)) : "two_step";
   const refundLabel = (status: string) => {
     const key = refundStatusKey(status);
     return key ? root(key) : undefined;
@@ -65,6 +72,7 @@ export default async function GuestsTab({ event, query }: { event: EventDashboar
   const genderLabel = (g: GuestRow["buyerGender"]) => (g ? t(`guests.gender.${g}`) : null);
 
   return (
+    <ToastProvider closeLabel={t("tools.close")}>
     <div className={styles.stack}>
       <div className={styles.listRow}>
         <p className={styles.muted}>
@@ -185,8 +193,16 @@ export default async function GuestsTab({ event, query }: { event: EventDashboar
                         <Button size="sm" type="submit" aria-label={t("guests.checkInLabel", { name: r.displayName })}>{t("guests.checkIn")}</Button>
                       </form>
                     )}
-                    {refund && r.paid && r.status === "confirmed" && r.refundableMinor !== null && r.refundableMinor > 0 && (!r.refundStatus || r.refundStatus === "failed") && (
-                      <RefundAction eventId={id} ticketId={r.ticketId} name={r.displayName} amount={format.money(r.refundableMinor, currencyOf(r.ticketTypeId))} />
+                    {refund && canRefundRow(r) && (
+                      <RefundDialog
+                        eventId={id}
+                        ticketId={r.ticketId}
+                        name={r.displayName}
+                        ticketType={r.ticketType}
+                        amount={format.money(r.refundableMinor ?? 0, currencyOf(r.ticketTypeId))}
+                        start={refundStart}
+                        requested={query.refund}
+                      />
                     )}
                   </span>
                 </Td>
@@ -204,6 +220,7 @@ export default async function GuestsTab({ event, query }: { event: EventDashboar
         </nav>
       )}
     </div>
+    </ToastProvider>
   );
 }
 
@@ -219,24 +236,4 @@ function groupPending(rows: GuestRow[]): PendingGroup[] {
     groups.set(r.orderId, g);
   }
   return [...groups.values()];
-}
-
-/**
- * One paid ticket's refund (M5 RefundAction, RF4/RF5): the host confirms with the amount the guest
- * gets back; two-step sign-in is asked for by the action when needed.
- */
-async function RefundAction({ eventId, ticketId, name, amount }: { eventId: string; ticketId: string; name: string; amount: string }) {
-  const t = await getTranslations("dashboard.guests.refund");
-  return (
-    <details className={styles.refund}>
-      <summary>{t("summary")}</summary>
-      <form action={refundTicket} className={styles.form}>
-        <input type="hidden" name="event_id" value={eventId} />
-        <input type="hidden" name="ticket_id" value={ticketId} />
-        <p className={styles.muted}>{t.rich("body", { name, amount, b: (c) => <b>{c}</b> })}</p>
-        <Checkbox name="confirm" value="yes" required label={t("confirm", { amount, name })} />
-        <Button size="sm" type="submit">{t("button")}</Button>
-      </form>
-    </details>
-  );
 }

@@ -204,7 +204,10 @@
   },
   "refund": {
     "needs_approval": "Este reembolso supera lo que su equipo puede enviar por su cuenta en este momento. Contacte con el soporte de G-ventZ y lo revisaremos.",
-    "not_refundable": "Esta entrada no se puede reembolsar: no es una entrada de pago confirmada o ya se reembolsó."
+    "not_refundable": "Esta entrada no se puede reembolsar: no es una entrada de pago confirmada o ya se reembolsó.",
+    "provider_rejected": "Paystack no pudo iniciar este reembolso. Inténtalo más tarde o contacta con el soporte de G-ventZ.",
+    "provider_unavailable": "Paystack no responde en este momento. Inténtalo de nuevo en unos minutos.",
+    "in_progress": "Ya hay un reembolso en curso para esta entrada."
   },
   "registration": {
     "already_registered": "Ya tiene una entrada para este evento.",
@@ -272,5 +275,14 @@
     "member_not_found": "Esta persona no forma parte del equipo.",
     "owner_fixed": "El rol del propietario del evento no se puede cambiar ni quitar.",
     "role_invalid": "Elija un rol."
+  },
+  "support": {
+    "captcha_failed": "La comprobación de seguridad falló. Actualiza la página e inténtalo de nuevo.",
+    "rate_limited": "Has enviado varios mensajes en poco tiempo. Espera un rato o escribe a support@gventz.com.",
+    "name_invalid": "Escribe tu nombre (de 2 a 100 caracteres).",
+    "email_invalid": "Escribe una dirección de correo válida.",
+    "country_invalid": "Elige tu país.",
+    "topic_invalid": "Elige un tema.",
+    "message_length": "Tu mensaje debe tener entre 10 y 4000 caracteres."
   }
 }
