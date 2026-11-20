@@ -418,6 +418,7 @@ input, select, textarea, button { max-width: 100%; min-width: 0; }
 .account-menu-list .account-menu-item { display: block; width: 100%; text-align: start; background: none; border: 0; cursor: pointer; color: var(--text); font: inherit; font-size: var(--text-body-sm); font-weight: 600; padding: 10px 12px; border-radius: var(--radius-md); white-space: nowrap; }
 .account-menu-list .account-menu-item:hover, .account-menu-list .account-menu-item:focus-visible { background: var(--bg); }
 .account-menu-list .account-menu-phone { display: none; }
+.account-menu-list .account-menu-signout { margin-block-start: 4px; padding-block-start: 4px; border-block-start: 1px solid var(--line); }
 @media (max-width: 640px) {
   .account-admin, .account-dash { display: none; }
   .account-menu-list .account-menu-phone { display: block; }

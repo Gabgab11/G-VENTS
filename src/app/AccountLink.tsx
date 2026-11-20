@@ -11,7 +11,7 @@ import SignOutButton from "@/components/SignOutButton";
 // home page are cached and shared by every visitor, so this is decided in the browser. The session
 // cookie is httpOnly (the browser's JavaScript can't read it), so the answer comes from
 // /api/session. The admin pages themselves are still guarded by the API (staff, two-step sign-in).
-export default function AccountLink({ className = "site-account", withSignOut = false }: { className?: string; withSignOut?: boolean }) {
+export default function AccountLink({ className = "site-account" }: { className?: string }) {
   const t = useTranslations("common.account");
   const [session, setSession] = useState({ signedIn: false, isStaff: false });
   const menu = useRef<HTMLDetailsElement>(null);
@@ -55,8 +55,8 @@ export default function AccountLink({ className = "site-account", withSignOut = 
           {session.isStaff && <Link href="/admin">{t("platformAdmin")}</Link>}
           <Link href="/host/settings/security">{t("security")}</Link>
           <Link href="/host/payouts">{t("payouts")}</Link>
-          {/* Pages with a Sign out button: on phones it moves in here, so the header fits one line. */}
-          {withSignOut && <SignOutButton className="account-menu-phone" buttonClassName="account-menu-item" />}
+          {/* Sign out is always the last item, on every page and screen size. */}
+          <SignOutButton className="account-menu-signout" buttonClassName="account-menu-item" />
         </div>
       </details>
     </>
