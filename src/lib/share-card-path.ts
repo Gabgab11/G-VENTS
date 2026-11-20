@@ -31,13 +31,13 @@ export function cardApiPath(card: ShareCard, lang: Locale, version: string | nul
 /**
  * Where the website sends a profile card the API moved (an old handle answers 308 with the new
  * handle's card): the same /api/og/h/… address with the new handle, keeping this request's query.
- * Null when the API's Location isn't a profile card.
+ * The Location may be relative to the card asked for (`new-name.png?…`). Null when it isn't a profile card.
  */
-export function movedCardPath(location: string | null, search: string): string | null {
+export function movedCardPath(location: string | null, requested: string, search: string): string | null {
   if (!location) return null;
   let path: string;
   try {
-    path = new URL(location, "https://api.invalid").pathname;
+    path = new URL(location, new URL(requested, "https://api.invalid")).pathname;
   } catch {
     return null;
   }

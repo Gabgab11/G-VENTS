@@ -34,10 +34,12 @@ describe("share card addresses (D81)", () => {
   });
 
   it("follows a moved profile card to the new handle's address, keeping the query", () => {
-    expect(movedCardPath("/v1/share-cards/hosts/new-name.png?lang=fr&v=1", "?v=1&lang=fr")).toBe("/api/og/h/new-name?v=1&lang=fr");
-    expect(movedCardPath("https://api.gventz.com/v1/share-cards/hosts/new-name.png", "")).toBe("/api/og/h/new-name");
-    expect(movedCardPath("/v1/admin", "")).toBeNull();
-    expect(movedCardPath("https://evil.example/v1/share-cards/hosts/x/../../y.png", "")).toBeNull();
-    expect(movedCardPath(null, "")).toBeNull();
+    expect(movedCardPath("/v1/share-cards/hosts/new-name.png?lang=fr&v=1", "/v1/share-cards/hosts/old-name.png?lang=fr", "?v=1&lang=fr")).toBe("/api/og/h/new-name?v=1&lang=fr");
+    expect(movedCardPath("https://api.gventz.com/v1/share-cards/hosts/new-name.png", "/v1/share-cards/hosts/old-name.png?lang=fr", "")).toBe("/api/og/h/new-name");
+    // The API answers with a Location relative to the card asked for.
+    expect(movedCardPath("new-name.png?lang=fr&v=1", "/v1/share-cards/hosts/old-name.png?lang=fr", "?v=1&lang=fr")).toBe("/api/og/h/new-name?v=1&lang=fr");
+    expect(movedCardPath("/v1/admin", "/v1/share-cards/hosts/old-name.png?lang=fr", "")).toBeNull();
+    expect(movedCardPath("https://evil.example/v1/share-cards/hosts/x/../../y.png", "/v1/share-cards/hosts/old-name.png?lang=fr", "")).toBeNull();
+    expect(movedCardPath(null, "/v1/share-cards/hosts/old-name.png?lang=fr", "")).toBeNull();
   });
 });

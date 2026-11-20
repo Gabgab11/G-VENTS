@@ -60,7 +60,7 @@ export async function proxyShareCard(request: Request, card: ShareCard): Promise
   }
   if (upstream.status === 404) return notFound();
   if (upstream.status >= 300 && upstream.status < 400) {
-    const moved = card.kind === "host" ? movedCardPath(upstream.headers.get("location"), new URL(request.url).search) : null;
+    const moved = card.kind === "host" ? movedCardPath(upstream.headers.get("location"), path, new URL(request.url).search) : null;
     if (moved) return new Response(null, { status: 308, headers: { Location: moved, "Cache-Control": "public, max-age=300" } });
     console.error(`[og] share card from the API answered ${upstream.status} without a card address`);
     return new Response("Share card unavailable", { status: 502, headers: { "Cache-Control": "no-store", "Content-Type": "text/plain; charset=utf-8" } });
