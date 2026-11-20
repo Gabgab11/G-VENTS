@@ -15,6 +15,9 @@ import GuestsTab, { type GuestQuery } from "./GuestsTab";
 import DetailsTab from "./DetailsTab";
 import RegistrationTab from "./RegistrationTab";
 import AnnouncementsTab from "./AnnouncementsTab";
+import PromoteTab from "./PromoteTab";
+import TeamTab from "./TeamTab";
+import ActivityTab from "./ActivityTab";
 import SettingsTab from "./SettingsTab";
 import WorkspaceMenu from "./WorkspaceMenu";
 import { DisputeBanner } from "./SalesPanel";
@@ -35,8 +38,17 @@ async function loadSales(event: Awaited<ReturnType<typeof requireEvent>>): Promi
   }
 }
 
-const TABS = ["overview", "guests", "details", "registration", "announcements", "settings"] as const;
+const TABS = ["overview", "guests", "details", "registration", "promote", "team", "announcements", "activity", "settings"] as const;
 type TabKey = (typeof TABS)[number];
+
+/** The permission each tab needs (the API checks again); tabs without one show for the whole team. */
+const TAB_PERMISSION: Partial<Record<TabKey, string>> = {
+  details: "event.edit",
+  // Discount codes are the owner's and co-hosts' (the API's event.fees).
+  promote: "event.fees",
+  team: "team.view",
+  activity: "activity.read",
+};
 
 const TONE: Record<"draft" | "published" | "cancelled", BadgeTone> = { draft: "warning", published: "success", cancelled: "danger" };
 const SMALL_ICON = { size: 16, strokeWidth: 1.75, "aria-hidden": true } as const;
@@ -52,7 +64,10 @@ export default async function EventWorkspacePage({
   const { id } = await params;
   const sp = await searchParams;
   const event = await requireEvent(id);
-  const tabs = TABS.filter((k) => k !== "details" || can(event, "event.edit"));
+  const tabs = TABS.filter((k) => {
+    const needs = TAB_PERMISSION[k];
+    return !needs || can(event, needs);
+  });
   const tab: TabKey = tabs.find((k) => k === sp.tab) ?? "overview";
 
   const [sales, t, errors, lang] = await Promise.all([
@@ -118,7 +133,10 @@ export default async function EventWorkspacePage({
       {tab === "guests" && <GuestsTab event={event} query={sp} />}
       {tab === "details" && <DetailsTab event={event} />}
       {tab === "registration" && <RegistrationTab event={event} url={url} />}
+      {tab === "promote" && <PromoteTab event={event} />}
+      {tab === "team" && <TeamTab event={event} />}
       {tab === "announcements" && <AnnouncementsTab event={event} />}
+      {tab === "activity" && <ActivityTab event={event} />}
       {tab === "settings" && <SettingsTab event={event} />}
     </>
   );

@@ -22,7 +22,6 @@ type UpdateDetails = components["schemas"]["UpdateEventDetailsDto"];
 // travel as `api.<code>` so the page shows the API's wording without putting text in the URL.
 
 const KINDS = ["text", "options", "social", "company", "terms", "phone", "website"] as const;
-const SEGMENTS = ["all", "paid", "checked_in", "not_checked_in", "waitlist"] as const;
 
 type Tab = "overview" | "guests" | "details" | "registration" | "announcements" | "settings";
 
@@ -110,30 +109,6 @@ export async function deleteQuestion(formData: FormData) {
   if (!isUuid(questionId)) fail(id, "registration");
   await call(id, "registration", async () => (await api()).DELETE("/v1/events/{id}/questions/{questionId}", { params: { path: { id, questionId } } }));
   done(id, "registration", "question_removed");
-}
-
-export async function createAnnouncement(formData: FormData) {
-  const id = await eventIdFrom(formData);
-  const subject = field(formData, "subject", 200);
-  const body = field(formData, "body", 10000);
-  const segment = field(formData, "segment") || "all";
-  if (!subject || !body) fail(id, "announcements", "announcement_missing");
-  if (!SEGMENTS.includes(segment as (typeof SEGMENTS)[number])) fail(id, "announcements", "announcement_segment");
-  await call(id, "announcements", async () =>
-    (await api()).POST("/v1/events/{id}/announcements", { params: { path: { id } }, body: { subject, body, segment: segment as (typeof SEGMENTS)[number] } }),
-  );
-  done(id, "announcements", "announcement_saved");
-}
-
-// Free plan (C2): the API enforces 2 sends per event, before it starts, and 1,000 emails a month.
-export async function sendAnnouncement(formData: FormData) {
-  const id = await eventIdFrom(formData);
-  const announcementId = field(formData, "announcement_id");
-  if (!isUuid(announcementId)) fail(id, "announcements");
-  await call(id, "announcements", async () =>
-    data(await (await api()).POST("/v1/events/{id}/announcements/{announcementId}/send", { params: { path: { id, announcementId } } })),
-  );
-  done(id, "announcements", "announcement_sending");
 }
 
 // Settings → guest policies: the refund policy and the owner's registration emails.
