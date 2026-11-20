@@ -22,7 +22,7 @@ export async function adminCall<T>(work: () => Promise<T>, returnTo: string): Pr
         if (invited) redirect("/admin/invite");
         notFound();
       }
-      if (error.code === "auth.mfa_required") redirect(`/account/security?next=${encodeURIComponent(returnTo)}`);
+      if (error.code === "auth.mfa_required") redirect(`/host/settings/security?next=${encodeURIComponent(returnTo)}`);
       if (error.status === 401) redirect(`/sign-in?next=${encodeURIComponent(returnTo)}`);
     }
     throw error;

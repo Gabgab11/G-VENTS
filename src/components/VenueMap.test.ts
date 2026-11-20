@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { directionsUrl, mapEmbedUrl } from "./VenueMap";
+import { directionsUrl, mapEmbedUrl, staticMapUrl } from "./VenueMap";
 
 const venue = { kind: "venue", venueName: "Eko Hotel", address: "Plot 1415 Adetokunbo Ademola", city: "Lagos", region: "Lagos", country: "Nigeria", countryCode: "NG", place: { placeId: "ChIJabc", lat: 6.4269, lng: 3.4227 } } as const;
 
@@ -16,5 +16,14 @@ describe("venue map", () => {
     expect(mapEmbedUrl({ kind: "online" } as never, "k1")).toBeNull();
     expect(directionsUrl({ kind: "online" } as never)).toBeNull();
     expect(directionsUrl({ ...venue, mapsUrl: "https://maps.app.goo.gl/AbC123" })).toBe("https://maps.app.goo.gl/AbC123");
+  });
+
+  it("builds a static map image only with a key", () => {
+    expect(staticMapUrl(venue, "")).toBeNull();
+    expect(staticMapUrl(venue, "s k")).toBe(
+      "https://maps.googleapis.com/maps/api/staticmap?center=6.4269%2C3.4227&zoom=15&size=640x320&scale=2&markers=6.4269%2C3.4227&key=s%20k",
+    );
+    expect(staticMapUrl({ ...venue, place: null }, "k")).toContain("center=Eko%20Hotel%2C%20Plot%201415");
+    expect(staticMapUrl({ kind: "online" } as never, "k")).toBeNull();
   });
 });

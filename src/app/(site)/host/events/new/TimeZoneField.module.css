@@ -1,0 +1,20 @@
+/* The event's time zone on create event (step 2): shown, with "Change" to search for another. */
+
+.field { display: grid; gap: 6px; min-inline-size: 0; }
+.label { font-size: var(--text-body-sm); line-height: var(--leading-body-sm); font-weight: var(--weight-semibold); color: var(--color-text); }
+.hint { font-size: var(--text-body-sm); line-height: var(--leading-body-sm); color: var(--color-text-muted); }
+
+.current {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px var(--space-2);
+  min-block-size: 46px;
+  padding-block: 5px;
+  padding-inline: 14px var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+.name { font-weight: var(--weight-semibold); color: var(--color-text); }
+.cancel { justify-self: start; }

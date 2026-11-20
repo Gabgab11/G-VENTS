@@ -44,10 +44,6 @@
     "sellTitle": "Vender ingressos pagos",
     "reason": "Motivo: {reason}"
   },
-  "themePanel": {
-    "title": "Estilo do seu painel",
-    "hint": "Escolha a aparência do seu painel. Só você vê isso."
-  },
   "themes": {
     "minimal": "Minimalista",
     "sunset": "Pôr do sol",
@@ -60,13 +56,145 @@
     "lavender": "Lavanda",
     "christmas": "Natal"
   },
+  "events": {
+    "title": "Eventos",
+    "create": "Criar evento",
+    "filtersLabel": "Filtrar eventos",
+    "listLabel": "Seus eventos",
+    "filter": {
+      "all": "Todos",
+      "upcoming": "Próximos",
+      "drafts": "Rascunhos",
+      "past": "Anteriores"
+    },
+    "online": "On-line",
+    "noPlace": "Local a ser anunciado",
+    "sold": "Vendidos",
+    "revenue": "Receita",
+    "view": "Ver página",
+    "viewLabel": "Ver a página de {title}",
+    "scan": "Escanear",
+    "scanLabel": "Escanear ingressos de {title}",
+    "moreLabel": "Mais ações para {title}",
+    "manage": "Gerenciar",
+    "edit": "Editar detalhes",
+    "empty": {
+      "all": {
+        "title": "Nenhum evento ainda",
+        "body": "Crie seu primeiro evento e compartilhe o link para receber convidados."
+      },
+      "upcoming": {
+        "title": "Nenhum evento próximo",
+        "body": "Eventos publicados que ainda não terminaram aparecem aqui."
+      },
+      "drafts": {
+        "title": "Nenhum rascunho",
+        "body": "Eventos que você salvou sem publicar aparecem aqui."
+      },
+      "past": {
+        "title": "Nenhum evento anterior",
+        "body": "Eventos que terminaram ou foram cancelados aparecem aqui."
+      }
+    }
+  },
+  "workspace": {
+    "back": "Eventos",
+    "view": "Ver página",
+    "scan": "Escanear ingressos",
+    "more": "Mais ações",
+    "edit": "Editar detalhes",
+    "cancel": "Cancelar evento…",
+    "delete": "Excluir evento…"
+  },
+  "quick": {
+    "title": "Publicação e visibilidade",
+    "draftTitle": "Este evento é um rascunho",
+    "draftHint": "Somente sua equipe pode vê-lo. Publique-o para abrir a página do evento aos convidados.",
+    "publish": "Publicar",
+    "private": "Evento privado",
+    "privateHint": "Oculto em Descobrir. Somente quem tem o link pode abri-lo.",
+    "showCount": "Mostrar número de participantes",
+    "showCountHint": "Os convidados veem na página do evento quantas pessoas vão."
+  },
+  "details": {
+    "basics": "Informações básicas",
+    "title": "Nome do evento",
+    "description": "Sobre este evento",
+    "category": "Categoria",
+    "when": "Data e hora",
+    "startsAt": "Início",
+    "endsAt": "Término",
+    "endsAtHint": "Opcional. Deixe em branco se não houver horário de término.",
+    "timeZone": "Fuso horário",
+    "timeZoneSearch": "Pesquise uma cidade ou fuso horário",
+    "timeZoneNone": "Nenhum fuso horário correspondente",
+    "timeZoneHint": "Os horários estão no fuso do evento. Ao mudar o fuso, os horários mostrados acima são mantidos.",
+    "rescheduleNote": "{count, plural, one {{count, number, ::group-off} convidado tem ingressos} other {{count, number, ::group-off} convidados têm ingressos}}. Mudar a data do evento o registra como remarcado; os convidados não recebem e-mail automático, então envie um anúncio a eles.",
+    "tickets": "Tipos de ingresso",
+    "pricesIn": "Preços em {currency}",
+    "willRemove": "{name} será removido ao salvar.",
+    "undo": "Desfazer",
+    "newType": "Novo tipo de ingresso {number}",
+    "untitled": "Tipo de ingresso sem nome",
+    "sold": "{count, plural, one {{count, number, ::group-off} vendido} other {{count, number, ::group-off} vendidos}}",
+    "removeLabel": "Remover {name}",
+    "remove": "Remover",
+    "typeName": "Nome",
+    "quantity": "Quantidade",
+    "quantityMin": "No mínimo {count, number, ::group-off}, a quantidade já vendida. Deixe em branco para ilimitado.",
+    "quantityHint": "Deixe em branco para ilimitado.",
+    "price": "Preço ({currency})",
+    "priceLocked": "Bloqueado: já foram vendidos ingressos a este preço.",
+    "priceHint": "Use 0 para ingressos gratuitos.",
+    "addType": "Adicionar tipo de ingresso",
+    "saveHint": "As informações básicas, a data e os tipos de ingresso são salvos juntos.",
+    "save": "Salvar alterações",
+    "confirmTitle": "Mudar a data deste evento?",
+    "confirmBody": "{count, plural, one {{count, number, ::group-off} convidado tem ingressos} other {{count, number, ::group-off} convidados têm ingressos}}. A nova data é registrada como remarcação. Os convidados não recebem e-mail automático, então envie um anúncio a eles depois.",
+    "close": "Fechar",
+    "confirmCancel": "Manter a data atual",
+    "confirmMove": "Mudar a data do evento",
+    "where": "Local",
+    "errors": {
+      "forbidden": "Você não tem permissão para editar este evento.",
+      "failed": "Não foi possível salvar as alterações. Tente novamente.",
+      "title_length": "O nome do evento deve ter de 3 a 140 caracteres.",
+      "category": "Escolha uma categoria da lista.",
+      "starts_at": "Informe a data e a hora de início.",
+      "ends_at": "Informe uma data e hora de término válidas ou deixe em branco.",
+      "ends_before_start": "O término deve ser depois do início.",
+      "time_zone": "Escolha um fuso horário da lista.",
+      "ticket_name": "Dê a cada tipo de ingresso um nome com até 80 caracteres.",
+      "ticket_quantity": "A quantidade deve ser um número inteiro a partir de 1, ou ficar em branco para ilimitado.",
+      "ticket_quantity_below_sold": "A quantidade não pode ser menor que o número de ingressos já vendidos.",
+      "ticket_price": "Informe os preços em números, como 5000 ou 12.50.",
+      "ticket_price_locked": "Esse preço está bloqueado porque já foram vendidos ingressos a ele.",
+      "ticket_has_sales": "Um tipo de ingresso com vendas não pode ser removido.",
+      "ticket_count": "Um evento precisa de 1 a 20 tipos de ingresso.",
+      "ticket_group_size": "Um bilhete de grupo deve dar entrada a 2 a 20 pessoas.",
+      "ticket_group_locked": "Um tipo de bilhete com vendas mantém o tamanho do grupo. Adicione antes um novo tipo de bilhete.",
+      "ticket_description": "A descrição de um bilhete pode ter até 300 caracteres."
+    },
+    "typeDescription": "Descrição (opcional)",
+    "typeDescriptionCount": "{count}/{max} caracteres",
+    "typeDescriptionPlaceholder": "O que inclui, por exemplo uma mesa para quatro junto ao palco",
+    "group": "Bilhete de grupo",
+    "groupHelp": "Uma compra dá entrada a várias pessoas, como uma mesa.",
+    "groupLocked": "Este tipo de bilhete já tem vendas, por isso o tamanho do grupo não pode mudar. Adicione antes um novo tipo de bilhete.",
+    "admits": "Para quantas pessoas?",
+    "admitsHint": "De {min} a {max}. A quantidade conta pessoas: 10 mesas de 4 são 40."
+  },
   "event": {
     "tabs": {
       "overview": "Visão geral",
       "guests": "Convidados",
+      "details": "Detalhes",
       "registration": "Inscrição",
       "announcements": "Anúncios",
-      "settings": "Configurações"
+      "settings": "Configurações",
+      "promote": "Divulgação",
+      "team": "Equipe",
+      "activity": "Atividade"
     },
     "tabsLabel": "Seções do evento",
     "youAre": "Você é {role, select, owner {proprietário} admin {administrador} editor {editor} checkin {responsável pelo check-in} finance {financeiro} viewer {leitor} other {{role}}}",
@@ -78,6 +206,21 @@
     "waitlisted": "Lista de espera",
     "checkedIn": "Check-in feito",
     "capacity": "Capacidade",
+    "statsLabel": "Números do evento",
+    "sold": "Ingressos vendidos",
+    "soldOf": "{sold} de {capacity}",
+    "soldContext": "{pending, number, ::group-off} aguardando aprovação · {waitlisted, number, ::group-off} na lista de espera",
+    "gross": "Vendas brutas",
+    "grossContext": "{count, plural, one {{count, number, ::group-off} pedido pago} other {{count, number, ::group-off} pedidos pagos}}",
+    "noSales": "Nenhuma venda paga ainda",
+    "checkedInContext": "de {confirmed, number, ::group-off} confirmados",
+    "byDay": "Vendas por dia",
+    "byDayNone": "Nenhuma venda ainda",
+    "orders": "{count, plural, one {{count, number, ::group-off} pedido} other {{count, number, ::group-off} pedidos}}",
+    "recentOrders": "Pedidos recentes",
+    "guest": "Convidado",
+    "tickets": "{count, plural, one {{count, number, ::group-off} ingresso} other {{count, number, ::group-off} ingressos}}",
+    "free": "Gratuito",
     "shareTitle": "Compartilhe seu evento",
     "shareHint": "Envie este link para quem quiser. Os convidados recebem os ingressos na página do evento.",
     "registration": "Inscrição",
@@ -141,6 +284,10 @@
     "checkInLabel": "Fazer check-in de {name}",
     "checkIn": "Fazer check-in",
     "checkedIn": "Check-in feito",
+    "tableCaption": "Lista de convidados",
+    "colGuest": "Convidado",
+    "colTicket": "Ingresso",
+    "colActions": "Ações",
     "disputed": "Pagamento contestado",
     "pagesLabel": "Páginas da lista de convidados",
     "status": {
@@ -155,9 +302,29 @@
     },
     "refund": {
       "summary": "Reembolsar",
-      "body": "{name} recebe <b>{amount}</b> de volta. O ingresso deixa de valer na hora e a vaga volta à venda. A taxa do G-ventZ e a tarifa do Paystack não são devolvidas; sua parte é descontada das próximas vendas.",
-      "confirm": "Reembolsar {amount} para {name}",
-      "button": "Reembolsar ingresso"
+      "openLabel": "Reembolsar o bilhete de {name}",
+      "title": "Reembolsar {name}?",
+      "guestLabel": "Convidado",
+      "ticketLabel": "Bilhete",
+      "amountLabel": "Valor devolvido",
+      "whatTicket": "O bilhete deixa de funcionar de imediato e o lugar volta a ficar à venda.",
+      "whatMoney": "A Paystack devolve {amount} ao cartão ou à conta com que o convidado pagou. Os bancos costumam demorar alguns dias úteis a mostrá-lo.",
+      "whatFees": "A comissão da G-ventZ e a taxa da Paystack não são devolvidas. A sua parte do reembolso é descontada das suas próximas vendas.",
+      "confirm": "Reembolsar {amount} a {name}",
+      "button": "Reembolsar bilhete",
+      "twoStepTitle": "Os reembolsos exigem início de sessão em dois passos",
+      "twoStepText": "Um reembolso movimenta dinheiro, por isso confirme primeiro que é você com o início de sessão em dois passos. Depois volta diretamente ao reembolso de {name}.",
+      "twoStepButton": "Confirmar que é você",
+      "providerReason": "Motivo da Paystack: {reason}",
+      "started": "Reembolso iniciado para {name}",
+      "startedText": "O bilhete já não funciona. O convidado recebe o dinheiro de volta através da Paystack."
+    },
+    "colContact": "Contacto do comprador",
+    "sentTo": "Enviado para <b>{email}</b>",
+    "gender": {
+      "female": "Feminino",
+      "male": "Masculino",
+      "unspecified": "Prefere não dizer"
     }
   },
   "registration": {
@@ -201,6 +368,10 @@
     "sendsLeft": "<b>{left} de {allowed}</b> anúncios restantes para este evento",
     "emailsLeft": "<b>{left} de {allowed}</b> e-mails de anúncio restantes neste mês",
     "resets": "(renova em {date})",
+    "sendsLabel": "Anúncios restantes para este evento",
+    "emailsLabel": "E-mails restantes neste mês",
+    "leftOf": "{left} de {allowed}",
+    "sendsContext": "Contados por evento, antes de ele começar.",
     "countRule": "Cada convidado conta uma vez por anúncio. E-mails de ingresso não contam.",
     "started": "Este evento já começou, então não é mais possível enviar anúncios.",
     "newTitle": "Novo anúncio",
@@ -216,12 +387,81 @@
     "draft": "Rascunho",
     "sent": "Enviado",
     "sending": "Enviando",
-    "emailed": "{sent} de {total} enviados por e-mail"
+    "emailed": "{sent} de {total} enviados por e-mail",
+    "loadFailed": "Não foi possível carregar os avisos. Tente novamente.",
+    "template": "Modelo",
+    "templates": {
+      "blank": {
+        "name": "Mensagem em branco",
+        "help": "Apenas o seu assunto e a sua mensagem."
+      },
+      "reminder": {
+        "name": "Lembrete",
+        "help": "Começa com a data e o horário do evento."
+      },
+      "reschedule": {
+        "name": "Nova data",
+        "help": "Começa com a nova data e o novo horário do evento."
+      },
+      "lineup": {
+        "name": "Novidades da programação",
+        "help": "Apresenta novidades sobre a programação."
+      },
+      "thanks": {
+        "name": "Agradecimento",
+        "help": "Agradece aos convidados pela presença. Pode ser enviado depois do início do evento."
+      },
+      "feedback": {
+        "name": "Opinião",
+        "help": "Pergunta aos convidados o que acharam. Pode ser enviado depois do início do evento."
+      }
+    },
+    "messageHintTemplate": "O modelo adiciona uma linha antes da sua mensagem; suas palavras são enviadas como escritas.",
+    "segmentOption": "{label} ({count, number})",
+    "recipients": "{count, plural, one {# convidado vai receber isto} other {# convidados vão receber isto}}",
+    "sendButton": "Enviar…",
+    "draftOnly": "Apenas o proprietário e os coanfitriões podem enviar. Salve um rascunho para que eles o enviem.",
+    "draftSavedToast": "Rascunho salvo.",
+    "sentToast": "{count, plural, one {Enviando para # convidado.} other {Enviando para # convidados.}}",
+    "sentOn": "Enviado em {date}",
+    "notSent": "{count, plural, one {# não enviado} other {# não enviados}}",
+    "confirmTitle": "{count, plural, one {Enviar para # convidado?} other {Enviar para # convidados?}}",
+    "confirmBody": "Isto usa um dos {sends, number} avisos restantes para este evento e {count, number} dos {emails, number} e-mails restantes deste mês. Não é possível desfazer.",
+    "confirmSend": "Enviar agora",
+    "blocks": {
+      "draft": "Publique o evento antes de enviar avisos.",
+      "started": "Este evento já começou. Agora só podem ser enviados os modelos Agradecimento e Opinião.",
+      "sends": "Você enviou todos os avisos permitidos para este evento.",
+      "emails": "Você usou todos os seus e-mails de aviso deste mês.",
+      "quota": "Este público é maior do que os e-mails que restam neste mês. Escolha um público menor.",
+      "empty": "Ninguém neste público pode receber e-mails ainda."
+    },
+    "errors": {
+      "subject": "Adicione um assunto.",
+      "body": "Adicione uma mensagem.",
+      "template": "Escolha um dos modelos."
+    },
+    "preview": {
+      "title": "Pré-visualização",
+      "fromHost": "Mensagem do anfitrião de {title}",
+      "emptySubject": "Seu assunto",
+      "emptyBody": "Sua mensagem aparece aqui.",
+      "lead": {
+        "reminder": "{title} está chegando: {date}, {time}.",
+        "reschedule": "{title} tem uma nova data: {date}, {time}.",
+        "lineup": "Novidades sobre a programação de {title}, em {date}.",
+        "thanks": "Obrigado por participar de {title}.",
+        "feedback": "O que você achou de {title}? O anfitrião gostaria de saber sua opinião."
+      },
+      "footer": "Você está recebendo isto porque se inscreveu em {title} na G-ventZ. <link>Parar de receber avisos deste evento</link>.",
+      "note": "Cada convidado recebe o texto da G-ventZ no próprio idioma; seu assunto e sua mensagem são enviados como escritos."
+    }
   },
   "settings": {
     "styleTitle": "Estilo da página",
     "styleHint": "As cores que os convidados veem na página do evento.",
     "saveStyle": "Salvar estilo",
+    "picturesTitle": "Imagens",
     "flyerTitle": "Flyer do evento",
     "flyerHint": "Aparece na página do evento e em Descobrir. Use JPG, PNG ou WebP, até 5 MB. Vertical ou quadrado fica melhor.",
     "flyerAlt": "Flyer do evento",
@@ -239,6 +479,8 @@
     "saveDetails": "Salvar detalhes",
     "venue": "Local",
     "online": "Online",
+    "policiesTitle": "Políticas para convidados",
+    "savePolicies": "Salvar políticas",
     "cancelTitle": "Cancelar evento",
     "cancelled": "Este evento foi cancelado. As inscrições estão fechadas.",
     "cancelHint": "Cancelar fecha as inscrições e oculta o evento em Descobrir. Convidados já inscritos não são reembolsados automaticamente.",
@@ -272,6 +514,9 @@
       "announcementSaved": "Salvo como rascunho. Envie quando estiver pronto.",
       "announcementSending": "Enviando agora. Os convidados recebem nos próximos minutos.",
       "detailsSaved": "Detalhes do evento salvos",
+      "rescheduled": "Evento remarcado e registrado como tal. Envie aos convidados um anúncio sobre a nova data.",
+      "nothingChanged": "Nada para salvar. Nenhum detalhe foi alterado.",
+      "policiesSaved": "Políticas para convidados salvas",
       "flyerUploaded": "Flyer enviado",
       "flyerRemoved": "Flyer removido. O evento volta a mostrar seu estilo de cores",
       "eventCancelled": "Evento cancelado. As inscrições estão fechadas",
@@ -334,7 +579,8 @@
     },
     "ticketNumber": "{number} de {total}",
     "usedAt": "{who} · às {time}",
-    "usedAtBy": "{who} · às {time} por {name}"
+    "usedAtBy": "{who} · às {time} por {name}",
+    "groupOf": "Grupo de {count}"
   },
   "csv": {
     "header": {
@@ -346,10 +592,233 @@
       "type": "Tipo de ingresso",
       "status": "Status",
       "registeredAt": "Inscrito em",
-      "checkedInAt": "Check-in em"
+      "checkedInAt": "Check-in em",
+      "phone": "Telefone do comprador",
+      "gender": "Género do comprador",
+      "recipient": "E-mail do destinatário"
     },
     "forbidden": "Só o proprietário, administradores e o financeiro podem exportar a lista de convidados.",
     "notFound": "Não encontrado",
     "failed": "A exportação não funcionou. Tente novamente."
+  },
+  "tools": {
+    "close": "Fechar",
+    "cancel": "Cancelar"
+  },
+  "promote": {
+    "title": "Códigos de desconto",
+    "intro": "Os códigos reduzem o preço dos ingressos pagos. As taxas são calculadas sobre o preço reduzido.",
+    "newCode": "Novo código",
+    "loadFailed": "Não foi possível carregar os códigos de desconto. Tente novamente.",
+    "draftNote": "Os códigos funcionam quando o evento é publicado.",
+    "noPaid": "Ainda não há ingressos pagos",
+    "noPaidHint": "Os códigos de desconto se aplicam a ingressos pagos. Primeiro adicione um tipo de ingresso pago em Detalhes.",
+    "empty": "Ainda não há códigos de desconto",
+    "emptyHint": "Crie um código e compartilhe o link: o desconto é aplicado quando os convidados o abrem.",
+    "free": "Ingresso gratuito",
+    "allTickets": "Todos os ingressos pagos",
+    "removedType": "Tipo de ingresso removido",
+    "valid": {
+      "always": "Sempre",
+      "from": "A partir de {date}",
+      "until": "Até {date}",
+      "between": "{start} – {end}"
+    },
+    "cols": {
+      "code": "Código",
+      "discount": "Desconto",
+      "used": "Usos",
+      "valid": "Validade",
+      "status": "Status",
+      "actions": "Ações"
+    },
+    "usedOf": "{uses, number} / {max, number}",
+    "usedNoLimit": "{uses, number} · sem limite",
+    "states": {
+      "active": "Ativo",
+      "paused": "Pausado",
+      "scheduled": "Agendado",
+      "ended": "Encerrado",
+      "usedUp": "Esgotado"
+    },
+    "menuLabel": "Ações para {code}",
+    "copyLink": "Copiar link de compartilhamento",
+    "copied": "Link copiado",
+    "copiedHint": "Quem abrir o link terá {code} aplicado.",
+    "copyFailed": "Copie este link",
+    "pause": "Pausar",
+    "resume": "Retomar",
+    "edit": "Editar",
+    "pausedToast": "{code} está pausado.",
+    "resumedToast": "{code} está ativo novamente.",
+    "createdToast": "{code} criado.",
+    "savedToast": "Alterações em {code} salvas.",
+    "dialog": {
+      "newTitle": "Novo código de desconto",
+      "editTitle": "Editar {code}",
+      "create": "Criar código",
+      "save": "Salvar alterações",
+      "locked": "Este código já foi usado, então apenas o limite de uso e a data de término podem mudar.",
+      "code": "Código",
+      "codeHint": "De 3 a 32 letras, números, - ou _. Os convidados podem digitá-lo em maiúsculas ou minúsculas.",
+      "kind": "Desconto",
+      "kinds": {
+        "percent": "Porcentagem de desconto",
+        "fixed": "Valor fixo de desconto",
+        "free": "Ingresso gratuito"
+      },
+      "valuePercent": "Porcentagem (de 1 a 100)",
+      "valueFixed": "Desconto por ingresso ({currency})",
+      "valueFixedHint": "Em unidades inteiras de {currency}.",
+      "maxUses": "Limite de uso",
+      "maxUsesHint": "Quantos pedidos podem usá-lo. Deixe em branco para não ter limite.",
+      "maxUsesUsed": "Usado {uses, number} vezes até agora. Deixe em branco para não ter limite.",
+      "startsAt": "Início",
+      "startsHint": "Deixe em branco para começar agora.",
+      "endsAt": "Término",
+      "endsHint": "Deixe em branco para que continue valendo.",
+      "zone": "Os horários estão no fuso horário do evento: {zone}.",
+      "ticketTypes": "Aplica-se a",
+      "ticketTypesHint": "Não escolha nenhum para aplicá-lo a todos os tipos de ingresso pagos."
+    },
+    "errors": {
+      "code": "Use de 3 a 32 letras, números, - ou _.",
+      "kind": "Escolha um tipo de desconto.",
+      "percent": "Informe uma porcentagem de 1 a 100.",
+      "fixed": "Informe um valor inteiro maior que 0.",
+      "maxUses": "Informe um número inteiro de pelo menos 1, não inferior aos usos até agora, ou deixe em branco.",
+      "time": "Informe uma data e um horário válidos.",
+      "window": "O término deve ser depois do início.",
+      "ticketTypes": "Escolha entre os tipos de ingresso pagos deste evento.",
+      "notFound": "Este código não existe mais. Recarregue a página."
+    }
+  },
+  "team": {
+    "title": "Equipe",
+    "intro": "As pessoas que ajudam a organizar este evento. Cada uma entra com a própria conta.",
+    "loadFailed": "Não foi possível carregar a equipe. Tente novamente.",
+    "readOnly": "Apenas o proprietário e os coanfitriões podem convidar pessoas ou mudar funções.",
+    "unnamed": "Membro da equipe",
+    "you": "(você)",
+    "joined": "Entrou em {date}",
+    "roleLabel": "Função de {name}",
+    "changedToast": "{name} agora é {role}.",
+    "remove": "Remover",
+    "removeLabel": "Remover {name} da equipe",
+    "removeTitle": "Remover {name} da equipe?",
+    "removeBody": "A pessoa perde o acesso a este evento imediatamente. Você pode convidá-la de novo mais tarde.",
+    "removeConfirm": "Remover da equipe",
+    "removedToast": "{name} foi removido da equipe.",
+    "roles": {
+      "owner": {
+        "name": "Proprietário",
+        "help": "Criou o evento e pode fazer tudo, inclusive excluí-lo."
+      },
+      "admin": {
+        "name": "Coanfitrião",
+        "help": "Pode fazer tudo, exceto excluir o evento."
+      },
+      "checkin": {
+        "name": "Equipe de entrada",
+        "help": "Lê os ingressos na entrada. Nada mais."
+      },
+      "editor": {
+        "name": "Editor",
+        "help": "Edita detalhes, perguntas e imagens, e faz o check-in dos convidados."
+      },
+      "finance": {
+        "name": "Financeiro",
+        "help": "Vê as vendas, exporta convidados e faz reembolsos."
+      },
+      "viewer": {
+        "name": "Leitor",
+        "help": "Vê o evento e os convidados sem alterar nada."
+      }
+    },
+    "invite": {
+      "title": "Convidar alguém",
+      "email": "Endereço de e-mail",
+      "emailHint": "A pessoa aceita entrando com este e-mail.",
+      "role": "Função",
+      "moreRoles": "Mais funções",
+      "fewerRoles": "Menos funções",
+      "send": "Enviar convite",
+      "sentToast": "Convite enviado para {email}."
+    },
+    "pending": {
+      "title": "Convites pendentes",
+      "none": "Nenhum convite pendente.",
+      "expires": "Expira em {date}",
+      "invitedBy": "Convidado por {name}",
+      "resend": "Reenviar",
+      "resendLabel": "Reenviar o convite para {email}",
+      "resentToast": "Um novo convite foi enviado para {email}.",
+      "revoke": "Retirar",
+      "revokeLabel": "Retirar o convite para {email}",
+      "revokedToast": "O convite para {email} foi retirado."
+    },
+    "errors": {
+      "email": "Informe um endereço de e-mail válido.",
+      "role": "Escolha uma função.",
+      "inviteGone": "Este convite não está mais aberto. Recarregue a página."
+    }
+  },
+  "activity": {
+    "title": "Atividade",
+    "loadFailed": "Não foi possível carregar a atividade. Tente novamente.",
+    "filter": "Mostrar",
+    "kinds": {
+      "all": "Toda a atividade",
+      "event": "Alterações no evento",
+      "team": "Equipe",
+      "guest": "Check-ins",
+      "refund": "Reembolsos",
+      "images": "Imagens"
+    },
+    "empty": "Nada aconteceu ainda",
+    "noneOfKind": "Nada deste tipo nos registros carregados",
+    "noneOfKindHint": "Carregue mais para ver registros anteriores.",
+    "loadMore": "Carregar mais",
+    "someone": "Um membro da equipe",
+    "system": "G-ventZ",
+    "newDate": "Nova data: {date}",
+    "unknown": "<b>{actor}</b> · {action}",
+    "actions": {
+      "eventCreated": "<b>{actor}</b> criou o evento",
+      "eventEdited": "<b>{actor}</b> editou os detalhes do evento",
+      "eventRescheduled": "<b>{actor}</b> mudou a data e o horário",
+      "eventPublished": "<b>{actor}</b> publicou o evento",
+      "eventUnpublished": "<b>{actor}</b> despublicou o evento",
+      "eventCancelled": "<b>{actor}</b> cancelou o evento",
+      "teamInvited": "<b>{actor}</b> convidou {subject} como {role}",
+      "teamInviteRevoked": "<b>{actor}</b> retirou o convite para {subject}",
+      "teamInviteAccepted": "<b>{actor}</b> entrou na equipe como {role}",
+      "teamRoleChanged": "<b>{actor}</b> mudou a função de {subject} para {role}",
+      "teamMemberRemoved": "<b>{actor}</b> removeu {subject} da equipe",
+      "guestCheckedIn": "<b>{actor}</b> fez o check-in de um convidado",
+      "refundRequested": "<b>{actor}</b> iniciou um reembolso",
+      "refundProcessed": "<b>{actor}</b> concluiu um reembolso",
+      "imagesAdded": "<b>{actor}</b> adicionou uma imagem",
+      "imagesRemoved": "<b>{actor}</b> removeu uma imagem",
+      "imagesReordered": "<b>{actor}</b> reordenou as imagens"
+    },
+    "someoneElse": "um membro da equipe"
+  },
+  "invite": {
+    "metaTitle": "Convite para a equipe",
+    "title": "Entre na equipe do evento",
+    "unavailableTitle": "Convite indisponível",
+    "body": "Você foi convidado para ajudar a organizar um evento na G-ventZ. Aceite para entrar na equipe.",
+    "signedInAs": "Conectado como <b>{email}</b>.",
+    "accept": "Aceitar convite",
+    "switchAccount": "Trocar de conta",
+    "toHost": "Ir para seus eventos",
+    "wrongAccountHint": "Ao trocar, você sai desta conta aqui e volta para este convite.",
+    "problems": {
+      "wrong_account": "Este convite é para outro endereço de e-mail. Entre com o e-mail convidado para aceitá-lo.",
+      "gone": "Este convite expirou, foi retirado ou já foi usado. Peça um novo ao anfitrião.",
+      "not_found": "Este link de convite não é válido. Verifique se você abriu o link completo do e-mail.",
+      "failed": "Não foi possível aceitar o convite. Tente novamente."
+    }
   }
 }

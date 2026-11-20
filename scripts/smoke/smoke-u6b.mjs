@@ -52,7 +52,7 @@ const guest2 = await signIn("guest2");
 const guest3 = await signIn("guest3");
 
 async function createEvent(title, extra = []) {
-  const res = await form(host, "createEvent", "/events/new", [
+  const res = await form(host, "createEvent", "/host/events/new", [
     ["title", title], ["category", "Music"], ["date", "2027-07-10"], ["time", "19:00"], ["country_code", "NG"], ["region", "Lagos"], ["venue", "Eko Hotel"],
     ["tier_name", "Regular"], ["tier_qty", ""], ["per_buyer_limit", "4"], ["show_attendee_count", "on"], ["intent", "publish"], ...extra,
   ], true);
@@ -160,7 +160,7 @@ r = await form(host, "deleteEvent", `/dashboard/${c.id}`, [["event_id", c.id], [
 ok("delete event C", redirectOf(r) === "/dashboard?deleted=1");
 
 // ---- Venue search without a Google key on the API ----
-const places = await (await fetch(`${SITE}/events/new`, { method: "POST", body: await encodeReply(["eko hotel", "NG", "", "session-12345"]), headers: { cookie: host, "next-action": actions.searchPlaces, origin: SITE, accept: "text/x-component", "content-type": "text/plain;charset=UTF-8" } })).text();
+const places = await (await fetch(`${SITE}/host/events/new`, { method: "POST", body: await encodeReply(["eko hotel", "NG", "", "session-12345"]), headers: { cookie: host, "next-action": actions.searchPlaces, origin: SITE, accept: "text/x-component", "content-type": "text/plain;charset=UTF-8" } })).text();
 ok("venue search answers through the API (not configured locally)", places.includes('"error":"not_configured"'));
 
 // ---- Home, Discover, page refresh, headers ----

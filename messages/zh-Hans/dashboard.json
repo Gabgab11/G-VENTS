@@ -44,10 +44,6 @@
     "sellTitle": "出售付费门票",
     "reason": "原因：{reason}"
   },
-  "themePanel": {
-    "title": "您的控制台风格",
-    "hint": "选择控制台的外观。只有您能看到。"
-  },
   "themes": {
     "minimal": "简约",
     "sunset": "日落",
@@ -60,13 +56,145 @@
     "lavender": "薰衣草",
     "christmas": "圣诞"
   },
+  "events": {
+    "title": "活动",
+    "create": "创建活动",
+    "filtersLabel": "筛选活动",
+    "listLabel": "您的活动",
+    "filter": {
+      "all": "全部",
+      "upcoming": "即将举行",
+      "drafts": "草稿",
+      "past": "已结束"
+    },
+    "online": "线上",
+    "noPlace": "地点待定",
+    "sold": "已售",
+    "revenue": "收入",
+    "view": "查看页面",
+    "viewLabel": "查看 {title} 的页面",
+    "scan": "扫码",
+    "scanLabel": "为 {title} 扫描门票",
+    "moreLabel": "{title} 的更多操作",
+    "manage": "管理",
+    "edit": "编辑详情",
+    "empty": {
+      "all": {
+        "title": "还没有活动",
+        "body": "创建您的第一个活动，然后分享链接以吸引来宾。"
+      },
+      "upcoming": {
+        "title": "没有即将举行的活动",
+        "body": "已发布且尚未结束的活动会显示在这里。"
+      },
+      "drafts": {
+        "title": "没有草稿",
+        "body": "已保存但未发布的活动会显示在这里。"
+      },
+      "past": {
+        "title": "没有已结束的活动",
+        "body": "已结束或已取消的活动会显示在这里。"
+      }
+    }
+  },
+  "workspace": {
+    "back": "活动",
+    "view": "查看页面",
+    "scan": "扫描门票",
+    "more": "更多操作",
+    "edit": "编辑详情",
+    "cancel": "取消活动…",
+    "delete": "删除活动…"
+  },
+  "quick": {
+    "title": "发布与可见性",
+    "draftTitle": "此活动为草稿",
+    "draftHint": "只有您的团队可以看到。发布后，来宾即可打开活动页面。",
+    "publish": "发布",
+    "private": "私密活动",
+    "privateHint": "不在“发现”中显示。只有持有链接的人可以打开。",
+    "showCount": "显示参加人数",
+    "showCountHint": "来宾可在活动页面上看到有多少人参加。"
+  },
+  "details": {
+    "basics": "基本信息",
+    "title": "活动名称",
+    "description": "活动简介",
+    "category": "类别",
+    "when": "日期和时间",
+    "startsAt": "开始",
+    "endsAt": "结束",
+    "endsAtHint": "可选。如果没有固定结束时间，请留空。",
+    "timeZone": "时区",
+    "timeZoneSearch": "搜索城市或时区",
+    "timeZoneNone": "没有匹配的时区",
+    "timeZoneHint": "时间以活动所在时区为准。更改时区时，上面显示的时间保持不变。",
+    "rescheduleNote": "{count, plural, other {{count, number, ::group-off} 位来宾已有门票}}。更改活动时间会记录为改期；系统不会自动给来宾发送邮件，请向他们发送公告。",
+    "tickets": "门票类型",
+    "pricesIn": "价格单位：{currency}",
+    "willRemove": "保存后将删除 {name}。",
+    "undo": "撤销",
+    "newType": "新门票类型 {number}",
+    "untitled": "未命名门票类型",
+    "sold": "{count, plural, other {已售 {count, number, ::group-off} 张}}",
+    "removeLabel": "删除 {name}",
+    "remove": "删除",
+    "typeName": "名称",
+    "quantity": "数量",
+    "quantityMin": "至少为 {count, number, ::group-off}，即已售数量。留空表示不限。",
+    "quantityHint": "留空表示不限。",
+    "price": "价格（{currency}）",
+    "priceLocked": "已锁定：已有门票以此价格售出。",
+    "priceHint": "免费门票请填 0。",
+    "addType": "添加门票类型",
+    "saveHint": "基本信息、日期和门票类型会一起保存。",
+    "save": "保存更改",
+    "confirmTitle": "要更改此活动的时间吗？",
+    "confirmBody": "{count, plural, other {{count, number, ::group-off} 位来宾已有门票}}。新日期将记录为改期。系统不会自动给来宾发送邮件，请随后向他们发送公告。",
+    "close": "关闭",
+    "confirmCancel": "保留当前日期",
+    "confirmMove": "更改活动时间",
+    "where": "场地",
+    "errors": {
+      "forbidden": "您没有编辑此活动的权限。",
+      "failed": "无法保存更改。请重试。",
+      "title_length": "活动名称须为 3 至 140 个字符。",
+      "category": "请从列表中选择类别。",
+      "starts_at": "请输入开始日期和时间。",
+      "ends_at": "请输入有效的结束日期和时间，或留空。",
+      "ends_before_start": "结束时间必须晚于开始时间。",
+      "time_zone": "请从列表中选择时区。",
+      "ticket_name": "请为每种门票类型填写名称，最多 80 个字符。",
+      "ticket_quantity": "数量须为从 1 开始的整数，或留空表示不限。",
+      "ticket_quantity_below_sold": "数量不能少于已售出的门票数。",
+      "ticket_price": "请以数字输入价格，例如 5000 或 12.50。",
+      "ticket_price_locked": "该价格已锁定，因为已有门票以此价格售出。",
+      "ticket_has_sales": "已有销售的门票类型无法删除。",
+      "ticket_count": "一个活动需要 1 至 20 种门票类型。",
+      "ticket_group_size": "团体票须可供 2 至 20 人入场。",
+      "ticket_group_locked": "已有销售的票种无法更改团体人数。请改为添加新的票种。",
+      "ticket_description": "票种描述最多 300 个字符。"
+    },
+    "typeDescription": "描述（可选）",
+    "typeDescriptionCount": "{count}/{max} 个字符",
+    "typeDescriptionPlaceholder": "包含哪些内容，例如靠近舞台的四人桌",
+    "group": "团体票",
+    "groupHelp": "一次购买可供多人入场，例如一张桌位。",
+    "groupLocked": "此票种已有销售，团体人数无法更改。请改为添加新的票种。",
+    "admits": "可入场多少人？",
+    "admitsHint": "{min} 至 {max} 人。数量按人数计算：10 张四人桌即为 40。"
+  },
   "event": {
     "tabs": {
       "overview": "概览",
       "guests": "来宾",
+      "details": "详情",
       "registration": "报名",
       "announcements": "公告",
-      "settings": "设置"
+      "settings": "设置",
+      "promote": "推广",
+      "team": "团队",
+      "activity": "动态"
     },
     "tabsLabel": "活动栏目",
     "youAre": "您的角色：{role, select, owner {所有者} admin {管理员} editor {编辑} checkin {签到人员} finance {财务} viewer {查看者} other {{role}}}",
@@ -78,6 +206,21 @@
     "waitlisted": "候补名单",
     "checkedIn": "已签到",
     "capacity": "容量",
+    "statsLabel": "活动数据",
+    "sold": "已售门票",
+    "soldOf": "{sold} / {capacity}",
+    "soldContext": "{pending, number, ::group-off} 人等待审批 · {waitlisted, number, ::group-off} 人在候补名单",
+    "gross": "销售总额",
+    "grossContext": "{count, plural, other {{count, number, ::group-off} 笔已付款订单}}",
+    "noSales": "还没有付费销售",
+    "checkedInContext": "共 {confirmed, number, ::group-off} 人已确认",
+    "byDay": "每日销售",
+    "byDayNone": "还没有销售",
+    "orders": "{count, plural, other {{count, number, ::group-off} 笔订单}}",
+    "recentOrders": "最新订单",
+    "guest": "来宾",
+    "tickets": "{count, plural, other {{count, number, ::group-off} 张门票}}",
+    "free": "免费",
     "shareTitle": "分享您的活动",
     "shareHint": "将此链接发送给任何人。来宾在活动页面上领取门票。",
     "registration": "报名",
@@ -141,6 +284,10 @@
     "checkInLabel": "为 {name} 签到",
     "checkIn": "签到",
     "checkedIn": "已签到",
+    "tableCaption": "来宾名单",
+    "colGuest": "来宾",
+    "colTicket": "门票",
+    "colActions": "操作",
     "disputed": "付款有争议",
     "pagesLabel": "来宾名单分页",
     "status": {
@@ -155,9 +302,29 @@
     },
     "refund": {
       "summary": "退款",
-      "body": "{name} 将退回 <b>{amount}</b>。门票立即失效，名额重新开放销售。G-ventZ 的费用和 Paystack 的手续费不予退还；您的份额将从之后的销售中扣除。",
+      "openLabel": "为 {name} 的门票退款",
+      "title": "为 {name} 退款？",
+      "guestLabel": "来宾",
+      "ticketLabel": "门票",
+      "amountLabel": "退还金额",
+      "whatTicket": "门票会立即失效，其名额会重新开放销售。",
+      "whatMoney": "Paystack 会将 {amount} 退回来宾付款时使用的银行卡或账户。银行通常需要几个工作日才会显示。",
+      "whatFees": "G-ventZ 的服务费和 Paystack 的手续费不予退还。您承担的退款部分将从您之后的销售中扣除。",
       "confirm": "向 {name} 退款 {amount}",
-      "button": "退票"
+      "button": "退款",
+      "twoStepTitle": "退款需要两步登录",
+      "twoStepText": "退款涉及资金，请先通过两步登录确认是您本人。之后您会直接回到 {name} 的退款页面。",
+      "twoStepButton": "确认是您本人",
+      "providerReason": "Paystack 给出的原因：{reason}",
+      "started": "已为 {name} 发起退款",
+      "startedText": "该门票已失效。来宾将通过 Paystack 收到退款。"
+    },
+    "colContact": "购票人联系方式",
+    "sentTo": "已发送至 <b>{email}</b>",
+    "gender": {
+      "female": "女",
+      "male": "男",
+      "unspecified": "不愿透露"
     }
   },
   "registration": {
@@ -201,6 +368,10 @@
     "sendsLeft": "本活动剩余公告 <b>{left} / {allowed}</b>",
     "emailsLeft": "本月剩余公告邮件 <b>{left} / {allowed}</b>",
     "resets": "（{date} 重置）",
+    "sendsLabel": "此活动剩余公告数",
+    "emailsLabel": "本月剩余邮件数",
+    "leftOf": "{left} / {allowed}",
+    "sendsContext": "按活动计算，须在活动开始前发送。",
     "countRule": "每位来宾每条公告计一次。门票邮件不计入。",
     "started": "本活动已开始，无法再发送公告。",
     "newTitle": "新公告",
@@ -216,12 +387,81 @@
     "draft": "草稿",
     "sent": "已发送",
     "sending": "发送中",
-    "emailed": "已发送邮件 {sent} / {total}"
+    "emailed": "已发送邮件 {sent} / {total}",
+    "loadFailed": "无法加载公告，请重试。",
+    "template": "模板",
+    "templates": {
+      "blank": {
+        "name": "空白消息",
+        "help": "仅包含您的主题和内容。"
+      },
+      "reminder": {
+        "name": "提醒",
+        "help": "开头注明活动的日期和时间。"
+      },
+      "reschedule": {
+        "name": "改期",
+        "help": "开头注明活动的新日期和时间。"
+      },
+      "lineup": {
+        "name": "阵容消息",
+        "help": "引出关于活动安排的最新消息。"
+      },
+      "thanks": {
+        "name": "致谢",
+        "help": "感谢来宾到场。活动开始后也可发送。"
+      },
+      "feedback": {
+        "name": "反馈",
+        "help": "询问来宾的感受。活动开始后也可发送。"
+      }
+    },
+    "messageHintTemplate": "模板会在您的内容前添加一行；您的文字将按原样发送。",
+    "segmentOption": "{label}（{count, number}）",
+    "recipients": "{count, plural, other {将有 # 位来宾收到此消息}}",
+    "sendButton": "发送…",
+    "draftOnly": "只有所有者和联合主办方可以发送。请保存草稿，由他们发送。",
+    "draftSavedToast": "草稿已保存。",
+    "sentToast": "{count, plural, other {正在发送给 # 位来宾。}}",
+    "sentOn": "发送于 {date}",
+    "notSent": "{count, plural, other {# 封未发送}}",
+    "confirmTitle": "{count, plural, other {要发送给 # 位来宾吗？}}",
+    "confirmBody": "这将使用本活动剩余 {sends, number} 次公告中的 1 次，以及本月剩余 {emails, number} 封邮件中的 {count, number} 封。发送后无法撤销。",
+    "confirmSend": "立即发送",
+    "blocks": {
+      "draft": "请先发布活动，再发送公告。",
+      "started": "活动已开始。现在只能发送“致谢”和“反馈”模板。",
+      "sends": "您已发送本活动允许的全部公告。",
+      "emails": "您本月的公告邮件已全部用完。",
+      "quota": "此受众人数超过您本月剩余的邮件数。请选择较小的受众。",
+      "empty": "此受众中还没有人可以接收邮件。"
+    },
+    "errors": {
+      "subject": "请添加主题。",
+      "body": "请添加内容。",
+      "template": "请选择一个模板。"
+    },
+    "preview": {
+      "title": "预览",
+      "fromHost": "{title} 主办方的消息",
+      "emptySubject": "您的主题",
+      "emptyBody": "您的内容将显示在这里。",
+      "lead": {
+        "reminder": "{title} 即将举行：{date} {time}。",
+        "reschedule": "{title} 已改期至：{date} {time}。",
+        "lineup": "关于 {title}（{date}）阵容的最新消息。",
+        "thanks": "感谢您参加 {title}。",
+        "feedback": "您觉得 {title} 怎么样？主办方希望听取您的意见。"
+      },
+      "footer": "您收到此邮件，是因为您在 G-ventZ 上报名参加了 {title}。<link>停止接收此活动的公告</link>。",
+      "note": "每位来宾都会收到以其本人语言呈现的 G-ventZ 文字；您的主题和内容将按原样发送。"
+    }
   },
   "settings": {
     "styleTitle": "页面风格",
     "styleHint": "来宾在活动页面上看到的颜色。",
     "saveStyle": "保存风格",
+    "picturesTitle": "图片",
     "flyerTitle": "活动海报",
     "flyerHint": "显示在活动页面和“发现”中。请使用 JPG、PNG 或 WebP，最大 5 MB。竖版或方形效果最佳。",
     "flyerAlt": "活动海报",
@@ -239,6 +479,8 @@
     "saveDetails": "保存详情",
     "venue": "场地",
     "online": "线上",
+    "policiesTitle": "来宾政策",
+    "savePolicies": "保存政策",
     "cancelTitle": "取消活动",
     "cancelled": "此活动已取消。报名已关闭。",
     "cancelHint": "取消后将关闭报名，并在“发现”中隐藏该活动。已报名的来宾不会自动退款。",
@@ -272,6 +514,9 @@
       "announcementSaved": "已保存为草稿。准备好后即可发送。",
       "announcementSending": "正在发送。来宾将在几分钟内收到。",
       "detailsSaved": "活动详情已保存",
+      "rescheduled": "活动时间已更改，并记录为改期。请向来宾发送关于新日期的公告。",
+      "nothingChanged": "没有需要保存的内容。详情未更改。",
+      "policiesSaved": "来宾政策已保存",
       "flyerUploaded": "海报已上传",
       "flyerRemoved": "海报已移除。活动重新显示其配色风格",
       "eventCancelled": "活动已取消。报名已关闭",
@@ -334,7 +579,8 @@
     },
     "ticketNumber": "第 {number} 张，共 {total} 张",
     "usedAt": "{who} · {time}",
-    "usedAtBy": "{who} · {time}，由 {name} 签到"
+    "usedAtBy": "{who} · {time}，由 {name} 签到",
+    "groupOf": "{count} 人团体票"
   },
   "csv": {
     "header": {
@@ -346,10 +592,233 @@
       "type": "票种",
       "status": "状态",
       "registeredAt": "报名时间",
-      "checkedInAt": "签到时间"
+      "checkedInAt": "签到时间",
+      "phone": "购票人电话",
+      "gender": "购票人性别",
+      "recipient": "收票人邮箱"
     },
     "forbidden": "只有所有者、管理员和财务人员可以导出来宾名单。",
     "notFound": "未找到",
     "failed": "导出失败，请重试。"
+  },
+  "tools": {
+    "close": "关闭",
+    "cancel": "取消"
+  },
+  "promote": {
+    "title": "折扣码",
+    "intro": "折扣码可降低付费门票的价格。手续费按折后价格计算。",
+    "newCode": "新建折扣码",
+    "loadFailed": "无法加载折扣码，请重试。",
+    "draftNote": "活动发布后折扣码才会生效。",
+    "noPaid": "尚无付费门票",
+    "noPaidHint": "折扣码适用于付费门票。请先在“详情”中添加付费门票类型。",
+    "empty": "尚无折扣码",
+    "emptyHint": "创建折扣码并分享其链接：来宾打开链接时会自动应用折扣。",
+    "free": "免费门票",
+    "allTickets": "所有付费门票",
+    "removedType": "已删除的门票类型",
+    "valid": {
+      "always": "始终有效",
+      "from": "自 {date} 起",
+      "until": "至 {date}",
+      "between": "{start} – {end}"
+    },
+    "cols": {
+      "code": "折扣码",
+      "discount": "折扣",
+      "used": "已使用",
+      "valid": "有效期",
+      "status": "状态",
+      "actions": "操作"
+    },
+    "usedOf": "{uses, number} / {max, number}",
+    "usedNoLimit": "{uses, number} · 不限次数",
+    "states": {
+      "active": "生效中",
+      "paused": "已暂停",
+      "scheduled": "待生效",
+      "ended": "已结束",
+      "usedUp": "已用完"
+    },
+    "menuLabel": "{code} 的操作",
+    "copyLink": "复制分享链接",
+    "copied": "链接已复制",
+    "copiedHint": "打开此链接的来宾将自动使用 {code}。",
+    "copyFailed": "请复制此链接",
+    "pause": "暂停",
+    "resume": "恢复",
+    "edit": "编辑",
+    "pausedToast": "{code} 已暂停。",
+    "resumedToast": "{code} 已恢复生效。",
+    "createdToast": "已创建 {code}。",
+    "savedToast": "已保存对 {code} 的更改。",
+    "dialog": {
+      "newTitle": "新建折扣码",
+      "editTitle": "编辑 {code}",
+      "create": "创建折扣码",
+      "save": "保存更改",
+      "locked": "此折扣码已被使用，只能更改使用上限和结束时间。",
+      "code": "折扣码",
+      "codeHint": "3 至 32 个字母、数字、- 或 _。来宾输入时不区分大小写。",
+      "kind": "折扣方式",
+      "kinds": {
+        "percent": "按百分比优惠",
+        "fixed": "固定金额优惠",
+        "free": "免费门票"
+      },
+      "valuePercent": "百分比（1 至 100）",
+      "valueFixed": "每张门票优惠金额（{currency}）",
+      "valueFixedHint": "以 {currency} 整数单位填写。",
+      "maxUses": "使用上限",
+      "maxUsesHint": "可使用的订单数。留空表示不限。",
+      "maxUsesUsed": "目前已使用 {uses, number} 次。留空表示不限。",
+      "startsAt": "开始时间",
+      "startsHint": "留空则立即开始。",
+      "endsAt": "结束时间",
+      "endsHint": "留空则一直有效。",
+      "zone": "时间为活动所在时区：{zone}。",
+      "ticketTypes": "适用于",
+      "ticketTypesHint": "不选择则适用于所有付费门票类型。"
+    },
+    "errors": {
+      "code": "请使用 3 至 32 个字母、数字、- 或 _。",
+      "kind": "请选择折扣方式。",
+      "percent": "请输入 1 至 100 之间的百分比。",
+      "fixed": "请输入大于 0 的整数金额。",
+      "maxUses": "请输入不小于 1 且不低于已使用次数的整数，或留空。",
+      "time": "请输入有效的日期和时间。",
+      "window": "结束时间必须晚于开始时间。",
+      "ticketTypes": "请从本活动的付费门票类型中选择。",
+      "notFound": "此折扣码已不存在，请刷新页面。"
+    }
+  },
+  "team": {
+    "title": "团队",
+    "intro": "协助举办本活动的成员。每位成员都使用自己的账号登录。",
+    "loadFailed": "无法加载团队，请重试。",
+    "readOnly": "只有所有者和联合主办方可以邀请成员或更改角色。",
+    "unnamed": "团队成员",
+    "you": "（您）",
+    "joined": "加入于 {date}",
+    "roleLabel": "{name} 的角色",
+    "changedToast": "{name} 现在是{role}。",
+    "remove": "移除",
+    "removeLabel": "将 {name} 移出团队",
+    "removeTitle": "要将 {name} 移出团队吗？",
+    "removeBody": "对方将立即失去本活动的访问权限。之后您可以再次邀请。",
+    "removeConfirm": "移出团队",
+    "removedToast": "已将 {name} 移出团队。",
+    "roles": {
+      "owner": {
+        "name": "所有者",
+        "help": "创建了本活动，可执行所有操作，包括删除活动。"
+      },
+      "admin": {
+        "name": "联合主办方",
+        "help": "除删除活动外，可执行所有操作。"
+      },
+      "checkin": {
+        "name": "检票人员",
+        "help": "在入口扫描门票，仅此而已。"
+      },
+      "editor": {
+        "name": "编辑",
+        "help": "编辑详情、问题和图片，并为来宾签到。"
+      },
+      "finance": {
+        "name": "财务",
+        "help": "查看销售、导出来宾并办理退款。"
+      },
+      "viewer": {
+        "name": "查看者",
+        "help": "查看活动及其来宾，不做任何更改。"
+      }
+    },
+    "invite": {
+      "title": "邀请成员",
+      "email": "电子邮箱",
+      "emailHint": "对方需使用此邮箱登录以接受邀请。",
+      "role": "角色",
+      "moreRoles": "更多角色",
+      "fewerRoles": "收起角色",
+      "send": "发送邀请",
+      "sentToast": "邀请已发送至 {email}。"
+    },
+    "pending": {
+      "title": "待接受的邀请",
+      "none": "没有待接受的邀请。",
+      "expires": "{date} 过期",
+      "invitedBy": "邀请人：{name}",
+      "resend": "重新发送",
+      "resendLabel": "重新向 {email} 发送邀请",
+      "resentToast": "已向 {email} 发送新的邀请。",
+      "revoke": "撤回",
+      "revokeLabel": "撤回发给 {email} 的邀请",
+      "revokedToast": "已撤回发给 {email} 的邀请。"
+    },
+    "errors": {
+      "email": "请输入有效的电子邮箱。",
+      "role": "请选择角色。",
+      "inviteGone": "此邀请已失效，请刷新页面。"
+    }
+  },
+  "activity": {
+    "title": "动态",
+    "loadFailed": "无法加载动态，请重试。",
+    "filter": "显示",
+    "kinds": {
+      "all": "全部动态",
+      "event": "活动变更",
+      "team": "团队",
+      "guest": "签到",
+      "refund": "退款",
+      "images": "图片"
+    },
+    "empty": "暂无动态",
+    "noneOfKind": "已加载的记录中没有此类动态",
+    "noneOfKindHint": "加载更多以查看更早的记录。",
+    "loadMore": "加载更多",
+    "someone": "一位团队成员",
+    "system": "G-ventZ",
+    "newDate": "新时间：{date}",
+    "unknown": "<b>{actor}</b> · {action}",
+    "actions": {
+      "eventCreated": "<b>{actor}</b> 创建了活动",
+      "eventEdited": "<b>{actor}</b> 编辑了活动详情",
+      "eventRescheduled": "<b>{actor}</b> 更改了日期和时间",
+      "eventPublished": "<b>{actor}</b> 发布了活动",
+      "eventUnpublished": "<b>{actor}</b> 取消发布了活动",
+      "eventCancelled": "<b>{actor}</b> 取消了活动",
+      "teamInvited": "<b>{actor}</b> 邀请 {subject} 担任{role}",
+      "teamInviteRevoked": "<b>{actor}</b> 撤回了发给 {subject} 的邀请",
+      "teamInviteAccepted": "<b>{actor}</b> 以{role}身份加入了团队",
+      "teamRoleChanged": "<b>{actor}</b> 将 {subject} 的角色改为{role}",
+      "teamMemberRemoved": "<b>{actor}</b> 将 {subject} 移出了团队",
+      "guestCheckedIn": "<b>{actor}</b> 为一位来宾办理了签到",
+      "refundRequested": "<b>{actor}</b> 发起了一笔退款",
+      "refundProcessed": "<b>{actor}</b> 完成了一笔退款",
+      "imagesAdded": "<b>{actor}</b> 添加了一张图片",
+      "imagesRemoved": "<b>{actor}</b> 删除了一张图片",
+      "imagesReordered": "<b>{actor}</b> 调整了图片顺序"
+    },
+    "someoneElse": "一位团队成员"
+  },
+  "invite": {
+    "metaTitle": "团队邀请",
+    "title": "加入活动团队",
+    "unavailableTitle": "邀请不可用",
+    "body": "您受邀协助举办 G-ventZ 上的一场活动。接受邀请即可加入其团队。",
+    "signedInAs": "当前登录账号：<b>{email}</b>。",
+    "accept": "接受邀请",
+    "switchAccount": "切换账号",
+    "toHost": "前往您的活动",
+    "wrongAccountHint": "切换账号会先在此退出登录，然后带您回到此邀请。",
+    "problems": {
+      "wrong_account": "此邀请发给的是另一个邮箱。请使用受邀邮箱登录后接受。",
+      "gone": "此邀请已过期、已撤回或已被使用。请向主办方索取新的邀请。",
+      "not_found": "此邀请链接无效。请确认您打开的是邮件中的完整链接。",
+      "failed": "无法接受邀请，请重试。"
+    }
   }
 }

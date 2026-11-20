@@ -1,6 +1,6 @@
 import { api, data } from "@/lib/api/server";
 import { ApiError } from "@/lib/api/problem";
-import { documentFrom } from "@/app/(site)/account/payouts/application-input";
+import { documentFrom } from "@/app/(site)/host/payouts/application-input";
 import { isSameOrigin } from "@/lib/same-origin";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 

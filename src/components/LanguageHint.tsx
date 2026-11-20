@@ -1,10 +1,13 @@
 "use client";
 
+import { loadSession } from "@/lib/use-session";
+
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { setLanguage } from "@/i18n/actions";
 import { LANGUAGE_INFO, isEnabled, type Locale } from "@/i18n/languages";
+import { Button } from "@/design";
 
 const DISMISSED = "gventz_lang_hint_dismissed";
 
@@ -25,10 +28,7 @@ export default function LanguageHint() {
       // Storage blocked: show the hint; dismissing just won't be remembered.
     }
     let live = true;
-    fetch("/api/session", { cache: "no-store", credentials: "same-origin" })
-      .then((r) => (r.ok ? r.json() : {}))
-      .then((d: { language?: string }) => { if (live && isEnabled(d.language) && d.language !== current) setPreferred(d.language); })
-      .catch(() => {});
+    void loadSession().then((d) => { if (live && isEnabled(d.language) && d.language !== current) setPreferred(d.language); });
     return () => { live = false; };
   }, [current]);
 
@@ -49,7 +49,7 @@ export default function LanguageHint() {
   return (
     <div className="lang-hint" role="region" aria-label={t("label")} data-testid="language-hint">
       <span lang={LANGUAGE_INFO[preferred].hreflang}>{t("hint", { name })}</span>
-      <button type="button" className="btn-white" onClick={switchTo} data-testid="language-hint-switch">{t("hintSwitch", { name })}</button>
+      <Button variant="primary" size="sm" onClick={switchTo} data-testid="language-hint-switch">{t("hintSwitch", { name })}</Button>
       <button type="button" className="link-btn" onClick={dismiss} data-testid="language-hint-dismiss">{t("hintDismiss")}</button>
     </div>
   );

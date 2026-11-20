@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { useActionState, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Button } from "@/design";
 import { payOrder, type PayState } from "./actions";
 
 const POLL_MS = 3_000;
@@ -56,7 +57,7 @@ export function PayButton({ orderId, label }: { orderId: string; label: string }
     <form action={action} className="stack">
       <input type="hidden" name="order_id" value={orderId} />
       {state?.error && <p className="error" role="alert">{state.error}</p>}
-      <button className="btn-white pay-cta" type="submit" disabled={pending}>{pending ? t("opening") : label}</button>
+      <Button variant="primary" className="pay-cta" type="submit" disabled={pending}>{pending ? t("opening") : label}</Button>
     </form>
   );
 }

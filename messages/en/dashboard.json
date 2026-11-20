@@ -44,10 +44,6 @@
     "sellTitle": "Sell paid tickets",
     "reason": "Reason: {reason}"
   },
-  "themePanel": {
-    "title": "Your dashboard style",
-    "hint": "Choose how your dashboard looks. Only you see this."
-  },
   "themes": {
     "minimal": "Minimal",
     "sunset": "Sunset",
@@ -60,16 +56,148 @@
     "lavender": "Lavender",
     "christmas": "Christmas"
   },
+  "events": {
+    "title": "Events",
+    "create": "Create event",
+    "filtersLabel": "Filter events",
+    "listLabel": "Your events",
+    "filter": {
+      "all": "All",
+      "upcoming": "Upcoming",
+      "drafts": "Drafts",
+      "past": "Past"
+    },
+    "online": "Online",
+    "noPlace": "Location to be announced",
+    "sold": "Sold",
+    "revenue": "Revenue",
+    "view": "View page",
+    "viewLabel": "View the page for {title}",
+    "scan": "Scan",
+    "scanLabel": "Scan tickets for {title}",
+    "moreLabel": "More actions for {title}",
+    "manage": "Manage",
+    "edit": "Edit details",
+    "empty": {
+      "all": {
+        "title": "No events yet",
+        "body": "Create your first event, then share its link to get guests."
+      },
+      "upcoming": {
+        "title": "No upcoming events",
+        "body": "Published events that haven't ended yet appear here."
+      },
+      "drafts": {
+        "title": "No drafts",
+        "body": "Events you've saved without publishing appear here."
+      },
+      "past": {
+        "title": "No past events",
+        "body": "Events that have ended or were cancelled appear here."
+      }
+    }
+  },
+  "workspace": {
+    "back": "Events",
+    "view": "View page",
+    "scan": "Scan tickets",
+    "more": "More actions",
+    "edit": "Edit details",
+    "cancel": "Cancel event…",
+    "delete": "Delete event…"
+  },
+  "quick": {
+    "title": "Publishing and visibility",
+    "draftTitle": "This event is a draft",
+    "draftHint": "Only your team can see it. Publish it to open the event page to guests.",
+    "publish": "Publish",
+    "private": "Private event",
+    "privateHint": "Hidden from Discover. Only people with the link can open it.",
+    "showCount": "Show attendee count",
+    "showCountHint": "Guests see how many people are going on the event page."
+  },
+  "details": {
+    "basics": "Basics",
+    "title": "Event name",
+    "description": "About this event",
+    "category": "Category",
+    "when": "Date and time",
+    "startsAt": "Starts",
+    "endsAt": "Ends",
+    "endsAtHint": "Optional. Leave blank if there is no set end time.",
+    "timeZone": "Time zone",
+    "timeZoneSearch": "Search for a city or time zone",
+    "timeZoneNone": "No matching time zone",
+    "timeZoneHint": "Times are in the event's time zone. Changing the zone keeps the times shown above.",
+    "rescheduleNote": "{count, plural, one {{count, number, ::group-off} guest has tickets} other {{count, number, ::group-off} guests have tickets}}. Moving the event records it as rescheduled; guests aren't emailed automatically, so send them an announcement.",
+    "tickets": "Ticket types",
+    "pricesIn": "Prices in {currency}",
+    "willRemove": "{name} will be removed when you save.",
+    "undo": "Undo",
+    "newType": "New ticket type {number}",
+    "untitled": "Untitled ticket type",
+    "sold": "{count, plural, other {{count, number, ::group-off} sold}}",
+    "removeLabel": "Remove {name}",
+    "remove": "Remove",
+    "typeName": "Name",
+    "quantity": "Quantity",
+    "quantityMin": "At least {count, number, ::group-off}, the number already sold. Leave blank for unlimited.",
+    "quantityHint": "Leave blank for unlimited.",
+    "price": "Price ({currency})",
+    "priceLocked": "Locked: tickets already sold at this price.",
+    "priceHint": "Use 0 for free tickets.",
+    "addType": "Add a ticket type",
+    "saveHint": "The basics, date and ticket types are saved together.",
+    "save": "Save changes",
+    "confirmTitle": "Move this event?",
+    "confirmBody": "{count, plural, one {{count, number, ::group-off} guest has tickets} other {{count, number, ::group-off} guests have tickets}}. The new date is recorded as a reschedule. Guests aren't emailed automatically, so send them an announcement afterwards.",
+    "close": "Close",
+    "confirmCancel": "Keep the current date",
+    "confirmMove": "Move the event",
+    "where": "Venue",
+    "errors": {
+      "forbidden": "You don't have permission to edit this event.",
+      "failed": "The changes couldn't be saved. Please try again.",
+      "title_length": "Event name must be 3 to 140 characters.",
+      "category": "Choose a category from the list.",
+      "starts_at": "Enter a start date and time.",
+      "ends_at": "Enter a valid end date and time, or leave it blank.",
+      "ends_before_start": "The end must be after the start.",
+      "time_zone": "Choose a time zone from the list.",
+      "ticket_name": "Give every ticket type a name of up to 80 characters.",
+      "ticket_quantity": "Quantity must be a whole number from 1, or blank for unlimited.",
+      "ticket_quantity_below_sold": "A quantity can't be lower than the number of tickets already sold.",
+      "ticket_price": "Enter prices as numbers, such as 5000 or 12.50.",
+      "ticket_price_locked": "That price is locked because tickets have already been sold at it.",
+      "ticket_has_sales": "A ticket type with sales can't be removed.",
+      "ticket_count": "An event needs 1 to 20 ticket types.",
+      "ticket_group_size": "A group ticket must admit 2 to 20 people.",
+      "ticket_group_locked": "A ticket type with sales keeps its group size. Add a new ticket type instead.",
+      "ticket_description": "A ticket description can be up to 300 characters."
+    },
+    "typeDescription": "Description (optional)",
+    "typeDescriptionCount": "{count}/{max} characters",
+    "typeDescriptionPlaceholder": "What's included, such as a table for four near the stage",
+    "group": "Group ticket",
+    "groupHelp": "One purchase admits several people, such as a table.",
+    "groupLocked": "This ticket type has sales, so its group size can't change. Add a new ticket type instead.",
+    "admits": "Admits how many people?",
+    "admitsHint": "From {min} to {max}. The quantity counts people, so 10 tables of 4 is 40."
+  },
   "event": {
     "tabs": {
       "overview": "Overview",
       "guests": "Guests",
+      "details": "Details",
       "registration": "Registration",
       "announcements": "Announcements",
-      "settings": "Settings"
+      "settings": "Settings",
+      "promote": "Promote",
+      "team": "Team",
+      "activity": "Activity"
     },
     "tabsLabel": "Event sections",
-    "youAre": "You are {role, select, owner {owner} admin {admin} editor {editor} checkin {checkin} finance {finance} viewer {viewer} other {{role}}}",
+    "youAre": "Your role: {role, select, owner {owner} admin {co-host} editor {editor} checkin {door staff} finance {finance} viewer {viewer} other {{role}}}",
     "scan": "Scan tickets at the door"
   },
   "overview": {
@@ -78,6 +206,21 @@
     "waitlisted": "Waiting list",
     "checkedIn": "Checked in",
     "capacity": "Capacity",
+    "statsLabel": "Event figures",
+    "sold": "Tickets sold",
+    "soldOf": "{sold} of {capacity}",
+    "soldContext": "{pending, number, ::group-off} waiting for approval · {waitlisted, number, ::group-off} on the waiting list",
+    "gross": "Gross sales",
+    "grossContext": "{count, plural, one {{count, number, ::group-off} paid order} other {{count, number, ::group-off} paid orders}}",
+    "noSales": "No paid sales yet",
+    "checkedInContext": "of {confirmed, number, ::group-off} confirmed",
+    "byDay": "Sales by day",
+    "byDayNone": "No sales yet",
+    "orders": "{count, plural, one {{count, number, ::group-off} order} other {{count, number, ::group-off} orders}}",
+    "recentOrders": "Recent orders",
+    "guest": "Guest",
+    "tickets": "{count, plural, one {{count, number, ::group-off} ticket} other {{count, number, ::group-off} tickets}}",
+    "free": "Free",
     "shareTitle": "Share your event",
     "shareHint": "Send this link to anyone. Guests get tickets on the event page.",
     "registration": "Registration",
@@ -141,6 +284,10 @@
     "checkInLabel": "Check in {name}",
     "checkIn": "Check in",
     "checkedIn": "Checked in",
+    "tableCaption": "Guest list",
+    "colGuest": "Guest",
+    "colTicket": "Ticket",
+    "colActions": "Actions",
     "disputed": "Payment disputed",
     "pagesLabel": "Guest list pages",
     "status": {
@@ -155,9 +302,29 @@
     },
     "refund": {
       "summary": "Refund",
-      "body": "{name} gets <b>{amount}</b> back. The ticket stops working at once and its place goes back on sale. G-ventZ's fee and Paystack's charge aren't returned; your share is taken from your next sales.",
+      "openLabel": "Refund {name}'s ticket",
+      "title": "Refund {name}?",
+      "guestLabel": "Guest",
+      "ticketLabel": "Ticket",
+      "amountLabel": "They get back",
+      "whatTicket": "The ticket stops working at once, and its place goes back on sale.",
+      "whatMoney": "Paystack sends {amount} back to the card or account the guest paid with. Banks usually take a few working days to show it.",
+      "whatFees": "G-ventZ's fee and Paystack's charge aren't returned. Your share of the refund is taken from your next sales.",
       "confirm": "Refund {amount} to {name}",
-      "button": "Refund ticket"
+      "button": "Refund ticket",
+      "twoStepTitle": "Refunds need two-step sign-in",
+      "twoStepText": "Refunds move money, so first confirm it's you with two-step sign-in. You'll come straight back to {name}'s refund afterwards.",
+      "twoStepButton": "Confirm it's you",
+      "providerReason": "Paystack's reason: {reason}",
+      "started": "Refund started for {name}",
+      "startedText": "The ticket no longer works. The guest gets their money back through Paystack."
+    },
+    "colContact": "Buyer contact",
+    "sentTo": "Sent to <b>{email}</b>",
+    "gender": {
+      "female": "Female",
+      "male": "Male",
+      "unspecified": "Prefers not to say"
     }
   },
   "registration": {
@@ -201,6 +368,10 @@
     "sendsLeft": "<b>{left} of {allowed}</b> announcements left for this event",
     "emailsLeft": "<b>{left} of {allowed}</b> announcement emails left this month",
     "resets": "(resets {date})",
+    "sendsLabel": "Announcements left for this event",
+    "emailsLabel": "Emails left this month",
+    "leftOf": "{left} of {allowed}",
+    "sendsContext": "Counted per event, before it starts.",
     "countRule": "Each guest counts once per announcement. Ticket emails don't count.",
     "started": "This event has started, so announcements can no longer be sent.",
     "newTitle": "New announcement",
@@ -216,12 +387,81 @@
     "draft": "Draft",
     "sent": "Sent",
     "sending": "Sending",
-    "emailed": "{sent} of {total} emailed"
+    "emailed": "{sent} of {total} emailed",
+    "loadFailed": "Announcements couldn't be loaded. Please try again.",
+    "template": "Template",
+    "templates": {
+      "blank": {
+        "name": "Blank message",
+        "help": "Only your subject and message."
+      },
+      "reminder": {
+        "name": "Reminder",
+        "help": "Opens with the event's date and time."
+      },
+      "reschedule": {
+        "name": "New date",
+        "help": "Opens with the event's new date and time."
+      },
+      "lineup": {
+        "name": "Line-up news",
+        "help": "Introduces news about the programme."
+      },
+      "thanks": {
+        "name": "Thank you",
+        "help": "Thanks guests for coming. Can be sent after the event starts."
+      },
+      "feedback": {
+        "name": "Feedback",
+        "help": "Asks guests what they thought. Can be sent after the event starts."
+      }
+    },
+    "messageHintTemplate": "The template adds one line before your message; your words are sent as written.",
+    "segmentOption": "{label} ({count, number})",
+    "recipients": "{count, plural, one {# guest will receive this} other {# guests will receive this}}",
+    "sendButton": "Send…",
+    "draftOnly": "Only the owner and co-hosts can send. Save a draft and they can send it.",
+    "draftSavedToast": "Draft saved.",
+    "sentToast": "{count, plural, one {Sending to # guest.} other {Sending to # guests.}}",
+    "sentOn": "Sent {date}",
+    "notSent": "{count, plural, one {# not sent} other {# not sent}}",
+    "confirmTitle": "{count, plural, one {Send to # guest?} other {Send to # guests?}}",
+    "confirmBody": "This uses one of the {sends, number} announcements left for this event and {count, number} of the {emails, number} emails left this month. It can't be undone.",
+    "confirmSend": "Send now",
+    "blocks": {
+      "draft": "Publish the event before sending announcements.",
+      "started": "This event has started. Only the Thank you and Feedback templates can be sent now.",
+      "sends": "You've sent all the announcements allowed for this event.",
+      "emails": "You've used all your announcement emails for this month.",
+      "quota": "This audience is larger than the emails you have left this month. Choose a smaller audience.",
+      "empty": "Nobody in this audience can receive emails yet."
+    },
+    "errors": {
+      "subject": "Add a subject.",
+      "body": "Add a message.",
+      "template": "Choose one of the templates."
+    },
+    "preview": {
+      "title": "Preview",
+      "fromHost": "Message from the host of {title}",
+      "emptySubject": "Your subject",
+      "emptyBody": "Your message appears here.",
+      "lead": {
+        "reminder": "{title} is coming up on {date}, {time}.",
+        "reschedule": "{title} has a new date: {date}, {time}.",
+        "lineup": "News about the line-up for {title} on {date}.",
+        "thanks": "Thank you for coming to {title}.",
+        "feedback": "How was {title}? The host would like to hear what you thought."
+      },
+      "footer": "You're getting this because you registered for {title} on G-ventZ. <link>Stop announcements for this event</link>.",
+      "note": "Each guest gets G-ventZ's wording in their own language; your subject and message are sent as written."
+    }
   },
   "settings": {
     "styleTitle": "Page style",
     "styleHint": "The colours guests see on the event page.",
     "saveStyle": "Save style",
+    "picturesTitle": "Pictures",
     "flyerTitle": "Event flyer",
     "flyerHint": "Shown on the event page and in Discover. Use JPG, PNG, or WebP, up to 5 MB. Tall or square works best.",
     "flyerAlt": "Event flyer",
@@ -239,6 +479,8 @@
     "saveDetails": "Save details",
     "venue": "Venue",
     "online": "Online",
+    "policiesTitle": "Guest policies",
+    "savePolicies": "Save policies",
     "cancelTitle": "Cancel event",
     "cancelled": "This event is cancelled. Registration is closed.",
     "cancelHint": "Cancelling closes registration and hides the event from Discover. Guests already registered are not refunded automatically.",
@@ -272,6 +514,9 @@
       "announcementSaved": "Saved as a draft. Send it when you're ready.",
       "announcementSending": "Sending now. Guests get it over the next few minutes.",
       "detailsSaved": "Event details saved",
+      "rescheduled": "Event moved and recorded as rescheduled. Send guests an announcement about the new date.",
+      "nothingChanged": "Nothing to save. No details changed.",
+      "policiesSaved": "Guest policies saved",
       "flyerUploaded": "Flyer uploaded",
       "flyerRemoved": "Flyer removed. The event shows its colour style again",
       "eventCancelled": "Event cancelled. Registration is closed",
@@ -334,7 +579,8 @@
     },
     "ticketNumber": "{number} of {total}",
     "usedAt": "{who} · at {time}",
-    "usedAtBy": "{who} · at {time} by {name}"
+    "usedAtBy": "{who} · at {time} by {name}",
+    "groupOf": "Group of {count}"
   },
   "csv": {
     "header": {
@@ -346,10 +592,233 @@
       "type": "Ticket type",
       "status": "Status",
       "registeredAt": "Registered at",
-      "checkedInAt": "Checked in at"
+      "checkedInAt": "Checked in at",
+      "phone": "Buyer phone",
+      "gender": "Buyer gender",
+      "recipient": "Recipient email"
     },
     "forbidden": "Only the owner, admins and finance can export the guest list.",
     "notFound": "Not found",
     "failed": "The export didn't work. Please try again."
+  },
+  "tools": {
+    "close": "Close",
+    "cancel": "Cancel"
+  },
+  "promote": {
+    "title": "Discount codes",
+    "intro": "Codes lower the price of paid tickets. Fees are worked out on the lower price.",
+    "newCode": "New code",
+    "loadFailed": "Discount codes couldn't be loaded. Please try again.",
+    "draftNote": "Codes work once the event is published.",
+    "noPaid": "No paid tickets yet",
+    "noPaidHint": "Discount codes apply to paid tickets. Add a paid ticket type in Details first.",
+    "empty": "No discount codes yet",
+    "emptyHint": "Create a code and share its link: the discount is applied when guests open it.",
+    "free": "Free ticket",
+    "allTickets": "All paid tickets",
+    "removedType": "Removed ticket type",
+    "valid": {
+      "always": "Always",
+      "from": "From {date}",
+      "until": "Until {date}",
+      "between": "{start} – {end}"
+    },
+    "cols": {
+      "code": "Code",
+      "discount": "Discount",
+      "used": "Used",
+      "valid": "Valid",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "usedOf": "{uses, number} / {max, number}",
+    "usedNoLimit": "{uses, number} · no limit",
+    "states": {
+      "active": "Active",
+      "paused": "Paused",
+      "scheduled": "Scheduled",
+      "ended": "Ended",
+      "usedUp": "Used up"
+    },
+    "menuLabel": "Actions for {code}",
+    "copyLink": "Copy share link",
+    "copied": "Link copied",
+    "copiedHint": "Guests who open it get {code} applied.",
+    "copyFailed": "Copy this link",
+    "pause": "Pause",
+    "resume": "Resume",
+    "edit": "Edit",
+    "pausedToast": "{code} is paused.",
+    "resumedToast": "{code} is active again.",
+    "createdToast": "{code} created.",
+    "savedToast": "Changes to {code} saved.",
+    "dialog": {
+      "newTitle": "New discount code",
+      "editTitle": "Edit {code}",
+      "create": "Create code",
+      "save": "Save changes",
+      "locked": "This code has been used, so only its usage limit and end date can change.",
+      "code": "Code",
+      "codeHint": "3 to 32 letters, numbers, - or _. Guests can type it in any case.",
+      "kind": "Discount",
+      "kinds": {
+        "percent": "Percentage off",
+        "fixed": "Fixed amount off",
+        "free": "Free ticket"
+      },
+      "valuePercent": "Percentage (1 to 100)",
+      "valueFixed": "Amount off each ticket ({currency})",
+      "valueFixedHint": "In whole {currency}.",
+      "maxUses": "Usage limit",
+      "maxUsesHint": "How many orders can use it. Leave empty for no limit.",
+      "maxUsesUsed": "Used {uses, number} times so far. Leave empty for no limit.",
+      "startsAt": "Starts",
+      "startsHint": "Leave empty to start now.",
+      "endsAt": "Ends",
+      "endsHint": "Leave empty to keep it running.",
+      "zone": "Times are in the event's time zone: {zone}.",
+      "ticketTypes": "Applies to",
+      "ticketTypesHint": "Choose none to apply it to every paid ticket type."
+    },
+    "errors": {
+      "code": "Use 3 to 32 letters, numbers, - or _.",
+      "kind": "Choose a kind of discount.",
+      "percent": "Enter a percentage from 1 to 100.",
+      "fixed": "Enter a whole amount above 0.",
+      "maxUses": "Enter a whole number of at least 1, and not below the uses so far, or leave it empty.",
+      "time": "Enter a valid date and time.",
+      "window": "The end must be after the start.",
+      "ticketTypes": "Choose from this event's paid ticket types.",
+      "notFound": "This code no longer exists. Reload the page."
+    }
+  },
+  "team": {
+    "title": "Team",
+    "intro": "People who help run this event. Each person signs in with their own account.",
+    "loadFailed": "The team couldn't be loaded. Please try again.",
+    "readOnly": "Only the owner and co-hosts can invite people or change roles.",
+    "unnamed": "Team member",
+    "you": "(you)",
+    "joined": "Joined {date}",
+    "roleLabel": "Role of {name}",
+    "changedToast": "{name} is now {role}.",
+    "remove": "Remove",
+    "removeLabel": "Remove {name} from the team",
+    "removeTitle": "Remove {name} from the team?",
+    "removeBody": "They lose access to this event straight away. You can invite them again later.",
+    "removeConfirm": "Remove from team",
+    "removedToast": "{name} was removed from the team.",
+    "roles": {
+      "owner": {
+        "name": "Owner",
+        "help": "Created the event and can do everything, including deleting it."
+      },
+      "admin": {
+        "name": "Co-host",
+        "help": "Can do everything except delete the event."
+      },
+      "checkin": {
+        "name": "Door staff",
+        "help": "Scans tickets at the door. Nothing else."
+      },
+      "editor": {
+        "name": "Editor",
+        "help": "Edits details, questions and pictures, and checks guests in."
+      },
+      "finance": {
+        "name": "Finance",
+        "help": "Sees sales, exports guests and issues refunds."
+      },
+      "viewer": {
+        "name": "Viewer",
+        "help": "Sees the event and its guests without changing anything."
+      }
+    },
+    "invite": {
+      "title": "Invite someone",
+      "email": "Email address",
+      "emailHint": "They accept by signing in with this email.",
+      "role": "Role",
+      "moreRoles": "More roles",
+      "fewerRoles": "Fewer roles",
+      "send": "Send invitation",
+      "sentToast": "Invitation sent to {email}."
+    },
+    "pending": {
+      "title": "Pending invitations",
+      "none": "No pending invitations.",
+      "expires": "Expires {date}",
+      "invitedBy": "Invited by {name}",
+      "resend": "Resend",
+      "resendLabel": "Resend the invitation to {email}",
+      "resentToast": "A new invitation was sent to {email}.",
+      "revoke": "Withdraw",
+      "revokeLabel": "Withdraw the invitation to {email}",
+      "revokedToast": "The invitation to {email} was withdrawn."
+    },
+    "errors": {
+      "email": "Enter a valid email address.",
+      "role": "Choose a role.",
+      "inviteGone": "This invitation is no longer open. Reload the page."
+    }
+  },
+  "activity": {
+    "title": "Activity",
+    "loadFailed": "The activity couldn't be loaded. Please try again.",
+    "filter": "Show",
+    "kinds": {
+      "all": "All activity",
+      "event": "Event changes",
+      "team": "Team",
+      "guest": "Check-ins",
+      "refund": "Refunds",
+      "images": "Pictures"
+    },
+    "empty": "Nothing has happened yet",
+    "noneOfKind": "Nothing of this kind in the entries loaded",
+    "noneOfKindHint": "Load more to look further back.",
+    "loadMore": "Load more",
+    "someone": "A team member",
+    "system": "G-ventZ",
+    "newDate": "New date: {date}",
+    "unknown": "<b>{actor}</b> · {action}",
+    "actions": {
+      "eventCreated": "<b>{actor}</b> created the event",
+      "eventEdited": "<b>{actor}</b> edited the event details",
+      "eventRescheduled": "<b>{actor}</b> changed the date and time",
+      "eventPublished": "<b>{actor}</b> published the event",
+      "eventUnpublished": "<b>{actor}</b> unpublished the event",
+      "eventCancelled": "<b>{actor}</b> cancelled the event",
+      "teamInvited": "<b>{actor}</b> invited {subject} as {role}",
+      "teamInviteRevoked": "<b>{actor}</b> withdrew the invitation to {subject}",
+      "teamInviteAccepted": "<b>{actor}</b> joined the team as {role}",
+      "teamRoleChanged": "<b>{actor}</b> changed the role of {subject} to {role}",
+      "teamMemberRemoved": "<b>{actor}</b> removed {subject} from the team",
+      "guestCheckedIn": "<b>{actor}</b> checked in a guest",
+      "refundRequested": "<b>{actor}</b> started a refund",
+      "refundProcessed": "<b>{actor}</b> completed a refund",
+      "imagesAdded": "<b>{actor}</b> added a picture",
+      "imagesRemoved": "<b>{actor}</b> removed a picture",
+      "imagesReordered": "<b>{actor}</b> reordered the pictures"
+    },
+    "someoneElse": "a team member"
+  },
+  "invite": {
+    "metaTitle": "Team invitation",
+    "title": "Join the event team",
+    "unavailableTitle": "Invitation unavailable",
+    "body": "You've been invited to help run an event on G-ventZ. Accept to join its team.",
+    "signedInAs": "Signed in as <b>{email}</b>.",
+    "accept": "Accept invitation",
+    "switchAccount": "Switch account",
+    "toHost": "Go to your events",
+    "wrongAccountHint": "Switching signs you out here, then brings you back to this invitation.",
+    "problems": {
+      "wrong_account": "This invitation is for another email address. Sign in with the invited email to accept it.",
+      "gone": "This invitation has expired, was withdrawn or was already used. Ask the host for a new one.",
+      "not_found": "This invitation link isn't valid. Check that you opened the whole link from the email.",
+      "failed": "The invitation couldn't be accepted. Please try again."
+    }
   }
 }

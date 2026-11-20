@@ -1,4 +1,5 @@
 {
+  "hostProfile": { "verified": "已认证主办方" },
   "errorPage": {
     "title": "出错了",
     "body": "无法加载此页面。请稍后重试。",
@@ -72,6 +73,22 @@
         "title": "付款有争议",
         "body": "该付款正在与银行进行争议处理。您的门票目前仍然有效。"
       }
+    },
+    "groupTicket": "第 {position} 张，共 {size} 张 · {type}",
+    "sentTo": "已发送至 <b>{email}</b>",
+    "resend": {
+      "button": "重新发送",
+      "buttonLabel": "重新发送 {name} 的门票",
+      "title": "重新发送 {name} 的门票",
+      "body": "我们会将门票发送到此地址。如有输入错误，请更正。",
+      "email": "电子邮箱",
+      "cancel": "取消",
+      "send": "发送门票",
+      "close": "关闭",
+      "sent": "已发送至 {email}",
+      "failed": "无法发送门票，请重试。",
+      "invalidEmail": "请输入有效的电子邮箱。",
+      "signedOut": "您的会话已结束，请重新登录。"
     }
   },
   "sellReason": {
@@ -146,5 +163,20 @@
     "charity": "慈善",
     "family": "家庭",
     "other": "其他"
+  },
+  "price": { "free": "免费", "from": "{price} 起" },
+  "share": {
+    "share": "分享",
+    "title": "分享此活动",
+    "close": "关闭",
+    "email": "电子邮件",
+    "copy": "复制链接",
+    "copied": "链接已复制",
+    "copyManual": "链接已选中，请在此处复制。",
+    "linkLabel": "活动链接",
+    "poster": "二维码海报",
+    "posterScan": "扫码打开活动",
+    "posterFailed": "无法生成海报，请重试。",
+    "preview": "分享卡片预览"
   }
 }

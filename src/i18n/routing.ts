@@ -20,7 +20,7 @@ export const routing = defineRouting({
 });
 
 /** Public pages: served per language under /{prefix}; everything else keeps one address. */
-const PUBLIC = /^\/(?:$|discover(?:\/|$)|e\/[^/]+\/?$|t\/[^/]+\/?$|pricing\/?$|help\/?$|terms\/?$|privacy\/?$|refunds\/?$)/;
+const PUBLIC = /^\/(?:$|discover(?:\/|$)|e\/[^/]+(?:\/tickets)?\/?$|h\/[^/]+\/?$|t\/[^/]+\/?$|pricing\/?$|help\/?$|about\/?$|terms\/?$|privacy\/?$|refunds\/?$)/;
 
 /** Splits a known language prefix off a path: "/fr/e/x" → { lang: "fr", rest: "/e/x" }. */
 export function splitPrefix(pathname: string): { lang: Locale | null; rest: string } {

@@ -47,6 +47,15 @@ function drawSantaRun(c: CanvasRenderingContext2D, w: number, h: number, k: numb
 }
 
 // Applies the chosen style to the whole page and draws its motion layer.
+/** Whether a #rrggbb background is light (relative luminance above the midpoint). */
+export function isLightColour(hex: string): boolean {
+  const m = /^#([0-9a-f]{6})$/i.exec(hex);
+  if (!m) return false;
+  const n = parseInt(m[1]!, 16);
+  const lin = (c: number) => { const v = c / 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; };
+  return 0.2126 * lin(n >> 16) + 0.7152 * lin((n >> 8) & 255) + 0.0722 * lin(n & 255) > 0.18;
+}
+
 export default function ThemeStage({ theme }: { theme: string }) {
   const t = getTheme(theme);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -57,11 +66,23 @@ export default function ThemeStage({ theme }: { theme: string }) {
     if (theme === "minimal" || !isThemeKey(theme)) return;
     const style = document.documentElement.style;
     const vars: Record<string, string> = {
+      // Design tokens (src/design/tokens.css) and their legacy names, so old and new components follow the style.
+      "--color-bg": t.bg, "--color-surface": t.surface, "--color-surface-raised": t.surfaceHi,
+      "--color-border": t.line, "--color-text": t.text, "--color-text-muted": t.muted, "--grad-brand": t.grad,
       "--bg": t.bg, "--surface": t.surface, "--surface-hi": t.surfaceHi,
       "--line": t.line, "--text": t.text, "--muted": t.muted, "--grad": t.grad,
     };
     Object.entries(vars).forEach(([k, v]) => style.setProperty(k, v));
-    return () => Object.keys(vars).forEach((k) => style.removeProperty(k));
+    // The style is light or dark in itself: the other tokens (accent, status colours, strong borders)
+    // follow it, so they keep their contrast whatever the device's colour mode.
+    const root = document.documentElement;
+    const before = root.getAttribute("data-theme");
+    root.setAttribute("data-theme", isLightColour(t.bg) ? "light" : "dark");
+    return () => {
+      Object.keys(vars).forEach((k) => style.removeProperty(k));
+      if (before === null) root.removeAttribute("data-theme");
+      else root.setAttribute("data-theme", before);
+    };
   }, [t, theme]);
 
   // 2) Motion layer for this style.

@@ -5,7 +5,7 @@ import { env } from "@/lib/env";
 import { localizedPath } from "@/i18n/routing";
 
 // The public pages in every switched-on language, each listing its other languages (W9, FR-24.2).
-const PAGES = ["/", "/discover", "/pricing", "/help", "/terms", "/privacy", "/refunds"] as const;
+const PAGES = ["/", "/discover", "/pricing", "/help", "/about", "/terms", "/privacy", "/refunds"] as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const languages = enabledLanguages().filter(isLanguage);

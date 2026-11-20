@@ -1,0 +1,16 @@
+.avatar {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  overflow: hidden;
+  border-radius: var(--radius-full);
+  background: var(--color-accent-soft);
+  color: var(--color-accent-text);
+  font-weight: var(--weight-bold);
+  line-height: 1;
+  user-select: none;
+}
+.image { width: 100%; height: 100%; object-fit: cover; display: block; }
+.s28 { width: 28px; height: 28px; font-size: var(--text-caption); }
+.s36 { width: 36px; height: 36px; font-size: var(--text-label); }
+.s48 { width: 48px; height: 48px; font-size: var(--text-heading-3); }

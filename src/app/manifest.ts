@@ -23,7 +23,7 @@ export default function manifest(): MetadataRoute.Manifest {
     ],
     shortcuts: [
       { name: "My tickets", url: "/my-tickets", icons: [{ src: "/icons/icon-192.png", sizes: "192x192" }] },
-      { name: "Create an event", url: "/events/new", icons: [{ src: "/icons/icon-192.png", sizes: "192x192" }] },
+      { name: "Create an event", url: "/host/events/new", icons: [{ src: "/icons/icon-192.png", sizes: "192x192" }] },
       { name: "Discover", url: "/discover", icons: [{ src: "/icons/icon-192.png", sizes: "192x192" }] },
     ],
   };

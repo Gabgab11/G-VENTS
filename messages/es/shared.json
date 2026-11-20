@@ -1,4 +1,5 @@
 {
+  "hostProfile": { "verified": "Organizador verificado" },
   "errorPage": {
     "title": "Algo salió mal",
     "body": "No pudimos cargar esta página. Vuelva a intentarlo en un momento.",
@@ -72,6 +73,22 @@
         "title": "Pago en disputa",
         "body": "El pago está en disputa con el banco. Por ahora, sus entradas siguen siendo válidas."
       }
+    },
+    "groupTicket": "Entrada {position} de {size} · {type}",
+    "sentTo": "Enviada a <b>{email}</b>",
+    "resend": {
+      "button": "Reenviar",
+      "buttonLabel": "Reenviar la entrada de {name}",
+      "title": "Reenviar la entrada de {name}",
+      "body": "Enviaremos la entrada a esta dirección. Corríjala si estaba mal escrita.",
+      "email": "Correo electrónico",
+      "cancel": "Cancelar",
+      "send": "Enviar entrada",
+      "close": "Cerrar",
+      "sent": "Enviada a {email}",
+      "failed": "No hemos podido enviar la entrada. Inténtelo de nuevo.",
+      "invalidEmail": "Introduzca un correo electrónico válido.",
+      "signedOut": "Su sesión ha terminado. Vuelva a iniciar sesión."
     }
   },
   "sellReason": {
@@ -146,5 +163,20 @@
     "charity": "Benéfico",
     "family": "Familia",
     "other": "Otros"
+  },
+  "price": { "free": "Gratis", "from": "Desde {price}" },
+  "share": {
+    "share": "Compartir",
+    "title": "Compartir este evento",
+    "close": "Cerrar",
+    "email": "Correo electrónico",
+    "copy": "Copiar enlace",
+    "copied": "Enlace copiado",
+    "copyManual": "El enlace está seleccionado; cópielo desde aquí.",
+    "linkLabel": "Enlace del evento",
+    "poster": "Póster con código QR",
+    "posterScan": "Escanee para abrir el evento",
+    "posterFailed": "No se pudo crear el póster. Inténtelo de nuevo.",
+    "preview": "Vista previa de la tarjeta para compartir"
   }
 }

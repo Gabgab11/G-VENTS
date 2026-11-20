@@ -15,8 +15,8 @@ const PLANS = [
     id: "starter" as const,
     name: "Starter",
     fee: 3,
-    feats: ["unlimitedEvents", "freeTickets", "promoCodes", "qrCheckIn", "basicAnalytics", "standardPages", "teamOne"],
-    href: "/sign-up?next=/events/new",
+    feats: ["unlimitedEvents", "freeTickets", "qrCheckIn", "standardPages"],
+    href: "/sign-up?next=/host/events/new",
     cta: "signUpFree",
     featured: false,
   },
@@ -24,7 +24,7 @@ const PLANS = [
     id: "pro" as const,
     name: "Pro",
     fee: 1.5,
-    feats: ["everythingStarter", "advancedAnalytics", "advancedReminders", "customizablePages", "teamFive", "prioritySupport", "optionalDomain"],
+    feats: ["everythingStarter", "customizablePages", "prioritySupport", "optionalDomain"],
     href: null,
     cta: "comingSoon",
     featured: true,
@@ -33,7 +33,7 @@ const PLANS = [
     id: "business" as const,
     name: "Business",
     fee: 0.5,
-    feats: ["everythingPro", "brandedPages", "teamFifteen", "customDomain", "apiAccess"],
+    feats: ["everythingPro", "brandedPages", "customDomain", "apiAccess"],
     href: null,
     cta: "comingSoon",
     featured: false,
@@ -41,19 +41,16 @@ const PLANS = [
 ];
 
 // Feature (an id under info.pricing.compare.features), then Starter, Pro, Business: an id under
-// info.pricing.compare.values, or a number shown as it is.
+// info.pricing.compare.values, or a number shown as it is. Promo codes, email reminders, analytics
+// and team members are left out until they ship (D86).
 const ROWS: [string, string, string, string][] = [
   ["eventCreation", "unlimited", "unlimited", "unlimited"],
   ["freeTickets", "free", "free", "free"],
   ["platformFee", "3%", "1.5%", "0.5%"],
-  ["analytics", "basic", "advanced", "advanced"],
-  ["promoCodes", "yes", "yes", "yes"],
   ["customPages", "standard", "customizable", "fullyBranded"],
   ["attendeeManagement", "yes", "yes", "yes"],
   ["qrTickets", "yes", "yes", "yes"],
   ["checkIn", "yes", "yes", "yes"],
-  ["emailReminders", "basic", "advanced", "advanced"],
-  ["teamMembers", "1", "5", "15"],
   ["exportData", "yes", "yes", "yes"],
   ["prioritySupport", "no", "yes", "yes"],
   ["customDomain", "no", "optional", "yes"],
@@ -74,7 +71,7 @@ export default function PricingPlans() {
 
   return (
     <main className="wrap page wide pricing">
-      <SiteHeader current="/pricing" />
+      <SiteHeader />
 
       <header className="pr-hero">
         <div className="pr-eyebrow">{t("hero.eyebrow")}</div>

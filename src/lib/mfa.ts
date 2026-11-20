@@ -38,7 +38,7 @@ export async function mfaState(): Promise<MfaState> {
 }
 
 /** Only same-site paths are followed after verifying, never another site. */
-export function safeNext(raw: unknown, fallback = "/dashboard"): string {
+export function safeNext(raw: unknown, fallback = "/host"): string {
   const next = typeof raw === "string" ? raw : "";
   return next.startsWith("/") && !next.startsWith("//") && !next.startsWith("/\\") ? next : fallback;
 }

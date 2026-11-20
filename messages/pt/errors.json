@@ -13,7 +13,10 @@
     "no_recipients": "Ninguém neste público pode receber e-mails ainda.",
     "not_found": "Este comunicado não foi encontrado.",
     "segment_invalid": "Escolha quem recebe este comunicado.",
-    "unsubscribe_unknown": "Este link de cancelamento de inscrição não é válido."
+    "unsubscribe_unknown": "Este link de cancelamento de inscrição não é válido.",
+    "fields_required": "Adicione um assunto e uma mensagem.",
+    "quota_exceeded": "Isto ultrapassaria seus e-mails de aviso deste mês. Escolha um público menor ou aguarde a renovação mensal.",
+    "template_invalid": "Escolha um dos modelos de aviso."
   },
   "auth": {
     "anonymous_not_allowed": "Entre com seu e-mail ou com o Google para continuar.",
@@ -27,6 +30,22 @@
   },
   "db": {
     "busy": "Estamos com muito movimento agora. Tente novamente em instantes."
+  },
+  "discount": {
+    "invalid": "Este código não é válido para este evento.",
+    "expired": "Este código não está ativo agora: já terminou ou ainda não começou.",
+    "used_up": "Este código já foi usado o número máximo de vezes.",
+    "not_for_ticket": "Este código não se aplica aos ingressos escolhidos.",
+    "whole_order": "Este código deixaria o pedido inteiro gratuito, e pedidos pagos não podem ser gratuitos. Remova o código ou adicione outro ingresso.",
+    "code_format": "Use de 3 a 32 letras, dígitos, - ou _.",
+    "code_taken": "Este evento já tem esse código.",
+    "limit_invalid": "O limite deve ser de pelo menos 1 e não inferior aos usos até agora.",
+    "locked": "Este código já foi usado, então o tipo e o valor não podem mudar. Pause-o e crie um novo.",
+    "no_paid_types": "Os códigos de desconto se aplicam a ingressos pagos, e este evento não tem nenhum.",
+    "not_found": "Código de desconto não encontrado.",
+    "ticket_types_invalid": "Escolha tipos de ingresso pagos deste evento; os códigos não se aplicam a ingressos gratuitos.",
+    "value_invalid": "Informe uma porcentagem de 1 a 100 ou um valor maior que 0.",
+    "window_invalid": "O término deve ser depois do início."
   },
   "event": {
     "already_cancelled": "Este evento já está cancelado.",
@@ -45,6 +64,9 @@
     "forbidden": "Você não tem permissão para fazer isso neste evento.",
     "has_paid_registrations": "Eventos com ingressos pagos não podem ser excluídos.",
     "host_owes_money": "Você deve dinheiro à G-ventZ por reembolsos, então não pode publicar novos eventos pagos até que isso seja quitado com suas vendas.",
+    "image_not_found": "Essa imagem já foi removida.",
+    "images_full": "Este evento já tem 5 imagens. Remova uma para adicionar outra.",
+    "images_order_invalid": "As imagens mudaram nesse meio-tempo. Recarregue a página e tente novamente.",
     "location_invalid": "Confira os dados do local e tente novamente.",
     "not_found": "Evento não encontrado.",
     "not_published": "Este evento não está publicado.",
@@ -62,7 +84,10 @@
     "time_invalid": "Use uma data e hora válidas.",
     "time_not_in_zone": "Esse horário não existe neste fuso horário por causa da mudança de horário. Escolha outro horário.",
     "time_zone_required": "Escolha o fuso horário do evento.",
-    "title_length": "O nome do evento deve ter de 3 a 140 caracteres."
+    "title_length": "O nome do evento deve ter de 3 a 140 caracteres.",
+    "group_size_invalid": "Um bilhete de grupo dá entrada a 1 a 20 pessoas.",
+    "group_size_locked": "Este tipo de bilhete já tem vendas, por isso o tamanho do grupo não pode mudar. Adicione antes um novo tipo de bilhete.",
+    "ticket_description_invalid": "A descrição de um bilhete pode ter até 300 caracteres."
   },
   "export": {
     "busy": "Já há uma exportação em andamento. Tente novamente em um minuto."
@@ -70,11 +95,24 @@
   "flyer": {
     "not_uploaded": "Envie a imagem primeiro.",
     "path_invalid": "Esse arquivo não pertence a este evento.",
-    "size": "Os flyers podem ter no máximo 5 MB.",
+    "size": "As imagens podem ter no máximo 5 MB.",
     "storage_unavailable": "O envio de flyers está indisponível no momento. Tente novamente em breve.",
     "type": "Use uma imagem JPEG, PNG ou WebP."
   },
   "host": {
+    "cannot_follow_self": "Você não pode seguir a si mesmo.",
+    "handle_invalid": "Use de 3 a 30 letras, números ou hifens, começando e terminando com uma letra ou um número, sem hifens duplos.",
+    "handle_reserved": "Este nome de usuário é reservado. Escolha outro.",
+    "handle_taken": "Este nome de usuário já está em uso. Escolha outro.",
+    "bio_invalid": "A bio é longa demais.",
+    "location_invalid": "A localização é longa demais.",
+    "social_invalid": "Use um link https:// para esse perfil.",
+    "image_path_invalid": "Esse envio não pertence ao seu perfil.",
+    "image_not_uploaded": "Envie a imagem primeiro.",
+    "image_type": "Use uma imagem JPEG, PNG ou WebP.",
+    "image_size": "As imagens do perfil podem ter no máximo 5 MB.",
+    "storage_unavailable": "O envio de imagens está indisponível no momento. Tente novamente em instantes.",
+    "unsubscribe_unknown": "Este link de cancelamento de inscrição não é válido.",
     "already_suspended": "Este organizador já está suspenso.",
     "cannot_suspend_self": "Você não pode suspender sua própria conta.",
     "not_suspended": "Este organizador não está suspenso.",
@@ -122,7 +160,14 @@
     "sales_not_started": "As vendas de ingressos ainda não começaram.",
     "sold_out": "Esse tipo de ingresso está esgotado.",
     "ticket_type_unavailable": "Esse tipo de ingresso não está disponível.",
-    "transition_not_allowed": "Este pedido não pode ser alterado dessa forma."
+    "transition_not_allowed": "Este pedido não pode ser alterado dessa forma.",
+    "recipients_too_many": "Pode enviar bilhetes a no máximo 20 pessoas nesta encomenda.",
+    "recipient_name_invalid": "Introduza o nome de cada pessoa (de 2 a 120 caracteres).",
+    "recipient_email_invalid": "Introduza um e-mail válido para cada pessoa ou deixe em branco.",
+    "recipient_is_buyer": "Esse é o seu próprio e-mail: os seus bilhetes já lhe chegam.",
+    "recipients_exceed_tickets": "Esta encomenda não tem tantos bilhetes para enviar a outras pessoas.",
+    "buyer_phone_invalid": "Introduza o seu número de telefone com o código do país, por exemplo +2348012345678.",
+    "buyer_gender_invalid": "Escolha feminino, masculino ou prefiro não dizer."
   },
   "payment": {
     "forbidden": "Você não tem permissão para fazer isso.",
@@ -158,8 +203,17 @@
     "time_zone_not_found": "Nenhum fuso horário encontrado para esse local."
   },
   "refund": {
+    "provider_insufficient_balance": "O Paystack ainda não pode enviar este reembolso: o saldo da G-ventZ é insuficiente. Ele está na fila e será enviado automaticamente.",
+    "provider_already_reversed": "O Paystack informa que este pagamento já foi reembolsado.",
+    "provider_amount_too_high": "Recusado pelo Paystack: o reembolso é maior do que o que resta deste pagamento.",
+    "provider_amount_too_low": "Recusado pelo Paystack: o valor do reembolso é muito baixo.",
+    "provider_transaction_not_found": "O Paystack não encontrou este pagamento.",
+    "provider_currency_mismatch": "Recusado pelo Paystack: a moeda do reembolso não corresponde à do pagamento.",
     "needs_approval": "Este reembolso é maior do que sua equipe pode enviar por conta própria agora. Fale com o suporte da G-ventZ e vamos analisá-lo.",
-    "not_refundable": "Este ingresso não pode ser reembolsado: não é um ingresso pago e confirmado, ou já foi reembolsado."
+    "not_refundable": "Este ingresso não pode ser reembolsado: não é um ingresso pago e confirmado, ou já foi reembolsado.",
+    "provider_rejected": "A Paystack não conseguiu iniciar este reembolso. Tente mais tarde ou contacte o apoio da G-ventZ.",
+    "provider_unavailable": "A Paystack não está a responder neste momento. Tente novamente dentro de alguns minutos.",
+    "in_progress": "Já há um reembolso em curso para este bilhete."
   },
   "registration": {
     "already_registered": "Você já tem um ingresso para este evento.",
@@ -204,7 +258,8 @@
   "ticket": {
     "email_limit": "Este ingresso já foi enviado por e-mail várias vezes nesta hora. Tente novamente mais tarde.",
     "email_unavailable": "Não foi possível enviar o e-mail agora. Tente novamente.",
-    "not_found": "Ingresso não encontrado."
+    "not_found": "Ingresso não encontrado.",
+    "first_ticket_is_buyers": "O bilhete 1 é seu. Envie antes um dos outros bilhetes."
   },
   "validation": {
     "failed": "Alguns campos não são válidos."
@@ -215,5 +270,28 @@
   },
   "webhook": {
     "signature_invalid": "Assinatura inválida."
+  },
+  "team": {
+    "already_member": "Esta pessoa já faz parte da equipe.",
+    "email_invalid": "Informe um endereço de e-mail válido.",
+    "invite_gone": "Este convite expirou ou já foi usado. Peça um novo.",
+    "invite_not_found": "Convite não encontrado.",
+    "invite_wrong_account": "Este convite é para outro endereço de e-mail. Entre com o e-mail convidado e confirmado para aceitá-lo.",
+    "last_admin": "Você é o único coanfitrião restante, então não pode deixar a função. Primeiro torne outra pessoa coanfitriã.",
+    "member_not_found": "Esta pessoa não faz parte da equipe.",
+    "owner_fixed": "A função do proprietário do evento não pode ser alterada nem removida.",
+    "role_invalid": "Escolha uma função."
+  },
+  "support": {
+    "message_invalid": "Escreva uma mensagem de 10 a 4.000 caracteres.",
+    "captcha_invalid": "Conclua a verificação de segurança e tente novamente.",
+    "captcha_unavailable": "A verificação de segurança não está disponível agora. Tente novamente em instantes.",
+    "captcha_failed": "A verificação de segurança falhou. Atualize a página e tente novamente.",
+    "rate_limited": "Enviou várias mensagens em pouco tempo. Aguarde um pouco ou escreva para support@gventz.com.",
+    "name_invalid": "Escreva o seu nome (2 a 100 caracteres).",
+    "email_invalid": "Escreva um endereço de e-mail válido.",
+    "country_invalid": "Escolha o seu país.",
+    "topic_invalid": "Escolha um tema.",
+    "message_length": "A sua mensagem deve ter entre 10 e 4000 caracteres."
   }
 }

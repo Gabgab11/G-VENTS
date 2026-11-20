@@ -54,7 +54,7 @@ async function plainAction(name, path, args) {
 const redirectOf = (res) => res.headers.get("x-action-redirect")?.split(";")[0] ?? null;
 
 // ---- Create and publish ----
-const created = await formAction("createEvent", "/events/new", [
+const created = await formAction("createEvent", "/host/events/new", [
   ["title", "U6a Smoke Night"], ["category", "Music"], ["date", "2027-06-05"], ["time", "19:00"],
   ["country_code", "NG"], ["region", "Lagos"], ["venue", "Eko Hotel"],
   ["tier_name", "Regular"], ["tier_qty", ""], ["tier_name", "VIP"], ["tier_qty", "20"],

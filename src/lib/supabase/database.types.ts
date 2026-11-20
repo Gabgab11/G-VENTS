@@ -31,6 +31,58 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"discount_codes": {
+                  Row: {
+                    "code": string,"created_at": string,"created_by": string | null,"ends_at": string | null,"event_id": string,"id": string,"kind": string,"max_uses": number | null,"paused": boolean,"starts_at": string | null,"ticket_type_ids": (string)[],"updated_at": string,"uses": number,"value": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "code": string,"created_at"?: string,"created_by"?: string | null,"ends_at"?: string | null,"event_id": string,"id"?: string,"kind": string,"max_uses"?: number | null,"paused"?: boolean,"starts_at"?: string | null,"ticket_type_ids"?: (string)[],"updated_at"?: string,"uses"?: number,"value": number
+                  }
+                  Update: {
+                    "code"?: string,"created_at"?: string,"created_by"?: string | null,"ends_at"?: string | null,"event_id"?: string,"id"?: string,"kind"?: string,"max_uses"?: number | null,"paused"?: boolean,"starts_at"?: string | null,"ticket_type_ids"?: (string)[],"updated_at"?: string,"uses"?: number,"value"?: number
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "discount_codes_created_by_fkey"
+      columns: ["created_by"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "discount_codes_event_id_fkey"
+      columns: ["event_id"]
+isOneToOne: false
+      referencedRelation: "events"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"discount_redemptions": {
+                  Row: {
+                    "amount_minor": number,"code_id": string,"created_at": string,"id": string,"order_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "amount_minor": number,"code_id": string,"created_at"?: string,"id"?: string,"order_id": string
+                  }
+                  Update: {
+                    "amount_minor"?: number,"code_id"?: string,"created_at"?: string,"id"?: string,"order_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "discount_redemptions_code_id_fkey"
+      columns: ["code_id"]
+isOneToOne: false
+      referencedRelation: "discount_codes"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "discount_redemptions_order_id_fkey"
+      columns: ["order_id"]
+isOneToOne: true
+      referencedRelation: "orders"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"disputes": {
                   Row: {
                     "amount_minor": number,"currency": string,"id": string,"opened_at": string,"order_id": string,"provider_dispute_id": string,"resolved_at": string | null,"status": string
@@ -73,14 +125,14 @@ isOneToOne: false
                   ]
                 },"email_campaigns": {
                   Row: {
-                    "body": string,"charged_to": string | null,"created_at": string,"created_by": string,"event_id": string,"id": string,"recipient_count": number,"scheduled_at": string | null,"segment": string,"sent_at": string | null,"sent_by": string | null,"sent_count": number,"status": string,"subject": string
+                    "body": string,"charged_to": string | null,"created_at": string,"created_by": string,"event_id": string,"id": string,"recipient_count": number,"scheduled_at": string | null,"segment": string,"sent_at": string | null,"sent_by": string | null,"sent_count": number,"status": string,"subject": string,"template": string | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "body": string,"charged_to"?: string | null,"created_at"?: string,"created_by": string,"event_id": string,"id"?: string,"recipient_count"?: number,"scheduled_at"?: string | null,"segment": string,"sent_at"?: string | null,"sent_by"?: string | null,"sent_count"?: number,"status"?: string,"subject": string
+                    "body": string,"charged_to"?: string | null,"created_at"?: string,"created_by": string,"event_id": string,"id"?: string,"recipient_count"?: number,"scheduled_at"?: string | null,"segment": string,"sent_at"?: string | null,"sent_by"?: string | null,"sent_count"?: number,"status"?: string,"subject": string,"template"?: string | null
                   }
                   Update: {
-                    "body"?: string,"charged_to"?: string | null,"created_at"?: string,"created_by"?: string,"event_id"?: string,"id"?: string,"recipient_count"?: number,"scheduled_at"?: string | null,"segment"?: string,"sent_at"?: string | null,"sent_by"?: string | null,"sent_count"?: number,"status"?: string,"subject"?: string
+                    "body"?: string,"charged_to"?: string | null,"created_at"?: string,"created_by"?: string,"event_id"?: string,"id"?: string,"recipient_count"?: number,"scheduled_at"?: string | null,"segment"?: string,"sent_at"?: string | null,"sent_by"?: string | null,"sent_count"?: number,"status"?: string,"subject"?: string,"template"?: string | null
                   }
                   Relationships: [
                     {
@@ -126,6 +178,78 @@ isOneToOne: false
       columns: ["event_id"]
 isOneToOne: false
       referencedRelation: "events"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"event_activity": {
+                  Row: {
+                    "action": string,"actor_id": string | null,"at": string,"event_id": string,"id": number,"meta": NonNullable<Json>,"subject": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "action": string,"actor_id"?: string | null,"at"?: string,"event_id": string,"id"?: never,"meta"?: NonNullable<Json>,"subject"?: string | null
+                  }
+                  Update: {
+                    "action"?: string,"actor_id"?: string | null,"at"?: string,"event_id"?: string,"id"?: never,"meta"?: NonNullable<Json>,"subject"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "event_activity_event_id_fkey"
+      columns: ["event_id"]
+isOneToOne: false
+      referencedRelation: "events"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"event_images": {
+                  Row: {
+                    "created_at": string,"event_id": string,"height": number | null,"id": string,"position": number,"storage_path": string,"url": string,"width": number | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"event_id": string,"height"?: number | null,"id"?: string,"position": number,"storage_path": string,"url": string,"width"?: number | null
+                  }
+                  Update: {
+                    "created_at"?: string,"event_id"?: string,"height"?: number | null,"id"?: string,"position"?: number,"storage_path"?: string,"url"?: string,"width"?: number | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "event_images_event_id_fkey"
+      columns: ["event_id"]
+isOneToOne: false
+      referencedRelation: "events"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"event_invites": {
+                  Row: {
+                    "accepted_at": string | null,"accepted_by": string | null,"created_at": string,"email": string,"event_id": string,"expires_at": string,"id": string,"invited_by": string | null,"revoked_at": string | null,"role": string,"token_hash": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "accepted_at"?: string | null,"accepted_by"?: string | null,"created_at"?: string,"email": string,"event_id": string,"expires_at": string,"id"?: string,"invited_by"?: string | null,"revoked_at"?: string | null,"role": string,"token_hash": string
+                  }
+                  Update: {
+                    "accepted_at"?: string | null,"accepted_by"?: string | null,"created_at"?: string,"email"?: string,"event_id"?: string,"expires_at"?: string,"id"?: string,"invited_by"?: string | null,"revoked_at"?: string | null,"role"?: string,"token_hash"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "event_invites_accepted_by_fkey"
+      columns: ["accepted_by"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "event_invites_event_id_fkey"
+      columns: ["event_id"]
+isOneToOne: false
+      referencedRelation: "events"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "event_invites_invited_by_fkey"
+      columns: ["invited_by"]
+isOneToOne: false
+      referencedRelation: "profiles"
       referencedColumns: ["id"]
     }
                   ]
@@ -221,6 +345,32 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"host_follows": {
+                  Row: {
+                    "created_at": string,"follower_id": string,"host_id": string,"token": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"follower_id": string,"host_id": string,"token"?: string
+                  }
+                  Update: {
+                    "created_at"?: string,"follower_id"?: string,"host_id"?: string,"token"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "host_follows_follower_id_fkey"
+      columns: ["follower_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "host_follows_host_id_fkey"
+      columns: ["host_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"ledger_entries": {
                   Row: {
                     "account": string,"amount_minor": number,"created_at": string,"currency": string,"dispute_id": string | null,"host_id": string | null,"id": number,"kind": string,"order_id": string | null,"reference": string | null,"refund_id": string | null
@@ -237,14 +387,14 @@ isOneToOne: false
                   ]
                 },"orders": {
                   Row: {
-                    "amount_minor": number,"answers": NonNullable<Json>,"buyer_id": string | null,"country": string | null,"created_at": string,"currency": string,"decided_at": string | null,"decided_by": string | null,"decision_note": string | null,"event_id": string,"hold_expires_at": string | null,"id": string,"kind": string,"non_refundable_accepted_at": string | null,"quote": Json | null,"reference": string | null,"status": string,"ticket_count": number,"updated_at": string
+                    "amount_minor": number,"answers": NonNullable<Json>,"buyer_gender": string | null,"buyer_id": string | null,"buyer_phone": string | null,"country": string | null,"created_at": string,"currency": string,"decided_at": string | null,"decided_by": string | null,"decision_note": string | null,"event_id": string,"hold_expires_at": string | null,"id": string,"kind": string,"non_refundable_accepted_at": string | null,"quote": Json | null,"reference": string | null,"status": string,"ticket_count": number,"updated_at": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "amount_minor"?: number,"answers"?: NonNullable<Json>,"buyer_id"?: string | null,"country"?: string | null,"created_at"?: string,"currency": string,"decided_at"?: string | null,"decided_by"?: string | null,"decision_note"?: string | null,"event_id": string,"hold_expires_at"?: string | null,"id"?: string,"kind"?: string,"non_refundable_accepted_at"?: string | null,"quote"?: Json | null,"reference"?: string | null,"status": string,"ticket_count": number,"updated_at"?: string
+                    "amount_minor"?: number,"answers"?: NonNullable<Json>,"buyer_gender"?: string | null,"buyer_id"?: string | null,"buyer_phone"?: string | null,"country"?: string | null,"created_at"?: string,"currency": string,"decided_at"?: string | null,"decided_by"?: string | null,"decision_note"?: string | null,"event_id": string,"hold_expires_at"?: string | null,"id"?: string,"kind"?: string,"non_refundable_accepted_at"?: string | null,"quote"?: Json | null,"reference"?: string | null,"status": string,"ticket_count": number,"updated_at"?: string
                   }
                   Update: {
-                    "amount_minor"?: number,"answers"?: NonNullable<Json>,"buyer_id"?: string | null,"country"?: string | null,"created_at"?: string,"currency"?: string,"decided_at"?: string | null,"decided_by"?: string | null,"decision_note"?: string | null,"event_id"?: string,"hold_expires_at"?: string | null,"id"?: string,"kind"?: string,"non_refundable_accepted_at"?: string | null,"quote"?: Json | null,"reference"?: string | null,"status"?: string,"ticket_count"?: number,"updated_at"?: string
+                    "amount_minor"?: number,"answers"?: NonNullable<Json>,"buyer_gender"?: string | null,"buyer_id"?: string | null,"buyer_phone"?: string | null,"country"?: string | null,"created_at"?: string,"currency"?: string,"decided_at"?: string | null,"decided_by"?: string | null,"decision_note"?: string | null,"event_id"?: string,"hold_expires_at"?: string | null,"id"?: string,"kind"?: string,"non_refundable_accepted_at"?: string | null,"quote"?: Json | null,"reference"?: string | null,"status"?: string,"ticket_count"?: number,"updated_at"?: string
                   }
                   Relationships: [
                     {
@@ -395,19 +545,45 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
-                },"profiles": {
+                },"profile_handle_history": {
                   Row: {
-                    "country": string | null,"created_at": string,"dashboard_theme": string,"email": string | null,"full_name": string | null,"id": string,"language": string | null,"suspended_at": string | null,"suspended_reason": string | null
+                    "changed_at": string,"old_handle": string,"profile_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "country"?: string | null,"created_at"?: string,"dashboard_theme"?: string,"email"?: string | null,"full_name"?: string | null,"id": string,"language"?: string | null,"suspended_at"?: string | null,"suspended_reason"?: string | null
+                    "changed_at"?: string,"old_handle": string,"profile_id": string
                   }
                   Update: {
-                    "country"?: string | null,"created_at"?: string,"dashboard_theme"?: string,"email"?: string | null,"full_name"?: string | null,"id"?: string,"language"?: string | null,"suspended_at"?: string | null,"suspended_reason"?: string | null
+                    "changed_at"?: string,"old_handle"?: string,"profile_id"?: string
                   }
                   Relationships: [
-                    
+                    {
+      foreignKeyName: "profile_handle_history_profile_id_fkey"
+      columns: ["profile_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"profiles": {
+                  Row: {
+                    "avatar_path": string | null,"bio": string | null,"country": string | null,"cover_path": string | null,"created_at": string,"dashboard_theme": string,"email": string | null,"facebook": string | null,"full_name": string | null,"gender": string | null,"handle": string | null,"id": string,"instagram": string | null,"language": string | null,"location": string | null,"phone": string | null,"suspended_at": string | null,"suspended_reason": string | null,"verified_at": string | null,"verified_by": string | null,"website": string | null,"x": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "avatar_path"?: string | null,"bio"?: string | null,"country"?: string | null,"cover_path"?: string | null,"created_at"?: string,"dashboard_theme"?: string,"email"?: string | null,"facebook"?: string | null,"full_name"?: string | null,"gender"?: string | null,"handle"?: string | null,"id": string,"instagram"?: string | null,"language"?: string | null,"location"?: string | null,"phone"?: string | null,"suspended_at"?: string | null,"suspended_reason"?: string | null,"verified_at"?: string | null,"verified_by"?: string | null,"website"?: string | null,"x"?: string | null
+                  }
+                  Update: {
+                    "avatar_path"?: string | null,"bio"?: string | null,"country"?: string | null,"cover_path"?: string | null,"created_at"?: string,"dashboard_theme"?: string,"email"?: string | null,"facebook"?: string | null,"full_name"?: string | null,"gender"?: string | null,"handle"?: string | null,"id"?: string,"instagram"?: string | null,"language"?: string | null,"location"?: string | null,"phone"?: string | null,"suspended_at"?: string | null,"suspended_reason"?: string | null,"verified_at"?: string | null,"verified_by"?: string | null,"website"?: string | null,"x"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "profiles_verified_by_fkey"
+      columns: ["verified_by"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
                   ]
                 },"reconciliation_runs": {
                   Row: {
@@ -457,14 +633,14 @@ isOneToOne: false
                   ]
                 },"registrations": {
                   Row: {
-                    "amount_minor": number,"answers": NonNullable<Json>,"attendee_email": string,"attendee_name": string,"checked_in_at": string | null,"checked_in_by": string | null,"created_at": string,"event_id": string,"guest_name": string | null,"id": string,"order_id": string | null,"payment_ref": string | null,"status": string,"ticket_code": string,"ticket_number": number | null,"tier_id": string,"user_id": string | null
+                    "amount_minor": number,"answers": NonNullable<Json>,"attendee_email": string,"attendee_name": string,"checked_in_at": string | null,"checked_in_by": string | null,"created_at": string,"event_id": string,"guest_name": string | null,"id": string,"order_id": string | null,"payment_ref": string | null,"recipient_email": string | null,"status": string,"ticket_code": string,"ticket_number": number | null,"tier_id": string,"user_id": string | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "amount_minor"?: number,"answers"?: NonNullable<Json>,"attendee_email": string,"attendee_name": string,"checked_in_at"?: string | null,"checked_in_by"?: string | null,"created_at"?: string,"event_id": string,"guest_name"?: string | null,"id"?: string,"order_id"?: string | null,"payment_ref"?: string | null,"status"?: string,"ticket_code"?: string,"ticket_number"?: number | null,"tier_id": string,"user_id"?: string | null
+                    "amount_minor"?: number,"answers"?: NonNullable<Json>,"attendee_email": string,"attendee_name": string,"checked_in_at"?: string | null,"checked_in_by"?: string | null,"created_at"?: string,"event_id": string,"guest_name"?: string | null,"id"?: string,"order_id"?: string | null,"payment_ref"?: string | null,"recipient_email"?: string | null,"status"?: string,"ticket_code"?: string,"ticket_number"?: number | null,"tier_id": string,"user_id"?: string | null
                   }
                   Update: {
-                    "amount_minor"?: number,"answers"?: NonNullable<Json>,"attendee_email"?: string,"attendee_name"?: string,"checked_in_at"?: string | null,"checked_in_by"?: string | null,"created_at"?: string,"event_id"?: string,"guest_name"?: string | null,"id"?: string,"order_id"?: string | null,"payment_ref"?: string | null,"status"?: string,"ticket_code"?: string,"ticket_number"?: number | null,"tier_id"?: string,"user_id"?: string | null
+                    "amount_minor"?: number,"answers"?: NonNullable<Json>,"attendee_email"?: string,"attendee_name"?: string,"checked_in_at"?: string | null,"checked_in_by"?: string | null,"created_at"?: string,"event_id"?: string,"guest_name"?: string | null,"id"?: string,"order_id"?: string | null,"payment_ref"?: string | null,"recipient_email"?: string | null,"status"?: string,"ticket_code"?: string,"ticket_number"?: number | null,"tier_id"?: string,"user_id"?: string | null
                   }
                   Relationships: [
                     {
@@ -515,14 +691,14 @@ isOneToOne: false
                   ]
                 },"ticket_tiers": {
                   Row: {
-                    "created_at": string,"currency": string,"event_id": string,"id": string,"is_active": boolean,"name": string,"price_minor": number,"quantity": number | null,"sales_end": string | null,"sales_start": string | null,"sold": number
+                    "created_at": string,"currency": string,"description": string | null,"event_id": string,"group_size": number,"id": string,"is_active": boolean,"name": string,"price_minor": number,"quantity": number | null,"sales_end": string | null,"sales_start": string | null,"sold": number
                   }
                   ComputedFields: never
                   Insert: {
-                    "created_at"?: string,"currency"?: string,"event_id": string,"id"?: string,"is_active"?: boolean,"name": string,"price_minor"?: number,"quantity"?: number | null,"sales_end"?: string | null,"sales_start"?: string | null,"sold"?: number
+                    "created_at"?: string,"currency"?: string,"description"?: string | null,"event_id": string,"group_size"?: number,"id"?: string,"is_active"?: boolean,"name": string,"price_minor"?: number,"quantity"?: number | null,"sales_end"?: string | null,"sales_start"?: string | null,"sold"?: number
                   }
                   Update: {
-                    "created_at"?: string,"currency"?: string,"event_id"?: string,"id"?: string,"is_active"?: boolean,"name"?: string,"price_minor"?: number,"quantity"?: number | null,"sales_end"?: string | null,"sales_start"?: string | null,"sold"?: number
+                    "created_at"?: string,"currency"?: string,"description"?: string | null,"event_id"?: string,"group_size"?: number,"id"?: string,"is_active"?: boolean,"name"?: string,"price_minor"?: number,"quantity"?: number | null,"sales_end"?: string | null,"sales_start"?: string | null,"sold"?: number
                   }
                   Relationships: [
                     {

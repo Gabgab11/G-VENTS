@@ -1,0 +1,9 @@
+.link {
+  color: var(--color-accent);
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
+  text-underline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+.link:hover { text-decoration: underline; }
+.link:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }

@@ -8,6 +8,7 @@ import { NON_REFUNDABLE_KEY } from "@/lib/payment-text";
 import { isUuid } from "@/lib/forms";
 import type { components } from "@/lib/api/schema";
 import { isCheckoutUrl, paidOrderBody, placeOrderBody, type OrderInputError } from "./order-input";
+import { cleanCode, isDiscountProblem } from "./tickets/discount-code";
 
 export type OrderState = { error?: string } | undefined;
 
@@ -50,15 +51,23 @@ export async function placeOrder(_prev: OrderState, formData: FormData): Promise
 
 export type Quote = components["schemas"]["FeeQuoteDto"];
 
-/** The live breakdown on the paid order form (prices, fees, VAT, total), from the API's quote. */
-export async function quotePaid(eventId: string, lines: { ticketTypeId: string; quantity: number }[]): Promise<Quote | { error: string }> {
+/** Why a quote failed; `discount` when it was the code's fault (shown under the code box). */
+export type QuoteFailure = { error: string; discount?: boolean };
+
+/**
+ * The live breakdown on the paid order form (prices, any discount code, fees, VAT, total), from the
+ * API's quote. Public: signed-out buyers see it too. The code is checked by the API (D91).
+ */
+export async function quotePaid(eventId: string, lines: { ticketTypeId: string; quantity: number }[], code?: string | null): Promise<Quote | QuoteFailure> {
   const { t, problem } = await texts();
   const clean = lines.filter((l) => isUuid(l.ticketTypeId) && Number.isInteger(l.quantity) && l.quantity > 0 && l.quantity <= 10).slice(0, 20);
   if (!isUuid(eventId) || clean.length === 0) return { error: t("chooseTicket") };
+  const discount = code == null || code === "" ? null : cleanCode(code);
+  if (discount === null && code) return { error: t("codeFormat"), discount: true };
   try {
-    return data(await (await api()).POST("/v1/events/{id}/quote", { params: { path: { id: eventId } }, body: { lines: clean } }));
+    return data(await (await api()).POST("/v1/events/{id}/quote", { params: { path: { id: eventId } }, body: { lines: clean, ...(discount ? { code: discount } : {}) } }));
   } catch (error) {
-    return { error: problem(error, t("quoteFailed")) };
+    return { error: problem(error, t("quoteFailed")), ...(discount && error instanceof ApiError && isDiscountProblem(error.code) ? { discount: true } : {}) };
   }
 }
 

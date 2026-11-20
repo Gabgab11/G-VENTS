@@ -2,6 +2,8 @@
 
 import { useId, useMemo, useRef, useState } from "react";
 import { fold } from "@/lib/locations";
+import { Input } from "@/design";
+import styles from "./Combobox.module.css";
 
 export type ComboOption = { value: string; label: string };
 
@@ -68,11 +70,11 @@ export default function Combobox({
   }
 
   return (
-    <label className="field">
-      <span>{label}</span>
-      <div className="combo">
-        <input
-          className="input combo-input"
+    <label className={styles.field}>
+      <span className={styles.label}>{label}</span>
+      <div className={styles.combo}>
+        <Input
+          className={`${styles.input} ${styles.picker}`}
           role="combobox"
           aria-expanded={open}
           aria-controls={listId}
@@ -87,17 +89,17 @@ export default function Combobox({
           onKeyDown={onKeyDown}
           onBlur={() => setOpen(false)}
         />
-        <span className="combo-caret" aria-hidden>▾</span>
+        <span className={styles.caret} aria-hidden>▾</span>
         {open && (
-          <ul className="combo-list" id={listId} role="listbox" ref={listRef}>
-            {matches.length === 0 && <li className="combo-empty">{emptyText}</li>}
+          <ul className={styles.list} id={listId} role="listbox" ref={listRef}>
+            {matches.length === 0 && <li className={styles.empty}>{emptyText}</li>}
             {matches.map((o, i) => (
               <li
                 key={o.value}
                 id={`${id}-${i}`}
                 role="option"
                 aria-selected={o.value === value}
-                className={`combo-opt ${i === active ? "active" : ""}`}
+                className={i === active ? `${styles.option} ${styles.active}` : styles.option}
                 // mousedown, not click: runs before the input's blur closes the list
                 onMouseDown={(e) => { e.preventDefault(); choose(o); }}
                 onMouseEnter={() => setActive(i)}

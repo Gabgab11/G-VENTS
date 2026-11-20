@@ -31,21 +31,14 @@
     "features": {
       "unlimitedEvents": "Unbegrenzt Events erstellen",
       "freeTickets": "Verkauf kostenloser Tickets",
-      "promoCodes": "Promo-Codes",
       "qrCheckIn": "Tickets mit QR-Code und Gäste-Check-in",
-      "basicAnalytics": "Basis-Statistiken und E-Mail-Erinnerungen",
       "standardPages": "Standard-Eventseiten",
-      "teamOne": "1 Teammitglied",
       "everythingStarter": "Alles aus Starter",
-      "advancedAnalytics": "Erweiterte Statistiken",
-      "advancedReminders": "Erweiterte E-Mail-Erinnerungen",
       "customizablePages": "Anpassbare Eventseiten",
-      "teamFive": "5 Teammitglieder",
       "prioritySupport": "Priorisierter Support",
       "optionalDomain": "Optional eigene Domain",
       "everythingPro": "Alles aus Pro",
       "brandedPages": "Eventseiten komplett im eigenen Branding",
-      "teamFifteen": "15 Teammitglieder",
       "customDomain": "Eigene Domain",
       "apiAccess": "API-Zugang"
     },
@@ -66,14 +59,10 @@
         "eventCreation": "Events erstellen",
         "freeTickets": "Verkauf kostenloser Tickets",
         "platformFee": "Plattformgebühr auf kostenpflichtige Tickets",
-        "analytics": "Event-Statistiken",
-        "promoCodes": "Promo-Codes",
         "customPages": "Individuelle Eventseiten",
         "attendeeManagement": "Teilnehmerverwaltung",
         "qrTickets": "Tickets mit QR-Code",
         "checkIn": "Gäste-Check-in",
-        "emailReminders": "E-Mail-Erinnerungen",
-        "teamMembers": "Teammitglieder",
         "exportData": "Teilnehmerdaten exportieren",
         "prioritySupport": "Priorisierter Support",
         "customDomain": "Eigene Domain",
@@ -82,8 +71,6 @@
       "values": {
         "unlimited": "Unbegrenzt",
         "free": "Kostenlos",
-        "basic": "Basis",
-        "advanced": "Erweitert",
         "yes": "Ja",
         "no": "Nein",
         "standard": "Standard",
@@ -100,9 +87,169 @@
   },
   "help": {
     "meta": {
-      "title": "Hilfe · G-ventZ"
+      "title": "Hilfe und Kontakt · G-ventZ",
+      "description": "Antworten zu Tickets, Erstattungen und Veranstalten auf G-ventZ und ein Formular für unser Support-Team."
     },
-    "title": "Hilfe",
-    "text": "Gäste: Wenden Sie sich an den Veranstalter des Events, für das Sie sich angemeldet haben. Veranstalter: Verwalten Sie Ihre Events in Ihrem Dashboard."
+    "eyebrow": "Hilfe und Kontakt",
+    "title": "Wie können wir helfen?",
+    "text": "Unten finden Sie schnelle Antworten. Oder schreiben Sie uns: Unser Team antwortet per E-Mail.",
+    "emailUs": "Schreiben Sie uns: <email></email>",
+    "quick": {
+      "label": "Schnelle Hilfe",
+      "tickets": {
+        "title": "Meine Tickets",
+        "text": "Ihre Tickets, QR-Codes und Bestellungen."
+      },
+      "refunds": {
+        "title": "Erstattungen",
+        "text": "Wie Erstattungen funktionieren und wie Sie eine anfragen."
+      },
+      "pricing": {
+        "title": "Preise",
+        "text": "Was der Ticketverkauf auf G-ventZ kostet."
+      },
+      "hosting": {
+        "title": "Event veranstalten",
+        "text": "Event erstellen, Tickets verkaufen und Gäste einchecken."
+      },
+      "legalLinks": "Lesen Sie unsere <terms>Nutzungsbedingungen</terms> und unsere <privacy>Datenschutzerklärung</privacy>."
+    },
+    "contact": {
+      "label": "Kontakt",
+      "title": "Lassen Sie uns reden.",
+      "text": "Ob Sie Hilfe mit einem Ticket, einer Erstattung oder Ihren Events brauchen oder mit G-ventZ zusammenarbeiten möchten: Unser Team hört zu.",
+      "note1": {
+        "title": "Sagen Sie uns, was Sie brauchen",
+        "text": "Wählen Sie ein Thema und geben Sie genug Details an, damit Ihre Anfrage bei der richtigen Person landet."
+      },
+      "note2": {
+        "title": "Wir antworten direkt",
+        "text": "Ihre Nachricht geht vertraulich an das Support-Team von G-ventZ, und wir antworten an die E-Mail-Adresse, die Sie angeben."
+      },
+      "mapLabel": "Gepunktete Weltkarte, auf der Lagos, Nigeria, markiert ist",
+      "pin": "Lagos, Nigeria",
+      "cities": {
+        "london": "London, Vereinigtes Königreich",
+        "newYork": "New York, USA",
+        "saoPaulo": "São Paulo, Brasilien",
+        "capeTown": "Kapstadt, Südafrika",
+        "nairobi": "Nairobi, Kenia",
+        "dubai": "Dubai, VAE",
+        "mumbai": "Mumbai, Indien",
+        "tokyo": "Tokio, Japan",
+        "sydney": "Sydney, Australien"
+      },
+      "caption": "G-ventZ hat seinen Sitz in Lagos, Nigeria.",
+      "panelLabel": "Unser Team erreichen",
+      "panelTitle": "Schreiben Sie uns",
+      "panelText": "Füllen Sie das Formular aus, und wir antworten an die angegebene E-Mail-Adresse.",
+      "name": "Vollständiger Name",
+      "namePlaceholder": "Ihr vollständiger Name",
+      "email": "E-Mail-Adresse",
+      "emailPlaceholder": "sie@beispiel.de",
+      "country": "Land",
+      "countryPlaceholder": "Land auswählen",
+      "topic": "Thema",
+      "topicPlaceholder": "Thema auswählen",
+      "topics": {
+        "tickets": "Tickets und Bestellungen",
+        "refunds": "Erstattungen",
+        "hosting": "Veranstalten und Auszahlungen",
+        "account": "Konto",
+        "partnerships": "Partnerschaften",
+        "other": "Sonstiges"
+      },
+      "message": "Nachricht",
+      "messagePlaceholder": "Wie können wir helfen?…",
+      "counter": "{count, number} / {max, number}",
+      "consent": "Mit dem Senden dieser Nachricht stimmen Sie zu, dass wir Sie zu Ihrer Anfrage kontaktieren dürfen.",
+      "send": "Nachricht senden",
+      "sending": "Wird gesendet…",
+      "sent": {
+        "title": "Nachricht erhalten",
+        "text": "Danke für Ihre Nachricht. Jemand aus unserem Team antwortet Ihnen bald per E-Mail.",
+        "again": "Weitere Nachricht senden"
+      },
+      "errors": {
+        "fix": "Bitte prüfen Sie die markierten Felder.",
+        "nameLength": "Geben Sie Ihren Namen ein (2 bis 100 Zeichen).",
+        "emailInvalid": "Geben Sie eine gültige E-Mail-Adresse ein.",
+        "countryMissing": "Wählen Sie Ihr Land aus.",
+        "topicMissing": "Wählen Sie ein Thema aus.",
+        "messageShort": "Erzählen Sie uns etwas mehr (mindestens 10 Zeichen).",
+        "messageLong": "Ihre Nachricht darf höchstens 4.000 Zeichen lang sein.",
+        "failed": "Ihre Nachricht konnte nicht gesendet werden. Versuchen Sie es erneut oder schreiben Sie an support@gventz.com.",
+        "captchaWait": "Einen Moment, wir prüfen Ihren Browser. Senden Sie dann erneut.",
+        "captchaLoad": "Die Sicherheitsprüfung wurde nicht geladen. Laden Sie die Seite neu und versuchen Sie es erneut."
+      }
+    }
+  },
+  "about": {
+    "meta": {
+      "title": "Über uns · G-ventZ",
+      "description": "G-ventZ ist eine Event-Plattform aus Lagos: Veranstalter erstellen Events und verkaufen Tickets, Gäste finden Events und haben ihre Tickets an einem Ort."
+    },
+    "eyebrow": "Über G-ventZ",
+    "titleStart": "Jede Feier,",
+    "titleHighlight": "ein Ort.",
+    "lead": "G-ventZ hilft Menschen, Events zu erstellen, Tickets zu verkaufen und ihre Gäste zu empfangen, von einer Owambe oder einem Geburtstag bis zu einem Konzert oder einer Konferenz.",
+    "audiences": "Für wen G-ventZ ist",
+    "what": {
+      "title": "Was G-ventZ ist",
+      "p1": "G-ventZ ist eine Event-Plattform. Veranstalter erstellen in wenigen Minuten eine Eventseite, teilen einen einzigen Link und lassen Gäste sich von überall anmelden oder Tickets kaufen. Am Eingang hat jedes Ticket einen QR-Code, den das Team des Veranstalters scannt, um Gäste einzuchecken.",
+      "p2": "Gäste melden sich mit Google oder einem per E-Mail gesendeten Code an, finden Events unter Entdecken und haben alle Tickets unter Meine Tickets."
+    },
+    "guests": {
+      "label": "Für Gäste",
+      "title": "Finden, buchen, hingehen.",
+      "points": {
+        "find": "Entdecken Sie Events in Ihrer Nähe oder öffnen Sie den Link, den ein Veranstalter geteilt hat.",
+        "book": "Anmelden oder bezahlen in wenigen Schritten. Ihre Tickets gehen an Ihre bestätigte E-Mail-Adresse.",
+        "ticket": "Jedes Ticket und sein QR-Code bleiben unter Meine Tickets.",
+        "refund": "Erstattungen richten sich nach den Regeln des Events und unseren Erstattungsrichtlinien."
+      }
+    },
+    "hosts": {
+      "label": "Für Veranstalter",
+      "title": "Ihr Event an einem Ort.",
+      "points": {
+        "create": "Erstellen Sie kostenlose oder kostenpflichtige Events mit Ticketarten, Fragen und eigenem Look.",
+        "sell": "Verkaufen Sie Tickets mit Paystack, mit Rabattcodes und Gruppentickets.",
+        "manage": "Sehen Sie Ihre Gästeliste, genehmigen Sie Anfragen, senden Sie Mitteilungen und checken Sie Gäste per QR-Code ein.",
+        "team": "Laden Sie Ihr Team mit den passenden Rollen ein und sehen Sie jede Änderung im Aktivitätsprotokoll."
+      }
+    },
+    "money": {
+      "title": "So funktioniert das Geld",
+      "text": "Kostenpflichtige Tickets laufen über Paystack, einen zugelassenen Zahlungsanbieter. G-ventZ verwahrt nie Ihr Geld.",
+      "steps": {
+        "pay": {
+          "title": "Gäste zahlen mit Paystack",
+          "text": "Per Karte, Banküberweisung oder anderen Methoden, die Paystack in ihrem Land anbietet. G-ventZ sieht oder speichert nie Kartendaten."
+        },
+        "split": {
+          "title": "Jeder Verkauf geht an die Bank des Veranstalters",
+          "text": "Paystack teilt jede Zahlung auf: Der Anteil des Veranstalters geht direkt auf sein Bankkonto, und die Gebühr von G-ventZ wird gleichzeitig einbehalten."
+        },
+        "never": {
+          "title": "G-ventZ verwahrt nie Ihr Geld",
+          "text": "Es gibt keine G-ventZ-Wallet dazwischen. Veranstalter sehen jeden Verkauf, die Gebühren und was sie erhalten haben auf ihrer Seite Auszahlungen."
+        }
+      }
+    },
+    "where": {
+      "title": "Wo wir sind",
+      "text": "G-ventZ wird in Lagos, Nigeria, entwickelt und betrieben. Fragen? Schreiben Sie an <email></email> oder nutzen Sie unser Kontaktformular."
+    },
+    "closing": {
+      "title": "Bereit für Ihr nächstes Event?",
+      "text": "Finden Sie etwas für dieses Wochenende oder erstellen Sie in wenigen Minuten Ihr eigenes Event."
+    },
+    "cta": {
+      "discover": "Events entdecken",
+      "host": "Event veranstalten",
+      "contact": "Kontakt",
+      "pricing": "Preise ansehen"
+    }
   }
 }

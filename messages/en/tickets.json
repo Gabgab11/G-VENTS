@@ -82,7 +82,8 @@
       "button": "Check in {name}"
     },
     "foot": "This ticket belongs to {name}. Anyone with this link can see it, so only share it with people you trust.",
-    "print": "Print or save as PDF"
+    "print": "Print or save as PDF",
+    "groupNote": "Part of a group of {count}. Each person has their own ticket."
   },
   "email": {
     "label": "Email my ticket",

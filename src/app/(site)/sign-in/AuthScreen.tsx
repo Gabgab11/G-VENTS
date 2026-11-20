@@ -1,5 +1,6 @@
 "use client";
 
+import { markLeavingSignIn } from "@/lib/auth-floor";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
@@ -35,15 +36,16 @@ export default function AuthScreen({ mode, art }: { mode: AuthMode; art: ReactNo
   const [fromCreate, setFromCreate] = useState(false);
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    setFromCreate(params.get("next") === "/events/new");
+    setFromCreate(["/events/new", "/host/events/new"].includes(params.get("next") ?? ""));
     const n = params.get("next");
-    setNext(n ? `?next=${encodeURIComponent(safeNextPath(n))}` : "");
+    setNext(n ? `?next=${encodeURIComponent(safeNextPath(n, "/my-tickets"))}` : "");
     if (params.get("error") === "google") setError(t("googleDidntFinish"));
   }, [t]);
 
   function nextPath() {
-    if (typeof window === "undefined") return "/dashboard";
-    return safeNextPath(new URLSearchParams(window.location.search).get("next"));
+    // No (or an unsafe) `next`: a guest's tickets, not the host dashboard (D82).
+    if (typeof window === "undefined") return "/my-tickets";
+    return safeNextPath(new URLSearchParams(window.location.search).get("next"), "/my-tickets");
   }
 
   // Google returns to /auth/callback, which sets the session and continues to `next`.
@@ -52,6 +54,7 @@ export default function AuthScreen({ mode, art }: { mode: AuthMode; art: ReactNo
     setBusy(true);
     const result = await startGoogleSignIn(nextPath()).catch(() => ({ error: t("googleUnavailable") }));
     if ("url" in result) {
+      markLeavingSignIn();
       window.location.href = result.url;
       return;
     }
@@ -87,7 +90,9 @@ export default function AuthScreen({ mode, art }: { mode: AuthMode; art: ReactNo
     );
     setBusy(false);
     if (!result.ok) return setError(result.message);
-    window.location.href = nextPath();
+    markLeavingSignIn();
+    // replace, not a new entry: the sign-in page doesn't stay in this tab's history.
+    window.location.replace(nextPath());
   }
 
   return (

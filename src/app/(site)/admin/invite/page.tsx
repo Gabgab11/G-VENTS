@@ -19,7 +19,7 @@ export default async function StaffInvitePage({ searchParams }: { searchParams: 
         <div className="panel-label">No invitation found</div>
         <p>There is no open G-ventZ staff invitation for <b>{user.email}</b>.</p>
         <p className="muted small">Invitations are for one email address and expire after 7 days. If you were invited at another address, sign out and sign in with that one, or ask the person who invited you to send a new invitation.</p>
-        <Link href="/dashboard" className="btn-ghost">Go to your dashboard</Link>
+        <Link href="/host" className="btn-ghost">Go to your dashboard</Link>
       </section>
     );
   }

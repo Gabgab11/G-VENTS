@@ -37,8 +37,8 @@ async function attach(request: Request, id: string): Promise<Outcome> {
     return { ok: false, status: 502, code: "failed" };
   }
   console.info(`[flyer] image attached to ${id} (${flyer.contentType}, ${flyer.file.size} bytes)`);
-  revalidatePath(`/dashboard/${id}`);
-  revalidatePath("/dashboard");
+  revalidatePath(`/host/events/${id}`);
+  revalidatePath("/host/events");
   return { ok: true };
 }
 
@@ -52,8 +52,8 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   }
   const site = new URL(request.url).origin;
   if (!outcome.ok && outcome.code === "signed_out") {
-    return Response.redirect(`${site}/sign-in?next=${encodeURIComponent(`/dashboard/${id}?tab=settings`)}`, 303);
+    return Response.redirect(`${site}/sign-in?next=${encodeURIComponent(`/host/events/${id}?tab=details`)}`, 303);
   }
   const query = outcome.ok ? "ok=flyer_uploaded" : `err=${encodeURIComponent(outcome.code)}`;
-  return Response.redirect(`${site}/dashboard/${id}?tab=settings&${query}`, 303);
+  return Response.redirect(`${site}/host/events/${id}?tab=details&${query}`, 303);
 }

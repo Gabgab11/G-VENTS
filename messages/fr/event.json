@@ -6,7 +6,19 @@
       "canManage": "Vous pouvez modifier cet événement. <link>Gérer l'événement</link>"
     },
     "coverAlt": "Affiche de {title}",
+    "gallery": {
+      "label": "Images de {title}",
+      "roleDescription": "galerie",
+      "alt": "Image {number} sur {total} : {title}",
+      "position": "Image {number} sur {total}",
+      "previous": "Image précédente",
+      "next": "Image suivante",
+      "show": "Afficher l’image {number} sur {total}",
+      "showMore": "Afficher l’image {number} sur {total} ({count, plural, one {# image de plus} other {# images de plus}})"
+    },
     "hostedBy": "Organisé par",
+    "hostFallback": "Organisateur G-ventZ",
+    "visitProfile": "Voir le profil",
     "going": "{count, plural, one {{count, number, ::group-off} personne y va} other {{count, number, ::group-off} personnes y vont}}",
     "privateEvent": "Événement privé",
     "timeLine": "{range} · heure de {zone}",
@@ -44,17 +56,44 @@
   "signUp": {
     "welcome": "Bienvenue ! Créez un compte gratuit ou connectez-vous pour obtenir vos billets. Cela prend quelques secondes avec Google ou un code à 6 chiffres reçu par e-mail.",
     "cta": "Obtenir des billets",
-    "haveAccount": "Vous avez déjà un compte ? <link>Se connecter</link>"
+    "haveAccount": "Vous avez déjà un compte ? <link>Se connecter</link>",
+    "newHere": "Nouveau sur G-ventZ ? <link>Créez un compte gratuit</link>"
   },
   "guest": {
     "name": "Votre nom complet",
     "email": "E-mail",
     "emailNote": "Tous vos billets sont envoyés à l'adresse e-mail de votre compte.",
-    "othersLegend": "Noms pour les autres billets (facultatif ; vous pouvez transférer chaque billet)",
-    "ticketNumber": "Billet {number}",
-    "namePlaceholder": "Nom de l'invité",
+    "emailThis": "Les billets sont envoyés à cette adresse e-mail.",
     "choose": "Choisir",
-    "socialPlaceholder": "@pseudo ou lien du profil"
+    "socialPlaceholder": "@pseudo ou lien du profil",
+    "phoneCountry": "Indicatif du pays",
+    "phone": "Numéro de téléphone",
+    "phoneHint": "L'organisateur peut l'utiliser pour vous contacter au sujet de l'événement.",
+    "phonePlaceholder": "Votre numéro",
+    "gender": "Genre (facultatif)",
+    "genderNone": "Choisir",
+    "genders": {
+      "female": "Femme",
+      "male": "Homme",
+      "unspecified": "Je préfère ne pas le dire"
+    },
+    "forWho": "Pour qui sont ces billets ?",
+    "forMe": "Tous pour moi",
+    "forOthers": "Certains pour d'autres personnes",
+    "forOthersHint": "Chaque personne reçoit son propre billet. Ajoutez une adresse e-mail pour le lui envoyer ; tous les billets restent aussi dans Mes billets.",
+    "ticketFor": "Billet {number} · {type}",
+    "removePerson": "Retirer",
+    "personName": "Nom complet",
+    "personEmail": "Adresse e-mail (facultatif)",
+    "personEmailHint": "Nous enverrons son billet à cette adresse.",
+    "addPerson": "Ajouter une personne",
+    "restYours": "Les billets attribués à personne restent les vôtres.",
+    "recipientErrors": {
+      "recipientName": "Saisissez le nom de la personne (2 à 120 caractères).",
+      "recipientEmail": "Saisissez une adresse e-mail valide ou laissez le champ vide.",
+      "recipientIsBuyer": "C'est votre propre adresse : vos billets vous parviennent déjà.",
+      "recipientsTooMany": "Vous pouvez envoyer des billets à 20 personnes au maximum par commande."
+    }
   },
   "order": {
     "legend": "Billets",
@@ -62,9 +101,16 @@
     "free": "Gratuit",
     "howMany": "Combien de billets {name}",
     "limit": "Jusqu'à {count, plural, one {{count, number, ::group-off} billet} other {{count, number, ::group-off} billets}} par personne.",
+    "limitLeft": "Vous avez déjà {held, plural, one {# billet} other {# billets}} ; vous pouvez en obtenir {count, plural, one {# de plus} other {# de plus}}.",
+    "maxReached": "Vous avez le nombre maximal de billets autorisé ({count, plural, one {# billet} other {# billets}} par personne).",
+    "maxReachedHint": "Ils se trouvent dans Mes billets et dans l'e-mail de votre compte.",
+    "seeMyTickets": "Voir mes billets",
     "pending": "Obtention de vos billets...",
     "request": "{count, plural, one {Demander un billet} other {Demander {count, number, ::group-off} billets}}",
-    "get": "{count, plural, one {Obtenir le billet} other {Obtenir {count, number, ::group-off} billets}}"
+    "get": "{count, plural, one {Obtenir le billet} other {Obtenir {count, number, ::group-off} billets}}",
+    "groupOf": "Groupe de {count}",
+    "admits": "pour {count} personnes",
+    "priceAdmits": "{price} · pour {count} personnes"
   },
   "paid": {
     "legend": "Billets payants",
@@ -85,6 +131,37 @@
     "payTotal": "Payer avec Paystack · {total}",
     "payNote": "Vous paierez sur la page sécurisée de Paystack. Vos billets sont réservés pendant 10 minutes."
   },
+  "verify": {
+    "emailHint": "Nous vous enverrons un code à 6 chiffres par e-mail pour la confirmer. Vos billets sont envoyés à cette adresse.",
+    "emailPlaceholder": "vous@email.com",
+    "continue": "Continuer",
+    "sending": "Envoi du code...",
+    "nameFirst": "Saisissez d'abord votre nom complet.",
+    "codeTitle": "Saisissez le code reçu par e-mail",
+    "codeSent": "Nous avons envoyé un code à 6 chiffres à <address>{email}</address>. Il expire dans quelques minutes.",
+    "codeLabel": "Code à 6 chiffres",
+    "checking": "Vérification...",
+    "changeEmail": "Modifier l'adresse e-mail",
+    "resend": "Renvoyer le code",
+    "resendIn": "Renvoyer le code dans {seconds} s",
+    "resent": "Nous vous avons envoyé un nouveau code.",
+    "signedIn": "Adresse e-mail confirmée.",
+    "confirmed": "Adresse e-mail confirmée. Les billets sont envoyés à cette adresse.",
+    "confirmFirst": "Confirmez votre adresse e-mail pour continuer.",
+    "captchaWait": "Veuillez patienter un instant pendant que nous vérifions que vous n'êtes pas un robot, puis réessayez.",
+    "captchaLoad": "La vérification anti-robot ne s'est pas chargée. Actualisez la page et réessayez.",
+    "captchaFailed": "La vérification anti-robot a échoué. Veuillez réessayer.",
+    "verifyFailed": "Nous ne pouvons pas vérifier le code pour le moment. Réessayez dans un instant."
+  },
+  "discount": {
+    "toggle": "Vous avez un code de réduction ?",
+    "label": "Code de réduction",
+    "apply": "Appliquer",
+    "remove": "Retirer",
+    "removeLabel": "Retirer le code {code}",
+    "applied": "Code {code} appliqué",
+    "checking": "Vérification du code {code}..."
+  },
   "errors": {
     "eventNotFound": "Cet événement est introuvable.",
     "sessionEnded": "Votre session a expiré. Reconnectez-vous pour obtenir des billets.",
@@ -93,6 +170,57 @@
     "paymentFailed": "Nous n'avons pas pu lancer votre paiement. Veuillez réessayer.",
     "chooseTicket": "Choisissez au moins un billet.",
     "ticketRange": "Choisissez entre 1 et 10 billets.",
-    "nonRefundable": "Cochez « {text} » pour continuer."
+    "nonRefundable": "Cochez « {text} » pour continuer.",
+    "codeFormat": "Saisissez un code de 3 à 32 lettres, chiffres, - ou _.",
+    "phoneRequired": "Saisissez votre numéro de téléphone.",
+    "phoneInvalid": "Saisissez un numéro de téléphone valide pour le pays choisi.",
+    "recipientName": "Saisissez le nom de chaque personne (2 à 120 caractères).",
+    "recipientEmail": "Saisissez une adresse e-mail valide pour chaque personne ou laissez le champ vide.",
+    "recipientIsBuyer": "C'est votre propre adresse : vos billets vous parviennent déjà.",
+    "recipientsTooMany": "Vous pouvez envoyer des billets à 20 personnes au maximum par commande."
+  },
+  "meta": {
+    "cardAlt": "{title} : date, lieu et billets"
+  },
+  "trust": {
+    "paystack": "Paiement sécurisé par Paystack",
+    "refunds": "Remboursements : {policy}",
+    "refundsLink": "Politique de remboursement",
+    "email": "Les billets sont envoyés à l'adresse e-mail de votre compte"
+  },
+  "map": {
+    "open": "Ouvrir dans Google Maps",
+    "show": "Afficher la carte",
+    "title": "Carte de {place}",
+    "imageAlt": "Carte indiquant {place}"
+  },
+  "summary": {
+    "ticketsTitle": "Billets",
+    "getTickets": "Acheter des billets",
+    "register": "S'inscrire",
+    "joinWaitlist": "Rejoindre la liste d'attente",
+    "soldOut": "Complet",
+    "closed": "Inscriptions closes",
+    "cancelled": "Événement annulé",
+    "notOnSale": "Pas encore en vente",
+    "readMore": "Lire la suite",
+    "aboutDirections": "À propos et itinéraire",
+    "soldOutNote": "Tous les billets ont été pris.",
+    "waitlistNote": "Les billets sont épuisés. Rejoignez la liste d'attente et nous vous écrirons si une place se libère."
+  },
+  "booking": {
+    "metaTitle": "Billets pour {title}",
+    "back": "Retour à l'événement",
+    "detailsTitle": "Informations d'inscription",
+    "detailsLead": "Choisissez vos billets et indiquez-nous qui viendra.",
+    "summaryTitle": "Récapitulatif",
+    "confirm": "Confirmer l'inscription",
+    "sendRequest": "Envoyer la demande",
+    "completeForm": "Remplissez les informations obligatoires pour continuer.",
+    "free": "Gratuit",
+    "discount": "Réduction ({code})",
+    "line": "{name} × {count}",
+    "unavailable": "Les billets ne peuvent pas être réservés pour le moment",
+    "groupLine": "{name} × {count} ({entries, plural, one {# entrée} other {# entrées}})"
   }
 }

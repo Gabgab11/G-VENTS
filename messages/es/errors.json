@@ -13,7 +13,10 @@
     "no_recipients": "Nadie en este público puede recibir correos todavía.",
     "not_found": "No se encontró este anuncio.",
     "segment_invalid": "Elija quién recibe este anuncio.",
-    "unsubscribe_unknown": "Este enlace para darse de baja no es válido."
+    "unsubscribe_unknown": "Este enlace para darse de baja no es válido.",
+    "fields_required": "Añada un asunto y un mensaje.",
+    "quota_exceeded": "Esto superaría sus correos de anuncios de este mes. Elija un público más pequeño o espere al reinicio mensual.",
+    "template_invalid": "Elija una de las plantillas de anuncio."
   },
   "auth": {
     "anonymous_not_allowed": "Inicie sesión con su correo o con Google para continuar.",
@@ -27,6 +30,22 @@
   },
   "db": {
     "busy": "Tenemos mucha actividad en este momento. Inténtelo de nuevo en un momento."
+  },
+  "discount": {
+    "invalid": "Este código no es válido para este evento.",
+    "expired": "Este código no está activo en este momento: ha finalizado o aún no ha comenzado.",
+    "used_up": "Este código ya se ha usado el máximo de veces permitido.",
+    "not_for_ticket": "Este código no se aplica a las entradas que ha elegido.",
+    "whole_order": "Este código haría gratuito todo el pedido, y los pedidos de pago no pueden ser gratuitos. Omita el código o añada otra entrada.",
+    "code_format": "Use de 3 a 32 letras, dígitos, - o _.",
+    "code_taken": "Este evento ya tiene ese código.",
+    "limit_invalid": "El límite debe ser al menos 1 y no inferior a los usos actuales.",
+    "locked": "Este código ya se ha usado, así que su tipo e importe no pueden cambiar. Páuselo y cree uno nuevo.",
+    "no_paid_types": "Los códigos de descuento se aplican a entradas de pago, y este evento no tiene ninguna.",
+    "not_found": "No se encontró el código de descuento.",
+    "ticket_types_invalid": "Elija tipos de entrada de pago de este evento; los códigos no se aplican a entradas gratuitas.",
+    "value_invalid": "Introduzca un porcentaje de 1 a 100 o un importe mayor que 0.",
+    "window_invalid": "El fin debe ser posterior al inicio."
   },
   "event": {
     "already_cancelled": "Este evento ya está cancelado.",
@@ -45,6 +64,9 @@
     "forbidden": "No tiene permiso para hacer eso en este evento.",
     "has_paid_registrations": "Los eventos con entradas de pago no se pueden eliminar.",
     "host_owes_money": "Usted debe dinero a G-ventZ por reembolsos, así que no puede publicar nuevos eventos de pago hasta saldarlo con sus ventas.",
+    "image_not_found": "Esa imagen ya se había quitado.",
+    "images_full": "Este evento ya tiene 5 imágenes. Quite una para añadir otra.",
+    "images_order_invalid": "Las imágenes han cambiado mientras tanto. Vuelva a cargar la página e inténtelo de nuevo.",
     "location_invalid": "Revise los datos del lugar e inténtelo de nuevo.",
     "not_found": "No se encontró el evento.",
     "not_published": "Este evento no está publicado.",
@@ -62,7 +84,10 @@
     "time_invalid": "Use una fecha y hora válidas.",
     "time_not_in_zone": "Esa hora no existe en esta zona horaria por el cambio de hora. Elija otra hora.",
     "time_zone_required": "Elija la zona horaria del evento.",
-    "title_length": "El nombre del evento debe tener de 3 a 140 caracteres."
+    "title_length": "El nombre del evento debe tener de 3 a 140 caracteres.",
+    "group_size_invalid": "Una entrada de grupo admite de 1 a 20 personas.",
+    "group_size_locked": "Este tipo de entrada ya tiene ventas, así que su tamaño de grupo no puede cambiar. Añada un nuevo tipo de entrada.",
+    "ticket_description_invalid": "La descripción de una entrada puede tener hasta 300 caracteres."
   },
   "export": {
     "busy": "Ya hay una exportación en curso. Inténtelo de nuevo en un minuto."
@@ -70,11 +95,24 @@
   "flyer": {
     "not_uploaded": "Suba primero la imagen.",
     "path_invalid": "Ese archivo no pertenece a este evento.",
-    "size": "Los flyers pueden pesar como máximo 5 MB.",
+    "size": "Las imágenes pueden pesar como máximo 5 MB.",
     "storage_unavailable": "La subida de flyers no está disponible ahora. Inténtelo de nuevo en breve.",
     "type": "Use una imagen JPEG, PNG o WebP."
   },
   "host": {
+    "cannot_follow_self": "No puede seguirse a sí mismo.",
+    "handle_invalid": "Use de 3 a 30 letras, números o guiones, empezando y terminando por una letra o un número, sin guiones dobles.",
+    "handle_reserved": "Este nombre de usuario está reservado. Elija otro.",
+    "handle_taken": "Este nombre de usuario ya está en uso. Elija otro.",
+    "bio_invalid": "La biografía es demasiado larga.",
+    "location_invalid": "La ubicación es demasiado larga.",
+    "social_invalid": "Use un enlace https:// a ese perfil.",
+    "image_path_invalid": "Esa subida no pertenece a su perfil.",
+    "image_not_uploaded": "Suba primero la imagen.",
+    "image_type": "Use una imagen JPEG, PNG o WebP.",
+    "image_size": "Las imágenes del perfil pueden ocupar como máximo 5 MB.",
+    "storage_unavailable": "La subida de imágenes no está disponible en este momento. Inténtelo de nuevo en breve.",
+    "unsubscribe_unknown": "Este enlace para darse de baja no es válido.",
     "already_suspended": "Este organizador ya está suspendido.",
     "cannot_suspend_self": "No puede suspender su propia cuenta.",
     "not_suspended": "Este organizador no está suspendido.",
@@ -122,7 +160,14 @@
     "sales_not_started": "La venta de entradas aún no ha empezado.",
     "sold_out": "Ese tipo de entrada está agotado.",
     "ticket_type_unavailable": "Ese tipo de entrada no está disponible.",
-    "transition_not_allowed": "Este pedido no se puede cambiar de esa forma."
+    "transition_not_allowed": "Este pedido no se puede cambiar de esa forma.",
+    "recipients_too_many": "Puede enviar entradas a un máximo de 20 personas en este pedido.",
+    "recipient_name_invalid": "Introduzca el nombre de cada persona (de 2 a 120 caracteres).",
+    "recipient_email_invalid": "Introduzca un correo electrónico válido para cada persona o déjelo en blanco.",
+    "recipient_is_buyer": "Ese es su propio correo: sus entradas ya le llegan a usted.",
+    "recipients_exceed_tickets": "Este pedido no tiene tantas entradas para enviar a otras personas.",
+    "buyer_phone_invalid": "Introduzca su número de teléfono con el prefijo del país, por ejemplo +2348012345678.",
+    "buyer_gender_invalid": "Elija mujer, hombre o prefiero no decirlo."
   },
   "payment": {
     "forbidden": "No tiene permiso para hacer eso.",
@@ -158,8 +203,17 @@
     "time_zone_not_found": "No se encontró ninguna zona horaria para ese lugar."
   },
   "refund": {
+    "provider_insufficient_balance": "Paystack aún no puede enviar este reembolso: el saldo de G-ventZ es insuficiente. Está en cola y se enviará automáticamente.",
+    "provider_already_reversed": "Paystack indica que este pago ya fue reembolsado.",
+    "provider_amount_too_high": "Paystack lo rechazó: el reembolso supera lo que queda de este pago.",
+    "provider_amount_too_low": "Paystack lo rechazó: el importe del reembolso es demasiado bajo.",
+    "provider_transaction_not_found": "Paystack no encontró este pago.",
+    "provider_currency_mismatch": "Paystack lo rechazó: la moneda del reembolso no coincide con la del pago.",
     "needs_approval": "Este reembolso supera lo que su equipo puede enviar por su cuenta en este momento. Contacte con el soporte de G-ventZ y lo revisaremos.",
-    "not_refundable": "Esta entrada no se puede reembolsar: no es una entrada de pago confirmada o ya se reembolsó."
+    "not_refundable": "Esta entrada no se puede reembolsar: no es una entrada de pago confirmada o ya se reembolsó.",
+    "provider_rejected": "Paystack no pudo iniciar este reembolso. Inténtalo más tarde o contacta con el soporte de G-ventZ.",
+    "provider_unavailable": "Paystack no responde en este momento. Inténtalo de nuevo en unos minutos.",
+    "in_progress": "Ya hay un reembolso en curso para esta entrada."
   },
   "registration": {
     "already_registered": "Ya tiene una entrada para este evento.",
@@ -204,7 +258,8 @@
   "ticket": {
     "email_limit": "Esta entrada se ha enviado por correo varias veces en esta hora. Inténtelo de nuevo más tarde.",
     "email_unavailable": "No pudimos enviar el correo en este momento. Inténtelo de nuevo.",
-    "not_found": "No se encontró la entrada."
+    "not_found": "No se encontró la entrada.",
+    "first_ticket_is_buyers": "La entrada 1 es suya. Envíe otra de las entradas."
   },
   "validation": {
     "failed": "Algunos campos no son válidos."
@@ -215,5 +270,28 @@
   },
   "webhook": {
     "signature_invalid": "Firma no válida."
+  },
+  "team": {
+    "already_member": "Esta persona ya forma parte del equipo.",
+    "email_invalid": "Introduzca un correo electrónico válido.",
+    "invite_gone": "Esta invitación ha caducado o ya se usó. Pida una nueva.",
+    "invite_not_found": "No se encontró la invitación.",
+    "invite_wrong_account": "Esta invitación es para otro correo electrónico. Inicie sesión con el correo invitado y confirmado para aceptarla.",
+    "last_admin": "Usted es el único coorganizador, así que no puede dejar el rol. Primero nombre coorganizador a otra persona.",
+    "member_not_found": "Esta persona no forma parte del equipo.",
+    "owner_fixed": "El rol del propietario del evento no se puede cambiar ni quitar.",
+    "role_invalid": "Elija un rol."
+  },
+  "support": {
+    "message_invalid": "Escriba un mensaje de 10 a 4.000 caracteres.",
+    "captcha_invalid": "Complete la verificación de seguridad e inténtelo de nuevo.",
+    "captcha_unavailable": "La verificación de seguridad no está disponible ahora. Inténtelo de nuevo en breve.",
+    "captcha_failed": "La comprobación de seguridad falló. Actualiza la página e inténtalo de nuevo.",
+    "rate_limited": "Has enviado varios mensajes en poco tiempo. Espera un rato o escribe a support@gventz.com.",
+    "name_invalid": "Escribe tu nombre (de 2 a 100 caracteres).",
+    "email_invalid": "Escribe una dirección de correo válida.",
+    "country_invalid": "Elige tu país.",
+    "topic_invalid": "Elige un tema.",
+    "message_length": "Tu mensaje debe tener entre 10 y 4000 caracteres."
   }
 }

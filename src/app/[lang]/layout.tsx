@@ -1,6 +1,8 @@
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
+import SiteFooter from "@/design/layout/SiteFooter";
+import FooterGate from "@/design/layout/FooterGate";
 import RootShell, { baseMetadata, baseViewport } from "@/app/RootShell";
 import LanguageHint from "@/components/LanguageHint";
 import { pickAreas, PUBLIC_CLIENT_AREAS } from "@/i18n/messages";
@@ -28,6 +30,7 @@ export default async function PublicLayout({ children, params }: { children: Rea
       <NextIntlClientProvider messages={pickAreas(messages, PUBLIC_CLIENT_AREAS)}>
         <LanguageHint />
         {children}
+        <FooterGate><SiteFooter /></FooterGate>
       </NextIntlClientProvider>
     </RootShell>
   );

@@ -44,10 +44,6 @@
     "sellTitle": "Kostenpflichtige Tickets verkaufen",
     "reason": "Grund: {reason}"
   },
-  "themePanel": {
-    "title": "Stil Ihres Dashboards",
-    "hint": "Wählen Sie, wie Ihr Dashboard aussieht. Nur Sie sehen das."
-  },
   "themes": {
     "minimal": "Minimal",
     "sunset": "Sonnenuntergang",
@@ -60,13 +56,145 @@
     "lavender": "Lavendel",
     "christmas": "Weihnachten"
   },
+  "events": {
+    "title": "Events",
+    "create": "Event erstellen",
+    "filtersLabel": "Events filtern",
+    "listLabel": "Ihre Events",
+    "filter": {
+      "all": "Alle",
+      "upcoming": "Anstehend",
+      "drafts": "Entwürfe",
+      "past": "Vergangen"
+    },
+    "online": "Online",
+    "noPlace": "Ort wird noch bekannt gegeben",
+    "sold": "Verkauft",
+    "revenue": "Umsatz",
+    "view": "Seite ansehen",
+    "viewLabel": "Seite von {title} ansehen",
+    "scan": "Scannen",
+    "scanLabel": "Tickets für {title} scannen",
+    "moreLabel": "Weitere Aktionen für {title}",
+    "manage": "Verwalten",
+    "edit": "Details bearbeiten",
+    "empty": {
+      "all": {
+        "title": "Noch keine Events",
+        "body": "Erstellen Sie Ihr erstes Event und teilen Sie den Link, um Gäste zu gewinnen."
+      },
+      "upcoming": {
+        "title": "Keine anstehenden Events",
+        "body": "Hier erscheinen veröffentlichte Events, die noch nicht vorbei sind."
+      },
+      "drafts": {
+        "title": "Keine Entwürfe",
+        "body": "Hier erscheinen Events, die Sie gespeichert, aber nicht veröffentlicht haben."
+      },
+      "past": {
+        "title": "Keine vergangenen Events",
+        "body": "Hier erscheinen Events, die vorbei sind oder abgesagt wurden."
+      }
+    }
+  },
+  "workspace": {
+    "back": "Events",
+    "view": "Seite ansehen",
+    "scan": "Tickets scannen",
+    "more": "Weitere Aktionen",
+    "edit": "Details bearbeiten",
+    "cancel": "Event absagen…",
+    "delete": "Event löschen…"
+  },
+  "quick": {
+    "title": "Veröffentlichung und Sichtbarkeit",
+    "draftTitle": "Dieses Event ist ein Entwurf",
+    "draftHint": "Nur Ihr Team kann es sehen. Veröffentlichen Sie es, um die Eventseite für Gäste zu öffnen.",
+    "publish": "Veröffentlichen",
+    "private": "Privates Event",
+    "privateHint": "In Entdecken ausgeblendet. Nur Personen mit dem Link können es öffnen.",
+    "showCount": "Teilnehmerzahl anzeigen",
+    "showCountHint": "Gäste sehen auf der Eventseite, wie viele Personen teilnehmen."
+  },
+  "details": {
+    "basics": "Grunddaten",
+    "title": "Name des Events",
+    "description": "Über dieses Event",
+    "category": "Kategorie",
+    "when": "Datum und Uhrzeit",
+    "startsAt": "Beginn",
+    "endsAt": "Ende",
+    "endsAtHint": "Optional. Leer lassen, wenn es keine feste Endzeit gibt.",
+    "timeZone": "Zeitzone",
+    "timeZoneSearch": "Nach Stadt oder Zeitzone suchen",
+    "timeZoneNone": "Keine passende Zeitzone",
+    "timeZoneHint": "Die Zeiten gelten in der Zeitzone des Events. Beim Wechsel der Zeitzone bleiben die oben angezeigten Zeiten erhalten.",
+    "rescheduleNote": "{count, plural, one {{count, number, ::group-off} Gast hat Tickets} other {{count, number, ::group-off} Gäste haben Tickets}}. Wenn Sie das Event verschieben, wird es als verschoben erfasst; Gäste erhalten keine automatische E-Mail, senden Sie ihnen daher eine Ankündigung.",
+    "tickets": "Ticketarten",
+    "pricesIn": "Preise in {currency}",
+    "willRemove": "{name} wird beim Speichern entfernt.",
+    "undo": "Rückgängig",
+    "newType": "Neue Ticketart {number}",
+    "untitled": "Ticketart ohne Namen",
+    "sold": "{count, plural, other {{count, number, ::group-off} verkauft}}",
+    "removeLabel": "{name} entfernen",
+    "remove": "Entfernen",
+    "typeName": "Name",
+    "quantity": "Anzahl",
+    "quantityMin": "Mindestens {count, number, ::group-off}, die bereits verkaufte Anzahl. Für unbegrenzt leer lassen.",
+    "quantityHint": "Für unbegrenzt leer lassen.",
+    "price": "Preis ({currency})",
+    "priceLocked": "Gesperrt: Zu diesem Preis wurden bereits Tickets verkauft.",
+    "priceHint": "0 für kostenlose Tickets.",
+    "addType": "Ticketart hinzufügen",
+    "saveHint": "Grunddaten, Datum und Ticketarten werden zusammen gespeichert.",
+    "save": "Änderungen speichern",
+    "confirmTitle": "Dieses Event verschieben?",
+    "confirmBody": "{count, plural, one {{count, number, ::group-off} Gast hat Tickets} other {{count, number, ::group-off} Gäste haben Tickets}}. Das neue Datum wird als Verschiebung erfasst. Gäste erhalten keine automatische E-Mail; senden Sie ihnen danach eine Ankündigung.",
+    "close": "Schließen",
+    "confirmCancel": "Aktuelles Datum beibehalten",
+    "confirmMove": "Event verschieben",
+    "where": "Veranstaltungsort",
+    "errors": {
+      "forbidden": "Sie sind nicht berechtigt, dieses Event zu bearbeiten.",
+      "failed": "Die Änderungen konnten nicht gespeichert werden. Bitte versuchen Sie es erneut.",
+      "title_length": "Der Name des Events muss 3 bis 140 Zeichen lang sein.",
+      "category": "Wählen Sie eine Kategorie aus der Liste.",
+      "starts_at": "Geben Sie Datum und Uhrzeit des Beginns ein.",
+      "ends_at": "Geben Sie ein gültiges Enddatum mit Uhrzeit ein oder lassen Sie das Feld leer.",
+      "ends_before_start": "Das Ende muss nach dem Beginn liegen.",
+      "time_zone": "Wählen Sie eine Zeitzone aus der Liste.",
+      "ticket_name": "Geben Sie jeder Ticketart einen Namen mit höchstens 80 Zeichen.",
+      "ticket_quantity": "Die Anzahl muss eine ganze Zahl ab 1 sein oder für unbegrenzt leer bleiben.",
+      "ticket_quantity_below_sold": "Die Anzahl darf nicht unter der Zahl bereits verkaufter Tickets liegen.",
+      "ticket_price": "Geben Sie Preise als Zahlen ein, zum Beispiel 5000 oder 12.50.",
+      "ticket_price_locked": "Dieser Preis ist gesperrt, weil zu ihm bereits Tickets verkauft wurden.",
+      "ticket_has_sales": "Eine Ticketart mit Verkäufen kann nicht entfernt werden.",
+      "ticket_count": "Ein Event braucht 1 bis 20 Ticketarten.",
+      "ticket_group_size": "Ein Gruppenticket muss 2 bis 20 Personen Einlass gewähren.",
+      "ticket_group_locked": "Ein Tickettyp mit Verkäufen behält seine Gruppengröße. Legen Sie stattdessen einen neuen Tickettyp an.",
+      "ticket_description": "Eine Ticketbeschreibung darf höchstens 300 Zeichen lang sein."
+    },
+    "typeDescription": "Beschreibung (optional)",
+    "typeDescriptionCount": "{count}/{max} Zeichen",
+    "typeDescriptionPlaceholder": "Was enthalten ist, etwa ein Tisch für vier nahe der Bühne",
+    "group": "Gruppenticket",
+    "groupHelp": "Ein Kauf gewährt mehreren Personen Einlass, etwa ein Tisch.",
+    "groupLocked": "Für diesen Tickettyp gibt es bereits Verkäufe, daher kann die Gruppengröße nicht mehr geändert werden. Legen Sie stattdessen einen neuen Tickettyp an.",
+    "admits": "Für wie viele Personen?",
+    "admitsHint": "Von {min} bis {max}. Die Menge zählt Personen: 10 Tische zu 4 sind 40."
+  },
   "event": {
     "tabs": {
       "overview": "Übersicht",
       "guests": "Gäste",
+      "details": "Details",
       "registration": "Anmeldung",
       "announcements": "Ankündigungen",
-      "settings": "Einstellungen"
+      "settings": "Einstellungen",
+      "promote": "Werbung",
+      "team": "Team",
+      "activity": "Aktivität"
     },
     "tabsLabel": "Event-Bereiche",
     "youAre": "Sie sind {role, select, owner {Eigentümer} admin {Admin} editor {Bearbeiter} checkin {Einlass} finance {Finanzen} viewer {Betrachter} other {{role}}}",
@@ -78,6 +206,21 @@
     "waitlisted": "Warteliste",
     "checkedIn": "Eingecheckt",
     "capacity": "Kapazität",
+    "statsLabel": "Kennzahlen des Events",
+    "sold": "Verkaufte Tickets",
+    "soldOf": "{sold} von {capacity}",
+    "soldContext": "{pending, number, ::group-off} warten auf Freigabe · {waitlisted, number, ::group-off} auf der Warteliste",
+    "gross": "Bruttoumsatz",
+    "grossContext": "{count, plural, one {{count, number, ::group-off} bezahlte Bestellung} other {{count, number, ::group-off} bezahlte Bestellungen}}",
+    "noSales": "Noch keine bezahlten Verkäufe",
+    "checkedInContext": "von {confirmed, number, ::group-off} bestätigten",
+    "byDay": "Verkäufe pro Tag",
+    "byDayNone": "Noch keine Verkäufe",
+    "orders": "{count, plural, one {{count, number, ::group-off} Bestellung} other {{count, number, ::group-off} Bestellungen}}",
+    "recentOrders": "Neueste Bestellungen",
+    "guest": "Gast",
+    "tickets": "{count, plural, one {{count, number, ::group-off} Ticket} other {{count, number, ::group-off} Tickets}}",
+    "free": "Kostenlos",
     "shareTitle": "Teilen Sie Ihr Event",
     "shareHint": "Senden Sie diesen Link an beliebige Personen. Gäste erhalten Tickets auf der Event-Seite.",
     "registration": "Anmeldung",
@@ -141,6 +284,10 @@
     "checkInLabel": "{name} einchecken",
     "checkIn": "Einchecken",
     "checkedIn": "Eingecheckt",
+    "tableCaption": "Gästeliste",
+    "colGuest": "Gast",
+    "colTicket": "Ticket",
+    "colActions": "Aktionen",
     "disputed": "Zahlung angefochten",
     "pagesLabel": "Seiten der Gästeliste",
     "status": {
@@ -155,9 +302,29 @@
     },
     "refund": {
       "summary": "Erstatten",
-      "body": "{name} erhält <b>{amount}</b> zurück. Das Ticket wird sofort ungültig und sein Platz geht wieder in den Verkauf. Die Gebühr von G-ventZ und die Gebühr von Paystack werden nicht erstattet; Ihr Anteil wird von Ihren nächsten Verkäufen abgezogen.",
+      "openLabel": "Ticket von {name} erstatten",
+      "title": "{name} erstatten?",
+      "guestLabel": "Gast",
+      "ticketLabel": "Ticket",
+      "amountLabel": "Erstattungsbetrag",
+      "whatTicket": "Das Ticket ist sofort ungültig, und sein Platz geht wieder in den Verkauf.",
+      "whatMoney": "Paystack zahlt {amount} auf die Karte oder das Konto zurück, mit dem der Gast bezahlt hat. Banken brauchen meist einige Werktage, bis es sichtbar ist.",
+      "whatFees": "Die Gebühr von G-ventZ und die Gebühr von Paystack werden nicht erstattet. Ihr Anteil an der Erstattung wird mit Ihren nächsten Verkäufen verrechnet.",
       "confirm": "{amount} an {name} erstatten",
-      "button": "Ticket erstatten"
+      "button": "Ticket erstatten",
+      "twoStepTitle": "Erstattungen erfordern die Zwei-Schritt-Anmeldung",
+      "twoStepText": "Bei Erstattungen fließt Geld. Bestätigen Sie deshalb zuerst mit der Zwei-Schritt-Anmeldung, dass Sie es sind. Danach kommen Sie direkt zur Erstattung für {name} zurück.",
+      "twoStepButton": "Identität bestätigen",
+      "providerReason": "Grund von Paystack: {reason}",
+      "started": "Erstattung für {name} gestartet",
+      "startedText": "Das Ticket ist nicht mehr gültig. Der Gast erhält sein Geld über Paystack zurück."
+    },
+    "colContact": "Kontakt des Käufers",
+    "sentTo": "Gesendet an <b>{email}</b>",
+    "gender": {
+      "female": "Weiblich",
+      "male": "Männlich",
+      "unspecified": "Keine Angabe"
     }
   },
   "registration": {
@@ -201,6 +368,10 @@
     "sendsLeft": "<b>{left} von {allowed}</b> Ankündigungen für dieses Event übrig",
     "emailsLeft": "<b>{left} von {allowed}</b> Ankündigungs-E-Mails diesen Monat übrig",
     "resets": "(wird am {date} zurückgesetzt)",
+    "sendsLabel": "Verbleibende Ankündigungen für dieses Event",
+    "emailsLabel": "Verbleibende E-Mails in diesem Monat",
+    "leftOf": "{left} von {allowed}",
+    "sendsContext": "Pro Event gezählt, vor dessen Beginn.",
     "countRule": "Jeder Gast zählt einmal pro Ankündigung. Ticket-E-Mails zählen nicht.",
     "started": "Dieses Event hat begonnen, daher können keine Ankündigungen mehr gesendet werden.",
     "newTitle": "Neue Ankündigung",
@@ -216,12 +387,81 @@
     "draft": "Entwurf",
     "sent": "Gesendet",
     "sending": "Wird gesendet",
-    "emailed": "{sent} von {total} per E-Mail versendet"
+    "emailed": "{sent} von {total} per E-Mail versendet",
+    "loadFailed": "Die Ankündigungen konnten nicht geladen werden. Bitte versuchen Sie es erneut.",
+    "template": "Vorlage",
+    "templates": {
+      "blank": {
+        "name": "Leere Nachricht",
+        "help": "Nur Ihr Betreff und Ihre Nachricht."
+      },
+      "reminder": {
+        "name": "Erinnerung",
+        "help": "Beginnt mit Datum und Uhrzeit der Veranstaltung."
+      },
+      "reschedule": {
+        "name": "Neuer Termin",
+        "help": "Beginnt mit dem neuen Datum und der neuen Uhrzeit."
+      },
+      "lineup": {
+        "name": "Programm-Neuigkeiten",
+        "help": "Leitet Neuigkeiten zum Programm ein."
+      },
+      "thanks": {
+        "name": "Dankeschön",
+        "help": "Dankt den Gästen für ihr Kommen. Kann nach Beginn der Veranstaltung gesendet werden."
+      },
+      "feedback": {
+        "name": "Feedback",
+        "help": "Fragt die Gäste nach ihrer Meinung. Kann nach Beginn der Veranstaltung gesendet werden."
+      }
+    },
+    "messageHintTemplate": "Die Vorlage fügt vor Ihrer Nachricht eine Zeile hinzu; Ihr Text wird unverändert gesendet.",
+    "segmentOption": "{label} ({count, number})",
+    "recipients": "{count, plural, one {# Gast erhält diese Nachricht} other {# Gäste erhalten diese Nachricht}}",
+    "sendButton": "Senden…",
+    "draftOnly": "Nur der Eigentümer und Mitveranstalter können senden. Speichern Sie einen Entwurf, den sie senden können.",
+    "draftSavedToast": "Entwurf gespeichert.",
+    "sentToast": "{count, plural, one {Wird an # Gast gesendet.} other {Wird an # Gäste gesendet.}}",
+    "sentOn": "Gesendet am {date}",
+    "notSent": "{count, plural, one {# nicht gesendet} other {# nicht gesendet}}",
+    "confirmTitle": "{count, plural, one {An # Gast senden?} other {An # Gäste senden?}}",
+    "confirmBody": "Dafür wird eine der {sends, number} verbleibenden Ankündigungen für diese Veranstaltung und {count, number} der {emails, number} verbleibenden E-Mails dieses Monats verwendet. Das lässt sich nicht rückgängig machen.",
+    "confirmSend": "Jetzt senden",
+    "blocks": {
+      "draft": "Veröffentlichen Sie die Veranstaltung, bevor Sie Ankündigungen senden.",
+      "started": "Diese Veranstaltung hat begonnen. Jetzt können nur noch die Vorlagen Dankeschön und Feedback gesendet werden.",
+      "sends": "Sie haben alle für diese Veranstaltung erlaubten Ankündigungen gesendet.",
+      "emails": "Sie haben alle Ankündigungs-E-Mails dieses Monats verbraucht.",
+      "quota": "Diese Zielgruppe ist größer als die E-Mails, die Ihnen diesen Monat bleiben. Wählen Sie eine kleinere Zielgruppe.",
+      "empty": "In dieser Zielgruppe kann noch niemand E-Mails empfangen."
+    },
+    "errors": {
+      "subject": "Fügen Sie einen Betreff hinzu.",
+      "body": "Fügen Sie eine Nachricht hinzu.",
+      "template": "Wählen Sie eine der Vorlagen."
+    },
+    "preview": {
+      "title": "Vorschau",
+      "fromHost": "Nachricht vom Gastgeber von {title}",
+      "emptySubject": "Ihr Betreff",
+      "emptyBody": "Ihre Nachricht erscheint hier.",
+      "lead": {
+        "reminder": "{title} steht bevor: {date}, {time}.",
+        "reschedule": "{title} hat einen neuen Termin: {date}, {time}.",
+        "lineup": "Neuigkeiten zum Programm von {title} am {date}.",
+        "thanks": "Vielen Dank, dass Sie bei {title} dabei waren.",
+        "feedback": "Wie hat Ihnen {title} gefallen? Der Gastgeber würde gern Ihre Meinung erfahren."
+      },
+      "footer": "Sie erhalten diese Nachricht, weil Sie sich auf G-ventZ für {title} angemeldet haben. <link>Keine Ankündigungen mehr zu dieser Veranstaltung</link>.",
+      "note": "Jeder Gast erhält den Text von G-ventZ in seiner eigenen Sprache; Ihr Betreff und Ihre Nachricht werden unverändert gesendet."
+    }
   },
   "settings": {
     "styleTitle": "Seitenstil",
     "styleHint": "Die Farben, die Gäste auf der Event-Seite sehen.",
     "saveStyle": "Stil speichern",
+    "picturesTitle": "Bilder",
     "flyerTitle": "Event-Flyer",
     "flyerHint": "Wird auf der Event-Seite und unter Entdecken angezeigt. Verwenden Sie JPG, PNG oder WebP, bis 5 MB. Hoch- oder Quadratformat wirkt am besten.",
     "flyerAlt": "Event-Flyer",
@@ -239,6 +479,8 @@
     "saveDetails": "Details speichern",
     "venue": "Veranstaltungsort",
     "online": "Online",
+    "policiesTitle": "Richtlinien für Gäste",
+    "savePolicies": "Richtlinien speichern",
     "cancelTitle": "Event absagen",
     "cancelled": "Dieses Event ist abgesagt. Die Anmeldung ist geschlossen.",
     "cancelHint": "Eine Absage schließt die Anmeldung und blendet das Event unter Entdecken aus. Bereits angemeldete Gäste werden nicht automatisch erstattet.",
@@ -272,6 +514,9 @@
       "announcementSaved": "Als Entwurf gespeichert. Senden Sie ihn, wenn Sie bereit sind.",
       "announcementSending": "Wird jetzt gesendet. Gäste erhalten sie in den nächsten Minuten.",
       "detailsSaved": "Event-Details gespeichert",
+      "rescheduled": "Event verschoben und als verschoben erfasst. Senden Sie den Gästen eine Ankündigung zum neuen Datum.",
+      "nothingChanged": "Nichts zu speichern. Es wurden keine Details geändert.",
+      "policiesSaved": "Richtlinien für Gäste gespeichert",
       "flyerUploaded": "Flyer hochgeladen",
       "flyerRemoved": "Flyer entfernt. Das Event zeigt wieder seinen Farbstil",
       "eventCancelled": "Event abgesagt. Die Anmeldung ist geschlossen",
@@ -334,7 +579,8 @@
     },
     "ticketNumber": "{number} von {total}",
     "usedAt": "{who} · um {time}",
-    "usedAtBy": "{who} · um {time} von {name}"
+    "usedAtBy": "{who} · um {time} von {name}",
+    "groupOf": "Gruppe von {count}"
   },
   "csv": {
     "header": {
@@ -346,10 +592,233 @@
       "type": "Ticketart",
       "status": "Status",
       "registeredAt": "Angemeldet am",
-      "checkedInAt": "Eingecheckt am"
+      "checkedInAt": "Eingecheckt am",
+      "phone": "Telefon des Käufers",
+      "gender": "Geschlecht des Käufers",
+      "recipient": "E-Mail des Empfängers"
     },
     "forbidden": "Nur der Eigentümer, Admins und die Finanzabteilung können die Gästeliste exportieren.",
     "notFound": "Nicht gefunden",
     "failed": "Der Export hat nicht funktioniert. Bitte versuchen Sie es erneut."
+  },
+  "tools": {
+    "close": "Schließen",
+    "cancel": "Abbrechen"
+  },
+  "promote": {
+    "title": "Rabattcodes",
+    "intro": "Codes senken den Preis bezahlter Tickets. Die Gebühren werden auf den reduzierten Preis berechnet.",
+    "newCode": "Neuer Code",
+    "loadFailed": "Die Rabattcodes konnten nicht geladen werden. Bitte versuchen Sie es erneut.",
+    "draftNote": "Codes funktionieren, sobald die Veranstaltung veröffentlicht ist.",
+    "noPaid": "Noch keine bezahlten Tickets",
+    "noPaidHint": "Rabattcodes gelten für bezahlte Tickets. Fügen Sie zuerst unter Details eine bezahlte Ticketart hinzu.",
+    "empty": "Noch keine Rabattcodes",
+    "emptyHint": "Erstellen Sie einen Code und teilen Sie seinen Link: Der Rabatt wird angewendet, wenn Gäste ihn öffnen.",
+    "free": "Kostenloses Ticket",
+    "allTickets": "Alle bezahlten Tickets",
+    "removedType": "Entfernte Ticketart",
+    "valid": {
+      "always": "Immer",
+      "from": "Ab {date}",
+      "until": "Bis {date}",
+      "between": "{start} – {end}"
+    },
+    "cols": {
+      "code": "Code",
+      "discount": "Rabatt",
+      "used": "Genutzt",
+      "valid": "Gültig",
+      "status": "Status",
+      "actions": "Aktionen"
+    },
+    "usedOf": "{uses, number} / {max, number}",
+    "usedNoLimit": "{uses, number} · ohne Limit",
+    "states": {
+      "active": "Aktiv",
+      "paused": "Pausiert",
+      "scheduled": "Geplant",
+      "ended": "Beendet",
+      "usedUp": "Aufgebraucht"
+    },
+    "menuLabel": "Aktionen für {code}",
+    "copyLink": "Link zum Teilen kopieren",
+    "copied": "Link kopiert",
+    "copiedHint": "Wer ihn öffnet, erhält {code} automatisch.",
+    "copyFailed": "Kopieren Sie diesen Link",
+    "pause": "Pausieren",
+    "resume": "Fortsetzen",
+    "edit": "Bearbeiten",
+    "pausedToast": "{code} ist pausiert.",
+    "resumedToast": "{code} ist wieder aktiv.",
+    "createdToast": "{code} erstellt.",
+    "savedToast": "Änderungen an {code} gespeichert.",
+    "dialog": {
+      "newTitle": "Neuer Rabattcode",
+      "editTitle": "{code} bearbeiten",
+      "create": "Code erstellen",
+      "save": "Änderungen speichern",
+      "locked": "Dieser Code wurde bereits genutzt, daher können nur das Nutzungslimit und das Enddatum geändert werden.",
+      "code": "Code",
+      "codeHint": "3 bis 32 Buchstaben, Ziffern, - oder _. Gäste können ihn in Groß- oder Kleinschreibung eingeben.",
+      "kind": "Rabatt",
+      "kinds": {
+        "percent": "Prozentrabatt",
+        "fixed": "Fester Betrag",
+        "free": "Kostenloses Ticket"
+      },
+      "valuePercent": "Prozentsatz (1 bis 100)",
+      "valueFixed": "Rabatt pro Ticket ({currency})",
+      "valueFixedHint": "In ganzen Einheiten {currency}.",
+      "maxUses": "Nutzungslimit",
+      "maxUsesHint": "Wie viele Bestellungen ihn nutzen können. Leer lassen für kein Limit.",
+      "maxUsesUsed": "Bisher {uses, number}-mal genutzt. Leer lassen für kein Limit.",
+      "startsAt": "Beginn",
+      "startsHint": "Leer lassen, um sofort zu beginnen.",
+      "endsAt": "Ende",
+      "endsHint": "Leer lassen, damit er weiter gilt.",
+      "zone": "Die Zeiten gelten in der Zeitzone der Veranstaltung: {zone}.",
+      "ticketTypes": "Gilt für",
+      "ticketTypesHint": "Wählen Sie keine aus, damit er für alle bezahlten Ticketarten gilt."
+    },
+    "errors": {
+      "code": "Verwenden Sie 3 bis 32 Buchstaben, Ziffern, - oder _.",
+      "kind": "Wählen Sie eine Rabattart.",
+      "percent": "Geben Sie einen Prozentsatz von 1 bis 100 ein.",
+      "fixed": "Geben Sie einen ganzen Betrag über 0 ein.",
+      "maxUses": "Geben Sie eine ganze Zahl von mindestens 1 ein, die nicht unter den bisherigen Nutzungen liegt, oder lassen Sie das Feld leer.",
+      "time": "Geben Sie ein gültiges Datum und eine gültige Uhrzeit ein.",
+      "window": "Das Ende muss nach dem Beginn liegen.",
+      "ticketTypes": "Wählen Sie aus den bezahlten Ticketarten dieser Veranstaltung.",
+      "notFound": "Diesen Code gibt es nicht mehr. Laden Sie die Seite neu."
+    }
+  },
+  "team": {
+    "title": "Team",
+    "intro": "Die Personen, die diese Veranstaltung mit durchführen. Jede Person meldet sich mit ihrem eigenen Konto an.",
+    "loadFailed": "Das Team konnte nicht geladen werden. Bitte versuchen Sie es erneut.",
+    "readOnly": "Nur der Eigentümer und Mitveranstalter können Personen einladen oder Rollen ändern.",
+    "unnamed": "Teammitglied",
+    "you": "(Sie)",
+    "joined": "Beigetreten am {date}",
+    "roleLabel": "Rolle von {name}",
+    "changedToast": "{name} ist jetzt {role}.",
+    "remove": "Entfernen",
+    "removeLabel": "{name} aus dem Team entfernen",
+    "removeTitle": "{name} aus dem Team entfernen?",
+    "removeBody": "Die Person verliert sofort den Zugriff auf diese Veranstaltung. Sie können sie später erneut einladen.",
+    "removeConfirm": "Aus dem Team entfernen",
+    "removedToast": "{name} wurde aus dem Team entfernt.",
+    "roles": {
+      "owner": {
+        "name": "Eigentümer",
+        "help": "Hat die Veranstaltung erstellt und darf alles, auch sie löschen."
+      },
+      "admin": {
+        "name": "Mitveranstalter",
+        "help": "Darf alles außer die Veranstaltung löschen."
+      },
+      "checkin": {
+        "name": "Einlass",
+        "help": "Scannt Tickets am Eingang. Sonst nichts."
+      },
+      "editor": {
+        "name": "Bearbeiter",
+        "help": "Bearbeitet Details, Fragen und Bilder und checkt Gäste ein."
+      },
+      "finance": {
+        "name": "Finanzen",
+        "help": "Sieht Verkäufe, exportiert Gäste und erstattet Zahlungen."
+      },
+      "viewer": {
+        "name": "Betrachter",
+        "help": "Sieht die Veranstaltung und ihre Gäste, ohne etwas zu ändern."
+      }
+    },
+    "invite": {
+      "title": "Jemanden einladen",
+      "email": "E-Mail-Adresse",
+      "emailHint": "Die Person nimmt an, indem sie sich mit dieser E-Mail-Adresse anmeldet.",
+      "role": "Rolle",
+      "moreRoles": "Weitere Rollen",
+      "fewerRoles": "Weniger Rollen",
+      "send": "Einladung senden",
+      "sentToast": "Einladung an {email} gesendet."
+    },
+    "pending": {
+      "title": "Offene Einladungen",
+      "none": "Keine offenen Einladungen.",
+      "expires": "Läuft am {date} ab",
+      "invitedBy": "Eingeladen von {name}",
+      "resend": "Erneut senden",
+      "resendLabel": "Einladung an {email} erneut senden",
+      "resentToast": "Eine neue Einladung wurde an {email} gesendet.",
+      "revoke": "Zurückziehen",
+      "revokeLabel": "Einladung an {email} zurückziehen",
+      "revokedToast": "Die Einladung an {email} wurde zurückgezogen."
+    },
+    "errors": {
+      "email": "Geben Sie eine gültige E-Mail-Adresse ein.",
+      "role": "Wählen Sie eine Rolle.",
+      "inviteGone": "Diese Einladung ist nicht mehr offen. Laden Sie die Seite neu."
+    }
+  },
+  "activity": {
+    "title": "Aktivität",
+    "loadFailed": "Die Aktivität konnte nicht geladen werden. Bitte versuchen Sie es erneut.",
+    "filter": "Anzeigen",
+    "kinds": {
+      "all": "Alle Aktivitäten",
+      "event": "Änderungen an der Veranstaltung",
+      "team": "Team",
+      "guest": "Check-ins",
+      "refund": "Erstattungen",
+      "images": "Bilder"
+    },
+    "empty": "Bisher ist nichts passiert",
+    "noneOfKind": "Nichts dieser Art in den geladenen Einträgen",
+    "noneOfKindHint": "Laden Sie mehr, um weiter zurückzublicken.",
+    "loadMore": "Mehr laden",
+    "someone": "Ein Teammitglied",
+    "system": "G-ventZ",
+    "newDate": "Neuer Termin: {date}",
+    "unknown": "<b>{actor}</b> · {action}",
+    "actions": {
+      "eventCreated": "<b>{actor}</b> hat die Veranstaltung erstellt",
+      "eventEdited": "<b>{actor}</b> hat die Details der Veranstaltung bearbeitet",
+      "eventRescheduled": "<b>{actor}</b> hat Datum und Uhrzeit geändert",
+      "eventPublished": "<b>{actor}</b> hat die Veranstaltung veröffentlicht",
+      "eventUnpublished": "<b>{actor}</b> hat die Veröffentlichung zurückgenommen",
+      "eventCancelled": "<b>{actor}</b> hat die Veranstaltung abgesagt",
+      "teamInvited": "<b>{actor}</b> hat {subject} als {role} eingeladen",
+      "teamInviteRevoked": "<b>{actor}</b> hat die Einladung an {subject} zurückgezogen",
+      "teamInviteAccepted": "<b>{actor}</b> ist dem Team als {role} beigetreten",
+      "teamRoleChanged": "<b>{actor}</b> hat die Rolle von {subject} in {role} geändert",
+      "teamMemberRemoved": "<b>{actor}</b> hat {subject} aus dem Team entfernt",
+      "guestCheckedIn": "<b>{actor}</b> hat einen Gast eingecheckt",
+      "refundRequested": "<b>{actor}</b> hat eine Erstattung gestartet",
+      "refundProcessed": "<b>{actor}</b> hat eine Erstattung abgeschlossen",
+      "imagesAdded": "<b>{actor}</b> hat ein Bild hinzugefügt",
+      "imagesRemoved": "<b>{actor}</b> hat ein Bild entfernt",
+      "imagesReordered": "<b>{actor}</b> hat die Bilder neu angeordnet"
+    },
+    "someoneElse": "ein Teammitglied"
+  },
+  "invite": {
+    "metaTitle": "Team-Einladung",
+    "title": "Dem Veranstaltungsteam beitreten",
+    "unavailableTitle": "Einladung nicht verfügbar",
+    "body": "Sie wurden eingeladen, bei einer Veranstaltung auf G-ventZ mitzuwirken. Nehmen Sie an, um dem Team beizutreten.",
+    "signedInAs": "Angemeldet als <b>{email}</b>.",
+    "accept": "Einladung annehmen",
+    "switchAccount": "Konto wechseln",
+    "toHost": "Zu Ihren Veranstaltungen",
+    "wrongAccountHint": "Beim Wechseln werden Sie hier abgemeldet und anschließend zu dieser Einladung zurückgebracht.",
+    "problems": {
+      "wrong_account": "Diese Einladung gilt für eine andere E-Mail-Adresse. Melden Sie sich mit der eingeladenen Adresse an, um sie anzunehmen.",
+      "gone": "Diese Einladung ist abgelaufen, wurde zurückgezogen oder bereits verwendet. Bitten Sie den Gastgeber um eine neue.",
+      "not_found": "Dieser Einladungslink ist ungültig. Prüfen Sie, ob Sie den vollständigen Link aus der E-Mail geöffnet haben.",
+      "failed": "Die Einladung konnte nicht angenommen werden. Bitte versuchen Sie es erneut."
+    }
   }
 }

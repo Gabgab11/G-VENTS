@@ -20,7 +20,7 @@ async function run(path: string, work: () => Promise<unknown>, ok: string): Prom
   try {
     await work();
   } catch (error) {
-    if (error instanceof ApiError && error.code === "auth.mfa_required") redirect(`/account/security?next=${encodeURIComponent(path)}`);
+    if (error instanceof ApiError && error.code === "auth.mfa_required") redirect(`/host/settings/security?next=${encodeURIComponent(path)}`);
     back(path, `err=${encodeURIComponent(apiMessage(error, "That didn't work. Please try again."))}`);
   }
   back(path, `ok=${encodeURIComponent(ok)}`);
@@ -43,6 +43,14 @@ export async function unsuspendHost(formData: FormData) {
   const id = text(formData, "host_id");
   if (!isUuid(id)) back("/admin/hosts", "err=Unknown%20host");
   await run(`/admin/hosts/${id}`, async () => (await api()).POST("/v1/admin/hosts/{id}/unsuspend", { params: { path: { id } } }), "Suspension lifted");
+}
+
+/** The verified badge (Change 4 chunk 4, D83): given after the paid-sales approval; staff decide. Audited by the API. */
+export async function setHostVerified(formData: FormData) {
+  const id = text(formData, "host_id");
+  const verified = formData.get("verified") === "true";
+  if (!isUuid(id)) back("/admin/hosts", "err=Unknown%20host");
+  await run(`/admin/hosts/${id}`, async () => (await api()).POST("/v1/admin/hosts/{id}/verified", { params: { path: { id } }, body: { verified } }), verified ? "Verified badge given" : "Verified badge removed");
 }
 
 export async function unpublishEvent(formData: FormData) {
@@ -142,7 +150,7 @@ export async function acceptStaffInvite() {
     redirect(`/admin/invite?err=${encodeURIComponent(apiMessage(error, "That invitation couldn't be accepted."))}`);
   }
   // Staff need two-step sign-in before the dashboard opens; the security page sends them on.
-  redirect("/account/security?next=/admin");
+  redirect("/host/settings/security?next=/admin");
 }
 
 // ---- Paystack (M5): host applications, countries, VAT ----
