@@ -70,3 +70,7 @@
   .stepText { flex-basis: calc(100% - 20px - var(--space-3)); }
   .step > :last-child:not(.stepText) { margin-inline-start: calc(20px + var(--space-3)); }
 }
+
+/* "Set up your profile" (Change 4 chunk 4). */
+.profileBanner { margin-block-end: var(--space-5); }
+.bannerActions { display: inline-flex; align-items: center; gap: var(--space-1); }

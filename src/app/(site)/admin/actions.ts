@@ -45,6 +45,14 @@ export async function unsuspendHost(formData: FormData) {
   await run(`/admin/hosts/${id}`, async () => (await api()).POST("/v1/admin/hosts/{id}/unsuspend", { params: { path: { id } } }), "Suspension lifted");
 }
 
+/** The verified badge (Change 4 chunk 4, D83): given after the paid-sales approval; staff decide. Audited by the API. */
+export async function setHostVerified(formData: FormData) {
+  const id = text(formData, "host_id");
+  const verified = formData.get("verified") === "true";
+  if (!isUuid(id)) back("/admin/hosts", "err=Unknown%20host");
+  await run(`/admin/hosts/${id}`, async () => (await api()).POST("/v1/admin/hosts/{id}/verified", { params: { path: { id } }, body: { verified } }), verified ? "Verified badge given" : "Verified badge removed");
+}
+
 export async function unpublishEvent(formData: FormData) {
   const id = text(formData, "event_id");
   const returnTo = text(formData, "return_to") || "/admin/events";

@@ -8,6 +8,7 @@ import type { Locale } from "@/i18n/languages";
 import { Badge, Button, Card, CardHeader, EmptyState, PageHeader, Stat, TabLink, TabLinks } from "@/design";
 import { statusTone } from "./orders/query";
 import { deltaOf, PERIOD_KEY, PERIODS, periodOf, stepsDone } from "./host-format";
+import ProfileSetupBanner from "./ProfileSetupBanner";
 import styles from "./host.module.css";
 
 type Home = components["schemas"]["HostHomeDto"];
@@ -19,19 +20,25 @@ const ICON = { size: 20, strokeWidth: 1.75, "aria-hidden": true } as const;
 // orders for active ones. One request (GET /v1/host/home), per NFR-13.
 export default async function HostHomePage({ searchParams }: { searchParams: Promise<{ period?: string }> }) {
   const period = periodOf((await searchParams).period);
-  const [home, me, t, lang, statusT] = await Promise.all([
+  const [home, me, profile, t, lang, statusT] = await Promise.all([
     (await api()).GET("/v1/host/home", { params: { query: { period } } }).then(data),
     (await api()).GET("/v1/me").then(data).catch(() => null),
+    (await api()).GET("/v1/me/profile").then(data).catch(() => null),
     getTranslations("host.home"),
     getLocale() as Promise<Locale>,
     getTranslations("host.orders.status"),
   ]);
   const first = (me?.fullName ?? "").trim().split(/\s+/)[0];
+  // No profile step in the API's checklist yet: a banner until the host has a handle (FR-32).
+  const profileBanner = profile && !profile.handle ? (
+    <ProfileSetupBanner title={t("profileBanner.title")} body={t("profileBanner.body")} action={t("profileBanner.action")} dismiss={t("profileBanner.dismiss")} />
+  ) : null;
 
   if (home.checklist && !home.checklist.createdEvent) {
     return (
       <>
         <PageHeader title={first ? t("welcomeNamed", { name: first }) : t("welcome")} subtitle={t("welcomeLead")} />
+        {profileBanner}
         <Checklist checklist={home.checklist} t={t} />
       </>
     );
@@ -47,6 +54,7 @@ export default async function HostHomePage({ searchParams }: { searchParams: Pro
   return (
     <>
       <PageHeader title={t("title")} actions={<Button href="/host/events/new" variant="primary">{t("create")}</Button>} />
+      {profileBanner}
 
       <TabLinks aria-label={t("periodLabel")} className={styles.periods}>
         {PERIODS.map((p) => <TabLink key={p} href={`/host?period=${p}`} active={p === period}>{t(`period.${PERIOD_KEY[p]}`)}</TabLink>)}

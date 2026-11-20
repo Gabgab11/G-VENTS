@@ -7,12 +7,17 @@ import { confirmUnsubscribe, type UnsubscribeState } from "./actions";
 
 // A button rather than unsubscribing on page load, so mail scanners that open links don't
 // unsubscribe people by accident. (Mail apps' own unsubscribe button posts to /api/unsubscribe.)
-export default function UnsubscribeForm({ token }: { token: string }) {
+export default function UnsubscribeForm({ token, kind }: { token: string; kind: "event" | "host" }) {
   const t = useTranslations("auth.unsubscribe");
   const [state, action, pending] = useActionState<UnsubscribeState, FormData>(confirmUnsubscribe, undefined);
 
   if (state?.ok) {
-    return (
+    return state.kind === "host" ? (
+      <>
+        <h1 className="auth-title">{t("hostDoneTitle")}</h1>
+        <p className="muted">{state.hostName ? t("hostDoneBody", { host: state.hostName }) : t("hostDoneBodyAnon")}</p>
+      </>
+    ) : (
       <>
         <h1 className="auth-title">{t("doneTitle")}</h1>
         <p className="muted">{t("doneBody", { event: state.eventTitle })}</p>
@@ -21,9 +26,10 @@ export default function UnsubscribeForm({ token }: { token: string }) {
   }
   return (
     <form action={action} className="auth-form">
-      <h1 className="auth-title">{t("title")}</h1>
-      <p className="muted">{t("body")}</p>
+      <h1 className="auth-title">{kind === "host" ? t("hostTitle") : t("title")}</h1>
+      <p className="muted">{kind === "host" ? t("hostBody") : t("body")}</p>
       <input type="hidden" name="token" value={token} />
+      <input type="hidden" name="kind" value={kind} />
       {state && !state.ok && (
         <p className="error" role="alert">
           {state.reason === "unknown" ? t("unknownLink") : t("failed")}

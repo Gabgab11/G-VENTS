@@ -2060,6 +2060,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/share-cards/hosts/{handle}.png": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * A host profile's share card
+         * @description The 1200×630 link-preview image of a host profile, in the given language: cover (JPEG or PNG; otherwise the brand gradient), avatar (or initials), name and verified mark, @handle, follower count and the next upcoming public event. An old handle answers 308 to the current handle’s card (query kept); an unknown handle is not found.
+         */
+        get: operations["HostShareCardsController_host_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/health/live": {
         parameters: {
             query?: never;
@@ -2293,6 +2313,8 @@ export interface components {
              * @example NGN
              */
             currency: string | null;
+            /** @description The event's owner has the verified badge */
+            hostVerified: boolean;
         };
         FeaturedPageDto: {
             items: components["schemas"]["EventCardDto"][];
@@ -2324,6 +2346,23 @@ export interface components {
             width: number | null;
             /** @description Pixels, as reported by the uploader */
             height: number | null;
+        };
+        EventHostDto: {
+            /**
+             * Format: uuid
+             * @description The owner's profile id (follow with PUT /v1/hosts/{id}/follow)
+             */
+            id: string;
+            /**
+             * @description Public handle (/h/{handle}); null until the host chooses one
+             * @example ada-events
+             */
+            handle: string | null;
+            /** @description Display name; null when not set */
+            name: string | null;
+            avatarUrl: string | null;
+            /** @description The host has the verified badge */
+            verified: boolean;
         };
         TicketTypeViewDto: {
             /** Format: uuid */
@@ -2408,6 +2447,8 @@ export interface components {
             attendeeCount: number | null;
             /** @description The owner's display name ("Hosted by"); null when they haven't set one */
             hostName: string | null;
+            /** @description The owner's public profile; hostName is kept for older callers */
+            host: components["schemas"]["EventHostDto"];
             /**
              * Format: date-time
              * @description Last change by the host to the event, its ticket types or its pictures; versions the share card
@@ -2616,6 +2657,8 @@ export interface components {
             attendeeCount: number | null;
             /** @description The owner's display name ("Hosted by"); null when they haven't set one */
             hostName: string | null;
+            /** @description The owner's public profile; hostName is kept for older callers */
+            host: components["schemas"]["EventHostDto"];
             /**
              * Format: date-time
              * @description Last change by the host to the event, its ticket types or its pictures; versions the share card
@@ -2667,6 +2710,8 @@ export interface components {
              * @example NGN
              */
             currency: string | null;
+            /** @description The event's owner has the verified badge */
+            hostVerified: boolean;
             /** @enum {string} */
             status: "draft" | "published" | "cancelled";
             /** @enum {string} */
@@ -9121,6 +9166,54 @@ export interface operations {
             };
             /** @description route.not_found for anyone who is not G-ventZ staff; host.not_found */
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    HostShareCardsController_host_v1: {
+        parameters: {
+            query?: {
+                /** @description Any version string; makes the address immutable (cached for a year). Without it, cached for an hour. */
+                v?: unknown;
+                /** @description Card language; anything else is English */
+                lang?: "en" | "es" | "fr" | "de" | "zh-Hans" | "pt" | "ar";
+            };
+            header?: never;
+            path: {
+                handle: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 1200×630 PNG */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "image/png": string;
+                };
+            };
+            /** @description An old handle: Location is the current handle’s card, relative, with the same query */
+            308: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description host.not_found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description rate_limit.exceeded */
+            429: {
                 headers: {
                     [name: string]: unknown;
                 };

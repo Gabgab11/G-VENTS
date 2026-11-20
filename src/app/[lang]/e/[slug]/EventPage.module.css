@@ -19,7 +19,9 @@
 .hostBox { display: grid; gap: var(--space-4); }
 .hostCard { display: flex; align-items: center; gap: var(--space-3); padding-block-end: var(--space-4); border-block-end: 1px solid var(--color-border); }
 .hostText { display: grid; gap: 2px; min-inline-size: 0; }
-.hostText strong { font-size: var(--text-body-lg); line-height: var(--leading-body-lg); }
+.hostText strong { font-size: var(--text-body-lg); line-height: var(--leading-body-lg); overflow-wrap: anywhere; }
+.hostName { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-2); }
+.hostText .inlineLink { justify-self: start; font-size: var(--text-body-sm); }
 .tags { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 
 /* Right: title, facts, a short description, the tickets card. */

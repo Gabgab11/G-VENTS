@@ -4,7 +4,7 @@ import { api, data } from "@/lib/api/server";
 import { adminCall, formatDate, formatMinor, formatMoneyList } from "@/lib/admin";
 import { APPLICATION_STATUS, PAYOUT_COUNTRIES } from "@/lib/payment-text";
 import { isUuid } from "@/lib/forms";
-import { suspendHost, unsuspendHost } from "../../actions";
+import { setHostVerified, suspendHost, unsuspendHost } from "../../actions";
 import Notice from "../../Notice";
 
 export default async function AdminHost({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ ok?: string; err?: string }> }) {
@@ -12,6 +12,10 @@ export default async function AdminHost({ params, searchParams }: { params: Prom
   const sp = await searchParams;
   if (!isUuid(id)) notFound();
   const h = await adminCall(async () => data(await (await api()).GET("/v1/admin/hosts/{id}", { params: { path: { id } } })), `/admin/hosts/${id}`);
+  // AdminHostDetailDto doesn't carry the badge or the handle yet; read them when the API adds them.
+  const extra = h as typeof h & { verified?: boolean; verifiedAt?: string | null; handle?: string | null };
+  const verified = extra.verified;
+  const approved = h.application?.status === "approved";
 
   return (
     <div className="stack ad-section">
@@ -76,6 +80,35 @@ export default async function AdminHost({ params, searchParams }: { params: Prom
             </table>
           </div>
         )}
+      </section>
+
+      {/* The verified badge (Change 4 chunk 4, D83): next to the host's name on their profile, event pages and cards. */}
+      <section className="panel stack" aria-labelledby="ad-host-verified">
+        <div className="ad-panel-head">
+          <h2 id="ad-host-verified" className="ad-h2">Verified badge</h2>
+          {verified === true && <span className="ad-pill completed">Verified{extra.verifiedAt ? ` since ${formatDate(extra.verifiedAt)}` : ""}</span>}
+          {verified === false && <span className="ad-pill">Not verified</span>}
+        </div>
+        <p className="muted small">
+          Given after the paid-sales approval{approved ? " (this host is approved)" : " (this host isn't approved for paid sales)"}; staff decide, it isn&apos;t automatic. Every change is kept in the audit log.
+          {extra.handle && <> Profile: <Link href={`/h/${extra.handle}`} className="ad-strong">/h/{extra.handle}</Link>.</>}
+        </p>
+        <div className="row-gap">
+          {verified !== true && (
+            <form action={setHostVerified}>
+              <input type="hidden" name="host_id" value={h.id} />
+              <input type="hidden" name="verified" value="true" />
+              <button type="submit" className="btn-white">Give verified badge</button>
+            </form>
+          )}
+          {verified !== false && (
+            <form action={setHostVerified}>
+              <input type="hidden" name="host_id" value={h.id} />
+              <input type="hidden" name="verified" value="false" />
+              <button type="submit" className="btn-ghost ad-danger">Remove verified badge</button>
+            </form>
+          )}
+        </div>
       </section>
 
       <section className="panel stack" aria-labelledby="ad-host-standing">

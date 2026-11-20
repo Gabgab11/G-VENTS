@@ -14,6 +14,7 @@ import { buildEventMetadata, clip, firstLine } from "@/lib/event-metadata";
 import { lowestPrice, priceLabel } from "@/lib/price-label";
 import { env } from "@/lib/env";
 import { shareCardPath } from "@/lib/share";
+import { profilePath } from "@/lib/host-profile";
 import ThemeStage from "@/components/ThemeStage";
 import SiteHeader from "@/components/SiteHeader";
 import ShareButton from "@/components/ShareButton";
@@ -74,6 +75,7 @@ export default async function EventPage({ params, searchParams }: { params: Prom
   if (!event) notFound();
 
   const signedIn = !!session;
+  const hostName = event.host.name?.trim() || event.hostName || t("page.hostFallback");
   const cta = eventCta({ ...event, signedIn });
   const team = cta.kind === "manage";
   const date = eventDate(event, format.lang, format.range(event.startsAt, event.endsAt, event.timeZone), t);
@@ -143,11 +145,17 @@ export default async function EventPage({ params, searchParams }: { params: Prom
           {/* The host card, always under the picture (EventPorte-style): who's hosting, then the tags. */}
           <Card className={s.hostBox}>
             <div className={s.hostCard}>
-              <Avatar name={event.hostName ?? t("page.hostFallback")} size={48} aria-hidden />
+              <Avatar name={hostName} src={event.host.avatarUrl} size={48} aria-hidden />
               <div className={s.hostText}>
                 <span className={s.label}>{t("page.hostedBy")}</span>
-                {/* TODO(chunk 4): link to the host's profile, /h/{handle}, with "Visit profile" and the verified badge. */}
-                <strong>{event.hostName ?? t("page.hostFallback")}</strong>
+                <span className={s.hostName}>
+                  <strong>{hostName}</strong>
+                  {event.host.verified && <Badge verified>{shared("hostProfile.verified")}</Badge>}
+                </span>
+                {/* The host's profile (Change 4 chunk 4, FR-32), once they have chosen a handle. */}
+                {event.host.handle && (
+                  <Link href={localizedPath(profilePath(event.host.handle), format.lang)} className={s.inlineLink}>{t("page.visitProfile")}</Link>
+                )}
               </div>
             </div>
             <div className={s.tags}>
