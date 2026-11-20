@@ -6,6 +6,16 @@
       "canManage": "Você pode editar este evento. <link>Gerenciar evento</link>"
     },
     "coverAlt": "Cartaz de {title}",
+    "gallery": {
+      "label": "Imagens de {title}",
+      "roleDescription": "galeria",
+      "alt": "Imagem {number} de {total}: {title}",
+      "position": "Imagem {number} de {total}",
+      "previous": "Imagem anterior",
+      "next": "Próxima imagem",
+      "show": "Ver a imagem {number} de {total}",
+      "showMore": "Ver a imagem {number} de {total} ({count, plural, one {mais # imagem} other {mais # imagens}})"
+    },
     "hostedBy": "Organizado por",
     "hostFallback": "Organizador no G-ventZ",
     "going": "{count, plural, one {{count, number, ::group-off} pessoa vai} other {{count, number, ::group-off} pessoas vão}}",

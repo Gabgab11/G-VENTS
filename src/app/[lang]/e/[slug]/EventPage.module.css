@@ -8,7 +8,8 @@
 
 /* Left: the flyer (or the cover style), the host and the tags. */
 .side { display: grid; gap: var(--space-5); position: sticky; inset-block-start: var(--space-6); }
-.side:has(.flyer) { position: static; }
+.side:has(.flyer), .side:has(.pictures) { position: static; }
+.pictures { min-inline-size: 0; }
 .cover { position: relative; aspect-ratio: 1 / 1; border-radius: var(--radius-lg); overflow: hidden; display: flex; align-items: flex-end; padding: var(--space-5); box-shadow: var(--shadow-3); }
 .coverTitle { color: var(--tone-paper); font-size: var(--text-heading-2); font-weight: var(--weight-heavy); letter-spacing: -0.02em; line-height: var(--leading-heading-2); overflow-wrap: anywhere; }
 .flyer { aspect-ratio: auto; padding: 0; justify-content: center; box-shadow: none; border-radius: 0; overflow: visible; }
@@ -76,6 +77,7 @@
   .side { display: contents; }
   .cover { order: 0; inline-size: 100%; max-inline-size: 420px; margin-inline: auto; }
   .flyer { max-inline-size: none; }
+  .pictures { order: 0; }
   .main { order: 1; }
   .sideBlock, .hostBox { order: 2; }
   .title { font-size: var(--text-heading-1); line-height: var(--leading-heading-1); }

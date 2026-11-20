@@ -6,6 +6,16 @@
       "canManage": "Sie können diese Veranstaltung bearbeiten. <link>Veranstaltung verwalten</link>"
     },
     "coverAlt": "Flyer für {title}",
+    "gallery": {
+      "label": "Bilder zu {title}",
+      "roleDescription": "Galerie",
+      "alt": "Bild {number} von {total}: {title}",
+      "position": "Bild {number} von {total}",
+      "previous": "Vorheriges Bild",
+      "next": "Nächstes Bild",
+      "show": "Bild {number} von {total} anzeigen",
+      "showMore": "Bild {number} von {total} anzeigen ({count, plural, one {# weiteres Bild} other {# weitere Bilder}})"
+    },
     "hostedBy": "Veranstaltet von",
     "hostFallback": "G-ventZ-Veranstalter",
     "going": "{count, plural, one {{count, number, ::group-off} Person nimmt teil} other {{count, number, ::group-off} Personen nehmen teil}}",

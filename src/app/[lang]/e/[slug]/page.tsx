@@ -20,10 +20,11 @@ import ShareButton from "@/components/ShareButton";
 import { Avatar, Badge, Banner, Button, Card, cx } from "@/design";
 import { eventCta, orderableTypes, type EventCta } from "./event-cta";
 import AboutSection from "./AboutSection";
+import Gallery from "./Gallery";
 import { bookingPath, eventDate, eventPath, eventPlace } from "./event-view";
 import s from "./EventPage.module.css";
 
-// The public event page from gventz-api (U6a), as a summary (Change 4 chunk 3b): the flyer and host on
+// The public event page from gventz-api (U6a), as a summary (Change 4 chunk 3b): the pictures and host on
 // the left; the date, place, a short description, the ticket types with their prices and ONE main
 // button on the right; then "About & directions". Getting tickets happens on the booking page
 // (./tickets). The API decides who may see drafts and whether the attendee count is shown.
@@ -126,10 +127,15 @@ export default async function EventPage({ params }: { params: Promise<{ lang: st
 
       <div className={s.grid}>
         <aside className={s.side}>
-          <div className={cx(s.cover, event.coverUrl && s.flyer)} style={event.coverUrl ? undefined : { background: themeBackground(event.coverTheme) }}>
-            {/* eslint-disable-next-line @next/next/no-img-element -- flyers come from storage at arbitrary sizes */}
-            {event.coverUrl ? <img src={event.coverUrl} alt={t("page.coverAlt", { title: event.title })} /> : <span className={s.coverTitle}>{event.title}</span>}
-          </div>
+          {/* Two or more pictures: the gallery (chunk 3c). One, or none, stays as it was: the flyer, or the cover style. */}
+          {event.images.length > 1 ? (
+            <div className={s.pictures}><Gallery pictures={event.images.map(({ url, width, height }) => ({ url, width, height }))} title={event.title} /></div>
+          ) : (
+            <div className={cx(s.cover, event.coverUrl && s.flyer)} style={event.coverUrl ? undefined : { background: themeBackground(event.coverTheme) }}>
+              {/* eslint-disable-next-line @next/next/no-img-element -- flyers come from storage at arbitrary sizes */}
+              {event.coverUrl ? <img src={event.coverUrl} alt={t("page.coverAlt", { title: event.title })} /> : <span className={s.coverTitle}>{event.title}</span>}
+            </div>
+          )}
 
           {/* The host card, always under the picture (EventPorte-style): who's hosting, then the tags. */}
           <Card className={s.hostBox}>

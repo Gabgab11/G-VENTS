@@ -6,6 +6,16 @@
       "canManage": "You can edit this event. <link>Manage event</link>"
     },
     "coverAlt": "Flyer for {title}",
+    "gallery": {
+      "label": "Pictures of {title}",
+      "roleDescription": "gallery",
+      "alt": "Picture {number} of {total}: {title}",
+      "position": "Picture {number} of {total}",
+      "previous": "Previous picture",
+      "next": "Next picture",
+      "show": "Show picture {number} of {total}",
+      "showMore": "Show picture {number} of {total} ({count, plural, one {# more picture} other {# more pictures}})"
+    },
     "hostedBy": "Hosted by",
     "hostFallback": "G-ventZ host",
     "going": "{count, plural, one {{count, number, ::group-off} person going} other {{count, number, ::group-off} people going}}",

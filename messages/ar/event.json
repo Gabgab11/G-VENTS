@@ -6,6 +6,16 @@
       "canManage": "يمكنك تعديل هذه الفعالية. <link>إدارة الفعالية</link>"
     },
     "coverAlt": "ملصق {title}",
+    "gallery": {
+      "label": "صور {title}",
+      "roleDescription": "معرض صور",
+      "alt": "الصورة {number} من {total}: {title}",
+      "position": "الصورة {number} من {total}",
+      "previous": "الصورة السابقة",
+      "next": "الصورة التالية",
+      "show": "عرض الصورة {number} من {total}",
+      "showMore": "عرض الصورة {number} من {total} ({count, plural, zero {لا صور أخرى} one {صورة أخرى} two {صورتان أخريان} few {# صور أخرى} many {# صورة أخرى} other {# صورة أخرى}})"
+    },
     "hostedBy": "يستضيفها",
     "hostFallback": "منظِّم على G-ventZ",
     "going": "{count, plural, zero {لا أحد سيحضر} one {شخص واحد سيحضر} two {شخصان سيحضران} few {{count, number, ::group-off} أشخاص سيحضرون} many {{count, number, ::group-off} شخصًا سيحضرون} other {{count, number, ::group-off} شخص سيحضرون}}",

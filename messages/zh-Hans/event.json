@@ -6,6 +6,16 @@
       "canManage": "您可以编辑此活动。<link>管理活动</link>"
     },
     "coverAlt": "{title} 的海报",
+    "gallery": {
+      "label": "{title} 的图片",
+      "roleDescription": "图库",
+      "alt": "第 {number} 张图片，共 {total} 张：{title}",
+      "position": "第 {number} 张，共 {total} 张",
+      "previous": "上一张图片",
+      "next": "下一张图片",
+      "show": "查看第 {number} 张图片，共 {total} 张",
+      "showMore": "查看第 {number} 张图片，共 {total} 张（还有 {count} 张）"
+    },
     "hostedBy": "主办方",
     "hostFallback": "G-ventZ 主办方",
     "going": "{count, plural, other {{count, number, ::group-off} 人参加}}",

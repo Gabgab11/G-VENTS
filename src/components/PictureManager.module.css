@@ -1,0 +1,45 @@
+/* The host's picture picker (chunk 3c). Tokens only; logical properties so Arabic mirrors. */
+.manager { display: grid; gap: var(--space-2); min-inline-size: 0; }
+.head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); }
+.label { font-size: var(--text-label); line-height: var(--leading-label); font-weight: var(--weight-semibold); color: var(--color-text); }
+.count { font-size: var(--text-body-sm); color: var(--color-text-muted); font-variant-numeric: tabular-nums; }
+.hint { margin: 0; font-size: var(--text-body-sm); line-height: var(--leading-body-sm); color: var(--color-text-muted); }
+.error { margin: 0; font-size: var(--text-body-sm); line-height: var(--leading-body-sm); color: var(--color-danger); }
+
+.grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: var(--space-3); }
+.item {
+  display: grid; gap: var(--space-1); padding: var(--space-1); min-inline-size: 0;
+  border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface);
+  transition: border-color var(--duration-fast) var(--ease-out), opacity var(--duration-fast) var(--ease-out);
+}
+.item[draggable="true"] { cursor: grab; }
+.dragging { opacity: 0.5; }
+.dropTarget { border-color: var(--color-accent); box-shadow: 0 0 0 1px var(--color-accent); }
+.thumb { position: relative; aspect-ratio: 1 / 1; overflow: hidden; border-radius: var(--radius-sm); background: var(--color-surface-raised); }
+.thumb img { display: block; inline-size: 100%; block-size: 100%; object-fit: cover; }
+.main { position: absolute; inset-block-start: var(--space-1); inset-inline-start: var(--space-1); }
+.uploading {
+  position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: var(--space-1);
+  background: color-mix(in srgb, var(--color-surface) 75%, transparent); color: var(--color-text);
+  font-size: var(--text-caption); font-weight: var(--weight-semibold);
+}
+.spin { animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 0; }
+/* Earlier and later follow the reading direction. */
+.flip:dir(rtl) { transform: scaleX(-1); }
+
+.addItem { display: grid; min-block-size: 132px; }
+.add {
+  display: grid; place-content: center; justify-items: center; gap: var(--space-2); padding: var(--space-3);
+  border: 1px dashed var(--color-border-strong); border-radius: var(--radius-md); background: transparent; cursor: pointer;
+  color: var(--color-text); font: inherit; font-size: var(--text-body-sm); font-weight: var(--weight-semibold); text-align: center;
+}
+.add:hover:not(:disabled) { border-color: var(--color-accent); color: var(--color-accent-text); }
+.add:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.add:disabled { opacity: 0.6; cursor: not-allowed; }
+
+@media (prefers-reduced-motion: reduce) {
+  .item { transition: none; }
+  .spin { animation-duration: 3s; }
+}
