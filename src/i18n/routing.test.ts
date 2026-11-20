@@ -8,14 +8,16 @@ const ON: Locale[] = ["en", "fr", "zh-Hans", "ar"];
 
 describe("routing (W2, D72, FR-24)", () => {
   it("knows the public pages, with or without a language prefix", () => {
-    for (const p of ["/", "/discover", "/discover/music", "/e/afro-night", "/t/ABC123", "/pricing", "/help", "/terms", "/privacy", "/refunds", "/fr", "/fr/e/afro-night", "/e/afro-night/tickets", "/zh/e/afro-night/tickets", "/zh/discover", "/ar/t/X"]) expect(isPublicPath(p), p).toBe(true);
-    for (const p of ["/dashboard", "/sign-in", "/events/new", "/admin", "/host/settings/security", "/orders/1", "/api/session", "/e/x/edit", "/fr/dashboard", "/english", "/host", "/host/events/new", "/host/payouts"]) expect(isPublicPath(p), p).toBe(false);
+    for (const p of ["/", "/discover", "/discover/music", "/e/afro-night", "/t/ABC123", "/pricing", "/help", "/terms", "/privacy", "/refunds", "/fr", "/fr/e/afro-night", "/e/afro-night/tickets", "/zh/e/afro-night/tickets", "/zh/discover", "/ar/t/X", "/h/ada-events", "/fr/h/ada-events", "/ar/h/ada-events/"]) expect(isPublicPath(p), p).toBe(true);
+    for (const p of ["/dashboard", "/sign-in", "/events/new", "/admin", "/host/settings/security", "/orders/1", "/api/session", "/e/x/edit", "/fr/dashboard", "/english", "/host", "/host/events/new", "/host/payouts", "/h", "/h/", "/h/ada/edit", "/host/settings/profile"]) expect(isPublicPath(p), p).toBe(false);
   });
 
   it("moves public pages between languages and leaves the rest alone", () => {
     expect(localizedPath("/e/afro-night", "fr")).toBe("/fr/e/afro-night");
     expect(localizedPath("/fr/e/afro-night", "zh-Hans")).toBe("/zh/e/afro-night");
     expect(localizedPath("/ar/e/afro-night", "en")).toBe("/e/afro-night");
+    expect(localizedPath("/h/ada-events", "ar")).toBe("/ar/h/ada-events");
+    expect(localizedPath("/fr/h/ada-events", "en")).toBe("/h/ada-events");
     expect(localizedPath("/", "ar")).toBe("/ar");
     expect(localizedPath("/fr", "en")).toBe("/");
     expect(localizedPath("/dashboard", "fr")).toBe("/dashboard");

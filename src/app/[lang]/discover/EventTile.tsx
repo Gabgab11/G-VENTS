@@ -4,6 +4,7 @@ import type { EventCard } from "@/lib/events";
 import { formatDateTime, intlLocale, safeZone } from "@/lib/format";
 import { themeBackground } from "@/lib/themes";
 import type { Locale } from "@/i18n/languages";
+import { localizedPath } from "@/i18n/routing";
 import { categoryLabelKey, isCategory } from "@/lib/categories";
 import { priceLabel } from "@/lib/price-label";
 import { Badge } from "@/design";
@@ -36,15 +37,16 @@ export function cardPrice(e: { min_price_minor?: number | null; currency?: strin
 }
 
 // One event in a Discover row: the flyer (or the event's colour style with its name), then the
-// name, place and date, and "Free" or "From ₦5,000".
-export default function EventTile({ event: e }: { event: EventCard }) {
+// name, place and date, and "Free" or "From ₦5,000" (left out where the price isn't known, as on host
+// profiles). The link keeps the page's language.
+export default function EventTile({ event: e, showPrice = true }: { event: EventCard; showPrice?: boolean }) {
   const t = useTranslations("discover");
   const shared = useTranslations("shared");
   const root = useTranslations();
   const lang = useLocale() as Locale;
   const place = placeOf(e, t("online"));
   return (
-    <Link href={`/e/${e.slug}`} className="dc-tile">
+    <Link href={localizedPath(`/e/${e.slug}`, lang)} className="dc-tile">
       <span className="dc-tile-cover" style={{ background: themeBackground(e.cover_theme) }}>
         {/* eslint-disable-next-line @next/next/no-img-element -- flyers come from Supabase Storage at arbitrary sizes */}
         {e.cover_url ? <img src={e.cover_url} alt="" loading="lazy" /> : <span className="dc-tile-cover-title" aria-hidden="true">{e.title}</span>}
@@ -53,7 +55,7 @@ export default function EventTile({ event: e }: { event: EventCard }) {
       <span className="dc-tile-title">{e.title}</span>
       {place && <span className="dc-tile-meta">{place}</span>}
       <span className="dc-tile-meta">{whenOf(e, lang)}</span>
-      <Badge plain style={{ justifySelf: "start" }}>{priceLabel(cardPrice(e), lang, (k, v) => shared(k, v))}</Badge>
+      {showPrice && <Badge plain style={{ justifySelf: "start" }}>{priceLabel(cardPrice(e), lang, (k, v) => shared(k, v))}</Badge>}
     </Link>
   );
 }
