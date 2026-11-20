@@ -359,6 +359,7 @@
     "styleTitle": "Estilo de la página",
     "styleHint": "Los colores que ven los invitados en la página del evento.",
     "saveStyle": "Guardar estilo",
+    "picturesTitle": "Imágenes",
     "flyerTitle": "Cartel del evento",
     "flyerHint": "Se muestra en la página del evento y en Descubrir. Use JPG, PNG o WebP, hasta 5 MB. Vertical o cuadrado queda mejor.",
     "flyerAlt": "Cartel del evento",

@@ -359,6 +359,7 @@
     "styleTitle": "Page style",
     "styleHint": "The colours guests see on the event page.",
     "saveStyle": "Save style",
+    "picturesTitle": "Pictures",
     "flyerTitle": "Event flyer",
     "flyerHint": "Shown on the event page and in Discover. Use JPG, PNG, or WebP, up to 5 MB. Tall or square works best.",
     "flyerAlt": "Event flyer",

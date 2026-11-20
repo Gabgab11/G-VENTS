@@ -359,6 +359,7 @@
     "styleTitle": "Seitenstil",
     "styleHint": "Die Farben, die Gäste auf der Event-Seite sehen.",
     "saveStyle": "Stil speichern",
+    "picturesTitle": "Bilder",
     "flyerTitle": "Event-Flyer",
     "flyerHint": "Wird auf der Event-Seite und unter Entdecken angezeigt. Verwenden Sie JPG, PNG oder WebP, bis 5 MB. Hoch- oder Quadratformat wirkt am besten.",
     "flyerAlt": "Event-Flyer",

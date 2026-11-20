@@ -359,6 +359,7 @@
     "styleTitle": "Style de la page",
     "styleHint": "Les couleurs que les invités voient sur la page de l'événement.",
     "saveStyle": "Enregistrer le style",
+    "picturesTitle": "Images",
     "flyerTitle": "Affiche de l'événement",
     "flyerHint": "Affichée sur la page de l'événement et dans Découvrir. Utilisez JPG, PNG ou WebP, jusqu'à 5 Mo. Le format vertical ou carré fonctionne le mieux.",
     "flyerAlt": "Affiche de l'événement",

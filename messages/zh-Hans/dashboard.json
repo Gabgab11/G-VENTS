@@ -359,6 +359,7 @@
     "styleTitle": "页面风格",
     "styleHint": "来宾在活动页面上看到的颜色。",
     "saveStyle": "保存风格",
+    "picturesTitle": "图片",
     "flyerTitle": "活动海报",
     "flyerHint": "显示在活动页面和“发现”中。请使用 JPG、PNG 或 WebP，最大 5 MB。竖版或方形效果最佳。",
     "flyerAlt": "活动海报",

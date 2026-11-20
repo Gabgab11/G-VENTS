@@ -4,7 +4,7 @@ import { useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import { useTranslations } from "next-intl";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cx } from "@/design";
-import { frameRatio, swipeStep, thumbStrip, wrap } from "./gallery";
+import { frameRatio, swipeStep, thumbStrip, wrap } from "./gallery-index";
 import s from "./Gallery.module.css";
 
 type Picture = { url: string; width: number | null; height: number | null };
