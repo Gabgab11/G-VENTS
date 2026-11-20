@@ -75,7 +75,7 @@ export default function FooterWordmark() {
   }, []);
 
   return (
-    <div ref={ref} className="hp-footer-wordmark" aria-hidden="true">
+    <div ref={ref} className="hp-footer-wordmark" aria-hidden="true" dir="ltr">
       <span ref={fitRef} className="wm-fit">
         {LETTERS.map((letter, i) => (
           <span key={i} className={letter === "Z" ? "wm-z" : undefined}>{letter}</span>
