@@ -18,7 +18,6 @@ export default async function ProfileSettingsPage() {
   const site = env.siteUrl.replace(/^https?:\/\//, "").replace(/\/$/, "");
   return (
     <>
-      <ProfileImages name={me.fullName?.trim() || profile.handle || ""} avatarUrl={profile.avatarUrl} coverUrl={profile.coverUrl} />
       <ProfileForm
         ownId={profile.id}
         site={site}
@@ -33,6 +32,7 @@ export default async function ProfileSettingsPage() {
           website: profile.socials.website ?? "",
         }}
       />
+      <ProfileImages name={me.fullName?.trim() || profile.handle || "G-ventZ"} avatarUrl={profile.avatarUrl} coverUrl={profile.coverUrl} />
     </>
   );
 }

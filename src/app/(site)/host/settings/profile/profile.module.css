@@ -11,7 +11,7 @@
 .links { display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
 .footer { display: grid; gap: var(--space-3); justify-items: start; }
 
-.pictures { display: grid; gap: var(--space-5); margin-block-end: var(--space-5); }
+.pictures { display: grid; gap: var(--space-5); margin-block-start: var(--space-5); }
 .slot { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--space-4); align-items: start; }
 .slot[data-kind="cover"] { grid-template-columns: minmax(0, 1fr); }
 .slotPreview { display: grid; }
