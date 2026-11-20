@@ -114,12 +114,12 @@ export default async function HostProfilePage({ params, searchParams }: { params
             <Avatar name={name} src={p.avatarUrl} size={48} className={s.avatar} />
             <div className={s.identity}>
               <h1 id="profile-name" className={s.name}>
-                <span>{name}</span>
+                <span dir="auto">{name}</span>
                 {p.verified && <Badge verified className={s.badge}>{shared("hostProfile.verified")}</Badge>}
               </h1>
               <p className={s.meta}>
                 <span className={s.metaItem} dir="ltr">@{p.handle}</span>
-                {p.location && <span className={s.metaItem}><MapPin size={16} strokeWidth={1.75} aria-hidden />{p.location}</span>}
+                {p.location && <span className={s.metaItem}><MapPin size={16} strokeWidth={1.75} aria-hidden /><bdi>{p.location}</bdi></span>}
                 <FollowerCount />
               </p>
             </div>
@@ -135,7 +135,7 @@ export default async function HostProfilePage({ params, searchParams }: { params
             </div>
           </div>
 
-          {p.bio && <p className={s.bio}>{p.bio}</p>}
+          {p.bio && <p className={s.bio} dir="auto">{p.bio}</p>}
 
           {socials.length > 0 && (
             <ul className={s.socials} aria-label={t("socialsLabel", { name })}>
