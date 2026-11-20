@@ -613,7 +613,7 @@ export interface paths {
         put?: never;
         /**
          * Get free tickets
-         * @description One order for up to 10 tickets, all sent to your verified email. The whole group is admitted, waits for approval, joins the waiting list (event full) or is refused; it is never split. 503 order.busy (Retry-After: 2) when the event is very busy.
+         * @description One order for up to 10 purchases (a group ticket is one purchase of groupSize tickets, D90), all held by you and sent to your verified email; tickets you send to other people (recipients, D89) are also emailed to them once the order is confirmed. The whole group is admitted, waits for approval, joins the waiting list (event full) or is refused; it is never split. 503 order.busy (Retry-After: 2) when the event is very busy.
          */
         post: operations["OrdersController_place_v1"];
         delete?: never;
@@ -796,6 +796,26 @@ export interface paths {
         get: operations["TicketsController_ticket_v1"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/me/orders/{orderId}/tickets/{ticketId}/resend": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Resend a ticket from my order
+         * @description D89: emails one confirmed ticket of your order again: to the person you sent it to, or to you when it stayed with you. Send `email` to correct that person's address first (not on ticket 1, which is yours, and not your own address). At most 5 an hour per ticket (429 ticket.email_limit) and 30 an hour per buyer (429 rate_limit.exceeded). 409 ticket.email_unavailable when the ticket is not confirmed or the event was cancelled. 400 order.recipient_email_invalid, order.recipient_is_buyer, ticket.first_ticket_is_buyers.
+         */
+        post: operations["MeOrdersController_resend_v1"];
         delete?: never;
         options?: never;
         head?: never;
@@ -2103,6 +2123,16 @@ export interface components {
              */
             language: "en" | "es" | "fr" | "de" | "zh-Hans" | "pt" | "ar" | null;
             /**
+             * @description The phone given at the last checkout (E.164), to prefill the next; null until given
+             * @example +2348012345678
+             */
+            phone: string | null;
+            /**
+             * @description The gender given at the last checkout; null until given
+             * @enum {string|null}
+             */
+            gender: "female" | "male" | "unspecified" | null;
+            /**
              * @description aal2 when two-step sign-in was used for this session
              * @enum {string}
              */
@@ -2180,6 +2210,13 @@ export interface components {
             salesStart?: string;
             /** Format: date-time */
             salesEnd?: string;
+            /**
+             * @description People admitted per purchase (D90): 1 = ordinary, 2-20 = a group. Else 400 event.group_size_invalid
+             * @default 1
+             */
+            groupSize: number;
+            /** @description Shown under the ticket type. Else 400 event.ticket_description_invalid */
+            description?: string | null;
         };
         CreateEventDto: {
             /** @example Lagos Tech Meetup */
@@ -2296,13 +2333,19 @@ export interface components {
             priceMinor: number;
             /** @example NGN */
             currency: string;
+            /** @description Entries for sale (a group purchase uses groupSize of them); null = unlimited */
             quantity: number | null;
+            /** @description Entries sold or held */
             sold: number;
+            /** @description Entries left; a group purchase needs groupSize of them */
             remaining: number | null;
             /** Format: date-time */
             salesStart: string | null;
             /** Format: date-time */
             salesEnd: string | null;
+            /** @description People admitted per purchase (D90): 1 = an ordinary ticket, 2-20 = "Group of N". Price is per purchase; each purchase gives groupSize tickets and counts as one against perBuyerLimit */
+            groupSize: number;
+            description: string | null;
         };
         QuestionViewDto: {
             /** Format: uuid */
@@ -2355,7 +2398,7 @@ export interface components {
             registrationOpen: boolean;
             /** @description Most tickets one person can get */
             perBuyerLimit: number;
-            /** @description Tickets you already hold for this event, as counted against perBuyerLimit; null when signed out */
+            /** @description What you already hold for this event, as counted against perBuyerLimit (a group purchase counts as one); null when signed out */
             viewerTickets: number | null;
             /** @description Owner, admin or editor */
             canManage: boolean;
@@ -2425,6 +2468,10 @@ export interface components {
             salesStart?: string | null;
             /** Format: date-time */
             salesEnd?: string | null;
+            /** @description People admitted per purchase (D90). Changes only while the type has no sales (else 409 event.group_size_locked) */
+            groupSize?: number;
+            /** @description Null or blank removes it */
+            description?: string | null;
         };
         UpdateEventDetailsDto: {
             title?: string;
@@ -2559,7 +2606,7 @@ export interface components {
             registrationOpen: boolean;
             /** @description Most tickets one person can get */
             perBuyerLimit: number;
-            /** @description Tickets you already hold for this event, as counted against perBuyerLimit; null when signed out */
+            /** @description What you already hold for this event, as counted against perBuyerLimit (a group purchase counts as one); null when signed out */
             viewerTickets: number | null;
             /** @description Owner, admin or editor */
             canManage: boolean;
@@ -2838,20 +2885,44 @@ export interface components {
         OrderLineInputDto: {
             /** Format: uuid */
             ticketTypeId: string;
-            /** @example 2 */
+            /**
+             * @description Purchases: for a group type (groupSize > 1) each purchase gives groupSize tickets (D90)
+             * @example 2
+             */
             quantity: number;
         };
+        RecipientInputDto: {
+            /** @example Tolu Ade */
+            name: string;
+            /**
+             * @description Their ticket is emailed here once confirmed; blank = no email. Not your own address
+             * @example tolu@example.com
+             */
+            email?: string | null;
+        };
         PlaceOrderDto: {
-            /** @description 1-20 lines, 1-10 tickets in total. Ticket types may repeat. */
+            /** @description 1-20 lines, 1-10 purchases in total (a group purchase is one, and counts once against perBuyerLimit). Ticket types may repeat. */
             lines: components["schemas"]["OrderLineInputDto"][];
             /**
-             * @description guestNames[i] names ticket i+1; blank for none. Ticket 1 defaults to the buyer, others to "Guest of {buyer}".
+             * @description guestNames[i] names ticket i+1; blank for none. Ticket 1 defaults to the buyer, others to "Guest of {buyer}". A recipient's name takes the place of the guest name.
              * @example [
              *       "",
              *       "Tolu Ade"
              *     ]
              */
             guestNames?: string[];
+            /** @description Tickets for other people (D89): recipients[i] gets ticket i+2 (ticket 1 is yours) with their name, and when an email is given it is sent there once the order is confirmed or paid. At most 20, and at most the order's tickets minus one; the rest stay with you, and you see every ticket in My tickets. 400 order.recipients_too_many, order.recipient_name_invalid, order.recipient_email_invalid, order.recipient_is_buyer, order.recipients_exceed_tickets */
+            recipients?: components["schemas"]["RecipientInputDto"][];
+            /**
+             * @description Your phone in E.164 (+2348012345678); spaces and dashes are ignored. Saved with the order and remembered for next time (GET /v1/me). Optional in the API; the website requires it. 400 order.buyer_phone_invalid
+             * @example +2348012345678
+             */
+            buyerPhone?: string;
+            /**
+             * @description Optional; unspecified = prefer not to say
+             * @enum {string}
+             */
+            buyerGender?: "female" | "male" | "unspecified";
             /**
              * @description Answers keyed by question id; once per order.
              * @example {
@@ -2883,6 +2954,8 @@ export interface components {
             displayName: string;
             /** @enum {string} */
             status: "confirmed" | "pending" | "waitlisted";
+            /** @description Where this ticket is emailed once confirmed (D89); null = it stays with you */
+            recipientEmail: string | null;
         };
         OrderPlacedResponse: {
             /** Format: uuid */
@@ -2916,6 +2989,8 @@ export interface components {
             ticketType: string;
             number: number | null;
             total: number | null;
+            /** @description People per purchase of this ticket type (D90): 1 = ordinary; above 1 shows "Table of N" */
+            groupSize: number;
             buyerName: string;
             /** Format: date-time */
             checkedInAt: string | null;
@@ -2968,6 +3043,18 @@ export interface components {
             refundStatus: "queued" | "processing" | "refunded" | "failed" | null;
             /** @description The ticket's order has an open chargeback */
             disputed: boolean;
+            /** @description Where this ticket was emailed when the buyer sent it to someone else (D89) */
+            recipientEmail: string | null;
+            /**
+             * @description The buyer's phone (E.164); only for roles with guests.export (owner, admin, finance), else null
+             * @example +2348012345678
+             */
+            buyerPhone: string | null;
+            /**
+             * @description The buyer's gender; only for roles with guests.export, else null
+             * @enum {string|null}
+             */
+            buyerGender: "female" | "male" | "unspecified" | null;
         };
         GuestCountsResponse: {
             confirmed: number;
@@ -3033,6 +3120,8 @@ export interface components {
             total: number | null;
             displayName: string;
             ticketType: string;
+            /** @description People per purchase of this ticket type (D90) */
+            groupSize: number;
             /** Format: date-time */
             checkedInAt: string | null;
             /** @example https://gventz.com/t/abcdef0123456789abcdef01 */
@@ -3043,20 +3132,39 @@ export interface components {
             email: components["schemas"]["TicketEmailDeliveryResponse"] | null;
             event: components["schemas"]["TicketEventResponse"];
         };
+        ResendTicketDto: {
+            /**
+             * @description Corrects the recipient's address before sending; omit to resend as it is
+             * @example tolu@example.com
+             */
+            email?: string;
+        };
         MyTicketResponse: {
+            /**
+             * Format: uuid
+             * @description For POST /v1/me/orders/{orderId}/tickets/{ticketId}/resend
+             */
+            id: string;
             code: string;
             number: number | null;
             displayName: string;
             ticketType: string;
+            /** @description People per purchase of this ticket type (D90): above 1 shows "Ticket 2 of 4 · Table of 4" */
+            groupSize: number;
             status: string;
             /** Format: date-time */
             checkedInAt: string | null;
+            /** @description Who this ticket was sent to (D89); null = yours */
+            recipientEmail: string | null;
         };
         FeeQuoteLineDto: {
             /** Format: uuid */
             ticketTypeId: string;
             name: string;
+            /** @description Purchases of this type; a group purchase (groupSize > 1) gives groupSize tickets */
             quantity: number;
+            /** @description Tickets per purchase (D90); unit prices, discounts and fees below are per purchase */
+            groupSize: number;
             /** @description Ticket price, minor units */
             unitPriceMinor: number;
             /** @description Discount code reduction per ticket, minor units; present only when a code applies to this line */
@@ -3977,11 +4085,14 @@ export interface components {
         PaidLineDto: {
             /** Format: uuid */
             ticketTypeId: string;
-            /** @example 2 */
+            /**
+             * @description Purchases: a group type (groupSize > 1) is priced per purchase and gives groupSize tickets (D90)
+             * @example 2
+             */
             quantity: number;
         };
         QuoteRequestDto: {
-            /** @description Paid ticket types only, 1-10 tickets in total */
+            /** @description Paid ticket types only, 1-10 purchases in total (a group purchase is one) */
             lines: components["schemas"]["PaidLineDto"][];
             /**
              * @description A discount code for this event, in any case (blank = none). Checked against the lines; fees are worked out on the discounted price. 422 discount.invalid, discount.expired, discount.not_for_ticket or discount.whole_order; 409 discount.used_up
@@ -3990,7 +4101,7 @@ export interface components {
             code?: string;
         };
         PaidOrderDto: {
-            /** @description Paid ticket types only, 1-10 tickets in total */
+            /** @description Paid ticket types only, 1-10 purchases in total (a group purchase is one) */
             lines: components["schemas"]["PaidLineDto"][];
             /**
              * @description A discount code for this event, in any case (blank = none). Checked against the lines; fees are worked out on the discounted price. 422 discount.invalid, discount.expired, discount.not_for_ticket or discount.whole_order; 409 discount.used_up
@@ -3999,8 +4110,20 @@ export interface components {
             code?: string;
             /** @description The guest ticked "I understand tickets are non-refundable, except if the event is cancelled" (CK3). Must be true. */
             nonRefundableAccepted: boolean;
-            /** @description guestNames[i] names ticket i+1; blank for none. */
+            /** @description guestNames[i] names ticket i+1; blank for none. A recipient's name takes the place of the guest name. */
             guestNames?: string[];
+            /** @description Tickets for other people (D89): recipients[i] gets ticket i+2 (ticket 1 is yours) with their name, and when an email is given it is sent there once the order is confirmed or paid. At most 20, and at most the order's tickets minus one; the rest stay with you, and you see every ticket in My tickets. 400 order.recipients_too_many, order.recipient_name_invalid, order.recipient_email_invalid, order.recipient_is_buyer, order.recipients_exceed_tickets */
+            recipients?: components["schemas"]["RecipientInputDto"][];
+            /**
+             * @description Your phone in E.164 (+2348012345678); spaces and dashes are ignored. Saved with the order and remembered for next time (GET /v1/me). Optional in the API; the website requires it. 400 order.buyer_phone_invalid
+             * @example +2348012345678
+             */
+            buyerPhone?: string;
+            /**
+             * @description Optional; unspecified = prefer not to say
+             * @enum {string}
+             */
+            buyerGender?: "female" | "male" | "unspecified";
             /** @description Answers keyed by question id; once per order. */
             answers?: {
                 [key: string]: string;
@@ -4770,7 +4893,7 @@ export interface operations {
                 };
                 content?: never;
             };
-            /** @description event.ticket_price_locked, event.ticket_quantity_below_sold, event.ticket_type_has_sales, event.cancelled */
+            /** @description event.ticket_price_locked, event.group_size_locked, event.ticket_quantity_below_sold, event.ticket_type_has_sales, event.cancelled */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -6311,6 +6434,53 @@ export interface operations {
             };
             /** @description ticket.not_found */
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    MeOrdersController_resend_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                orderId: string;
+                ticketId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ResendTicketDto"];
+            };
+        };
+        responses: {
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TicketEmailQueuedResponse"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description ticket.not_found (also for other people's orders and tickets) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description ticket.email_limit, rate_limit.exceeded */
+            429: {
                 headers: {
                     [name: string]: unknown;
                 };
