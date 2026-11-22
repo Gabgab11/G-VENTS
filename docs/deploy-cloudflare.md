@@ -4,7 +4,8 @@ Status: **live since 2026-11-10.** `gventz.com`, `www.gventz.com` (301 to the ap
 `staging.gventz.com` are served by the Workers `gventz-web` and `gventz-web-staging`; DNS is on
 Cloudflare. Vercel hosts only the API (`api.gventz.com`, `api-staging.gventz.com`). The website's
 Vercel project `g-vents` has no custom domains and no Git integration. Phases 0 to 5 below are
-done; they are kept as the record of how, and for the rollback notes.
+done; they are kept as the record of how, and for the rollback notes. Sections 2, 3 and
+"Bot protection" were re-checked against the workflows and repository settings on 2026-11-22.
 
 - Pipeline: `.github/workflows/deploy.yml` (+ `.github/actions/deploy-website`, `.github/scripts/`)
 - Worker config: `wrangler.jsonc`, `open-next.config.ts`
@@ -66,47 +67,55 @@ Everything is set at **repository** level (Settings → Secrets and variables �
 differ per environment carry a `STAGING_` or `PRODUCTION_` prefix; shared ones have none. Each
 deploy job maps its own environment's names to the unprefixed names the deploy action reads
 (`BFF_SHARED_SECRET`, `NEXT_PUBLIC_SUPABASE_URL`, …), so the Worker and the app code are unchanged.
-Names only below; values never go in the repo. "Exists" is as of 2026-11-07.
+Names only below; values never go in the repo. "Exists" is as of 2026-11-22.
+
+**Repository level only.** The deploy jobs use no GitHub environment (see below), so a value saved
+under an environment (`gh variable set … --env staging`) is invisible to them: the build gets an
+empty value and nothing fails loudly. This cost two staging builds on 2026-11-21.
 
 | Kind | Name | Exists | Purpose | Used by (job) |
 |---|---|---|---|---|
 | secret | `CLOUDFLARE_API_TOKEN` | **yes** | deploys the Workers ([scope](#cloudflare-api-token)) | deploy.yml `staging`, `production` |
 | secret | `CLOUDFLARE_ACCOUNT_ID` | **yes** | `cae583a64c8e68a3fa05d93e36cb3f89` ("Johnabayomi6040@gmail.com's Account"). An identifier, not a secret; stored as one only to keep the deploy settings together | `staging`, `production` |
-| secret | `STAGING_BFF_SHARED_SECRET` | no | Worker secret; same value as the staging API's `BFF_SHARED_SECRET` | `staging` |
-| secret | `PRODUCTION_BFF_SHARED_SECRET` | no | same, production API | `production` |
-| secret | `STAGING_REVALIDATE_SECRET` | no | Worker secret; same value as the staging API's `REVALIDATE_SECRET` (≥ 32 chars) | `staging` |
-| secret | `PRODUCTION_REVALIDATE_SECRET` | no | same, production API | `production` |
+| secret | `STAGING_BFF_SHARED_SECRET` | **yes** | Worker secret; same value as the staging API's `BFF_SHARED_SECRET` | `staging` |
+| secret | `PRODUCTION_BFF_SHARED_SECRET` | **yes** | same, production API | `production` |
+| secret | `STAGING_REVALIDATE_SECRET` | **yes** | Worker secret; same value as the staging API's `REVALIDATE_SECRET` (≥ 32 chars) | `staging` |
+| secret | `PRODUCTION_REVALIDATE_SECRET` | **yes** | same, production API | `production` |
 | secret | `STAGING_MAINTENANCE_BYPASS` | no | optional; staff cookie value during maintenance (≥ 16 chars) | `staging` |
 | secret | `PRODUCTION_MAINTENANCE_BYPASS` | no | optional; same for production | `production` |
-| secret | `STAGING_SUPABASE_SECRET_KEY` | no | recommended; Worker secret, a staging Supabase **secret** key (`sb_secret_…`) used only for sign-in, so Auth rate limits see each visitor's IP (`sb-forwarded-for`). Needs IP Address Forwarding on in Authentication → Rate Limits. Empty: the publishable key, all visitors share one IP bucket | `staging` |
-| secret | `PRODUCTION_SUPABASE_SECRET_KEY` | no | same, production project | `production` |
+| secret | `STAGING_SUPABASE_SECRET_KEY` | **yes** | recommended; Worker secret, a staging Supabase **secret** key (`sb_secret_…`) used only for sign-in, so Auth rate limits see each visitor's IP (`sb-forwarded-for`). Needs IP Address Forwarding on in Authentication → Rate Limits. Empty: the publishable key, all visitors share one IP bucket | `staging` |
+| secret | `PRODUCTION_SUPABASE_SECRET_KEY` | **yes** | same, production project | `production` |
 | secret | `STAGING_CF_ACCESS_CLIENT_ID` | no | optional; Cloudflare Access service token for smoke-testing staging behind Access | `staging` |
 | secret | `STAGING_CF_ACCESS_CLIENT_SECRET` | no | optional; pair of the above | `staging` |
 | secret | `GVENTZ_API_READ_TOKEN` | **yes** | fine-grained token, Contents: read on `aristokratos/gventz-api` only (that repo is private); downloads the pinned `openapi.json`. Expires; renew it before then | ci.yml `verify`; deploy.yml `promotion-gates`, `production-gates` |
 | secret | `SUPABASE_ACCESS_TOKEN` | **yes** | Supabase CLI login | deploy.yml `production-gates`; migrate.yml |
 | secret | `SUPABASE_PROD_REF` | **yes** | production project ref | `production-gates`; migrate.yml |
 | secret | `SUPABASE_PROD_DB_PASSWORD` | **yes** | production database password (read-only dry run here) | `production-gates`; migrate.yml |
-| secret | `SUPABASE_STAGING_REF` | **no** | staging project ref (migrate.yml, already required by it) | migrate.yml |
-| secret | `SUPABASE_STAGING_DB_PASSWORD` | **no** | staging database password (migrate.yml) | migrate.yml |
+| secret | `SUPABASE_STAGING_REF` | **yes** | staging project ref (migrate.yml, already required by it) | migrate.yml |
+| secret | `SUPABASE_STAGING_DB_PASSWORD` | **yes** | staging database password (migrate.yml) | migrate.yml |
 | secret | `SLACK_WEBHOOK_URL` | no | optional; failure alerts | deploy.yml `notify` |
-| secret | `VERCEL_AUTOMATION_BYPASS_SECRET` | **yes** | used only by the removed `promote.yml`; delete it after Vercel is retired | none |
-| variable | `PRODUCTION_API_URL` | no | `https://api.gventz.com`, for the API contract gate (public) | `promotion-gates`, `production-gates` |
-| variable | `STAGING_NEXT_PUBLIC_SUPABASE_URL` | no | required; staging Supabase URL (public, inlined in the browser bundle) | `staging` |
-| variable | `PRODUCTION_NEXT_PUBLIC_SUPABASE_URL` | no | required; production Supabase URL | `production` |
-| variable | `STAGING_NEXT_PUBLIC_SUPABASE_ANON_KEY` | no | required; staging publishable key (public by design) | `staging` |
-| variable | `PRODUCTION_NEXT_PUBLIC_SUPABASE_ANON_KEY` | no | required; production publishable key | `production` |
-| variable | `STAGING_NEXT_PUBLIC_TURNSTILE_SITE_KEY` | no | optional; Turnstile site key | `staging` |
-| variable | `PRODUCTION_NEXT_PUBLIC_TURNSTILE_SITE_KEY` | no | optional | `production` |
+| secret | `VERCEL_AUTOMATION_BYPASS_SECRET` | **yes** | used only by the removed `promote.yml`; the website left Vercel on 2026-11-10, so delete it | none |
+| variable | `PRODUCTION_API_URL` | **yes** | `https://api.gventz.com`, for the API contract gate (public) | `promotion-gates`, `production-gates` |
+| variable | `STAGING_NEXT_PUBLIC_SUPABASE_URL` | **yes** | required; staging Supabase URL (public, inlined in the browser bundle) | `staging` |
+| variable | `PRODUCTION_NEXT_PUBLIC_SUPABASE_URL` | **yes** | required; production Supabase URL | `production` |
+| variable | `STAGING_NEXT_PUBLIC_SUPABASE_ANON_KEY` | **yes** | required; staging publishable key (public by design) | `staging` |
+| variable | `PRODUCTION_NEXT_PUBLIC_SUPABASE_ANON_KEY` | **yes** | required; production publishable key | `production` |
+| variable | `STAGING_NEXT_PUBLIC_TURNSTILE_SITE_KEY` | **yes** | Turnstile **site** key of widget `gventz-staging` (about 24 characters). Never the secret key: this value is built into the public JavaScript. See [Bot protection](#bot-protection-turnstile) | `staging` |
+| variable | `PRODUCTION_NEXT_PUBLIC_TURNSTILE_SITE_KEY` | **yes** | site key of widget `gventz-production` | `production` |
 | variable | `STAGING_NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY` | no | optional; referrer-restricted Maps Embed key | `staging` |
 | variable | `PRODUCTION_NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY` | no | optional | `production` |
 | variable | `STAGING_NEXT_PUBLIC_WHATSAPP_NUMBER` | no | optional; WhatsApp fallback number | `staging` |
 | variable | `PRODUCTION_NEXT_PUBLIC_WHATSAPP_NUMBER` | no | optional | `production` |
 | variable | `STAGING_MAINTENANCE_MODE` | no | optional; `1` = maintenance page from the next deploy | `staging` |
 | variable | `PRODUCTION_MAINTENANCE_MODE` | no | optional | `production` |
-| variable | `STAGING_URL` | no | optional; smoke-test this origin (e.g. `https://staging.gventz.com`) instead of `workers.dev` | `staging` |
-| variable | `PRODUCTION_URL` | no | optional; `https://gventz.com` after cutover | `production`, `notify` |
+| variable | `STAGING_URL` | **yes** | optional; smoke-test this origin (e.g. `https://staging.gventz.com`) instead of `workers.dev` | `staging` |
+| variable | `PRODUCTION_URL` | **yes** | optional; `https://gventz.com` after cutover | `production`, `notify` |
 
-Not settings: `API_URL` and `NEXT_PUBLIC_SITE_URL` (committed in `wrangler.jsonc`, see above).
+Not settings: `API_URL`, `NEXT_PUBLIC_SITE_URL` and `NEXT_PUBLIC_LANGUAGES` (committed in `wrangler.jsonc`, see above).
+
+Also present but read by no workflow (delete them): the secrets `STAGING_NEXT_PUBLIC_LANGUAGES`
+(replaced by `wrangler.jsonc` in #76), `STAGING_NEXT_PUBLIC_SUPABASE_ANON_KEY` and
+`PRODUCTION_NEXT_PUBLIC_SUPABASE_ANON_KEY` (the workflow reads the variables of the same names).
 
 Worker secrets are uploaded **with** each deployment (`wrangler deploy --secrets-file`, a 0600 temp
 file deleted afterwards), so GitHub stays their source of truth and they never appear on a command
@@ -151,12 +160,16 @@ with a TTL and rotate it.
 ## 3. Pipeline
 
 ```
-feature ──PR──▶ staging ──────────────────────────────────▶ PR staging → main ──merge──▶ main
-         CI:     push: CI ▶ deploy staging ▶ smoke ▶ gates ▶ open/update PR         push: CI ▶ tested on staging?
-         ci.yml                                                                       ▶ gates ▶ deploy prod ▶ smoke
+feature ──PR──▶ development ──PR──▶ staging ──────────────────────────────▶ PR staging → main ──merge──▶ main
+         CI only            CI only  push: CI ▶ deploy staging ▶ smoke ▶      push: CI ▶ tested on staging?
+                                     contract gate ▶ open/update PR            ▶ contract + migration gates
+                                                                               ▶ deploy prod ▶ smoke
 ```
 
-1. **Pull requests** (any base, including `staging`): `ci.yml` runs the API-contract drift check,
+Feature branches merge into `development`; `development` → `staging` pull requests release to
+staging (for example #76 to #80). Nothing is pushed to `staging` or `main` directly.
+
+1. **Pull requests** (any base, including `development` and `staging`): `ci.yml` runs the API-contract drift check,
    release-script tests, lint, typecheck, unit tests, the Next.js + Worker build, a `wrangler deploy
    --dry-run` for both environments, and the migrations job. No secrets, no deploys,
    no `pull_request_target`.
@@ -181,6 +194,20 @@ feature ──PR──▶ staging ───────────────�
 4. **`production`** deploys `gventz-web` and smoke-tests it.
 5. Any failure: a `deploy-failure` issue (plus Slack if configured), same as before.
 
+### Release order (with gventz-api)
+
+**Migrations, then the API, then the website**, every time:
+
+1. Production migrations: Actions → *Database migrations* → Run workflow from `staging`, target
+   `production`, confirm "apply to production". Check the dry-run list in the log.
+2. gventz-api `staging` → `prd`. Its schema gate refuses the deploy if production lacks a migration.
+3. This repository's `staging` → `main` pull request. Its contract gate refuses if the production
+   API doesn't serve this build's contract, and its migration gate if production lacks a migration.
+
+The gates make the wrong order fail instead of break production. On 2026-11-20 the API went out
+before step 1 and the home page broke for about 1 h 43 min (gventz-api
+`docs/incidents/2026-11-20-api-released-before-schema.md`); the API's schema gate was added after it.
+
 Security properties:
 - every third-party action is pinned to a full commit SHA;
 - `permissions: {}` at workflow level, with each job granted only what it uses;
@@ -204,10 +231,33 @@ npx wrangler rollback <version-id> --env production -m "reason"   # instant, pre
 Then revert the bad commit on `staging`, so the next release doesn't bring it back. During the DNS
 transition, a full rollback is the DNS rollback in section 5.
 
+## Bot protection (Turnstile)
+
+On since 2026-11-22, one widget per environment (`gventz-staging`, `gventz-production`; Managed
+mode). The **site key** goes in the repository variable `*_NEXT_PUBLIC_TURNSTILE_SITE_KEY`. When it
+is set:
+- the build allows `https://challenges.cloudflare.com` in the CSP (`src/lib/csp.ts`, read at build
+  time in `next.config.ts`);
+- the widget renders on `/sign-in`, the ticket checkout email step and the Help & contact form
+  (`src/components/Turnstile.tsx`), and each request carries its token.
+
+The **secret key** never goes in this repository. It is checked by Supabase Auth (Authentication →
+Attack Protection → CAPTCHA) for sign-in codes and by gventz-api (`TURNSTILE_SECRET_KEY`) for the
+contact form. Set the site key and deploy **first**; Supabase and the API ignore tokens until they
+have the secret, so that order never breaks sign-in. Full setup, checks and rollback: gventz-api
+`docs/secrets-and-settings.md` §5.
+
+How to tell the two keys apart: the site key is about 24 characters, the secret about 35. If a
+secret was saved as the site key, it is public: rotate it in Cloudflare.
+
+Seen during setup: in an automated browser the widget took 17–21 s to issue a token on both
+environments, and a submit before that shows "Please wait a moment while we check you're not a
+robot". Real visitors' timing is **unverified**.
+
 ## Setup (one time)
 
-Every item is outside the repo. **Not done yet.** Done by the repo owner (GitHub admin) and the
-Cloudflare account owner.
+Every item is outside the repo. **Done 2026-11-10**, by the repo owner (GitHub admin) and the
+Cloudflare account owner. Kept for rebuilding or rotating.
 
 ### Cloudflare API token
 
@@ -224,7 +274,7 @@ exists). Give it only:
 "Pages: Edit" isn't enough, because this is a Worker, not a Pages project. Cloudflare can't limit
 a token to one Worker, so the shared `CLOUDFLARE_API_TOKEN` can deploy both. Set a TTL and rotate it.
 
-## 4. DNS inventory (read-only, 2026-11-07)
+## 4. DNS inventory (read-only, 2026-11-07; historical: the state before the move)
 
 Sources: `vercel dns ls gventz.com` and `vercel domains inspect gventz.com` (team
 `gabriels-projects-82d456ea`), public `dig` against `ns1.vercel-dns.com`, and RDAP.
@@ -283,7 +333,7 @@ Clashes and findings:
 
 ## 5. DNS cutover runbook (Vercel DNS → Cloudflare DNS)
 
-Nothing below has been done. Do it in a quiet hour. Website downtime should be zero; the worst case
+**Done 2026-11-10**; kept as the record and for the rollback notes. It was done in a quiet hour. Website downtime should be zero; the worst case
 is the TTL of the record you changed.
 
 **Phase 0: decided.**
