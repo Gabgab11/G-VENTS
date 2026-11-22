@@ -1,5 +1,11 @@
 # G-vents progress (handoff notes)
 
+> **Historical (October 2026).** These notes predate the move to gventz-api and Cloudflare Workers,
+> and many "Not done yet" items have changed since (for example: the migrations are applied, payments
+> are built but have no live keys yet, and the Turnstile captcha is on since 2026-11-22). Current
+> state: [README.md](README.md),
+> [docs/deploy-cloudflare.md](docs/deploy-cloudflare.md) and gventz-api `docs/infrastructure.md`.
+
 ## Status
 - Live preview: https://g-vents.vercel.app (Vercel project `g-vents`, staging Supabase keys)
 - Supabase: `gvents-staging` (eu-west-2) and `gvents-prod` (eu-west-2), both with the same schema
