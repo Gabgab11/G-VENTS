@@ -176,7 +176,10 @@ staging (for example #76 to #80). Nothing is pushed to `staging` or `main` direc
 2. **Push to `staging`** (a merged PR): `deploy.yml` runs CI for that exact commit (`workflow_call`),
    then
    - deploys `gventz-web-staging` and smoke-tests `/`, `/sign-in`, `/discover` and `/api/health` (200
-     only when the site reaches the staging API). These run in the deploy job, so the
+     only when the site reaches the staging API). `/` must also **render the home page**: its
+     `<main class="hp …">` present and no `<h1>Something went wrong</h1>`, because the error page can
+     answer 200 (incident 2026-11-20). Grafana's synthetic check `gventz-web-home-*` uses the same two
+     patterns (gventz-api `ops/grafana/synthetic-checks.json`). These run in the deploy job, so the
      `staging` job succeeds only if they pass;
    - **promotion gate**: the production API must serve the gventz-api contract pinned in
      `api-contract.ref`, so **the website is never promoted ahead of its API**. It reads the pinned contract
