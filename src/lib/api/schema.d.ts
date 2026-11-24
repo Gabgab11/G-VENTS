@@ -1043,6 +1043,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/search": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Search
+         * @description The header search (⌘K): events by title, venue or city; hosts by name or handle; categories by name in `lang`; cities. Case and accents are ignored. Private, draft and cancelled events never appear. 120 a minute per address.
+         */
+        get: operations["SearchController_search_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/admin/overview": {
         parameters: {
             query?: never;
@@ -1864,6 +1884,26 @@ export interface paths {
          * @description Across events you own or help run: tickets sold, revenue per currency (events where you can see sales), check-ins and upcoming events, each with the previous period; the next event; the last 10 orders (events where you can see orders); your payout status; and a setup checklist until you own an event and every step is done.
          */
         get: operations["HostHomeController_get_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/host/counts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Host sidebar counts
+         * @description Badges for the host sidebar, each over the events you own or help run where your role may see it: orders awaiting approval and waitlisted guests (owner, admin, finance); failed and pending refunds (owner, admin, finance); upcoming and draft events (any role). payoutAction is true when your own application was declined or revoked, your payout account is pending, or you owe money. One query; poll it at most once a minute.
+         */
+        get: operations["HostHomeController_counts_v1"];
         put?: never;
         post?: never;
         delete?: never;
@@ -3389,6 +3429,69 @@ export interface components {
         LocateResponse: {
             place: components["schemas"]["PlaceResponse"] | null;
         };
+        SearchEventDto: {
+            /** Format: uuid */
+            id: string;
+            slug: string;
+            title: string;
+            /** Format: date-time */
+            startsAt: string;
+            /**
+             * @description The event's IANA time zone
+             * @example Africa/Lagos
+             */
+            timeZone: string;
+            city: string | null;
+            isOnline: boolean;
+            coverUrl: string | null;
+            coverTheme: string;
+            /** @description Lowest price on sale now, integer minor units; null when free or nothing is on sale */
+            minPriceMinor: number | null;
+            /**
+             * @description ISO 4217 currency of minPriceMinor; null with it
+             * @example NGN
+             */
+            currency: string | null;
+            /** @description The event's owner has the verified badge */
+            hostVerified: boolean;
+        };
+        SearchHostDto: {
+            /** Format: uuid */
+            id: string;
+            /** @example ada-lagos */
+            handle: string;
+            name: string | null;
+            avatarUrl: string | null;
+            verified: boolean;
+            followerCount: number;
+        };
+        SearchCategoryDto: {
+            /**
+             * @description The category key; the website shows it in the visitor’s language
+             * @enum {string}
+             */
+            key: "Music" | "Conferences" | "Tech" | "Faith" | "Arts" | "Food" | "Sports" | "Business" | "Nightlife" | "Education" | "Community" | "Charity" | "Family" | "Other";
+            /** @description Upcoming published public events in the category */
+            count: number;
+        };
+        SearchCityDto: {
+            /** @example Lagos */
+            city: string;
+            /** @example Nigeria */
+            country: string | null;
+            /** @description Upcoming published public events there */
+            count: number;
+        };
+        SearchResultDto: {
+            /** @description Published public events; upcoming soonest first, then past events most recent first. At most `limit`. */
+            events: components["schemas"]["SearchEventDto"][];
+            /** @description Hosts with a public page (a handle), at most 4 */
+            hosts: components["schemas"]["SearchHostDto"][];
+            /** @description Categories whose name matches, busiest first */
+            categories: components["schemas"]["SearchCategoryDto"][];
+            /** @description Cities with upcoming public events, busiest first, at most 4 */
+            cities: components["schemas"]["SearchCityDto"][];
+        };
         OverviewEventsDto: {
             total: number;
             published: number;
@@ -4529,6 +4632,22 @@ export interface components {
             payout: components["schemas"]["HostHomePayoutDto"];
             /** @description Setup steps; null once you own an event and every step is done */
             checklist: components["schemas"]["HostHomeChecklistDto"] | null;
+        };
+        HostCountsDto: {
+            /** @description Orders waiting for your approval (events where you can see orders) */
+            ordersAwaitingApproval: number;
+            /** @description Guests on a waitlist (events where you can see orders) */
+            waitlisted: number;
+            /** @description Refunds that failed (events where you can refund or see sales) */
+            refundsFailed: number;
+            /** @description Refunds queued or in progress (events where you can refund or see sales) */
+            refundsPending: number;
+            /** @description Your own paid-tickets standing needs you: application declined or approval revoked, payout account pending, or money owed. False when not applied or waiting for review. */
+            payoutAction: boolean;
+            /** @description Published events not started yet (events whose dashboard you can see) */
+            upcomingEvents: number;
+            /** @description Draft events (events whose dashboard you can see) */
+            drafts: number;
         };
         HostOrderDto: {
             /** Format: uuid */
@@ -7090,6 +7209,46 @@ export interface operations {
             };
         };
     };
+    SearchController_search_v1: {
+        parameters: {
+            query: {
+                /** @description Trimmed; 1-80 characters. Case and accents are ignored. */
+                q: string;
+                /** @description The language the visitor reads, for matching category names ("musique" finds Music in fr). */
+                lang?: "en" | "es" | "fr" | "de" | "zh-Hans" | "pt" | "ar";
+                /** @description Most events to return. */
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SearchResultDto"];
+                };
+            };
+            /** @description search.query_invalid, search.limit_invalid, validation.failed */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description rate_limit.exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     AdminController_overview_v1: {
         parameters: {
             query?: {
@@ -8839,6 +8998,32 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HostHomeDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    HostHomeController_counts_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HostCountsDto"];
                 };
             };
             /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
