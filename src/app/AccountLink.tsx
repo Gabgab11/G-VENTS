@@ -5,9 +5,9 @@ import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
 import { ChevronDown, LayoutDashboard, LogOut, ShieldCheck, Ticket, UserRound } from "lucide-react";
-import { signOut } from "@/app/(site)/auth/actions";
 import { Avatar } from "@/design";
 import { firstName, roleOf, useSession, type BrowserSession } from "@/lib/use-session";
+import { useSignOut } from "@/lib/use-sign-out";
 import styles from "./AccountLink.module.css";
 
 // The account corner of the header (FR-34, D92). Pages like the home page are cached and shared by
@@ -16,15 +16,6 @@ import styles from "./AccountLink.module.css";
 // The admin pages themselves are still guarded by the API (staff, two-step sign-in).
 
 type Classes = { pill?: string; avatar?: string; name?: string; role?: string; chevron?: string; signIn?: string };
-
-/** Signing out also drops ticket pages the service worker saved for offline use on this device. */
-function useSignOutForm() {
-  const form = useRef<HTMLFormElement>(null);
-  const element = (
-    <form ref={form} action={signOut} hidden onSubmit={() => navigator.serviceWorker?.controller?.postMessage("clear-tickets")} />
-  );
-  return { element, submit: () => form.current?.requestSubmit() };
-}
 
 function displayName(s: BrowserSession, fallback: string): string {
   return s.name?.trim() || fallback;
@@ -43,7 +34,7 @@ export default function AccountLink({ classes = {} }: { classes?: Classes }) {
 // panel with Tab, or navigating closes it; arrow keys move between the items.
 function AccountMenu({ session, classes }: { session: BrowserSession; classes: Classes }) {
   const t = useTranslations("common.account");
-  const signOutForm = useSignOutForm();
+  const signOutForm = useSignOut();
   const [open, setOpen] = useState(false);
   const root = useRef<HTMLDivElement>(null);
   const button = useRef<HTMLButtonElement>(null);
@@ -85,7 +76,6 @@ function AccountMenu({ session, classes }: { session: BrowserSession; classes: C
       onKeyDown={onKeyDown}
       onBlur={(e) => { if (open && !e.currentTarget.contains(e.relatedTarget as Node | null)) setOpen(false); }}
     >
-      {signOutForm.element}
       <button
         ref={button}
         type="button"
@@ -110,7 +100,7 @@ function AccountMenu({ session, classes }: { session: BrowserSession; classes: C
         {session.isHost ? <Link href="/host" className={styles.item} onClick={close}><LayoutDashboard aria-hidden />{t("dashboard")}</Link> : null}
         {session.isStaff ? <Link href="/admin" className={styles.item} onClick={close}><ShieldCheck aria-hidden />{t("admin")}</Link> : null}
         <hr className={styles.separator} />
-        <button type="button" className={styles.item} onClick={signOutForm.submit}><LogOut aria-hidden />{t("signOut")}</button>
+        <button type="button" className={styles.item} onClick={signOutForm.signOut} disabled={signOutForm.pending}><LogOut aria-hidden />{t("signOut")}</button>
       </div>
     </div>
   );
@@ -120,13 +110,12 @@ function AccountMenu({ session, classes }: { session: BrowserSession; classes: C
 export function AccountSheetSection({ classes = {}, linkClassName, onNavigate }: { classes?: Classes & { head?: string; list?: string }; linkClassName?: string; onNavigate?: () => void }) {
   const t = useTranslations("common.account");
   const session = useSession();
-  const signOutForm = useSignOutForm();
+  const signOutForm = useSignOut();
 
   if (!session.signedIn) return <Link href="/sign-in" className={classes.signIn} onClick={onNavigate}>{t("signIn")}</Link>;
   const name = displayName(session, t("account"));
   return (
     <div>
-      {signOutForm.element}
       <div className={classes.head}>
         <Avatar name={name} src={session.avatarUrl} size={36} aria-hidden />
         <span className={classes.name}>
@@ -138,7 +127,7 @@ export function AccountSheetSection({ classes = {}, linkClassName, onNavigate }:
         <Link href="/account" className={linkClassName} onClick={onNavigate}>{t("account")}</Link>
         {session.isHost ? <Link href="/host" className={linkClassName} onClick={onNavigate}>{t("dashboard")}</Link> : null}
         {session.isStaff ? <Link href="/admin" className={linkClassName} onClick={onNavigate}>{t("admin")}</Link> : null}
-        <button type="button" className={linkClassName} onClick={signOutForm.submit}>{t("signOut")}</button>
+        <button type="button" className={linkClassName} onClick={signOutForm.signOut} disabled={signOutForm.pending}>{t("signOut")}</button>
       </nav>
     </div>
   );

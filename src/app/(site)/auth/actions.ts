@@ -2,7 +2,6 @@
 
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
-import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { safeNextPath } from "@/lib/redirect";
@@ -25,12 +24,15 @@ import {
 // connect-src is 'self'). Supabase sets the session cookie through the server client. Messages come
 // back already translated into the reader's language (shared.emailCode.*, auth.screen.*).
 
-export async function signOut() {
+/**
+ * Ends the session on this device only ("Sign out of all devices" on /account ends every session).
+ * No redirect here: a server-action redirect is a soft navigation that keeps the browser's cached
+ * session, so the header still looked signed in. The caller (useSignOut) reloads onto /sign-in.
+ */
+export async function signOut(): Promise<void> {
   const supabase = await createSupabaseServerClient();
-  // This device only; "Sign out of all devices" on /account ends every session.
   await supabase.auth.signOut({ scope: "local" });
   revalidatePath("/", "layout");
-  redirect("/");
 }
 
 /**

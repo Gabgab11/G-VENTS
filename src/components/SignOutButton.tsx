@@ -1,15 +1,15 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { signOut } from "@/app/(site)/auth/actions";
+import { useSignOut } from "@/lib/use-sign-out";
 
-// Signing out also drops ticket pages the service worker saved for offline use on this device.
-// `className` goes on the form (e.g. "sign-out-wide", hidden on phones, where the Account menu has it).
+// `className` goes on the wrapper (e.g. "sign-out-wide", hidden on phones, where the Account menu has it).
 export default function SignOutButton({ className, buttonClassName = "site-account" }: { className?: string; buttonClassName?: string }) {
   const t = useTranslations("common.account");
+  const { signOut, pending } = useSignOut();
   return (
-    <form action={signOut} className={className} onSubmit={() => navigator.serviceWorker?.controller?.postMessage("clear-tickets")}>
-      <button type="submit" className={buttonClassName}>{t("signOut")}</button>
-    </form>
+    <div className={className}>
+      <button type="button" className={buttonClassName} onClick={signOut} disabled={pending}>{t("signOut")}</button>
+    </div>
   );
 }

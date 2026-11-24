@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { useRef, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { LogOut, MoreHorizontal, Ticket } from "lucide-react";
-import { signOut } from "@/app/(site)/auth/actions";
+import { useSignOut } from "@/lib/use-sign-out";
 import { HeaderTools } from "@/components/SiteHeader";
 import { Avatar, Badge } from "@/design";
 import { Sheet, SheetContent, SheetTrigger } from "@/design/client";
@@ -34,9 +34,7 @@ export default function HostShell({ userId, name, isStaff, env, children }: {
   const pathname = usePathname();
   const counts = useHostCounts();
   const [more, setMore] = useState(false);
-  const signOutForm = useRef<HTMLFormElement>(null);
-  // Signing out also drops ticket pages the service worker saved for offline use on this device.
-  const leave = () => { navigator.serviceWorker?.controller?.postMessage("clear-tickets"); signOutForm.current?.requestSubmit(); };
+  const { signOut: leave } = useSignOut();
 
   const tab = currentKey(pathname, TABS);
   const inMore = !tab && currentKey(pathname, panelGroups(isStaff).flatMap((g) => g.items)) !== null;
@@ -47,7 +45,6 @@ export default function HostShell({ userId, name, isStaff, env, children }: {
   return (
     <div className={styles.shell} data-host-shell="">
       <a href="#host-main" className={styles.skip}>{t("skip")}</a>
-      <form ref={signOutForm} action={signOut} hidden />
 
       <div className={styles.brand}>
         <Link href="/" className={styles.brandLink} aria-label={t("homepage")}>
