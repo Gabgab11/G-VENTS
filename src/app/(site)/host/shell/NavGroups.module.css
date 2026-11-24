@@ -1,0 +1,47 @@
+/* The grouped page list (FR-36.2): the desktop panel and the phone's More sheet. */
+.groups { display: grid; gap: var(--space-3); }
+.group { display: grid; gap: var(--space-1); }
+
+.label {
+  margin: 0;
+  padding-inline: var(--space-3);
+  font-size: var(--text-eyebrow);
+  line-height: var(--leading-eyebrow);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.list { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-block-size: 40px;
+  padding-inline: var(--space-3);
+  border-radius: var(--radius-md);
+  color: var(--color-text-soft);
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
+  transition: background-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
+}
+.row:hover { background: var(--color-surface-raised); color: var(--color-text); }
+.row:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.row[aria-current="page"] { background: var(--color-accent); color: var(--color-on-accent); }
+
+.name { flex: 1; min-inline-size: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.count {
+  flex: none;
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.count[data-urgent] { color: var(--color-danger); font-weight: var(--weight-bold); }
+.row[aria-current="page"] .count { color: var(--color-on-accent); }

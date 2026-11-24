@@ -1,8 +1,12 @@
-/* Host shell (HA1): sidebar from 960px; below that a top bar and a bottom tab bar (D87). */
+/* Host shell (HA1; Change 5, FR-36, D95). From 960px: a brand card, a rail of raised icon tiles with a
+   grouped panel, and the page in a large card. Below that: a top bar and a bottom tab bar (D87). */
 .shell {
+  --tile: 56px;
+  --brand-h: 64px;
+  --panel-w: 272px;
   min-block-size: 100dvh;
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto 1fr;
 }
 
@@ -30,15 +34,172 @@
 }
 .logo b { color: var(--color-brand-z); }
 
-/* Sidebar (desktop) */
-.sidebar { display: none; }
+/* Desktop-only parts are hidden on phones. */
+.brand, .railCol { display: none; }
 
-.sideNav, .moreNav { display: grid; gap: var(--space-1); }
+/* Brand card */
+.brand {
+  align-items: center;
+  gap: var(--space-3);
+  justify-self: start;
+  block-size: var(--brand-h);
+  padding-block: var(--space-2);
+  padding-inline: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-1);
+}
+.brandLink { display: flex; align-items: center; gap: var(--space-3); border-radius: var(--radius-md); text-decoration: none; }
+.brandLink:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.brandTile {
+  display: grid;
+  place-items: center;
+  inline-size: 44px;
+  block-size: 44px;
+  border-radius: var(--radius-md);
+  background: var(--color-inverse);
+  color: var(--color-brand-z);
+  font-family: var(--font-display);
+  font-size: var(--text-heading-2);
+  line-height: 1;
+  font-weight: var(--weight-heavy);
+}
 
-.sideLink {
+/* Rail: a column of separate raised tiles */
+.railCol {
+  position: sticky;
+  inset-block-start: var(--space-4);
+  align-self: start;
+  block-size: calc(100dvh - var(--brand-h) - var(--space-4) * 3);
+  min-block-size: 0;
+  grid-template-columns: var(--tile);
+  grid-template-rows: auto auto 1fr;
+  column-gap: var(--space-4);
+  row-gap: var(--space-3);
+  z-index: var(--z-header);
+}
+.railCol[data-panel="pinned"] { grid-template-columns: var(--tile) var(--panel-w); }
+
+.tiles { grid-column: 1; grid-row: 2; }
+.tiles ul { display: grid; gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
+
+.tile {
+  position: relative;
+  display: grid;
+  place-items: center;
+  inline-size: var(--tile);
+  block-size: var(--tile);
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-1);
+  color: var(--color-text-soft);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out), transform var(--duration-fast) var(--ease-out);
+}
+.tile:hover { background: var(--color-surface-raised); color: var(--color-text); }
+.tile:active { transform: scale(0.96); }
+.tile:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.tile[aria-current="page"], .tile[aria-expanded="true"] { border-color: var(--color-accent); background: var(--color-accent); color: var(--color-on-accent); }
+.railCol > .tile:first-child { grid-column: 1; grid-row: 1; }
+.me.me { grid-column: 1; grid-row: 3; align-self: end; }
+
+/* Tooltip: the tile's name, read by screen readers always, shown on hover or keyboard focus. */
+.tip {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.railCol:not([data-panel]) .tile:hover .tip,
+.railCol:not([data-panel]) .tile:focus-visible .tip {
+  inset-inline-start: calc(100% + var(--space-3));
+  inline-size: auto;
+  block-size: auto;
+  overflow: visible;
+  clip-path: none;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--color-inverse);
+  color: var(--color-on-inverse);
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  font-weight: var(--weight-semibold);
+  box-shadow: var(--shadow-2);
+  pointer-events: none;
+  z-index: var(--z-menu);
+}
+
+/* Badges pinned to a tile's top-end corner */
+.badge, .dot { position: absolute; inset-block-start: -6px; inset-inline-end: -6px; }
+.badge {
+  min-inline-size: 22px;
+  block-size: 22px;
+  padding-inline: var(--space-1);
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--color-bg);
+  border-radius: var(--radius-full);
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  font-size: var(--text-caption);
+  line-height: 1;
+  font-weight: var(--weight-bold);
+  font-variant-numeric: tabular-nums;
+}
+.badge[data-urgent] { background: var(--color-danger); color: var(--color-on-accent); }
+.dot {
+  inline-size: 12px;
+  block-size: 12px;
+  border: 2px solid var(--color-bg);
+  border-radius: var(--radius-full);
+  background: var(--color-danger);
+}
+
+/* The grouped panel: floating when open, docked beside the rail when pinned. */
+.panel {
+  grid-column: 2;
+  grid-row: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  inline-size: var(--panel-w);
+  min-block-size: 0;
+  padding: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-1);
+  overflow: hidden;
+}
+.panelBody { flex: 1; min-block-size: 0; padding: var(--space-2) var(--space-1); overflow-y: auto; overscroll-behavior: contain; }
+.railCol[data-panel="open"] .panel {
+  grid-area: auto;
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: calc(var(--tile) + var(--space-4));
+  box-shadow: var(--shadow-3);
+  z-index: var(--z-menu);
+  animation: panelIn var(--duration-base) var(--ease-out);
+}
+@keyframes panelIn {
+  from { opacity: 0; transform: translateX(calc(var(--space-2) * -1)); }
+}
+[dir="rtl"] .railCol[data-panel="open"] .panel { animation-name: panelInRtl; }
+@keyframes panelInRtl {
+  from { opacity: 0; transform: translateX(var(--space-2)); }
+}
+
+.panelFoot { padding-block-start: var(--space-2); border-block-start: 1px solid var(--color-border); }
+.pin, .moreLink {
   display: flex;
   align-items: center;
   gap: var(--space-3);
+  inline-size: 100%;
   min-block-size: 44px;
   padding-inline: var(--space-3);
   border: 0;
@@ -46,38 +207,15 @@
   background: none;
   color: var(--color-text-muted);
   font: inherit;
-  font-size: var(--text-body);
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
   font-weight: var(--weight-semibold);
+  text-align: start;
   text-decoration: none;
-  text-align: start;
   cursor: pointer;
 }
-.sideLink:hover { background: var(--color-surface-raised); color: var(--color-text); }
-.sideLink[aria-current="page"] { background: var(--color-accent-soft); color: var(--color-accent-text); }
-.sideLink:focus-visible, .account:focus-visible, .tab:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
-
-.sideFoot { display: grid; gap: var(--space-2); margin-block-start: auto; padding-block-start: var(--space-4); border-block-start: 1px solid var(--color-border); }
-
-.account {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  inline-size: 100%;
-  min-block-size: 52px;
-  padding: var(--space-2) var(--space-3);
-  border: 0;
-  border-radius: var(--radius-md);
-  background: none;
-  color: var(--color-text);
-  font: inherit;
-  text-align: start;
-  cursor: pointer;
-}
-.account:hover { background: var(--color-surface-raised); }
-.accountText { display: grid; min-inline-size: 0; }
-.accountName, .accountEmail { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.accountName { font-size: var(--text-body-sm); line-height: var(--leading-body-sm); font-weight: var(--weight-semibold); }
-.accountEmail { font-size: var(--text-caption); line-height: var(--leading-caption); color: var(--color-text-muted); }
+.pin:hover, .moreLink:hover { background: var(--color-surface-raised); color: var(--color-text); }
+.pin:focus-visible, .moreLink:focus-visible, .tab:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
 
 /* Top bar (phones) */
 .topbar {
@@ -92,6 +230,7 @@
   background: var(--color-bg);
   border-block-end: 1px solid var(--color-border);
 }
+.topBrand { display: flex; align-items: center; gap: var(--space-2); }
 
 .main { min-inline-size: 0; outline: none; }
 .content {
@@ -134,26 +273,36 @@
   cursor: pointer;
 }
 .tab[aria-current="page"] { color: var(--color-accent-text); }
+.tabIcon { position: relative; display: grid; }
+.tabIcon .dot { inset-block-start: -4px; inset-inline-end: -6px; inline-size: 10px; block-size: 10px; border-color: var(--color-surface); }
+
+.moreNav { display: grid; gap: var(--space-4); }
+.moreFoot { display: grid; gap: var(--space-1); padding-block-start: var(--space-3); border-block-start: 1px solid var(--color-border); }
 
 @media (min-width: 960px) {
-  .shell { grid-template-columns: var(--sidebar-width) minmax(0, 1fr); grid-template-rows: 1fr; }
-  .sidebar {
-    position: sticky;
-    inset-block-start: 0;
-    block-size: 100dvh;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-6);
-    padding: var(--space-6) var(--space-4);
-    background: var(--color-surface);
-    border-inline-end: 1px solid var(--color-border);
-    overflow-y: auto;
+  .shell {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas: "brand brand" "rail main";
+    gap: var(--space-4);
+    padding: var(--space-4);
   }
-  .sidebar .logo { padding-inline: var(--space-3); }
+  .brand { grid-area: brand; display: flex; }
+  .railCol { grid-area: rail; display: grid; }
   .topbar, .tabbar { display: none; }
-  .content { padding: var(--space-8) var(--gutter) var(--space-12); }
+  .main {
+    grid-area: main;
+    min-block-size: calc(100dvh - var(--brand-h) - var(--space-4) * 3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-1);
+  }
+  .content { padding: var(--space-8) clamp(var(--space-6), 3vw, var(--space-12)) var(--space-12); }
 }
 
 @media print {
-  .sidebar, .topbar, .tabbar, .skip { display: none; }
+  .brand, .railCol, .topbar, .tabbar, .skip { display: none; }
+  .shell { display: block; padding: 0; }
+  .main { border: 0; box-shadow: none; }
 }
