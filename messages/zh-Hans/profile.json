@@ -66,6 +66,7 @@
     "fixErrors": "请检查标出的字段。",
     "signedOut": "您的会话已结束，请重新登录。",
     "viewProfile": "查看主页",
-    "noHandle": "选择一个用户名，即可拥有您的公开主页。"
+    "noHandle": "选择一个用户名，即可拥有您的公开主页。",
+    "accountNote": "您的电话、邮件偏好和登录方式位于<link>您的账户</link>中。"
   }
 }

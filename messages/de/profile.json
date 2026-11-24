@@ -66,6 +66,7 @@
     "fixErrors": "Bitte prüfen Sie die markierten Felder.",
     "signedOut": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
     "viewProfile": "Profil ansehen",
-    "noHandle": "Wählen Sie einen Benutzernamen, um Ihre öffentliche Seite zu erhalten."
+    "noHandle": "Wählen Sie einen Benutzernamen, um Ihre öffentliche Seite zu erhalten.",
+    "accountNote": "Ihre Telefonnummer, E-Mail-Einstellungen und Anmeldemethoden finden Sie unter <link>Ihr Konto</link>."
   }
 }

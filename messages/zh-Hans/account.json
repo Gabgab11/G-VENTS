@@ -155,5 +155,88 @@
       "documentTooLarge": "文件超过 10 MB，请使用较小的文件。",
       "documentType": "请使用 JPG、PNG 或 PDF 格式的文件。"
     }
+  },
+  "page": {
+    "metaTitle": "您的账户 · G-ventZ",
+    "title": "您的账户",
+    "subtitle": "您的个人信息、偏好设置以及登录方式。",
+    "signedOut": "您的会话已结束，请重新登录。",
+    "saveFailed": "无法保存，请重试。",
+    "profile": {
+      "title": "个人资料",
+      "avatar": "头像",
+      "avatarHint": "JPEG、PNG 或 WebP 格式，不超过 5 MB。",
+      "upload": "上传图片",
+      "replace": "更换",
+      "remove": "移除",
+      "uploading": "正在上传…",
+      "avatarSaved": "头像已保存。",
+      "avatarRemoved": "头像已移除。",
+      "avatarType": "请使用 JPEG、PNG 或 WebP 格式的图片。",
+      "avatarSize": "该图片超过 5 MB，请选择较小的图片。",
+      "avatarFailed": "无法保存图片，请重试。",
+      "signedOut": "您的会话已结束，请重新登录。",
+      "name": "姓名",
+      "email": "电子邮箱",
+      "emailHint": "您使用此邮箱登录。",
+      "phoneCountry": "国家/地区代码",
+      "phone": "电话号码",
+      "phoneHint": "主办方可能会通过此号码就您参加的活动与您联系。",
+      "phonePlaceholder": "您的号码",
+      "gender": "性别",
+      "genderNone": "请选择",
+      "save": "保存",
+      "saving": "正在保存…",
+      "saved": "您的信息已保存。",
+      "fixErrors": "请更正下方标出的字段。",
+      "errors": {
+        "nameShort": "请输入您的姓名（至少 2 个字符）。",
+        "nameLong": "姓名最多 120 个字符。",
+        "phoneInvalid": "请输入所选国家/地区的有效电话号码。",
+        "genderInvalid": "请选择其中一个选项。"
+      }
+    },
+    "preferences": {
+      "title": "偏好设置",
+      "language": "语言",
+      "languageHint": "G-ventZ 以及我们发送给您的邮件所使用的语言。",
+      "languageSaving": "正在切换语言…",
+      "emailTitle": "邮件",
+      "emailHint": "无论您在此如何选择，门票、收据和安全邮件都会照常发送。",
+      "on": "{what}：已开启",
+      "off": "{what}：已关闭",
+      "failed": "无法保存，请重试。",
+      "email": {
+        "announcements": {
+          "title": "主办方公告",
+          "hint": "主办方就您持有门票的活动发送的最新消息。"
+        },
+        "followedHosts": {
+          "title": "您关注的主办方发布的新活动",
+          "hint": "您关注的主办方发布活动时，我们会发邮件通知您。"
+        },
+        "product": {
+          "title": "G-ventZ 动态",
+          "hint": "不定期发送的新功能和优惠资讯。"
+        }
+      }
+    },
+    "security": {
+      "title": "登录与安全",
+      "intro": "您使用发送到邮箱的验证码登录，无需记住密码。添加通行密钥或身份验证器应用作为第二步验证，可进一步保护您的账户。",
+      "confirmHint": "请使用您的一种验证方式确认身份，然后即可管理这些方式。"
+    },
+    "sessions": {
+      "title": "会话",
+      "hint": "在共用或丢失的设备上登录过？请在所有设备上退出登录，包括此设备。",
+      "button": "在所有设备上退出登录",
+      "confirmTitle": "要在所有设备上退出登录吗？",
+      "confirmText": "您将在所有手机、平板电脑和电脑上退出登录，包括此设备。此设备上为离线使用而保存的门票将被删除。",
+      "confirm": "全部退出登录",
+      "signingOut": "正在退出登录…",
+      "cancel": "取消",
+      "close": "关闭",
+      "failed": "无法在所有设备上退出登录，请重试。"
+    }
   }
 }

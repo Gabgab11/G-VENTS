@@ -155,5 +155,88 @@
       "documentTooLarge": "The document is larger than 10 MB. Please use a smaller file.",
       "documentType": "Use a JPG, PNG or PDF file for the document."
     }
+  },
+  "page": {
+    "metaTitle": "Your account · G-ventZ",
+    "title": "Your account",
+    "subtitle": "Your details, preferences and how you sign in.",
+    "signedOut": "Your session has ended. Sign in again.",
+    "saveFailed": "That couldn't be saved. Please try again.",
+    "profile": {
+      "title": "Profile",
+      "avatar": "Profile picture",
+      "avatarHint": "JPEG, PNG or WebP, up to 5 MB.",
+      "upload": "Upload a picture",
+      "replace": "Replace",
+      "remove": "Remove",
+      "uploading": "Uploading…",
+      "avatarSaved": "Profile picture saved.",
+      "avatarRemoved": "Profile picture removed.",
+      "avatarType": "Use a JPEG, PNG or WebP picture.",
+      "avatarSize": "That picture is larger than 5 MB. Please choose a smaller one.",
+      "avatarFailed": "The picture couldn't be saved. Please try again.",
+      "signedOut": "Your session has ended. Sign in again.",
+      "name": "Name",
+      "email": "Email",
+      "emailHint": "You sign in with this email.",
+      "phoneCountry": "Country code",
+      "phone": "Phone number",
+      "phoneHint": "Hosts may use it to contact you about events you attend.",
+      "phonePlaceholder": "Your number",
+      "gender": "Gender",
+      "genderNone": "Choose",
+      "save": "Save",
+      "saving": "Saving…",
+      "saved": "Your details are saved.",
+      "fixErrors": "Please correct the fields marked below.",
+      "errors": {
+        "nameShort": "Enter your name (at least 2 characters).",
+        "nameLong": "Your name can be at most 120 characters.",
+        "phoneInvalid": "Enter a valid phone number for the country you chose.",
+        "genderInvalid": "Choose one of the options."
+      }
+    },
+    "preferences": {
+      "title": "Preferences",
+      "language": "Language",
+      "languageHint": "The language of G-ventZ and the emails we send you.",
+      "languageSaving": "Changing the language…",
+      "emailTitle": "Emails",
+      "emailHint": "Tickets, receipts and security emails always arrive, whatever you choose here.",
+      "on": "{what}: on",
+      "off": "{what}: off",
+      "failed": "That couldn't be saved. Please try again.",
+      "email": {
+        "announcements": {
+          "title": "Announcements from hosts",
+          "hint": "Updates the host sends about events you have tickets for."
+        },
+        "followedHosts": {
+          "title": "New events from hosts you follow",
+          "hint": "An email when a host you follow publishes an event."
+        },
+        "product": {
+          "title": "G-ventZ news",
+          "hint": "Occasional news about new features and offers."
+        }
+      }
+    },
+    "security": {
+      "title": "Sign-in & security",
+      "intro": "You sign in with a code sent to your email, so there is no password to remember. Add a passkey or an authenticator app as a second step for extra protection.",
+      "confirmHint": "Confirm it's you with one of your methods to manage them."
+    },
+    "sessions": {
+      "title": "Sessions",
+      "hint": "Signed in on a shared or lost device? Sign out everywhere, including here.",
+      "button": "Sign out of all devices",
+      "confirmTitle": "Sign out of all devices?",
+      "confirmText": "You'll be signed out on every phone, tablet and computer, including this one. Tickets saved for offline use on this device are removed.",
+      "confirm": "Sign out everywhere",
+      "signingOut": "Signing out…",
+      "cancel": "Cancel",
+      "close": "Close",
+      "failed": "We couldn't sign you out of all devices. Please try again."
+    }
   }
 }

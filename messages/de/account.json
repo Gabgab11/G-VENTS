@@ -155,5 +155,88 @@
       "documentTooLarge": "Das Dokument ist größer als 10 MB. Bitte verwenden Sie eine kleinere Datei.",
       "documentType": "Verwenden Sie für das Dokument eine JPG-, PNG- oder PDF-Datei."
     }
+  },
+  "page": {
+    "metaTitle": "Ihr Konto · G-ventZ",
+    "title": "Ihr Konto",
+    "subtitle": "Ihre Angaben, Einstellungen und wie Sie sich anmelden.",
+    "signedOut": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
+    "saveFailed": "Das konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.",
+    "profile": {
+      "title": "Profil",
+      "avatar": "Profilbild",
+      "avatarHint": "JPEG, PNG oder WebP, bis zu 5 MB.",
+      "upload": "Bild hochladen",
+      "replace": "Ersetzen",
+      "remove": "Entfernen",
+      "uploading": "Wird hochgeladen…",
+      "avatarSaved": "Profilbild gespeichert.",
+      "avatarRemoved": "Profilbild entfernt.",
+      "avatarType": "Verwenden Sie ein JPEG-, PNG- oder WebP-Bild.",
+      "avatarSize": "Dieses Bild ist größer als 5 MB. Bitte wählen Sie ein kleineres.",
+      "avatarFailed": "Das Bild konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.",
+      "signedOut": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
+      "name": "Name",
+      "email": "E-Mail-Adresse",
+      "emailHint": "Mit dieser E-Mail-Adresse melden Sie sich an.",
+      "phoneCountry": "Landesvorwahl",
+      "phone": "Telefonnummer",
+      "phoneHint": "Veranstalter können Sie darüber zu Veranstaltungen kontaktieren, die Sie besuchen.",
+      "phonePlaceholder": "Ihre Nummer",
+      "gender": "Geschlecht",
+      "genderNone": "Auswählen",
+      "save": "Speichern",
+      "saving": "Wird gespeichert…",
+      "saved": "Ihre Angaben sind gespeichert.",
+      "fixErrors": "Bitte korrigieren Sie die unten markierten Felder.",
+      "errors": {
+        "nameShort": "Geben Sie Ihren Namen ein (mindestens 2 Zeichen).",
+        "nameLong": "Ihr Name darf höchstens 120 Zeichen lang sein.",
+        "phoneInvalid": "Geben Sie eine gültige Telefonnummer für das gewählte Land ein.",
+        "genderInvalid": "Wählen Sie eine der Optionen."
+      }
+    },
+    "preferences": {
+      "title": "Einstellungen",
+      "language": "Sprache",
+      "languageHint": "Die Sprache von G-ventZ und der E-Mails, die wir Ihnen senden.",
+      "languageSaving": "Sprache wird geändert…",
+      "emailTitle": "E-Mails",
+      "emailHint": "Tickets, Belege und Sicherheits-E-Mails erhalten Sie immer, unabhängig von Ihrer Auswahl hier.",
+      "on": "{what}: an",
+      "off": "{what}: aus",
+      "failed": "Das konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.",
+      "email": {
+        "announcements": {
+          "title": "Mitteilungen von Veranstaltern",
+          "hint": "Neuigkeiten des Veranstalters zu Veranstaltungen, für die Sie Tickets haben."
+        },
+        "followedHosts": {
+          "title": "Neue Veranstaltungen von Veranstaltern, denen Sie folgen",
+          "hint": "Eine E-Mail, wenn ein Veranstalter, dem Sie folgen, eine Veranstaltung veröffentlicht."
+        },
+        "product": {
+          "title": "Neuigkeiten von G-ventZ",
+          "hint": "Gelegentliche Neuigkeiten zu neuen Funktionen und Angeboten."
+        }
+      }
+    },
+    "security": {
+      "title": "Anmeldung & Sicherheit",
+      "intro": "Sie melden sich mit einem Code an, den wir an Ihre E-Mail-Adresse senden – ein Passwort gibt es nicht. Fügen Sie einen Passkey oder eine Authenticator-App als zweiten Schritt hinzu, um Ihr Konto zusätzlich zu schützen.",
+      "confirmHint": "Bestätigen Sie mit einer Ihrer Methoden, dass Sie es sind, um sie zu verwalten."
+    },
+    "sessions": {
+      "title": "Sitzungen",
+      "hint": "Auf einem gemeinsam genutzten oder verlorenen Gerät angemeldet? Melden Sie sich überall ab, auch hier.",
+      "button": "Auf allen Geräten abmelden",
+      "confirmTitle": "Auf allen Geräten abmelden?",
+      "confirmText": "Sie werden auf allen Smartphones, Tablets und Computern abgemeldet, auch auf diesem. Für die Offline-Nutzung gespeicherte Tickets werden von diesem Gerät entfernt.",
+      "confirm": "Überall abmelden",
+      "signingOut": "Abmeldung läuft…",
+      "cancel": "Abbrechen",
+      "close": "Schließen",
+      "failed": "Wir konnten Sie nicht auf allen Geräten abmelden. Bitte versuchen Sie es erneut."
+    }
   }
 }

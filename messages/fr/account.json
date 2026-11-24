@@ -155,5 +155,88 @@
       "documentTooLarge": "Le document dépasse 10 Mo. Veuillez utiliser un fichier plus petit.",
       "documentType": "Utilisez un fichier JPG, PNG ou PDF pour le document."
     }
+  },
+  "page": {
+    "metaTitle": "Votre compte · G-ventZ",
+    "title": "Votre compte",
+    "subtitle": "Vos informations, vos préférences et votre façon de vous connecter.",
+    "signedOut": "Votre session a expiré. Reconnectez-vous.",
+    "saveFailed": "L'enregistrement a échoué. Veuillez réessayer.",
+    "profile": {
+      "title": "Profil",
+      "avatar": "Photo de profil",
+      "avatarHint": "JPEG, PNG ou WebP, 5 Mo maximum.",
+      "upload": "Importer une photo",
+      "replace": "Remplacer",
+      "remove": "Supprimer",
+      "uploading": "Envoi en cours…",
+      "avatarSaved": "Photo de profil enregistrée.",
+      "avatarRemoved": "Photo de profil supprimée.",
+      "avatarType": "Utilisez une image JPEG, PNG ou WebP.",
+      "avatarSize": "Cette image dépasse 5 Mo. Veuillez en choisir une plus petite.",
+      "avatarFailed": "La photo n'a pas pu être enregistrée. Veuillez réessayer.",
+      "signedOut": "Votre session a expiré. Reconnectez-vous.",
+      "name": "Nom",
+      "email": "Adresse e-mail",
+      "emailHint": "Vous vous connectez avec cette adresse e-mail.",
+      "phoneCountry": "Indicatif du pays",
+      "phone": "Numéro de téléphone",
+      "phoneHint": "Les organisateurs peuvent l'utiliser pour vous contacter au sujet des événements auxquels vous participez.",
+      "phonePlaceholder": "Votre numéro",
+      "gender": "Genre",
+      "genderNone": "Choisir",
+      "save": "Enregistrer",
+      "saving": "Enregistrement…",
+      "saved": "Vos informations sont enregistrées.",
+      "fixErrors": "Veuillez corriger les champs signalés ci-dessous.",
+      "errors": {
+        "nameShort": "Saisissez votre nom (au moins 2 caractères).",
+        "nameLong": "Votre nom ne peut pas dépasser 120 caractères.",
+        "phoneInvalid": "Saisissez un numéro de téléphone valide pour le pays choisi.",
+        "genderInvalid": "Choisissez l'une des options."
+      }
+    },
+    "preferences": {
+      "title": "Préférences",
+      "language": "Langue",
+      "languageHint": "La langue de G-ventZ et des e-mails que nous vous envoyons.",
+      "languageSaving": "Changement de langue…",
+      "emailTitle": "E-mails",
+      "emailHint": "Les billets, les reçus et les e-mails de sécurité vous parviennent toujours, quel que soit votre choix ici.",
+      "on": "{what} : activé",
+      "off": "{what} : désactivé",
+      "failed": "L'enregistrement a échoué. Veuillez réessayer.",
+      "email": {
+        "announcements": {
+          "title": "Annonces des organisateurs",
+          "hint": "Les informations que l'organisateur envoie sur les événements pour lesquels vous avez des billets."
+        },
+        "followedHosts": {
+          "title": "Nouveaux événements des organisateurs que vous suivez",
+          "hint": "Un e-mail lorsqu'un organisateur que vous suivez publie un événement."
+        },
+        "product": {
+          "title": "Actualités de G-ventZ",
+          "hint": "Des nouvelles occasionnelles sur les nouvelles fonctionnalités et les offres."
+        }
+      }
+    },
+    "security": {
+      "title": "Connexion et sécurité",
+      "intro": "Vous vous connectez avec un code envoyé à votre adresse e-mail : aucun mot de passe à retenir. Ajoutez une clé d'accès ou une application d'authentification comme deuxième étape pour plus de protection.",
+      "confirmHint": "Confirmez votre identité avec l'une de vos méthodes pour les gérer."
+    },
+    "sessions": {
+      "title": "Sessions",
+      "hint": "Connecté sur un appareil partagé ou perdu ? Déconnectez-vous partout, y compris ici.",
+      "button": "Se déconnecter de tous les appareils",
+      "confirmTitle": "Se déconnecter de tous les appareils ?",
+      "confirmText": "Vous serez déconnecté de tous vos téléphones, tablettes et ordinateurs, y compris celui-ci. Les billets enregistrés hors ligne sur cet appareil seront supprimés.",
+      "confirm": "Se déconnecter partout",
+      "signingOut": "Déconnexion…",
+      "cancel": "Annuler",
+      "close": "Fermer",
+      "failed": "Nous n'avons pas pu vous déconnecter de tous les appareils. Veuillez réessayer."
+    }
   }
 }
