@@ -30,8 +30,8 @@ const CSS = `
 .hp .hp-c4, .hp .hp-c5 { color: #fff; }
 .hp-wrap { max-width: none; margin: 0 auto; padding: 0 clamp(24px, 5vw, 96px); }
 
-.hp-top { padding: var(--space-3) var(--gutter) 0; pointer-events: none; }
-.hp-top header > * { pointer-events: auto; }
+/* The floating SiteHeader (FR-34) is fixed; .hp-top only holds its spacer above the hero. */
+.hp-top { pointer-events: none; }
 
 /* padding-block, not padding: the side padding comes from .hp-wrap and must survive on phones */
 .hp-hero { padding-block: clamp(52px, 9vh, 130px) 30px; }
@@ -56,7 +56,7 @@ const CSS = `
 .hp-drop { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
 /* Text sits above the falling cards; the hero's empty strip lets clicks through to the resting cards. */
 .hp-stage .hp-top, .hp-stage .hp-hero { position: relative; z-index: 1; }
-.hp-stage .hp-top { z-index: 3; } /* above the hero, so the Account menu opens over it */
+.hp-stage .hp-top { z-index: 3; } /* above the hero and the cards, so the fixed header stays on top */
 .hp-stage .hp-hero { pointer-events: none; }
 .hp-stage .hp-hero > * { pointer-events: auto; }
 .hp-fall {

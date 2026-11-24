@@ -20,7 +20,13 @@
     "account": "Cuenta",
     "platformAdmin": "Administración de G-ventZ",
     "security": "Verificación en dos pasos y llaves de acceso",
-    "payouts": "Pagos"
+    "payouts": "Pagos",
+    "menu": "Menú de la cuenta: {name}, {role}",
+    "role": {
+      "guest": "Invitado",
+      "host": "Organizador",
+      "staff": "Personal"
+    }
   },
   "language": {
     "label": "Idioma",
@@ -32,5 +38,33 @@
   },
   "errors": {
     "generic": "Algo salió mal. Inténtalo de nuevo."
+  },
+  "search": {
+    "open": "Buscar eventos, organizadores y lugares",
+    "label": "Buscar",
+    "title": "Buscar",
+    "inputLabel": "Buscar en G-ventZ",
+    "placeholder": "Eventos, organizadores, categorías o ciudades",
+    "resultsLabel": "Resultados de la búsqueda",
+    "close": "Cerrar la búsqueda",
+    "groups": {
+      "recent": "Búsquedas recientes",
+      "events": "Eventos",
+      "hosts": "Organizadores",
+      "categories": "Categorías",
+      "cities": "Ciudades",
+      "discover": "Descubrir"
+    },
+    "clearRecent": "Borrar las búsquedas recientes",
+    "hint": "Escriba al menos dos letras para buscar eventos, organizadores, categorías y ciudades.",
+    "loading": "Buscando…",
+    "noResults": "Todavía no hay resultados para «{query}».",
+    "error": "La búsqueda no está disponible en este momento. Inténtelo de nuevo en unos instantes.",
+    "count": "{count, plural, one {# resultado} other {# resultados}}",
+    "events": "{count, plural, one {# evento} other {# eventos}}",
+    "all": "Buscar «{query}» en Descubrir",
+    "online": "En línea",
+    "verified": "Verificado",
+    "verifiedHost": "Organizador verificado"
   }
 }

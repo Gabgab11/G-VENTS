@@ -43,7 +43,7 @@
 
 /* Body */
 .dc-body { display: grid; gap: clamp(40px, 6vh, 72px); padding: clamp(36px, 6vh, 64px) var(--dc-gutter) 96px; }
-.dc-h2, .dc-rail-head h2 { margin: 0; font-family: var(--display); font-weight: 800; font-size: clamp(26px, 2.4vw, 38px); letter-spacing: -0.02em; }
+.dc-h2, .dc-rail-head h2, .dc-search-title { margin: 0; font-family: var(--display); font-weight: 800; font-size: clamp(26px, 2.4vw, 38px); letter-spacing: -0.02em; }
 .dc-link { color: var(--gold); font-weight: 700; text-decoration: none; }
 .dc-empty { color: var(--muted); font-size: var(--text-body-lg); }
 .dc-empty a { color: var(--gold); font-weight: 700; }
@@ -67,6 +67,7 @@
 
 /* Rows */
 .dc-rail { display: grid; gap: 22px; }
+.dc-search-title { overflow-wrap: anywhere; }
 .dc-rail-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .dc-rail-side { display: flex; align-items: center; gap: 18px; }
 .dc-rail-arrows { display: flex; gap: 10px; }

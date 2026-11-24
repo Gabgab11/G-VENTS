@@ -2,54 +2,94 @@
 
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { usePathname } from "next/navigation";
-import { useEffect, useRef } from "react";
-import SignOutButton from "@/components/SignOutButton";
-import { useSession } from "@/lib/use-session";
+import { useRef } from "react";
+import { ChevronDown, LayoutDashboard, LogOut, ShieldCheck, Ticket, UserRound } from "lucide-react";
+import { signOut } from "@/app/(site)/auth/actions";
+import { Avatar } from "@/design";
+import { Menu, MenuContent, MenuItem, MenuLabel, MenuSeparator, MenuTrigger } from "@/design/client";
+import { firstName, roleOf, useSession, type BrowserSession } from "@/lib/use-session";
 
-// The account corner of every header: "Sign in", or for a signed-in visitor "Admin" (G-ventZ staff
-// only), "Dashboard" and an Account menu (two-step sign-in and passkeys, payouts). Pages like the
-// home page are cached and shared by every visitor, so this is decided in the browser. The session
-// cookie is httpOnly (the browser's JavaScript can't read it), so the answer comes from
-// /api/session. The admin pages themselves are still guarded by the API (staff, two-step sign-in).
-export default function AccountLink({ className = "site-account" }: { className?: string }) {
+// The account corner of the header (FR-34, D92). Pages like the home page are cached and shared by
+// every visitor, so who is signed in is decided in the browser: the session cookie is httpOnly, so
+// the answer (signed in, name, avatar, staff, host) comes from /api/session, one request per page.
+// The admin pages themselves are still guarded by the API (staff, two-step sign-in).
+
+type Classes = { pill?: string; avatar?: string; name?: string; role?: string; chevron?: string; signIn?: string };
+
+/** Signing out also drops ticket pages the service worker saved for offline use on this device. */
+function useSignOutForm() {
+  const form = useRef<HTMLFormElement>(null);
+  const element = (
+    <form ref={form} action={signOut} hidden onSubmit={() => navigator.serviceWorker?.controller?.postMessage("clear-tickets")} />
+  );
+  return { element, submit: () => form.current?.requestSubmit() };
+}
+
+function displayName(s: BrowserSession, fallback: string): string {
+  return s.name?.trim() || fallback;
+}
+
+/** Wide screens: "Sign in", or the account pill (avatar, first name, role line) opening the account menu. */
+export default function AccountLink({ classes = {} }: { classes?: Classes }) {
   const t = useTranslations("common.account");
   const session = useSession();
-  const menu = useRef<HTMLDetailsElement>(null);
-  const pathname = usePathname();
+  const signOutForm = useSignOutForm();
 
-  // Close the menu on navigation, an outside click or Escape.
-  useEffect(() => { if (menu.current) menu.current.open = false; }, [pathname]);
-  useEffect(() => {
-    const close = (e: Event) => {
-      const el = menu.current;
-      if (!el?.open) return;
-      if (e instanceof KeyboardEvent ? e.key === "Escape" : !el.contains(e.target as Node)) el.open = false;
-    };
-    document.addEventListener("click", close);
-    document.addEventListener("keydown", close);
-    return () => { document.removeEventListener("click", close); document.removeEventListener("keydown", close); };
-  }, []);
-
-  if (!session.signedIn) return <Link href="/sign-in" className={className}>{t("signIn")}</Link>;
+  if (!session.signedIn) return <Link href="/sign-in" className={classes.signIn}>{t("signIn")}</Link>;
+  const name = displayName(session, t("account"));
+  const role = t(`role.${roleOf(session)}`);
   return (
     <>
-      {/* On phones these two move into the Account menu (globals.css), so the header fits one line. */}
-      {session.isStaff && <Link href="/admin" className={`${className} account-admin`}>{t("admin")}</Link>}
-      {/* The Dashboard is for people who host (own or help run an event); "Host an event" is for everyone. */}
-      {session.isHost && <Link href="/host" className={`${className} account-dash`}>{t("dashboard")}</Link>}
-      <details className="account-menu" ref={menu}>
-        <summary className={className}>{t("account")}</summary>
-        <div className="account-menu-list">
-          <Link href="/my-tickets">{t("myTickets")}</Link>
-          {session.isHost && <Link href="/host" className="account-menu-phone">{t("dashboard")}</Link>}
-          {session.isStaff && <Link href="/admin">{t("platformAdmin")}</Link>}
-          <Link href="/host/settings/security">{t("security")}</Link>
-          <Link href="/host/payouts">{t("payouts")}</Link>
-          {/* Sign out is always the last item, on every page and screen size. */}
-          <SignOutButton className="account-menu-signout" buttonClassName="account-menu-item" />
-        </div>
-      </details>
+      {signOutForm.element}
+      <Menu>
+        <MenuTrigger>
+          <button type="button" className={classes.pill} aria-label={t("menu", { name, role })}>
+            <Avatar name={name} src={session.avatarUrl} size={28} className={classes.avatar} aria-hidden />
+            <span className={classes.name} aria-hidden>
+              <span>{firstName(name)}</span>
+              <span className={classes.role}>{role}</span>
+            </span>
+            <ChevronDown size={16} strokeWidth={1.75} aria-hidden className={classes.chevron} />
+          </button>
+        </MenuTrigger>
+        <MenuContent>
+          <MenuLabel>{name}</MenuLabel>
+          <MenuItem asChild><Link href="/my-tickets"><Ticket aria-hidden />{t("myTickets")}</Link></MenuItem>
+          <MenuItem asChild><Link href="/account"><UserRound aria-hidden />{t("account")}</Link></MenuItem>
+          {session.isHost ? <MenuItem asChild><Link href="/host"><LayoutDashboard aria-hidden />{t("dashboard")}</Link></MenuItem> : null}
+          {session.isStaff ? <MenuItem asChild><Link href="/admin"><ShieldCheck aria-hidden />{t("admin")}</Link></MenuItem> : null}
+          <MenuSeparator />
+          <MenuItem onSelect={signOutForm.submit}><LogOut aria-hidden />{t("signOut")}</MenuItem>
+        </MenuContent>
+      </Menu>
     </>
+  );
+}
+
+/** Phones: the account choices inside the header's menu sheet (My tickets is already in its main links). */
+export function AccountSheetSection({ classes = {}, linkClassName, onNavigate }: { classes?: Classes & { head?: string; list?: string }; linkClassName?: string; onNavigate?: () => void }) {
+  const t = useTranslations("common.account");
+  const session = useSession();
+  const signOutForm = useSignOutForm();
+
+  if (!session.signedIn) return <Link href="/sign-in" className={classes.signIn} onClick={onNavigate}>{t("signIn")}</Link>;
+  const name = displayName(session, t("account"));
+  return (
+    <div>
+      {signOutForm.element}
+      <div className={classes.head}>
+        <Avatar name={name} src={session.avatarUrl} size={36} aria-hidden />
+        <span className={classes.name}>
+          <span>{name}</span>
+          <span className={classes.role}>{t(`role.${roleOf(session)}`)}</span>
+        </span>
+      </div>
+      <nav className={classes.list} aria-label={t("account")}>
+        <Link href="/account" className={linkClassName} onClick={onNavigate}>{t("account")}</Link>
+        {session.isHost ? <Link href="/host" className={linkClassName} onClick={onNavigate}>{t("dashboard")}</Link> : null}
+        {session.isStaff ? <Link href="/admin" className={linkClassName} onClick={onNavigate}>{t("admin")}</Link> : null}
+        <button type="button" className={linkClassName} onClick={signOutForm.submit}>{t("signOut")}</button>
+      </nav>
+    </div>
   );
 }

@@ -20,7 +20,13 @@
     "account": "Konto",
     "platformAdmin": "G-ventZ-Verwaltung",
     "security": "Zwei-Schritt-Anmeldung und Passkeys",
-    "payouts": "Auszahlungen"
+    "payouts": "Auszahlungen",
+    "menu": "Kontomenü: {name}, {role}",
+    "role": {
+      "guest": "Gast",
+      "host": "Veranstalter",
+      "staff": "Team"
+    }
   },
   "language": {
     "label": "Sprache",
@@ -32,5 +38,33 @@
   },
   "errors": {
     "generic": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
+  },
+  "search": {
+    "open": "Veranstaltungen, Veranstalter und Orte suchen",
+    "label": "Suchen",
+    "title": "Suche",
+    "inputLabel": "G-ventZ durchsuchen",
+    "placeholder": "Veranstaltungen, Veranstalter, Kategorien oder Städte",
+    "resultsLabel": "Suchergebnisse",
+    "close": "Suche schließen",
+    "groups": {
+      "recent": "Letzte Suchen",
+      "events": "Veranstaltungen",
+      "hosts": "Veranstalter",
+      "categories": "Kategorien",
+      "cities": "Städte",
+      "discover": "Entdecken"
+    },
+    "clearRecent": "Letzte Suchen löschen",
+    "hint": "Geben Sie mindestens zwei Buchstaben ein, um nach Veranstaltungen, Veranstaltern, Kategorien und Städten zu suchen.",
+    "loading": "Suche läuft …",
+    "noResults": "Noch keine Treffer für „{query}“.",
+    "error": "Die Suche ist gerade nicht verfügbar. Bitte versuchen Sie es gleich noch einmal.",
+    "count": "{count, plural, one {# Ergebnis} other {# Ergebnisse}}",
+    "events": "{count, plural, one {# Veranstaltung} other {# Veranstaltungen}}",
+    "all": "In Entdecken nach „{query}“ suchen",
+    "online": "Online",
+    "verified": "Verifiziert",
+    "verifiedHost": "Verifizierter Veranstalter"
   }
 }

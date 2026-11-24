@@ -48,5 +48,12 @@
     "charity": "beneficencia",
     "family": "familia",
     "other": "otros"
+  },
+  "search": {
+    "title": "Resultados para «{query}»",
+    "empty": "Todavía no hay resultados para «{query}».",
+    "unavailable": "La búsqueda no está disponible en este momento. Inténtelo de nuevo en unos instantes.",
+    "clear": "Borrar la búsqueda",
+    "short": "Escriba al menos dos letras para buscar."
   }
 }

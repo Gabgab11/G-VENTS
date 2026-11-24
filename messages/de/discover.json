@@ -48,5 +48,12 @@
     "charity": "Wohltätigkeit",
     "family": "Familie",
     "other": "Sonstiges"
+  },
+  "search": {
+    "title": "Ergebnisse für „{query}“",
+    "empty": "Noch keine Treffer für „{query}“.",
+    "unavailable": "Die Suche ist gerade nicht verfügbar. Bitte versuchen Sie es gleich noch einmal.",
+    "clear": "Suche zurücksetzen",
+    "short": "Geben Sie mindestens zwei Buchstaben ein, um zu suchen."
   }
 }
