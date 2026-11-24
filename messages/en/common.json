@@ -20,7 +20,13 @@
     "account": "Account",
     "platformAdmin": "G-ventZ admin",
     "security": "Two-step sign-in & passkeys",
-    "payouts": "Payouts"
+    "payouts": "Payouts",
+    "menu": "Account menu: {name}, {role}",
+    "role": {
+      "guest": "Guest",
+      "host": "Host",
+      "staff": "Staff"
+    }
   },
   "language": {
     "label": "Language",
@@ -32,5 +38,33 @@
   },
   "errors": {
     "generic": "Something went wrong. Please try again."
+  },
+  "search": {
+    "open": "Search events, hosts and places",
+    "label": "Search",
+    "title": "Search",
+    "inputLabel": "Search G-ventZ",
+    "placeholder": "Events, hosts, categories or cities",
+    "resultsLabel": "Search results",
+    "close": "Close search",
+    "groups": {
+      "recent": "Recent searches",
+      "events": "Events",
+      "hosts": "Hosts",
+      "categories": "Categories",
+      "cities": "Cities",
+      "discover": "Discover"
+    },
+    "clearRecent": "Clear recent searches",
+    "hint": "Type at least two letters to search events, hosts, categories and cities.",
+    "loading": "Searching…",
+    "noResults": "Nothing matches “{query}” yet.",
+    "error": "Search isn't available right now. Please try again in a moment.",
+    "count": "{count, plural, one {# result} other {# results}}",
+    "events": "{count, plural, one {# event} other {# events}}",
+    "all": "Search all on Discover for “{query}”",
+    "online": "Online",
+    "verified": "Verified",
+    "verifiedHost": "Verified host"
   }
 }

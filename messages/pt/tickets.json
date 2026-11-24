@@ -133,7 +133,7 @@
       },
       "failed": {
         "title": "O pagamento não foi concluído",
-        "body": "O Paystack não conseguiu processar o pagamento. Nada foi cobrado."
+        "body": "O {provider} não conseguiu processar o pagamento. Nada foi cobrado."
       },
       "refunded": {
         "title": "Reembolsado",
@@ -155,9 +155,9 @@
     "offerTitle": "Uma vaga é sua",
     "offerBody": "Pague até {time} para garantir seus ingressos; depois disso, a vaga vai para a próxima pessoa.",
     "reference": "Referência do pagamento",
-    "tryAgain": "Tentar novamente com Paystack",
-    "pay": "Pagar com Paystack",
-    "payTotal": "Pagar com Paystack · {total}",
+    "tryAgain": "Tentar novamente com {provider}",
+    "pay": "Pagar com {provider}",
+    "payTotal": "Pagar com {provider} · {total}",
     "startAgain": "Começar de novo",
     "serviceFee": "Taxa de serviço",
     "includesVat": "(inclui imposto {amount})",
@@ -170,11 +170,12 @@
     "refundLate": "pago após o fim da reserva",
     "refundsNote": "Os reembolsos voltam para o cartão ou a conta usados no pagamento. Os bancos costumam levar de 5 a 10 dias úteis.",
     "held": "Seus ingressos estão reservados por <b>{time}</b>.",
-    "checking": "Verificando seu pagamento com o Paystack...",
-    "noAnswer": "Ainda sem resposta do Paystack. <button>Verificar novamente</button>",
-    "opening": "Abrindo o Paystack...",
+    "checking": "Aguardando o {provider} confirmar o seu pagamento...",
+    "noAnswer": "Ainda sem resposta do {provider}. <button>Verificar novamente</button>",
+    "opening": "Abrindo o {provider}...",
     "orderNotFound": "Não foi possível encontrar este pedido.",
-    "openFailed": "Não conseguimos abrir a página de pagamento. Tente novamente."
+    "openFailed": "Não conseguimos abrir a página de pagamento. Tente novamente.",
+    "slowNote": "Transferências bancárias podem levar alguns minutos. Esta página continua verificando por até 30 minutos."
   },
   "myTickets": {
     "meta": {

@@ -101,9 +101,9 @@
     "applicationDeclinedAction": "Voir pourquoi",
     "approvalRevoked": "Votre autorisation de vendre des billets payants a été retirée. Les billets déjà vendus restent valables.",
     "approvalRevokedAction": "Voir les détails",
-    "payoutAccountPending": "Vous êtes approuvé. Nous configurons votre compte de versement avec Paystack ; vous pourrez vendre des billets payants dès qu'il sera prêt.",
+    "payoutAccountPending": "Vous êtes approuvé. Nous configurons votre compte de versement auprès du prestataire de paiement ; vous pourrez vendre des billets payants dès qu'il sera prêt.",
     "payoutAccountPendingAction": "Voir les détails du versement",
-    "countryOff": "Paystack est suspendu pour le pays de votre compte de versement en ce moment. Les billets gratuits fonctionnent toujours.",
+    "countryOff": "Les billets payants sont suspendus pour le pays de votre compte de versement en ce moment. Les billets gratuits fonctionnent toujours.",
     "owesMoney": "Vous devez de l'argent à G-ventZ suite à des remboursements ou des rétrofacturations : vous ne pouvez donc pas publier de nouveaux événements payants. Vos événements existants continuent de se vendre, ce qui rembourse la somme.",
     "owesMoneyAction": "Voir ce que vous devez",
     "suspended": "Votre compte est suspendu : vous ne pouvez donc pas vendre de billets payants."
@@ -111,7 +111,7 @@
   "fees": {
     "hostAbsorbs": {
       "label": "Je prends les frais à ma charge",
-      "hint": "Les invités paient le prix du billet. Les frais de G-ventZ, la TVA sur ces frais et les frais de Paystack sont déduits de ce que vous recevez."
+      "hint": "Les invités paient le prix du billet. Les frais G-ventZ, la TVA sur ces frais et les frais du prestataire de paiement sont déduits de ce que vous recevez."
     },
     "guestPays": {
       "label": "Les invités paient les frais",

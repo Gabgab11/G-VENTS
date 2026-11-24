@@ -125,11 +125,21 @@
     "waitlistNote": "That ticket is sold out. Join the waiting list and we'll email you if a place frees up; you then have 24 hours to pay.",
     "refundPolicy": "Refund policy:",
     "joining": "Joining...",
-    "opening": "Opening Paystack...",
+    "opening": "Opening {provider}...",
     "join": "Join the waiting list",
-    "pay": "Pay with Paystack",
-    "payTotal": "Pay with Paystack · {total}",
-    "payNote": "You'll pay on Paystack's secure page. Your tickets are held for 10 minutes."
+    "pay": "Pay with {provider}",
+    "payTotal": "Pay with {provider} · {total}",
+    "payNote": "You'll pay on {provider}'s secure page. Your tickets are held for 10 minutes.",
+    "methodsLabel": "Ways to pay on {provider}",
+    "methods": {
+      "card": "Card",
+      "bankTransfer": "Bank transfer",
+      "applePay": "Apple Pay",
+      "googlePay": "Google Pay",
+      "mobileMoney": "Mobile money"
+    },
+    "paused": "Paid tickets are paused",
+    "pausedNote": "Paid tickets for this event can't be bought right now. Free tickets still work."
   },
   "verify": {
     "emailHint": "We'll email you a 6-digit code to confirm it. Your tickets are sent to this address.",

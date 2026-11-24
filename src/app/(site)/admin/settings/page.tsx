@@ -1,12 +1,12 @@
 import { api, data } from "@/lib/api/server";
 import { adminCall, formatDate, formatMinor } from "@/lib/admin";
 import { requireUser } from "@/lib/auth";
-import { clearDefaultFee, inviteStaff, removeFee, removeStaff, removeVat, revokeInvite, setDefaultFee, setFee, setPaystackCountry, setProvider, setSettlementDelay, setVat } from "../actions";
+import { clearDefaultFee, inviteStaff, removeFee, removeStaff, removeVat, revokeInvite, setDefaultFee, setFee, setProvider, setSettlementDelay, setVat } from "../actions";
 import { bpsToPercent } from "@/lib/money";
-import { PAYOUT_COUNTRIES, type PayoutCountry } from "@/lib/payment-text";
 import Notice from "../Notice";
+import PaymentsSection from "./PaymentsSection";
 
-// Paystack is switched per country (M5, PR1/PR2: each country its own Paystack account and keys).
+// Paystack and Flutterwave are in PaymentsSection (Change 5 chunk 4); these two have no adapter yet.
 const PROVIDERS = [
   { key: "interswitch", name: "Interswitch", note: "NGN only. Collected by G-ventZ, settled to hosts in batches." },
   { key: "stripe", name: "Stripe", note: "Other currencies, through Stripe Connect." },
@@ -16,47 +16,28 @@ export default async function AdminSettings({ searchParams }: { searchParams: Pr
   const sp = await searchParams;
   const { user } = await requireUser("/admin/settings");
   const myEmail = (user.email ?? "").toLowerCase();
-  const s = await adminCall(async () => data(await (await api()).GET("/v1/admin/settings")), "/admin/settings");
+  const [s, status] = await Promise.all([
+    adminCall(async () => data(await (await api()).GET("/v1/admin/settings")), "/admin/settings"),
+    // The providers' status is extra: the section still works without it (access errors come from the call above).
+    (async () => data(await (await api()).GET("/v1/admin/payments/status")).providers)().catch((error: unknown) => {
+      console.error(`[admin] payments status: ${(error as Error).message}`);
+      return null;
+    }),
+  ]);
   const fees = Object.entries(s.fees).sort(([a], [b]) => a.localeCompare(b));
   const vat = Object.entries(s.vat ?? {}).sort(([a], [b]) => a.localeCompare(b));
-  const countries = Object.keys(PAYOUT_COUNTRIES) as PayoutCountry[];
 
   return (
     <div className="stack ad-section">
       <Notice ok={sp.ok} err={sp.err} />
 
-      <section className="panel stack" aria-labelledby="ad-pay-title">
+      <PaymentsSection settings={s} status={status} />
+
+      <section className="panel stack" aria-labelledby="ad-other-pay-title">
         <div className="ad-panel-head">
-          <h2 id="ad-pay-title" className="ad-h2">Payments</h2>
-          <span className="muted small">Off by default. A provider can be switched on only when its live keys are set on the server.</span>
+          <h2 id="ad-other-pay-title" className="ad-h2">Other providers</h2>
+          <span className="muted small">Not in use for checkouts yet.</span>
         </div>
-        <div className="panel-label">Paystack · per country</div>
-        <p className="muted small">Each country has its own Paystack account. Hosts sell in their payout country&apos;s currency, and the sale is split to their subaccount.</p>
-        <ul className="ad-switches">
-          {countries.map((c) => {
-            const st = s.paystackCountries?.[c];
-            if (!st) return null;
-            return (
-              <li key={c}>
-                <div>
-                  <b>{PAYOUT_COUNTRIES[c].name}</b> <span className="muted small">{st.currency}</span>{" "}
-                  {st.enabled ? <span className="ad-pill completed">On</span> : <span className="ad-pill">Off</span>}{" "}
-                  {!st.configured && <span className="ad-pill warn">Keys not set</span>}
-                </div>
-                <form action={setPaystackCountry}>
-                  <input type="hidden" name="country" value={c} />
-                  <input type="hidden" name="enabled" value={st.enabled ? "false" : "true"} />
-                  <button type="submit" className={st.enabled ? "btn-ghost ad-danger" : "btn-white"} disabled={!st.enabled && !st.configured}
-                    aria-label={`${st.enabled ? "Switch off" : "Switch on"} Paystack in ${PAYOUT_COUNTRIES[c].name}`}
-                    title={!st.enabled && !st.configured ? "Add this country's Paystack keys on the server first" : undefined}>
-                    {st.enabled ? "Switch off" : "Switch on"}
-                  </button>
-                </form>
-              </li>
-            );
-          })}
-        </ul>
-        <div className="panel-label">Other providers</div>
         <ul className="ad-switches">
           {PROVIDERS.map((p) => {
             const st = s.payments[p.key];

@@ -68,15 +68,15 @@
     "applicationDeclinedAction": "See why",
     "approvalRevoked": "Your approval to sell paid tickets was withdrawn. Tickets already sold still work.",
     "approvalRevokedAction": "See details",
-    "payoutAccountPending": "You're approved. We're setting up your payout account with Paystack; you can sell paid tickets once it's ready.",
+    "payoutAccountPending": "You're approved. We're setting up your payout account with the payment provider; you can sell paid tickets once it's ready.",
     "payoutAccountPendingAction": "See payout details",
-    "countryOff": "Paystack is paused for your payout country right now. Free tickets still work.",
+    "countryOff": "Paid tickets are paused for your payout country right now. Free tickets still work.",
     "owesMoney": "You owe G-ventZ money from refunds or chargebacks, so you can't publish new paid events. Your existing events keep selling, which pays it back.",
     "owesMoneyAction": "See what you owe",
     "suspended": "Your account is suspended, so you can't sell paid tickets."
   },
   "fees": {
-    "hostAbsorbs": { "label": "I absorb the fees", "hint": "Guests pay the ticket price. G-ventZ's fee, VAT on it and Paystack's charge come out of what you receive." },
+    "hostAbsorbs": { "label": "I absorb the fees", "hint": "Guests pay the ticket price. G-ventZ's fee, VAT on it and the payment provider's charge come out of what you receive." },
     "guestPays": { "label": "Guests pay the fees", "hint": "Fees are added on top of the price, so you receive the full ticket price." }
   },
   "payment": {

@@ -198,10 +198,11 @@
     "wholeNumber": "Use un número entero, como 5000.",
     "working": "Calculando las comisiones...",
     "summary": "El invitado paga <b>{guest}</b> · usted recibe <b>{host}</b>",
-    "breakdown": "(comisión de G-ventZ {fee} + Paystack aprox. {charge})",
-    "breakdownVat": "(comisión de G-ventZ {fee} + IVA {vat} + Paystack aprox. {charge})",
+    "breakdown": "(comisión de G-ventZ {fee} + {provider} aprox. {charge})",
+    "breakdownVat": "(comisión de G-ventZ {fee} + IVA {vat} + {provider} aprox. {charge})",
     "enterPrice": "Introduzca un precio.",
-    "unavailable": "El ejemplo de comisiones no está disponible ahora."
+    "unavailable": "El ejemplo de comisiones no está disponible ahora.",
+    "providerFallback": "proveedor de pago"
   },
   "validation": {
     "title": "El nombre del evento debe tener entre 3 y 140 caracteres.",

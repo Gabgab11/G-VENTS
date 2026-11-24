@@ -66,6 +66,7 @@
     "fixErrors": "Vérifiez les champs signalés.",
     "signedOut": "Votre session a expiré. Reconnectez-vous.",
     "viewProfile": "Voir le profil",
-    "noHandle": "Choisissez un identifiant pour obtenir votre page publique."
+    "noHandle": "Choisissez un identifiant pour obtenir votre page publique.",
+    "accountNote": "Votre téléphone, vos préférences d'e-mail et vos méthodes de connexion se trouvent dans <link>Votre compte</link>."
   }
 }

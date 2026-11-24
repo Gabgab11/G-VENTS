@@ -8,7 +8,7 @@ import { ApiError, problemMessage } from "@/lib/api/problem";
 import { requireUser } from "@/lib/auth";
 import { flyerFrom, uploadFlyer } from "@/lib/flyer";
 import { getAvailability } from "@/lib/payments";
-import { sellReasonKey } from "@/lib/payment-text";
+import { isPayoutCountry, sellReasonKey } from "@/lib/payment-text";
 import type { components } from "@/lib/api/schema";
 import { createEventBody, hasPaidPrice, type PaidSetup } from "./create-event-input";
 import { fieldOfMessageKey, fieldOfProblem } from "@/app/(site)/host/events/new/steps";
@@ -86,5 +86,18 @@ export async function previewFee(priceMinor: number, feeChoice: "host_absorbs" |
     return data(await (await api()).POST("/v1/payments/fee-preview", { body: { priceMinor, feeChoice: feeChoice === "guest_pays" ? "guest_pays" : "host_absorbs" } }));
   } catch (error) {
     return { error: problemMessage(error, await getTranslations("errors"), await getLocale(), t("unavailable")) };
+  }
+}
+
+export type ChargeSchedule = components["schemas"]["ChargeScheduleDto"];
+
+/** The charge schedule of the provider checkouts in the country use now (PS14), for the fee example's label. */
+export async function chargeSchedule(country: string): Promise<ChargeSchedule | null> {
+  if (!isPayoutCountry(country)) return null;
+  try {
+    return data(await (await api()).GET("/v1/payments/charge-schedule", { params: { query: { country } } }));
+  } catch (error) {
+    console.error(`[events] charge schedule: ${(error as Error).message}`);
+    return null;
   }
 }

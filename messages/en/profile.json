@@ -66,6 +66,7 @@
     "fixErrors": "Check the highlighted fields.",
     "signedOut": "Your session has ended. Sign in again.",
     "viewProfile": "View profile",
-    "noHandle": "Choose a handle to get your public page."
+    "noHandle": "Choose a handle to get your public page.",
+    "accountNote": "Your phone, email preferences and sign-in methods are in <link>Your account</link>."
   }
 }

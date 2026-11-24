@@ -172,13 +172,17 @@
   "payment": {
     "forbidden": "Vous n'avez pas l'autorisation de faire cela.",
     "own_application": "Un autre membre de l'équipe doit examiner votre propre demande ou compte de versement.",
-    "provider_unavailable": "Impossible de joindre le service de paiement. Veuillez réessayer."
+    "provider_unavailable": "Impossible de joindre le service de paiement. Veuillez réessayer.",
+    "paid_tickets_paused": "Les billets payants de cet événement sont suspendus pour le moment. Les billets gratuits fonctionnent toujours."
   },
   "payout": {
     "account_unresolved": "La banque n'a pas trouvé ce compte. Vérifiez la banque et le numéro de compte.",
-    "country_unavailable": "Paystack n'est pas encore disponible dans ce pays.",
+    "country_unavailable": "Les billets payants ne sont pas encore disponibles pour ce pays.",
     "not_approved": "Vous pourrez modifier vos informations de versement une fois autorisé à vendre des billets payants.",
-    "not_pending": "Aucun compte de versement n'est en attente de création."
+    "not_pending": "Aucun compte de versement n'est en attente de création.",
+    "bank_not_listed": "Choisissez votre banque dans la liste de ce prestataire.",
+    "subaccount_not_waiting": "Ce prestataire n'attend pas que vous choisissiez votre banque.",
+    "subaccount_not_found": "Il n'existe pas encore de compte de versement auprès de ce prestataire."
   },
   "places": {
     "bad_request": "Vérifiez la recherche et réessayez.",
@@ -239,7 +243,12 @@
     "fee_currency_invalid": "Utilisez un code de devise à trois lettres, comme NGN ou USD.",
     "fee_invalid": "Saisissez des frais valides.",
     "provider_not_configured": "Ce prestataire de paiement n'est pas encore configuré pour cet environnement.",
-    "vat_invalid": "Le taux de TVA est en points de base : un nombre entier de 0 à 10000 (100 %)."
+    "vat_invalid": "Le taux de TVA est en points de base : un nombre entier de 0 à 10000 (100 %).",
+    "reason_required": "Indiquez un motif de 10 à 500 caractères pour changer de prestataire actif.",
+    "active_provider_invalid": "Ce prestataire ne peut pas encore être le prestataire actif : activez-le, configurez ses clés et confirmez d'abord les frais d'un pays.",
+    "active_provider_off": "Le prestataire actif ne peut pas être désactivé. Rendez d'abord un autre prestataire actif.",
+    "country_not_ready": "Ce pays ne peut pas encore être activé : il lui faut des clés, des frais G-ventZ, un taux de TVA et des frais confirmés.",
+    "charges_invalid": "Les frais sont des nombres entiers : le pourcentage en points de base (0 à 10000), les montants en unités mineures, à partir de 0."
   },
   "staff": {
     "already_member": "Cette personne fait déjà partie de l'équipe G-ventZ.",

@@ -125,11 +125,21 @@
     "waitlistNote": "Dieses Ticket ist ausverkauft. Tragen Sie sich in die Warteliste ein, und wir schreiben Ihnen, wenn ein Platz frei wird; Sie haben dann 24 Stunden Zeit zum Bezahlen.",
     "refundPolicy": "Erstattungsrichtlinie:",
     "joining": "Wird eingetragen...",
-    "opening": "Paystack wird geöffnet...",
+    "opening": "{provider} wird geöffnet...",
     "join": "Auf die Warteliste",
-    "pay": "Mit Paystack bezahlen",
-    "payTotal": "Mit Paystack bezahlen · {total}",
-    "payNote": "Sie bezahlen auf der sicheren Seite von Paystack. Ihre Tickets werden 10 Minuten lang reserviert."
+    "pay": "Mit {provider} bezahlen",
+    "payTotal": "Mit {provider} bezahlen · {total}",
+    "payNote": "Sie bezahlen auf der sicheren Seite von {provider}. Ihre Tickets werden 10 Minuten lang reserviert.",
+    "methodsLabel": "Zahlungsarten bei {provider}",
+    "methods": {
+      "card": "Karte",
+      "bankTransfer": "Banküberweisung",
+      "applePay": "Apple Pay",
+      "googlePay": "Google Pay",
+      "mobileMoney": "Mobile Money"
+    },
+    "paused": "Kostenpflichtige Tickets sind pausiert",
+    "pausedNote": "Kostenpflichtige Tickets für dieses Event können gerade nicht gekauft werden. Kostenlose Tickets funktionieren weiterhin."
   },
   "verify": {
     "emailHint": "Wir senden Ihnen einen 6-stelligen Code per E-Mail, um sie zu bestätigen. Ihre Tickets werden an diese Adresse gesendet.",

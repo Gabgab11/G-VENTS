@@ -30,14 +30,15 @@ select is(
   null, 'no function in public can be called by anon or authenticated');
 
 -- The old app's functions and policies are dropped (20261114000200, 20261114000600). Only the
--- helper the events trigger uses remains, every remaining table policy is for gventz_api, and
+-- helper the events trigger uses remains, with the API's email check and the search folding
+-- (20261114001900); every remaining table policy is for gventz_api, and
 -- the event-covers bucket has no policies: the API uses it with the secret key and flyers are read
 -- through public URLs.
 select is(
   (select array_agg(p.proname::text order by p.proname) from pg_proc p
     where p.pronamespace = 'public'::regnamespace and p.prokind in ('f', 'p')
       and p.prorettype <> 'trigger'::regtype),
-  array['email_confirmed', 'has_event_role'], 'only the trigger helper and the API''s email check remain');
+  array['email_confirmed', 'has_event_role', 'search_fold'], 'only the trigger helper, the API''s email check and the search folding remain');
 select ok(has_function_privilege('gventz_api', 'public.email_confirmed(uuid, text)', 'execute'),
   'the API role can ask whether an account''s email is confirmed');
 select is(

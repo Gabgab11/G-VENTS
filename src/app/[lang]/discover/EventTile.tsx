@@ -50,7 +50,7 @@ export default function EventTile({ event: e, showPrice = true }: { event: Event
       <span className="dc-tile-cover" style={{ background: themeBackground(e.cover_theme) }}>
         {/* eslint-disable-next-line @next/next/no-img-element -- flyers come from Supabase Storage at arbitrary sizes */}
         {e.cover_url ? <img src={e.cover_url} alt="" loading="lazy" /> : <span className="dc-tile-cover-title" aria-hidden="true">{e.title}</span>}
-        <span className="dc-tile-chip">{categoryLabel(e.category, root)}</span>
+        {e.category ? <span className="dc-tile-chip">{categoryLabel(e.category, root)}</span> : null}
       </span>
       <span className="dc-tile-title">{e.title}</span>
       {place && <span className="dc-tile-meta">{place}</span>}

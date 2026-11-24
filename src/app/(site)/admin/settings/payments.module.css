@@ -1,0 +1,38 @@
+/* Admin → Settings → Payments (Change 5 chunk 4). Values from the design tokens only. */
+.section { display: flex; flex-direction: column; gap: var(--space-4); scroll-margin-block-start: var(--space-16); }
+.cards { display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); align-items: start; }
+.card { display: flex; flex-direction: column; gap: var(--space-4); min-inline-size: 0; }
+.cardTitle { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.h3 { margin: 0; font-size: var(--text-heading-3); line-height: var(--leading-heading-3); font-weight: var(--weight-semibold); }
+.hint { display: block; color: var(--color-text-muted); font-size: var(--text-body-sm); line-height: var(--leading-body-sm); }
+.error { margin: 0; color: var(--color-danger); font-size: var(--text-body-sm); line-height: var(--leading-body-sm); }
+
+.facts { display: grid; grid-template-columns: max-content 1fr; gap: var(--space-2) var(--space-4); margin: 0; font-size: var(--text-body-sm); line-height: var(--leading-body-sm); }
+.facts dt { color: var(--color-text-muted); }
+.facts dd { margin: 0; }
+.chips { display: inline-flex; flex-wrap: wrap; gap: var(--space-1); }
+
+.countries { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.country { display: flex; flex-direction: column; gap: var(--space-2); padding-block: var(--space-3); border-block-start: 1px solid var(--color-border); }
+.countryHead { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-3); }
+.countryName { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.countryName .hint { display: inline; }
+
+.switchForm { display: flex; align-items: center; flex: none; }
+.missing { margin: var(--space-1) 0 0; padding-inline-start: var(--space-5); }
+
+.details summary { cursor: pointer; color: var(--color-accent-text); font-size: var(--text-body-sm); line-height: var(--leading-body-sm); font-weight: var(--weight-medium); }
+.details[open] summary { margin-block-end: var(--space-3); }
+.chargeForm { display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-4); border-radius: var(--radius-md); background: var(--color-surface-raised); }
+.chargeFields { display: grid; gap: var(--space-3); grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr)); }
+.formTitle { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin: 0; font-weight: var(--weight-semibold); }
+.example { margin: 0; color: var(--color-text-soft); font-size: var(--text-body-sm); line-height: var(--leading-body-sm); }
+
+.active { display: flex; flex-direction: column; gap: var(--space-3); }
+.radios { display: flex; flex-direction: column; gap: var(--space-2); margin: 0; padding: 0; border: 0; }
+.radios legend { margin-block-end: var(--space-2); }
+.radio { display: flex; align-items: flex-start; gap: var(--space-3); min-block-size: 44px; padding-block: var(--space-2); cursor: pointer; }
+.radio input { inline-size: 20px; block-size: 20px; margin: 0; accent-color: var(--color-accent); flex: none; }
+.radio[data-disabled] { cursor: not-allowed; color: var(--color-text-muted); }
+.dialogForm { display: flex; flex-direction: column; gap: var(--space-4); }
+.dialogButtons { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--space-2); }

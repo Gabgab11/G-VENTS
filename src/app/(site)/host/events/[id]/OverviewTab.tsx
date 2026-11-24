@@ -5,7 +5,9 @@ import { api, data } from "@/lib/api/server";
 import type { components } from "@/lib/api/schema";
 import { formatMoney, formatRelative, intlLocale } from "@/lib/format";
 import type { Locale } from "@/i18n/languages";
-import { Badge, Card, CardHeader, EmptyState, Stat } from "@/design";
+import { Badge, Banner, Button, Card, CardHeader, EmptyState, Stat } from "@/design";
+import { getEventPaidSales } from "@/lib/payments";
+import { providerName } from "@/lib/payment-text";
 import { statusTone } from "@/app/(site)/host/orders/query";
 import CopyLink from "./CopyLink";
 import { SalesPanel } from "./SalesPanel";
@@ -41,12 +43,15 @@ async function loadOrders(event: EventDashboard): Promise<HostOrder[] | null> {
 export default async function OverviewTab({ event, url, sales }: { event: EventDashboard; url: string; sales: Sales | null }) {
   const { counts } = event;
   const salesView = can(event, "sales.view");
-  const [t, statusT, lang, settlements, orders] = await Promise.all([
+  const hasPaid = event.ticketTypes.some((tt) => tt.priceMinor > 0);
+  const [t, statusT, lang, settlements, orders, paidSales] = await Promise.all([
     getTranslations("dashboard.overview"),
     getTranslations("host.orders.status"),
     getLocale() as Promise<Locale>,
     sales && salesView ? loadSettlements(event) : Promise.resolve(null),
     can(event, "orders.view") ? loadOrders(event) : Promise.resolve(null),
+    // PS6: whether the event's paid ticket types are paused (no provider, or no active subaccount).
+    hasPaid && event.status !== "cancelled" ? getEventPaidSales(event.id) : Promise.resolve(null),
   ]);
   const n = (x: number) => x.toLocaleString(lang);
   const days = settlements ? dayBars(settlements.days) : [];
@@ -54,6 +59,13 @@ export default async function OverviewTab({ event, url, sales }: { event: EventD
 
   return (
     <div className={styles.stack}>
+      {paidSales?.paidTicketsPaused && (
+        <Banner tone="warning" title={t("paused.title")} action={<Button href="/host/payouts" size="sm" variant="secondary">{t("paused.action")}</Button>}>
+          {paidSales.reason === "no_subaccount" && paidSales.provider
+            ? t("paused.noSubaccount", { provider: providerName(paidSales.provider) })
+            : t("paused.noProvider")}
+        </Banner>
+      )}
       <section aria-label={t("statsLabel")} className={styles.stats}>
         <Stat label={t("sold")} value={event.capacity === null ? n(counts.confirmed) : t("soldOf", { sold: n(counts.confirmed), capacity: n(event.capacity) })}
           context={t("soldContext", { pending: counts.pending, waitlisted: counts.waitlisted })} />

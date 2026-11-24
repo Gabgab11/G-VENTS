@@ -230,7 +230,13 @@
     "openRegistration": "Ouvrir les inscriptions",
     "capacityHint": "Fixez une limite, par exemple 200. Une fois complet, les nouveaux invités rejoignent la liste d'attente. Laissez vide pour illimité.",
     "capacityPlaceholder": "ex. 200",
-    "saveCapacity": "Enregistrer la capacité"
+    "saveCapacity": "Enregistrer la capacité",
+    "paused": {
+      "title": "Les billets payants sont suspendus",
+      "noProvider": "Aucun prestataire de paiement n'accepte de paiements en ce moment dans le pays de cet événement : les invités ne peuvent donc pas acheter ses billets payants. Les billets gratuits fonctionnent toujours.",
+      "noSubaccount": "Le compte de versement de l'organisateur auprès de {provider} n'est pas encore prêt : les invités ne peuvent donc pas acheter de billets payants. Les billets gratuits fonctionnent toujours.",
+      "action": "Aller aux versements"
+    }
   },
   "copyLink": {
     "copy": "Copier le lien",

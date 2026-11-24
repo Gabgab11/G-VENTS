@@ -172,13 +172,17 @@
   "payment": {
     "forbidden": "您无权执行此操作。",
     "own_application": "您本人的申请或结算账户必须由其他工作人员审核。",
-    "provider_unavailable": "无法连接支付服务。请重试。"
+    "provider_unavailable": "无法连接支付服务。请重试。",
+    "paid_tickets_paused": "此活动的付费门票目前已暂停。免费门票仍可正常使用。"
   },
   "payout": {
     "account_unresolved": "银行找不到此账户。请检查银行和账号。",
-    "country_unavailable": "Paystack 暂不支持此国家或地区。",
+    "country_unavailable": "该国家/地区尚不支持付费门票。",
     "not_approved": "获准销售付费门票后，您才能更改结算信息。",
-    "not_pending": "没有等待创建的结算账户。"
+    "not_pending": "没有等待创建的结算账户。",
+    "bank_not_listed": "请从该服务商的列表中选择您的银行。",
+    "subaccount_not_waiting": "该服务商当前不需要您选择银行。",
+    "subaccount_not_found": "您在该服务商尚无收款账户。"
   },
   "places": {
     "bad_request": "请检查搜索内容后重试。",
@@ -239,7 +243,12 @@
     "fee_currency_invalid": "请使用三个字母的货币代码，例如 NGN 或 USD。",
     "fee_invalid": "请输入有效的费用。",
     "provider_not_configured": "此支付服务商尚未在此环境中设置。",
-    "vat_invalid": "增值税率以基点表示：0 到 10000 之间的整数（100%）。"
+    "vat_invalid": "增值税率以基点表示：0 到 10000 之间的整数（100%）。",
+    "reason_required": "更改当前服务商时，请填写 10 至 500 个字符的原因。",
+    "active_provider_invalid": "该服务商暂时无法设为当前服务商：请先启用它、设置其密钥，并确认某个国家/地区的费用。",
+    "active_provider_off": "无法关闭当前服务商。请先将其他服务商设为当前服务商。",
+    "country_not_ready": "该国家/地区暂时无法启用：需要密钥、G-ventZ 手续费、增值税税率和已确认的费用。",
+    "charges_invalid": "费用须为整数：百分比以基点表示（0 至 10000），金额以最小货币单位表示，从 0 起。"
   },
   "staff": {
     "already_member": "此人已是 G-ventZ 工作人员。",

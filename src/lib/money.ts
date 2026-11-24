@@ -1,7 +1,7 @@
 // Money on the website (M5). Amounts are integer minor units (kobo, pesewas, cents) plus an ISO 4217
 // currency, never floats: the only conversions are whole units typed by a host → minor units, and
 // minor units → text for display. Pure, so server and client components can both use it.
-import { formatMoney, minorDigits } from "./format";
+import { decimalString, formatMoney, minorDigits } from "./format";
 
 export { minorDigits } from "./format";
 
@@ -52,4 +52,42 @@ export function bpsToPercent(bps: number): string {
   const whole = Math.trunc(bps / 100);
   const frac = String(bps % 100).padStart(2, "0").replace(/0+$/, "");
   return frac ? `${whole}.${frac}` : String(whole);
+}
+
+/**
+ * An amount typed in the currency's main unit, with up to its own number of decimals
+ * ("100.50" NGN → 10050, "1500" UGX → 1500, "1500.5" UGX → null). Commas and spaces are dropped;
+ * signs, exponents and extra decimals are refused with null. String maths, no floats.
+ */
+export function majorToMinor(input: string, currency: string, maxMajor = 1_000_000_000): number | null {
+  const digits = minorDigits(currency);
+  const m = /^(\d{1,12})(?:\.(\d+))?$/.exec(input.trim().replace(/[,\s]/g, ""));
+  if (!m) return null;
+  const frac = m[2] ?? "";
+  if (frac.length > digits) return null;
+  const whole = Number(m[1]);
+  if (whole > maxMajor) return null;
+  const minor = whole * 10 ** digits + Number(frac.padEnd(digits, "0") || "0");
+  return Number.isSafeInteger(minor) ? minor : null;
+}
+
+/** Minor units → the main unit as typed in a form, without trailing zeros (10050 NGN → "100.5", 1500 UGX → "1500"). */
+export function minorToMajor(amountMinor: number, currency: string): string {
+  const s = decimalString(amountMinor, minorDigits(currency));
+  return s.includes(".") ? s.replace(/\.?0+$/, "") : s;
+}
+
+/** A provider's charge schedule (PS14), integer minor units of one currency and basis points. */
+export type ChargeSchedule = { percentBps: number; fixedMinor: number; waiveFixedBelow: number; capMinor: number | null };
+
+/**
+ * The provider's charge on an amount, as the API estimates it:
+ * min(cap, ceil(amount × percentBps / 10000) + fixed), the fixed part waived below `waiveFixedBelow`.
+ */
+export function providerCharge(amountMinor: number, s: ChargeSchedule): number {
+  if (amountMinor <= 0) return 0;
+  const percent = Math.ceil((amountMinor * s.percentBps) / 10_000);
+  const fixed = amountMinor < s.waiveFixedBelow ? 0 : s.fixedMinor;
+  const charge = percent + fixed;
+  return s.capMinor === null ? charge : Math.min(s.capMinor, charge);
 }

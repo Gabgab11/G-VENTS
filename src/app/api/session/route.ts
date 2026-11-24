@@ -6,6 +6,7 @@ import { api } from "@/lib/api/server";
 // that are cached and shared by every visitor (the home page) and so can't decide "Sign in",
 // "Dashboard" or "Admin" on the server. The session cookie is httpOnly, so the browser's
 // JavaScript can't see it; this asks the server.
+// It also carries the name and avatar for the header's account pill (FR-34).
 // Signed-in visitors cost two API calls in parallel (staff, and whether they host any event); everyone else, none.
 // An expired session just means the dashboard sends the visitor through sign-in.
 export const dynamic = "force-dynamic";
@@ -19,6 +20,8 @@ export async function GET() {
   const signedIn = jar.getAll().some((c) => SESSION_COOKIE.test(c.name) && c.value !== "");
   let isStaff = false;
   let isHost = false;
+  let name: string | undefined;
+  let avatarUrl: string | null = null;
   if (signedIn) {
     const client = await api();
     // isHost: owns or helps run at least one event, so the Dashboard link and "Create event"
@@ -29,6 +32,10 @@ export async function GET() {
     ]);
     isStaff = me?.isStaff === true;
     isHost = (events?.total ?? 0) > 0;
+    // For the header's account pill (FR-34): the name, or the email's first part until one is set.
+    name = me?.fullName?.trim() || me?.email?.split("@")[0] || undefined;
+    // The avatar set on Your account (D93), or initials.
+    avatarUrl = me?.avatarUrl || null;
   }
-  return Response.json({ signedIn, isStaff, isHost, language }, { headers: { "Cache-Control": "private, no-store" } });
+  return Response.json({ signedIn, isStaff, isHost, language, name, avatarUrl }, { headers: { "Cache-Control": "private, no-store" } });
 }

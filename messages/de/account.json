@@ -70,10 +70,11 @@
   "payouts": {
     "metaTitle": "Auszahlungen · G-ventZ",
     "title": "Auszahlungen erhalten",
-    "intro": "Verkaufen Sie kostenpflichtige Tickets auf G-ventZ. Gäste zahlen mit Paystack und Ihr Anteil geht direkt auf Ihr Bankkonto.",
+    "intro": "Verkaufen Sie kostenpflichtige Tickets auf G-ventZ. Gäste bezahlen mit Paystack oder Flutterwave, und Ihr Anteil geht direkt auf Ihr Bankkonto.",
     "ok": {
       "submitted": "Antrag gesendet. Wir schreiben Ihnen eine E-Mail, sobald entschieden ist.",
-      "payoutChanged": "Auszahlungsdaten geändert. Kostenpflichtige Verkäufe pausieren, bis G-ventZ das neue Konto bestätigt; wir haben Ihnen eine E-Mail geschickt."
+      "payoutChanged": "Auszahlungsdaten geändert. Kostenpflichtige Verkäufe pausieren, bis G-ventZ das neue Konto bestätigt; wir haben Ihnen eine E-Mail geschickt.",
+      "bankChosen": "Bank gespeichert. Ihr Auszahlungskonto bei diesem Anbieter wird eingerichtet."
     },
     "loadFailed": "Wir konnten Ihre Auszahlungsdaten nicht laden. Bitte laden Sie die Seite neu.",
     "status": {
@@ -95,7 +96,7 @@
       "pending": "Wird eingerichtet",
       "replaced": "Ersetzt",
       "line": "{bank} · endet auf {last4}",
-      "pendingNote": "G-ventZ richtet dieses Konto bei Paystack ein. Sie können kostenpflichtige Tickets verkaufen, sobald es aktiv ist.",
+      "pendingNote": "G-ventZ richtet dieses Konto beim Zahlungsanbieter ein. Sie können kostenpflichtige Tickets verkaufen, sobald es aktiv ist.",
       "change": "Auszahlungsdaten ändern"
     },
     "apply": {
@@ -105,7 +106,7 @@
     },
     "signedIn": "Angemeldet als {email}. Fragen zum Geld? Siehe <fees>Gebühren</fees> und <refunds>Erstattungen</refunds>.",
     "form": {
-      "help": "Wir verwenden diese Angaben, um Sie über Paystack zu bezahlen. Eine Person bei G-ventZ prüft jeden Antrag, in der Regel innerhalb von zwei Werktagen.",
+      "help": "Wir nutzen diese Angaben, um Sie über unsere Zahlungsanbieter Paystack und Flutterwave auszuzahlen. Eine Person bei G-ventZ prüft jeden Antrag, meist innerhalb von zwei Werktagen.",
       "legalName": "Rechtlicher Name oder Firmenname",
       "phone": "Telefonnummer",
       "country": "Land, in dem Sie ausgezahlt werden",
@@ -129,7 +130,7 @@
       "checking": "Wird geprüft...",
       "check": "Konto prüfen",
       "accountName": "Kontoinhaber: <b>{name}</b>",
-      "cantCheck": "Paystack kann in diesem Land keine Kontoinhaber prüfen. Prüfen Sie Bank und Nummer sorgfältig: Auszahlungen gehen genau auf dieses Konto.",
+      "cantCheck": "In diesem Land können Kontoinhaber nicht automatisch geprüft werden. Prüfen Sie Bank und Nummer sorgfältig: Auszahlungen gehen genau auf dieses Konto.",
       "confirmNamed": "Das ist das richtige Konto ({name})",
       "confirm": "Diese Bankdaten sind richtig"
     },
@@ -142,7 +143,9 @@
       "checkFailed": "Wir konnten dieses Konto nicht prüfen. Bitte versuchen Sie es erneut.",
       "uploadFailed": "Das Dokument wurde nicht hochgeladen. Bitte versuchen Sie es erneut.",
       "sendFailed": "Wir konnten Ihren Antrag nicht senden. Bitte versuchen Sie es erneut.",
-      "changeFailed": "Wir konnten Ihre Auszahlungsdaten nicht ändern. Bitte versuchen Sie es erneut."
+      "changeFailed": "Wir konnten Ihre Auszahlungsdaten nicht ändern. Bitte versuchen Sie es erneut.",
+      "chooseBank": "Wählen Sie Ihre Bank.",
+      "chooseBankFailed": "Wir konnten Ihre Bank nicht speichern. Bitte versuchen Sie es erneut."
     },
     "input": {
       "legalName": "Geben Sie Ihren rechtlichen Namen oder Firmennamen ein.",
@@ -154,6 +157,108 @@
       "documentMissing": "Fügen Sie Ihren amtlichen Ausweis oder Ihren Handelsregisterauszug hinzu.",
       "documentTooLarge": "Das Dokument ist größer als 10 MB. Bitte verwenden Sie eine kleinere Datei.",
       "documentType": "Verwenden Sie für das Dokument eine JPG-, PNG- oder PDF-Datei."
+    },
+    "providers": {
+      "title": "Zahlungsanbieter",
+      "active": "{provider} · bereit",
+      "pending": "{provider} · wird eingerichtet...",
+      "needsHost": "{provider} · wählen Sie Ihre Bank",
+      "failed": "{provider} · konnte nicht eingerichtet werden",
+      "failedNote": "G-ventZ wurde informiert und versucht es erneut.",
+      "needsHostNote": "{provider} konnte Ihre Bank nicht zuordnen. Wählen Sie sie aus der Liste von {provider}; Ihre Kontonummer bleibt gleich.",
+      "chooseBank": "Ihre Bank in der Liste von {provider}",
+      "save": "Bank speichern",
+      "saving": "Wird gespeichert...",
+      "used": "wird für neue kostenpflichtige Verkäufe genutzt"
+    },
+    "paused": {
+      "title": "Kostenpflichtige Tickets sind pausiert",
+      "noProvider": "Derzeit nimmt kein Zahlungsanbieter Zahlungen für {country} an, daher können Gäste keine kostenpflichtigen Tickets kaufen. Kostenlose Tickets funktionieren weiterhin. Sie müssen nichts tun.",
+      "noSubaccount": "Ihr Auszahlungskonto bei {provider} ist noch nicht bereit, daher können Gäste keine kostenpflichtigen Tickets kaufen. Kostenlose Tickets funktionieren weiterhin. Wir schließen die Einrichtung ab.",
+      "needsHost": "Ihr Auszahlungskonto bei {provider} benötigt Ihre Bank, daher können Gäste keine kostenpflichtigen Tickets kaufen. Wählen Sie Ihre Bank unter Auszahlungskonto, um wieder zu verkaufen."
+    }
+  },
+  "page": {
+    "metaTitle": "Ihr Konto · G-ventZ",
+    "title": "Ihr Konto",
+    "subtitle": "Ihre Angaben, Einstellungen und wie Sie sich anmelden.",
+    "signedOut": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
+    "saveFailed": "Das konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.",
+    "profile": {
+      "title": "Profil",
+      "avatar": "Profilbild",
+      "avatarHint": "JPEG, PNG oder WebP, bis zu 5 MB.",
+      "upload": "Bild hochladen",
+      "replace": "Ersetzen",
+      "remove": "Entfernen",
+      "uploading": "Wird hochgeladen…",
+      "avatarSaved": "Profilbild gespeichert.",
+      "avatarRemoved": "Profilbild entfernt.",
+      "avatarType": "Verwenden Sie ein JPEG-, PNG- oder WebP-Bild.",
+      "avatarSize": "Dieses Bild ist größer als 5 MB. Bitte wählen Sie ein kleineres.",
+      "avatarFailed": "Das Bild konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.",
+      "signedOut": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
+      "name": "Name",
+      "email": "E-Mail-Adresse",
+      "emailHint": "Mit dieser E-Mail-Adresse melden Sie sich an.",
+      "phoneCountry": "Landesvorwahl",
+      "phone": "Telefonnummer",
+      "phoneHint": "Veranstalter können Sie darüber zu Veranstaltungen kontaktieren, die Sie besuchen.",
+      "phonePlaceholder": "Ihre Nummer",
+      "gender": "Geschlecht",
+      "genderNone": "Auswählen",
+      "save": "Speichern",
+      "saving": "Wird gespeichert…",
+      "saved": "Ihre Angaben sind gespeichert.",
+      "fixErrors": "Bitte korrigieren Sie die unten markierten Felder.",
+      "errors": {
+        "nameShort": "Geben Sie Ihren Namen ein (mindestens 2 Zeichen).",
+        "nameLong": "Ihr Name darf höchstens 100 Zeichen lang sein.",
+        "phoneInvalid": "Geben Sie eine gültige Telefonnummer für das gewählte Land ein.",
+        "genderInvalid": "Wählen Sie eine der Optionen."
+      }
+    },
+    "preferences": {
+      "title": "Einstellungen",
+      "language": "Sprache",
+      "languageHint": "Die Sprache von G-ventZ und der E-Mails, die wir Ihnen senden.",
+      "languageSaving": "Sprache wird geändert…",
+      "emailTitle": "E-Mails",
+      "emailHint": "Tickets, Belege und Sicherheits-E-Mails erhalten Sie immer, unabhängig von Ihrer Auswahl hier.",
+      "on": "{what}: an",
+      "off": "{what}: aus",
+      "failed": "Das konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.",
+      "email": {
+        "announcements": {
+          "title": "Mitteilungen von Veranstaltern",
+          "hint": "Neuigkeiten des Veranstalters zu Veranstaltungen, für die Sie Tickets haben."
+        },
+        "followedHosts": {
+          "title": "Neue Veranstaltungen von Veranstaltern, denen Sie folgen",
+          "hint": "Eine E-Mail, wenn ein Veranstalter, dem Sie folgen, eine Veranstaltung veröffentlicht."
+        },
+        "product": {
+          "title": "Neuigkeiten von G-ventZ",
+          "hint": "Gelegentliche Neuigkeiten zu neuen Funktionen und Angeboten."
+        }
+      }
+    },
+    "security": {
+      "title": "Anmeldung & Sicherheit",
+      "intro": "Sie melden sich mit einem Code an, den wir an Ihre E-Mail-Adresse senden – ein Passwort gibt es nicht. Fügen Sie einen Passkey oder eine Authenticator-App als zweiten Schritt hinzu, um Ihr Konto zusätzlich zu schützen.",
+      "confirmHint": "Bestätigen Sie mit einer Ihrer Methoden, dass Sie es sind, um sie zu verwalten."
+    },
+    "sessions": {
+      "title": "Sitzungen",
+      "hint": "Auf einem gemeinsam genutzten oder verlorenen Gerät angemeldet? Melden Sie sich überall ab, auch hier.",
+      "button": "Auf allen Geräten abmelden",
+      "confirmTitle": "Auf allen Geräten abmelden?",
+      "confirmText": "Sie werden auf allen Smartphones, Tablets und Computern abgemeldet, auch auf diesem. Für die Offline-Nutzung gespeicherte Tickets werden von diesem Gerät entfernt.",
+      "confirm": "Überall abmelden",
+      "signingOut": "Abmeldung läuft…",
+      "cancel": "Abbrechen",
+      "close": "Schließen",
+      "failed": "Wir konnten Sie nicht auf allen Geräten abmelden. Bitte versuchen Sie es erneut."
     }
   }
 }

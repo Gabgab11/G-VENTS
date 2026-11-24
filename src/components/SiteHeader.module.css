@@ -1,29 +1,180 @@
-/* SiteHeader (Change 4, DS4). One row at every width: on phones the links move into the menu sheet. */
-.header { display: flex; align-items: center; gap: var(--space-5); min-height: 64px; padding: var(--space-3) 0 var(--space-5); }
-.header :global(.back-link) { display: grid; place-items: center; flex: none; width: 40px; height: 40px; padding: 0; border-radius: var(--radius-full); border: 1px solid var(--color-border-strong); background: var(--color-surface); color: var(--color-text); font-size: var(--text-heading-3); line-height: 1; cursor: pointer; }
-.header :global(.back-link):hover { background: var(--color-surface-raised); }
-.logo { flex: none; font-family: var(--font-display); font-weight: var(--weight-heavy); font-size: var(--text-logo); line-height: var(--leading-logo); letter-spacing: -0.4px; white-space: nowrap; color: var(--color-text); text-decoration: none; }
+/* The floating header (Change 5, FR-34, D92): a fixed, see-through bar whose groups are rounded
+   pills on a blurred surface, so the page scrolls underneath. The spacer keeps the bar's height in
+   the page, so nothing starts hidden under it. Phones: logo, search and the menu sheet. */
+.spacer {
+  --pill: var(--control-height);
+  flex: none;
+  height: calc(env(safe-area-inset-top, 0px) + var(--space-3) + var(--pill) + var(--space-5));
+}
+
+/* header.bar.bar: page rules for their children (.stage-content > * { position: relative }, .legal > * { max-width }) must not move it. */
+header.bar.bar {
+  --pill: var(--control-height);
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  max-width: none; /* .legal > * caps its children's width */
+  margin: 0;
+  z-index: var(--z-header);
+  padding-block-start: calc(env(safe-area-inset-top, 0px) + var(--space-3));
+  padding-inline: max(var(--gutter), env(safe-area-inset-left, 0px)) max(var(--gutter), env(safe-area-inset-right, 0px));
+  pointer-events: none; /* only the pills take clicks; the page between them stays usable */
+}
+.row { display: flex; align-items: center; gap: var(--space-2); }
+.row > * { pointer-events: auto; }
+
+/* One pill: soft surface, hairline edge, light shadow, blur of whatever scrolls beneath. */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--pill);
+  padding-inline: var(--space-4);
+  border: 1px solid color-mix(in srgb, var(--color-border) 80%, transparent);
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--color-surface) 78%, transparent);
+  -webkit-backdrop-filter: saturate(1.6) blur(14px);
+  backdrop-filter: saturate(1.6) blur(14px);
+  box-shadow: var(--shadow-1), 0 6px 20px color-mix(in srgb, var(--tone-ink) 8%, transparent);
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
+  white-space: nowrap;
+}
+button.pill { cursor: pointer; }
+.pill:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .pill { background: var(--color-surface); }
+}
+
+.back { flex: none; display: inline-flex; }
+.back :global(.back-link) {
+  display: grid;
+  place-items: center;
+  width: var(--pill);
+  height: var(--pill);
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--color-border) 80%, transparent);
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--color-surface) 78%, transparent);
+  -webkit-backdrop-filter: saturate(1.6) blur(14px);
+  backdrop-filter: saturate(1.6) blur(14px);
+  box-shadow: var(--shadow-1);
+  color: var(--color-text);
+  font-size: var(--text-heading-3);
+  line-height: 1;
+  cursor: pointer;
+}
+.back :global(.back-link):hover { background: var(--color-surface); }
+[dir="rtl"] .back :global(.back-link) { transform: scaleX(-1); }
+
+.logo { flex: none; gap: 0; padding-inline: var(--space-5); font-family: var(--font-display); font-weight: var(--weight-heavy); font-size: var(--text-logo); line-height: var(--leading-logo); letter-spacing: -0.4px; }
 .logo b { color: var(--color-brand-z); }
-.nav { display: flex; gap: var(--space-1); margin-inline-end: auto; }
-.link { padding: var(--space-2) var(--space-3); border-radius: var(--radius-full); color: var(--color-text-muted); font-size: var(--text-body-sm); font-weight: var(--weight-semibold); text-decoration: none; white-space: nowrap; }
-.link:hover { color: var(--color-text); background: var(--color-surface); }
-.link[aria-current="page"] { color: var(--color-text); background: var(--color-surface); }
-.actions { display: flex; align-items: center; gap: var(--space-2); margin-inline-start: auto; }
-.actions > * { flex: none; white-space: nowrap; }
+
+.nav { gap: 2px; padding-inline: var(--space-1); }
+.link { display: inline-flex; align-items: center; min-height: 36px; padding-inline: var(--space-3); border-radius: var(--radius-full); color: var(--color-text-muted); text-decoration: none; }
+.link:hover { color: var(--color-text); background: var(--color-surface-raised); }
+.link[aria-current="page"] { color: var(--color-text); background: var(--color-surface-raised); }
+.link:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 1px; }
+
+.end { display: flex; align-items: center; gap: var(--space-2); margin-inline-start: auto; }
+.end > * { flex: none; }
 .wide { display: contents; }
-/* Doubled class: Button.module.css sets display and may load after this file on some pages. */
-.menuButton.menuButton { display: none; }
+
+.search { min-width: 200px; color: var(--color-text-muted); }
+.search:hover { color: var(--color-text); }
+.searchLabel { flex: 1; text-align: start; }
+.kbd { padding: 2px var(--space-2); border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-surface-raised); color: var(--color-text-muted); font-family: inherit; font-size: var(--text-caption); font-weight: var(--weight-semibold); line-height: var(--leading-caption); }
+
+/* The colour-mode switch and language menu are pills of their own. */
+.mode :global(.cm) {
+  height: var(--pill);
+  align-items: center;
+  padding: var(--space-1) 6px;
+  border-color: color-mix(in srgb, var(--color-border) 80%, transparent);
+  background: color-mix(in srgb, var(--color-surface) 78%, transparent);
+  -webkit-backdrop-filter: saturate(1.6) blur(14px);
+  backdrop-filter: saturate(1.6) blur(14px);
+  box-shadow: var(--shadow-1);
+}
+.lang :global(.lang-menu > summary) {
+  min-height: var(--pill);
+  border-color: color-mix(in srgb, var(--color-border) 80%, transparent);
+  background: color-mix(in srgb, var(--color-surface) 78%, transparent);
+  -webkit-backdrop-filter: saturate(1.6) blur(14px);
+  backdrop-filter: saturate(1.6) blur(14px);
+  box-shadow: var(--shadow-1);
+}
+
+.account { gap: var(--space-2); padding-inline: 6px var(--space-3); }
+.account[data-state="open"] { background: var(--color-surface); }
+.avatar { flex: none; }
+.who { display: grid; text-align: start; line-height: var(--leading-caption); }
+.who > span:first-child { max-width: 14ch; overflow: hidden; text-overflow: ellipsis; }
+.role { color: var(--color-text-muted); font-size: var(--text-caption); font-weight: var(--weight-medium); }
+.chevron { color: var(--color-text-muted); }
+.signIn { padding-inline: var(--space-5); }
+
+/* Doubled class: global button styles may load after this file on some pages. */
+.menuButton.menuButton { display: none; justify-content: center; width: var(--pill); padding: 0; }
+
+/* The menu sheet (phones). */
 .sheetNav { display: grid; gap: var(--space-1); }
-.sheetLink { display: flex; align-items: center; min-height: var(--control-height); padding: 0 var(--space-3); border-radius: var(--radius-md); color: var(--color-text); font-size: var(--text-body); font-weight: var(--weight-semibold); text-decoration: none; }
+.sheetLink {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: var(--control-height);
+  padding: 0 var(--space-3);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: none;
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+  text-align: start;
+  text-decoration: none;
+  cursor: pointer;
+}
 .sheetLink:hover, .sheetLink[aria-current="page"] { background: var(--color-surface-raised); }
-.sheetRow { display: flex; align-items: center; gap: var(--space-3); padding-top: var(--space-4); margin-top: var(--space-4); border-top: 1px solid var(--color-border); }
+.sheetLink:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 1px; }
+.sheetAccount { padding-block-start: var(--space-4); margin-block-start: var(--space-4); border-block-start: 1px solid var(--color-border); }
+.sheetWho { display: grid; min-width: 0; line-height: var(--leading-body-sm); }
+.sheetWho > span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sheetHead { display: flex; align-items: center; gap: var(--space-3); padding: 0 var(--space-3) var(--space-3); font-weight: var(--weight-semibold); }
+.sheetSignIn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--control-height);
+  border-radius: var(--radius-full);
+  background: var(--color-inverse);
+  color: var(--color-on-inverse);
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
+}
+.sheetRow { display: flex; align-items: center; gap: var(--space-3); padding-block-start: var(--space-4); margin-block-start: var(--space-4); border-block-start: 1px solid var(--color-border); }
 .sheetRow :global(.lang-menu > summary) { padding: var(--space-2) var(--space-3); border: 1px solid var(--color-border-strong); }
 .sheetRow :global(.lang-menu .lang-code) { display: inline; }
 .sheetRow :global(.lang-menu .lang-list) { inset-inline-end: auto; inset-inline-start: 0; }
-@media (max-width: 720px) {
-  .header { gap: var(--space-3); }
+
+/* Narrower desktops: search and account shrink to icons. */
+@media (max-width: 1100px) {
+  .search { min-width: 0; }
+  .searchLabel, .kbd { display: none; }
+  .who, .chevron { display: none; }
+  .account { padding-inline: 7px; }
+}
+
+@media (max-width: 820px) {
   .nav { display: none; }
   .wide { display: none; }
   .menuButton.menuButton { display: inline-flex; }
+  .search { justify-content: center; width: var(--pill); padding: 0; }
+  .logo { padding-inline: var(--space-4); }
 }
-@media print { .header { display: none; } }
+
+@media print { .bar, .spacer { display: none; } }

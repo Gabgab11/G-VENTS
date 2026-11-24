@@ -108,3 +108,5 @@
   .thumb { inline-size: 44px; block-size: 44px; }
   .barTitle { font-size: var(--text-heading-3); line-height: var(--leading-heading-3); }
 }
+/* How a guest can pay on the provider's page (Change 5 chunk 4): text marks, no brand logos. */
+.methods { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }

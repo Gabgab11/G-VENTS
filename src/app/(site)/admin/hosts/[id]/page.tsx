@@ -2,16 +2,41 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { api, data } from "@/lib/api/server";
 import { adminCall, formatDate, formatMinor, formatMoneyList } from "@/lib/admin";
-import { APPLICATION_STATUS, PAYOUT_COUNTRIES } from "@/lib/payment-text";
+import { APPLICATION_STATUS, PAYOUT_COUNTRIES, providerName } from "@/lib/payment-text";
+import type { components } from "@/lib/api/schema";
 import { isUuid } from "@/lib/forms";
-import { setHostVerified, suspendHost, unsuspendHost } from "../../actions";
+import { Badge, Button, Table, Td, Th, type BadgeTone } from "@/design";
+import { retrySubaccount, setHostVerified, suspendHost, unsuspendHost } from "../../actions";
 import Notice from "../../Notice";
+
+type Subaccount = components["schemas"]["PayoutSubaccountDto"];
+
+const SUB_STATUS: Record<Subaccount["status"], { text: string; tone: BadgeTone }> = {
+  active: { text: "Active", tone: "success" },
+  pending: { text: "Setting up", tone: "warning" },
+  needs_host: { text: "Waiting for the host's bank", tone: "warning" },
+  failed: { text: "Failed", tone: "danger" },
+};
+
+/** The host's payout subaccounts, one per provider (PS10–PS13); null when the API can't say. */
+async function loadSubaccounts(id: string): Promise<Subaccount[] | null> {
+  try {
+    const res = data(await (await api()).GET("/v1/admin/hosts/{id}/subaccounts", { params: { path: { id } } }));
+    return res.payoutAccount?.subaccounts ?? [];
+  } catch (error) {
+    console.error(`[admin] subaccounts: ${(error as Error).message}`);
+    return null;
+  }
+}
 
 export default async function AdminHost({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ ok?: string; err?: string }> }) {
   const { id } = await params;
   const sp = await searchParams;
   if (!isUuid(id)) notFound();
-  const h = await adminCall(async () => data(await (await api()).GET("/v1/admin/hosts/{id}", { params: { path: { id } } })), `/admin/hosts/${id}`);
+  const [h, subaccounts] = await Promise.all([
+    adminCall(async () => data(await (await api()).GET("/v1/admin/hosts/{id}", { params: { path: { id } } })), `/admin/hosts/${id}`),
+    loadSubaccounts(id),
+  ]);
   // AdminHostDetailDto doesn't carry the badge or the handle yet; read them when the API adds them.
   const extra = h as typeof h & { verified?: boolean; verifiedAt?: string | null; handle?: string | null };
   const verified = extra.verified;
@@ -54,6 +79,37 @@ export default async function AdminHost({ params, searchParams }: { params: Prom
             {h.payoutAccount.subaccountCode && <> <code className="ad-code">{h.payoutAccount.subaccountCode}</code></>}
             {h.payoutAccount.activatedAt && <span className="muted small"> · active since {formatDate(h.payoutAccount.activatedAt)}</span>}
           </p>
+        )}
+        {h.payoutAccount && (
+          <>
+            <h3 className="panel-label" id="ad-host-subaccounts">Payout subaccounts</h3>
+            {subaccounts === null ? <p className="muted small">Subaccounts aren&apos;t available right now.</p> : subaccounts.length === 0 ? <p className="muted small">No subaccounts yet.</p> : (
+              <Table aria-labelledby="ad-host-subaccounts">
+                <thead><tr><Th>Provider</Th><Th>Status</Th><Th>Bank code</Th><Th>Last error</Th><Th><span className="sr-only">Retry</span></Th></tr></thead>
+                <tbody>{subaccounts.map((sa) => (
+                  <tr key={sa.provider}>
+                    <Td label="Provider"><b>{providerName(sa.provider)}</b></Td>
+                    <Td label="Status">
+                      <Badge tone={SUB_STATUS[sa.status].tone}>{SUB_STATUS[sa.status].text}</Badge>
+                      {sa.activatedAt && <span className="muted small"> · since {formatDate(sa.activatedAt)}</span>}
+                      {sa.attempts > 0 && sa.status !== "active" && <span className="muted small"> · {sa.attempts} {sa.attempts === 1 ? "attempt" : "attempts"}</span>}
+                    </Td>
+                    <Td label="Bank code">{sa.providerBankCode ? <code className="ad-code">{sa.providerBankCode}</code> : "—"}</Td>
+                    <Td label="Last error">{sa.lastError ?? "—"}</Td>
+                    <Td>
+                      {(sa.status === "failed" || sa.status === "needs_host") && (
+                        <form action={retrySubaccount}>
+                          <input type="hidden" name="host_id" value={h.id} />
+                          <input type="hidden" name="provider" value={sa.provider} />
+                          <Button type="submit" size="sm" variant="secondary" aria-label={`Retry the ${providerName(sa.provider)} subaccount`}>Retry</Button>
+                        </form>
+                      )}
+                    </Td>
+                  </tr>
+                ))}</tbody>
+              </Table>
+            )}
+          </>
         )}
         {h.debts.length === 0 ? <p className="muted small">Owes nothing.</p> : (
           <div className="ad-scroll">

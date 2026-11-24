@@ -198,10 +198,11 @@
     "wholeNumber": "استخدم رقمًا صحيحًا، مثل 5000.",
     "working": "جارٍ حساب الرسوم...",
     "summary": "يدفع الضيف <b>{guest}</b> · تستلم <b>{host}</b>",
-    "breakdown": "(رسوم G-ventZ {fee} + Paystack نحو {charge})",
-    "breakdownVat": "(رسوم G-ventZ {fee} + ضريبة القيمة المضافة {vat} + Paystack نحو {charge})",
+    "breakdown": "(رسوم G-ventZ {fee} + {provider} نحو {charge})",
+    "breakdownVat": "(رسوم G-ventZ {fee} + ضريبة القيمة المضافة {vat} + {provider} نحو {charge})",
     "enterPrice": "أدخل سعرًا.",
-    "unavailable": "مثال الرسوم غير متاح حاليًا."
+    "unavailable": "مثال الرسوم غير متاح حاليًا.",
+    "providerFallback": "مزوّد الدفع"
   },
   "validation": {
     "title": "يجب أن يتكون اسم الفعالية من 3 إلى 140 حرفًا.",

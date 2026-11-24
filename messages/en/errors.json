@@ -172,13 +172,17 @@
   "payment": {
     "forbidden": "You do not have permission to do that.",
     "own_application": "Another staff member must review your own application or payout account.",
-    "provider_unavailable": "We couldn't reach the payment service. Please try again."
+    "provider_unavailable": "We couldn't reach the payment service. Please try again.",
+    "paid_tickets_paused": "Paid tickets are paused for this event right now. Free tickets still work."
   },
   "payout": {
     "account_unresolved": "The bank couldn't find this account. Check the bank and account number.",
-    "country_unavailable": "Paystack isn't available for this country yet.",
+    "country_unavailable": "Paid tickets aren't available for this country yet.",
     "not_approved": "You can change payout details once you are approved to sell paid tickets.",
-    "not_pending": "There is no payout account waiting to be created."
+    "not_pending": "There is no payout account waiting to be created.",
+    "bank_not_listed": "Choose your bank from this provider's list.",
+    "subaccount_not_waiting": "This provider isn't waiting for you to choose your bank.",
+    "subaccount_not_found": "There is no payout account with this provider yet."
   },
   "places": {
     "bad_request": "Check the search and try again.",
@@ -239,7 +243,12 @@
     "fee_currency_invalid": "Use a three-letter currency code such as NGN or USD.",
     "fee_invalid": "Enter a valid fee.",
     "provider_not_configured": "This payment provider isn’t set up for this environment yet.",
-    "vat_invalid": "The VAT rate is in basis points: a whole number from 0 to 10000 (100%)."
+    "vat_invalid": "The VAT rate is in basis points: a whole number from 0 to 10000 (100%).",
+    "reason_required": "Give a reason of 10 to 500 characters for changing the active provider.",
+    "active_provider_invalid": "This provider can't be the active provider yet: switch it on, set its keys and confirm a country's charge first.",
+    "active_provider_off": "The active provider can't be switched off. Make another provider active first.",
+    "country_not_ready": "This country can't be switched on yet: it needs keys, a G-ventZ fee, a VAT rate and a confirmed charge.",
+    "charges_invalid": "Charges are whole numbers: the percentage in basis points (0 to 10000), amounts in minor units, from 0."
   },
   "staff": {
     "already_member": "This person is already G-ventZ staff.",

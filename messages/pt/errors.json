@@ -172,13 +172,17 @@
   "payment": {
     "forbidden": "Você não tem permissão para fazer isso.",
     "own_application": "Outro membro da equipe precisa analisar sua própria solicitação ou conta de repasse.",
-    "provider_unavailable": "Não foi possível acessar o serviço de pagamento. Tente novamente."
+    "provider_unavailable": "Não foi possível acessar o serviço de pagamento. Tente novamente.",
+    "paid_tickets_paused": "Os ingressos pagos deste evento estão pausados no momento. Os ingressos gratuitos continuam funcionando."
   },
   "payout": {
     "account_unresolved": "O banco não encontrou esta conta. Confira o banco e o número da conta.",
-    "country_unavailable": "O Paystack ainda não está disponível neste país.",
+    "country_unavailable": "Os ingressos pagos ainda não estão disponíveis para este país.",
     "not_approved": "Você poderá alterar os dados de repasse quando for aprovado para vender ingressos pagos.",
-    "not_pending": "Não há nenhuma conta de repasse aguardando criação."
+    "not_pending": "Não há nenhuma conta de repasse aguardando criação.",
+    "bank_not_listed": "Escolha o seu banco na lista deste provedor.",
+    "subaccount_not_waiting": "Este provedor não está aguardando você escolher o seu banco.",
+    "subaccount_not_found": "Ainda não há uma conta de repasse com este provedor."
   },
   "places": {
     "bad_request": "Confira a busca e tente novamente.",
@@ -239,7 +243,12 @@
     "fee_currency_invalid": "Use um código de moeda de três letras, como NGN ou USD.",
     "fee_invalid": "Digite uma taxa válida.",
     "provider_not_configured": "Este provedor de pagamento ainda não está configurado para este ambiente.",
-    "vat_invalid": "A alíquota de IVA é em pontos-base: um número inteiro de 0 a 10000 (100%)."
+    "vat_invalid": "A alíquota de IVA é em pontos-base: um número inteiro de 0 a 10000 (100%).",
+    "reason_required": "Informe um motivo de 10 a 500 caracteres para trocar o provedor ativo.",
+    "active_provider_invalid": "Este provedor ainda não pode ser o provedor ativo: ative-o, configure as chaves e confirme primeiro a tarifa de um país.",
+    "active_provider_off": "O provedor ativo não pode ser desativado. Torne outro provedor ativo primeiro.",
+    "country_not_ready": "Este país ainda não pode ser ativado: precisa de chaves, de uma taxa da G-ventZ, de uma alíquota de IVA e de uma tarifa confirmada.",
+    "charges_invalid": "As tarifas são números inteiros: o percentual em pontos-base (0 a 10000) e os valores em unidades menores, a partir de 0."
   },
   "staff": {
     "already_member": "Esta pessoa já faz parte da equipe da G-ventZ.",

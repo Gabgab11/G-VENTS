@@ -20,7 +20,13 @@
     "account": "账户",
     "platformAdmin": "G-ventZ 管理后台",
     "security": "两步登录和通行密钥",
-    "payouts": "收款"
+    "payouts": "收款",
+    "menu": "账户菜单：{name}，{role}",
+    "role": {
+      "guest": "嘉宾",
+      "host": "主办方",
+      "staff": "工作人员"
+    }
   },
   "language": {
     "label": "语言",
@@ -32,5 +38,33 @@
   },
   "errors": {
     "generic": "出了点问题，请重试。"
+  },
+  "search": {
+    "open": "搜索活动、主办方和地点",
+    "label": "搜索",
+    "title": "搜索",
+    "inputLabel": "搜索 G-ventZ",
+    "placeholder": "活动、主办方、类别或城市",
+    "resultsLabel": "搜索结果",
+    "close": "关闭搜索",
+    "groups": {
+      "recent": "最近搜索",
+      "events": "活动",
+      "hosts": "主办方",
+      "categories": "类别",
+      "cities": "城市",
+      "discover": "发现"
+    },
+    "clearRecent": "清除最近搜索",
+    "hint": "请输入至少两个字符以搜索活动、主办方、类别和城市。",
+    "loading": "正在搜索…",
+    "noResults": "暂无与“{query}”匹配的结果。",
+    "error": "搜索暂时不可用，请稍后再试。",
+    "count": "{count, plural, other {# 个结果}}",
+    "events": "{count, plural, other {# 场活动}}",
+    "all": "在“发现”中搜索“{query}”",
+    "online": "线上",
+    "verified": "已认证",
+    "verifiedHost": "已认证主办方"
   }
 }

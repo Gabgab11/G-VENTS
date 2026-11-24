@@ -20,7 +20,13 @@
     "account": "الحساب",
     "platformAdmin": "إدارة G-ventZ",
     "security": "تسجيل الدخول بخطوتين ومفاتيح المرور",
-    "payouts": "المدفوعات"
+    "payouts": "المدفوعات",
+    "menu": "قائمة الحساب: {name}، {role}",
+    "role": {
+      "guest": "ضيف",
+      "host": "منظِّم",
+      "staff": "فريق G-ventZ"
+    }
   },
   "language": {
     "label": "اللغة",
@@ -32,5 +38,33 @@
   },
   "errors": {
     "generic": "حدث خطأ ما. يُرجى المحاولة مرة أخرى."
+  },
+  "search": {
+    "open": "البحث عن الفعاليات والمنظِّمين والأماكن",
+    "label": "بحث",
+    "title": "بحث",
+    "inputLabel": "البحث في G-ventZ",
+    "placeholder": "فعاليات أو منظِّمون أو فئات أو مدن",
+    "resultsLabel": "نتائج البحث",
+    "close": "إغلاق البحث",
+    "groups": {
+      "recent": "عمليات البحث الأخيرة",
+      "events": "الفعاليات",
+      "hosts": "المنظِّمون",
+      "categories": "الفئات",
+      "cities": "المدن",
+      "discover": "استكشف"
+    },
+    "clearRecent": "مسح عمليات البحث الأخيرة",
+    "hint": "اكتب حرفين على الأقل للبحث عن الفعاليات والمنظِّمين والفئات والمدن.",
+    "loading": "جارٍ البحث…",
+    "noResults": "لا توجد نتائج تطابق «{query}» حتى الآن.",
+    "error": "البحث غير متاح حاليًا. يُرجى المحاولة مرة أخرى بعد قليل.",
+    "count": "{count, plural, zero {لا نتائج} one {نتيجة واحدة} two {نتيجتان} few {{count, number, ::group-off} نتائج} many {{count, number, ::group-off} نتيجة} other {{count, number, ::group-off} نتيجة}}",
+    "events": "{count, plural, zero {لا فعاليات} one {فعالية واحدة} two {فعاليتان} few {{count, number, ::group-off} فعاليات} many {{count, number, ::group-off} فعالية} other {{count, number, ::group-off} فعالية}}",
+    "all": "البحث عن «{query}» في صفحة استكشف",
+    "online": "عبر الإنترنت",
+    "verified": "موثَّق",
+    "verifiedHost": "منظِّم موثَّق"
   }
 }

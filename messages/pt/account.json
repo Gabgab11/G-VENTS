@@ -70,10 +70,11 @@
   "payouts": {
     "metaTitle": "Receber pagamentos · G-ventZ",
     "title": "Receber pagamentos",
-    "intro": "Venda ingressos pagos na G-ventZ. Os convidados pagam com Paystack e a sua parte vai direto para a sua conta bancária.",
+    "intro": "Venda ingressos pagos na G-ventZ. Os convidados pagam com Paystack ou Flutterwave, e a sua parte vai direto para a sua conta bancária.",
     "ok": {
       "submitted": "Solicitação enviada. Enviaremos um e-mail quando houver uma decisão.",
-      "payoutChanged": "Dados de repasse alterados. As vendas pagas ficam pausadas até a G-ventZ confirmar a nova conta; enviamos um e-mail para você."
+      "payoutChanged": "Dados de repasse alterados. As vendas pagas ficam pausadas até a G-ventZ confirmar a nova conta; enviamos um e-mail para você.",
+      "bankChosen": "Banco salvo. Sua conta de repasse com este provedor está sendo configurada."
     },
     "loadFailed": "Não conseguimos carregar seus dados de repasse. Atualize a página.",
     "status": {
@@ -95,7 +96,7 @@
       "pending": "Em configuração",
       "replaced": "Substituída",
       "line": "{bank} · final {last4}",
-      "pendingNote": "A G-ventZ está configurando esta conta com a Paystack. Você poderá vender ingressos pagos quando ela estiver ativa.",
+      "pendingNote": "A G-ventZ está configurando esta conta com o provedor de pagamento. Você poderá vender ingressos pagos quando ela estiver ativa.",
       "change": "Alterar dados de repasse"
     },
     "apply": {
@@ -105,7 +106,7 @@
     },
     "signedIn": "Conectado como {email}. Dúvidas sobre dinheiro? Veja as <fees>taxas</fees> e os <refunds>reembolsos</refunds>.",
     "form": {
-      "help": "Usamos estes dados para pagar você pela Paystack. Uma pessoa da G-ventZ analisa cada solicitação, normalmente em até dois dias úteis.",
+      "help": "Usamos esses dados para pagar você por meio dos nossos provedores de pagamento, Paystack e Flutterwave. Uma pessoa da G-ventZ analisa cada solicitação, normalmente em até dois dias úteis.",
       "legalName": "Nome legal ou razão social",
       "phone": "Número de telefone",
       "country": "País onde você recebe",
@@ -129,7 +130,7 @@
       "checking": "Verificando...",
       "check": "Verificar conta",
       "accountName": "Titular da conta: <b>{name}</b>",
-      "cantCheck": "A Paystack não consegue verificar o titular das contas neste país. Confira o banco e o número com cuidado: os repasses vão exatamente para esta conta.",
+      "cantCheck": "Neste país não é possível verificar automaticamente o titular das contas. Confira o banco e o número com cuidado: os repasses vão exatamente para esta conta.",
       "confirmNamed": "Esta é a conta certa ({name})",
       "confirm": "Estes dados bancários estão corretos"
     },
@@ -142,7 +143,9 @@
       "checkFailed": "Não conseguimos verificar esta conta. Tente novamente.",
       "uploadFailed": "O documento não foi enviado. Tente novamente.",
       "sendFailed": "Não conseguimos enviar sua solicitação. Tente novamente.",
-      "changeFailed": "Não conseguimos alterar seus dados de repasse. Tente novamente."
+      "changeFailed": "Não conseguimos alterar seus dados de repasse. Tente novamente.",
+      "chooseBank": "Escolha o seu banco.",
+      "chooseBankFailed": "Não foi possível salvar o seu banco. Tente novamente."
     },
     "input": {
       "legalName": "Digite seu nome legal ou razão social.",
@@ -154,6 +157,108 @@
       "documentMissing": "Adicione seu documento de identidade oficial ou o registro da sua empresa.",
       "documentTooLarge": "O documento tem mais de 10 MB. Use um arquivo menor.",
       "documentType": "Use um arquivo JPG, PNG ou PDF para o documento."
+    },
+    "providers": {
+      "title": "Provedores de pagamento",
+      "active": "{provider} · pronto",
+      "pending": "{provider} · configurando...",
+      "needsHost": "{provider} · escolha o seu banco",
+      "failed": "{provider} · não foi possível configurar",
+      "failedNote": "A G-ventZ já foi avisada e vai tentar novamente.",
+      "needsHostNote": "{provider} não conseguiu identificar o seu banco. Escolha-o na lista do {provider}; o número da sua conta continua o mesmo.",
+      "chooseBank": "Seu banco na lista do {provider}",
+      "save": "Salvar banco",
+      "saving": "Salvando...",
+      "used": "usado nas novas vendas pagas"
+    },
+    "paused": {
+      "title": "Os ingressos pagos estão pausados",
+      "noProvider": "No momento nenhum provedor de pagamento aceita pagamentos em {country}, então os convidados não podem comprar ingressos pagos. Os ingressos gratuitos continuam funcionando. Você não precisa fazer nada.",
+      "noSubaccount": "Sua conta de repasse com o {provider} ainda não está pronta, então os convidados não podem comprar ingressos pagos. Os ingressos gratuitos continuam funcionando. Vamos concluir a configuração.",
+      "needsHost": "Sua conta de repasse com o {provider} precisa do seu banco, então os convidados não podem comprar ingressos pagos. Escolha o seu banco em Conta de repasse para voltar a vender."
+    }
+  },
+  "page": {
+    "metaTitle": "Sua conta · G-ventZ",
+    "title": "Sua conta",
+    "subtitle": "Seus dados, suas preferências e como você entra.",
+    "signedOut": "Sua sessão terminou. Entre novamente.",
+    "saveFailed": "Não foi possível salvar. Tente novamente.",
+    "profile": {
+      "title": "Perfil",
+      "avatar": "Foto de perfil",
+      "avatarHint": "JPEG, PNG ou WebP, até 5 MB.",
+      "upload": "Enviar uma foto",
+      "replace": "Substituir",
+      "remove": "Remover",
+      "uploading": "Enviando…",
+      "avatarSaved": "Foto de perfil salva.",
+      "avatarRemoved": "Foto de perfil removida.",
+      "avatarType": "Use uma imagem JPEG, PNG ou WebP.",
+      "avatarSize": "Essa imagem tem mais de 5 MB. Escolha uma menor.",
+      "avatarFailed": "Não foi possível salvar a foto. Tente novamente.",
+      "signedOut": "Sua sessão terminou. Entre novamente.",
+      "name": "Nome",
+      "email": "E-mail",
+      "emailHint": "Você entra com este e-mail.",
+      "phoneCountry": "Código do país",
+      "phone": "Número de telefone",
+      "phoneHint": "Os organizadores podem usá-lo para entrar em contato sobre os eventos em que você vai.",
+      "phonePlaceholder": "Seu número",
+      "gender": "Gênero",
+      "genderNone": "Escolher",
+      "save": "Salvar",
+      "saving": "Salvando…",
+      "saved": "Seus dados foram salvos.",
+      "fixErrors": "Corrija os campos indicados abaixo.",
+      "errors": {
+        "nameShort": "Informe seu nome (pelo menos 2 caracteres).",
+        "nameLong": "Seu nome pode ter no máximo 100 caracteres.",
+        "phoneInvalid": "Informe um número de telefone válido para o país escolhido.",
+        "genderInvalid": "Escolha uma das opções."
+      }
+    },
+    "preferences": {
+      "title": "Preferências",
+      "language": "Idioma",
+      "languageHint": "O idioma do G-ventZ e dos e-mails que enviamos para você.",
+      "languageSaving": "Mudando o idioma…",
+      "emailTitle": "E-mails",
+      "emailHint": "Ingressos, recibos e e-mails de segurança sempre chegam, seja qual for a sua escolha aqui.",
+      "on": "{what}: ativado",
+      "off": "{what}: desativado",
+      "failed": "Não foi possível salvar. Tente novamente.",
+      "email": {
+        "announcements": {
+          "title": "Avisos dos organizadores",
+          "hint": "Novidades que o organizador envia sobre eventos para os quais você tem ingressos."
+        },
+        "followedHosts": {
+          "title": "Novos eventos de organizadores que você segue",
+          "hint": "Um e-mail quando um organizador que você segue publica um evento."
+        },
+        "product": {
+          "title": "Novidades do G-ventZ",
+          "hint": "Notícias ocasionais sobre novos recursos e ofertas."
+        }
+      }
+    },
+    "security": {
+      "title": "Login e segurança",
+      "intro": "Você entra com um código enviado para o seu e-mail, então não há senha para lembrar. Adicione uma chave de acesso ou um aplicativo autenticador como segunda etapa para mais proteção.",
+      "confirmHint": "Confirme que é você com um dos seus métodos para gerenciá-los."
+    },
+    "sessions": {
+      "title": "Sessões",
+      "hint": "Entrou em um dispositivo compartilhado ou perdido? Saia de todos os lugares, inclusive deste.",
+      "button": "Sair de todos os dispositivos",
+      "confirmTitle": "Sair de todos os dispositivos?",
+      "confirmText": "Você sairá da conta em todos os celulares, tablets e computadores, inclusive neste. Os ingressos salvos para uso off-line neste dispositivo serão removidos.",
+      "confirm": "Sair de todos",
+      "signingOut": "Saindo…",
+      "cancel": "Cancelar",
+      "close": "Fechar",
+      "failed": "Não foi possível sair de todos os dispositivos. Tente novamente."
     }
   }
 }
