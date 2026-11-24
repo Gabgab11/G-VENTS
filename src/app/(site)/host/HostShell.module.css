@@ -62,7 +62,8 @@
 /* Rail: a column of separate raised tiles */
 .railCol {
   position: sticky;
-  inset-block-start: var(--space-4);
+  /* Below the sticky brand card. */
+  inset-block-start: calc(var(--brand-h) + var(--space-4) * 2);
   align-self: start;
   block-size: calc(100dvh - var(--brand-h) - var(--space-4) * 3);
   min-block-size: 0;
@@ -275,14 +276,26 @@
 @media (min-width: 960px) {
   .shell {
     grid-template-columns: auto minmax(0, 1fr);
-    grid-template-rows: auto 1fr;
+    grid-template-rows: var(--brand-h) 1fr;
     grid-template-areas: "brand brand" "rail main";
     gap: var(--space-4);
     padding: var(--space-4);
   }
   .brand { grid-area: brand; display: flex; }
   /* Same row as the brand card, at the far end. */
-  .tools { grid-area: brand; display: flex; justify-self: end; align-self: center; position: relative; z-index: var(--z-header); }
+  /* The top row stays put while the page scrolls (TMI): the brand card and the tools are pinned to
+     the window, and their row keeps its height so the content starts below them. (Sticky can't do
+     this: a grid item only sticks inside its own short grid area.) The tools get the site header's
+     pill height, which lives on the header bar there. */
+  .brand { position: fixed; inset-block-start: var(--space-4); inset-inline-start: var(--space-4); z-index: var(--z-header); }
+  .tools {
+    --pill: var(--control-height);
+    position: fixed;
+    inset-block-start: calc(var(--space-4) + (var(--brand-h) - var(--control-height)) / 2);
+    inset-inline-end: var(--space-4);
+    display: flex;
+    z-index: var(--z-header);
+  }
   .railCol { grid-area: rail; display: grid; }
   .topbar, .tabbar { display: none; }
   .main {
