@@ -10,7 +10,6 @@ import SiteHeader from "@/components/SiteHeader";
 import ToastArea from "@/components/ToastArea";
 import { PageHeader } from "@/design";
 import { emailPreferencesFrom } from "./account-input";
-import type { AccountMe } from "./me";
 import ProfileSection from "./ProfileSection";
 import PreferencesSection from "./PreferencesSection";
 import SecuritySection from "./SecuritySection";
@@ -29,7 +28,7 @@ export default async function AccountPage({ searchParams }: { searchParams: Prom
   const sp = await searchParams;
   await requireUser("/account");
   const [me, mfa, lang, t] = await Promise.all([
-    (await api()).GET("/v1/me").then(data) as Promise<AccountMe>,
+    (await api()).GET("/v1/me").then(data),
     mfaState(),
     getLocale() as Promise<Locale>,
     getTranslations("account.page"),
@@ -49,10 +48,10 @@ export default async function AccountPage({ searchParams }: { searchParams: Prom
         <ProfileSection
           email={me.email}
           fullName={me.fullName ?? ""}
-          avatarUrl={me.avatarUrl ?? null}
+          avatarUrl={me.avatarUrl}
           phone={phone}
           countries={phoneCountryOptions(lang)}
-          gender={me.gender ?? null}
+          gender={me.gender}
         />
         <PreferencesSection language={lang} options={languages} email={emailPreferencesFrom(me.emailPreferences)} />
         <SecuritySection mfa={mfa} status={sp.security} formatDate={formatDate} />

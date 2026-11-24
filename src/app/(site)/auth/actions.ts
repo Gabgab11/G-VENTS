@@ -27,7 +27,8 @@ import {
 
 export async function signOut() {
   const supabase = await createSupabaseServerClient();
-  await supabase.auth.signOut();
+  // This device only; "Sign out of all devices" on /account ends every session.
+  await supabase.auth.signOut({ scope: "local" });
   revalidatePath("/", "layout");
   redirect("/");
 }

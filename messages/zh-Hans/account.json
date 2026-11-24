@@ -191,7 +191,7 @@
       "fixErrors": "请更正下方标出的字段。",
       "errors": {
         "nameShort": "请输入您的姓名（至少 2 个字符）。",
-        "nameLong": "姓名最多 120 个字符。",
+        "nameLong": "姓名最多 100 个字符。",
         "phoneInvalid": "请输入所选国家/地区的有效电话号码。",
         "genderInvalid": "请选择其中一个选项。"
       }

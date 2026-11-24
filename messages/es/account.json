@@ -191,7 +191,7 @@
       "fixErrors": "Corrija los campos marcados a continuación.",
       "errors": {
         "nameShort": "Introduzca su nombre (al menos 2 caracteres).",
-        "nameLong": "Su nombre puede tener como máximo 120 caracteres.",
+        "nameLong": "Su nombre puede tener como máximo 100 caracteres.",
         "phoneInvalid": "Introduzca un número de teléfono válido para el país elegido.",
         "genderInvalid": "Elija una de las opciones."
       }

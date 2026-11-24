@@ -23,12 +23,16 @@ export function AddPasskey({ next }: { next: string }) {
   const [name, setName] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  // The suggested name reads the browser (navigator), so it's set after hydration: the server and
+  // the first browser render both use the plain default, and nothing mismatches.
+  const [suggested, setSuggested] = useState(() => t("defaultName"));
+  useEffect(() => { setSuggested(defaultName(t)); }, [t]);
 
   async function add() {
     setBusy(true);
     setError("");
     try {
-      const started = await startPasskeyEnroll(name || defaultName(t));
+      const started = await startPasskeyEnroll(name || suggested);
       if ("error" in started) return setError(started.error);
       const cred = (await navigator.credentials.create({ publicKey: creationOptionsFromJSON(started.options) })) as PublicKeyCredential | null;
       if (!cred) return setError(t("errors.notCreated"));
@@ -47,7 +51,7 @@ export function AddPasskey({ next }: { next: string }) {
   return (
     <div className="stack">
       <Field label={t("nameLabel")}>
-        <Input value={name} onChange={(e) => setName(e.target.value)} maxLength={60} placeholder={defaultName(t)} />
+        <Input value={name} onChange={(e) => setName(e.target.value)} maxLength={60} placeholder={suggested} />
       </Field>
       {error && <p className="error" role="alert">{error}</p>}
       <Button variant="primary" onClick={add} disabled={busy || supported === null}>{busy ? t("waiting") : t("add")}</Button>

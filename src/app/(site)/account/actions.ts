@@ -8,7 +8,7 @@ import { ApiError, problemMessage } from "@/lib/api/problem";
 import { requireUser } from "@/lib/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { isEmailPreference, readProfileForm, type EmailPreference, type ProfileField } from "./account-input";
-import type { MePatch } from "./me";
+import type { components } from "@/lib/api/schema";
 
 // Your account (Change 5 chunk 3, FR-35, D93). Personal details and email preferences go to
 // PATCH /v1/me; the avatar is uploaded through /api/me/profile/images (the same route as host
@@ -22,8 +22,7 @@ export type Result = { ok: true } | { ok: false; message: string };
 
 const API_FIELDS: Record<string, ProfileField> = { fullName: "fullName", phone: "phone", gender: "gender" };
 
-async function patchMe(body: MePatch): Promise<void> {
-  // The body's new fields (phone, gender, avatarPath, emailPreferences) are in the API's contract (D93).
+async function patchMe(body: components["schemas"]["UpdateMeDto"]): Promise<void> {
   await (await api()).PATCH("/v1/me", { body });
 }
 

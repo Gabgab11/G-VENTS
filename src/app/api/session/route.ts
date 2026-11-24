@@ -34,9 +34,8 @@ export async function GET() {
     isHost = (events?.total ?? 0) > 0;
     // For the header's account pill (FR-34): the name, or the email's first part until one is set.
     name = me?.fullName?.trim() || me?.email?.split("@")[0] || undefined;
-    // avatarUrl arrives with the account page's /v1/me (D93); read it loosely until the types have it.
-    const avatar = (me as { avatarUrl?: unknown } | null)?.avatarUrl;
-    avatarUrl = typeof avatar === "string" && avatar ? avatar : null;
+    // The avatar set on Your account (D93), or initials.
+    avatarUrl = me?.avatarUrl || null;
   }
   return Response.json({ signedIn, isStaff, isHost, language, name, avatarUrl }, { headers: { "Cache-Control": "private, no-store" } });
 }

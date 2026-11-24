@@ -3,7 +3,7 @@
 import { isPhoneCountry, toE164 } from "@/lib/phone";
 
 export const NAME_MIN = 2;
-export const NAME_MAX = 120;
+export const NAME_MAX = 100;
 export const GENDERS = ["female", "male", "unspecified"] as const;
 export type Gender = (typeof GENDERS)[number];
 

@@ -191,7 +191,7 @@
       "fixErrors": "Please correct the fields marked below.",
       "errors": {
         "nameShort": "Enter your name (at least 2 characters).",
-        "nameLong": "Your name can be at most 120 characters.",
+        "nameLong": "Your name can be at most 100 characters.",
         "phoneInvalid": "Enter a valid phone number for the country you chose.",
         "genderInvalid": "Choose one of the options."
       }

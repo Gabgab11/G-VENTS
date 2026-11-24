@@ -32,7 +32,7 @@ describe("account profile form (FR-35)", () => {
       ok: false,
       fields: { fullName: "nameShort", phone: "phoneInvalid", gender: "genderInvalid" },
     });
-    expect(readProfileForm(form({ fullName: "x".repeat(121) }))).toEqual({ ok: false, fields: { fullName: "nameLong" } });
+    expect(readProfileForm(form({ fullName: "x".repeat(101) }))).toEqual({ ok: false, fields: { fullName: "nameLong" } });
   });
 });
 

@@ -13,7 +13,7 @@ export interface paths {
         };
         /**
          * Who am I?
-         * @description The signed-in user: verified email, profile, two-step sign-in level and staff status.
+         * @description The signed-in user: verified email, profile (with avatar, handle, verified badge and email preferences), whether they host, two-step sign-in level and staff status.
          */
         get: operations["MeController_getMe_v1"];
         put?: never;
@@ -23,7 +23,7 @@ export interface paths {
         head?: never;
         /**
          * Update my profile
-         * @description Changes only the fields sent: name, country, dashboard theme, language (en, es, fr, de, zh-Hans, pt, ar; null clears it).
+         * @description Changes only the fields sent: name (2-100), country, dashboard theme, language (en, es, fr, de, zh-Hans, pt, ar; null clears it), phone (E.164), gender, avatarPath (from the profile-images upload, kind avatar; null removes it) and email preferences (only the switches sent).
          */
         patch: operations["MeController_updateMe_v1"];
         trace?: never;
@@ -2184,6 +2184,14 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        EmailPreferencesDto: {
+            /** @description Hosts' announcements to their guests */
+            announcements: boolean;
+            /** @description "New event" emails from hosts you follow */
+            followedHosts: boolean;
+            /** @description News about G-ventZ */
+            product: boolean;
+        };
         MeDto: {
             /** Format: uuid */
             id: string;
@@ -2203,21 +2211,39 @@ export interface components {
              */
             language: "en" | "es" | "fr" | "de" | "zh-Hans" | "pt" | "ar" | null;
             /**
-             * @description The phone given at the last checkout (E.164), to prefill the next; null until given
+             * @description E.164; saved on the account page or at the last checkout (to prefill the next); null until given
              * @example +2348012345678
              */
             phone: string | null;
             /**
-             * @description The gender given at the last checkout; null until given
+             * @description Saved on the account page or at the last checkout; null until given
              * @enum {string|null}
              */
             gender: "female" | "male" | "unspecified" | null;
+            /** @description Public URL of the avatar (also the host profile picture); null when none */
+            avatarUrl: string | null;
+            /**
+             * @description The host handle; null until chosen
+             * @example ada-events
+             */
+            handle: string | null;
+            /** @description Owns an event or has an accepted role on one */
+            isHost: boolean;
+            /** @description Has the verified badge (given by staff) */
+            verified: boolean;
+            /** @description Optional emails; tickets, receipts and security emails are always sent */
+            emailPreferences: components["schemas"]["EmailPreferencesDto"];
             /**
              * @description aal2 when two-step sign-in was used for this session
              * @enum {string}
              */
             mfa: "aal1" | "aal2";
             isStaff: boolean;
+        };
+        UpdateEmailPreferencesDto: {
+            announcements?: boolean;
+            followedHosts?: boolean;
+            product?: boolean;
         };
         UpdateMeDto: {
             fullName?: string | null;
@@ -2233,6 +2259,23 @@ export interface components {
              * @enum {string|null}
              */
             language?: "en" | "es" | "fr" | "de" | "zh-Hans" | "pt" | "ar" | null;
+            /**
+             * @description With its country code; spaces, dashes, dots and brackets are dropped and the rest must be E.164. null or "" clears it
+             * @example +234 801 234 5678
+             */
+            phone?: string | null;
+            /**
+             * @description null clears it
+             * @enum {string|null}
+             */
+            gender?: "female" | "male" | "unspecified" | null;
+            /**
+             * @description A path from POST /v1/me/profile/images/upload-url (kind avatar), after the upload; null removes the avatar
+             * @example hosts/0190a000-0000-7000-8000-000000000001/avatar-1792900000000-a1b2c3.jpg
+             */
+            avatarPath?: string | null;
+            /** @description Only the switches sent change */
+            emailPreferences?: components["schemas"]["UpdateEmailPreferencesDto"];
         };
         PlaceInputDto: {
             /** @example ChIJ5yQ8wTH1OxARr3hxS7yEvr0 */
