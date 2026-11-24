@@ -70,10 +70,11 @@
   "payouts": {
     "metaTitle": "Cobrar · G-ventZ",
     "title": "Cobrar",
-    "intro": "Venda entradas de pago en G-ventZ. Los invitados pagan con Paystack y su parte va directamente a su cuenta bancaria.",
+    "intro": "Venda entradas de pago en G-ventZ. Los invitados pagan con Paystack o Flutterwave, y su parte va directamente a su cuenta bancaria.",
     "ok": {
       "submitted": "Solicitud enviada. Le escribiremos por correo electrónico cuando se decida.",
-      "payoutChanged": "Datos de pago modificados. Las ventas de pago se pausan hasta que G-ventZ confirme la nueva cuenta; le hemos enviado un correo electrónico."
+      "payoutChanged": "Datos de pago modificados. Las ventas de pago se pausan hasta que G-ventZ confirme la nueva cuenta; le hemos enviado un correo electrónico.",
+      "bankChosen": "Banco guardado. Se está configurando su cuenta de pagos con este proveedor."
     },
     "loadFailed": "No pudimos cargar sus datos de pago. Actualice la página.",
     "status": {
@@ -95,7 +96,7 @@
       "pending": "En configuración",
       "replaced": "Sustituida",
       "line": "{bank} · terminada en {last4}",
-      "pendingNote": "G-ventZ está configurando esta cuenta con Paystack. Podrá vender entradas de pago cuando esté activa.",
+      "pendingNote": "G-ventZ está configurando esta cuenta con el proveedor de pago. Podrá vender entradas de pago cuando esté activa.",
       "change": "Cambiar los datos de pago"
     },
     "apply": {
@@ -105,7 +106,7 @@
     },
     "signedIn": "Sesión iniciada como {email}. ¿Preguntas sobre dinero? Consulte las <fees>tarifas</fees> y los <refunds>reembolsos</refunds>.",
     "form": {
-      "help": "Usamos estos datos para pagarle a través de Paystack. Una persona de G-ventZ revisa cada solicitud, normalmente en dos días hábiles.",
+      "help": "Usamos estos datos para pagarle a través de nuestros proveedores de pago, Paystack y Flutterwave. Una persona de G-ventZ revisa cada solicitud, normalmente en un plazo de dos días hábiles.",
       "legalName": "Nombre legal o de la empresa",
       "phone": "Número de teléfono",
       "country": "País en el que cobra",
@@ -129,7 +130,7 @@
       "checking": "Comprobando...",
       "check": "Comprobar cuenta",
       "accountName": "Titular de la cuenta: <b>{name}</b>",
-      "cantCheck": "Paystack no puede comprobar el titular de las cuentas en este país. Revise con cuidado el banco y el número: los pagos se envían exactamente a esta cuenta.",
+      "cantCheck": "En este país no se puede comprobar automáticamente el titular de las cuentas. Revise con cuidado el banco y el número: los pagos se envían exactamente a esta cuenta.",
       "confirmNamed": "Esta es la cuenta correcta ({name})",
       "confirm": "Estos datos bancarios son correctos"
     },
@@ -142,7 +143,9 @@
       "checkFailed": "No pudimos comprobar esta cuenta. Vuelva a intentarlo.",
       "uploadFailed": "El documento no se subió. Vuelva a intentarlo.",
       "sendFailed": "No pudimos enviar su solicitud. Vuelva a intentarlo.",
-      "changeFailed": "No pudimos cambiar sus datos de pago. Vuelva a intentarlo."
+      "changeFailed": "No pudimos cambiar sus datos de pago. Vuelva a intentarlo.",
+      "chooseBank": "Elija su banco.",
+      "chooseBankFailed": "No pudimos guardar su banco. Inténtelo de nuevo."
     },
     "input": {
       "legalName": "Introduzca su nombre legal o el de su empresa.",
@@ -154,6 +157,25 @@
       "documentMissing": "Añada su documento de identidad oficial o el registro de su empresa.",
       "documentTooLarge": "El documento supera los 10 MB. Use un archivo más pequeño.",
       "documentType": "Use un archivo JPG, PNG o PDF para el documento."
+    },
+    "providers": {
+      "title": "Proveedores de pago",
+      "active": "{provider} · listo",
+      "pending": "{provider} · configurando...",
+      "needsHost": "{provider} · elija su banco",
+      "failed": "{provider} · no se pudo configurar",
+      "failedNote": "G-ventZ ya está informado y volverá a intentarlo.",
+      "needsHostNote": "{provider} no pudo identificar su banco. Elíjalo de la lista de {provider}; su número de cuenta no cambia.",
+      "chooseBank": "Su banco en la lista de {provider}",
+      "save": "Guardar banco",
+      "saving": "Guardando...",
+      "used": "se usa para las nuevas ventas de pago"
+    },
+    "paused": {
+      "title": "Las entradas de pago están en pausa",
+      "noProvider": "Ahora mismo ningún proveedor de pago acepta pagos en {country}, así que los invitados no pueden comprar entradas de pago. Las entradas gratuitas siguen funcionando. No necesita hacer nada.",
+      "noSubaccount": "Su cuenta de pagos con {provider} aún no está lista, así que los invitados no pueden comprar entradas de pago. Las entradas gratuitas siguen funcionando. Terminaremos de configurarla.",
+      "needsHost": "Su cuenta de pagos con {provider} necesita su banco, así que los invitados no pueden comprar entradas de pago. Elija su banco en Cuenta de pagos para volver a vender."
     }
   },
   "page": {

@@ -36,7 +36,7 @@ export default async function NewEventPage() {
       defaultTheme={defaultTheme}
       detectedCountry={detectedCountry}
       placesEnabled
-      paid={{ canSell: !!paid?.canSellPaid && !!paid.currency, currency: paid?.currency ?? null, reason: paid?.reason ?? "payments_off" }}
+      paid={{ canSell: !!paid?.canSellPaid && !!paid.currency, currency: paid?.currency ?? null, country: paid?.country ?? null, reason: paid?.reason ?? "payments_off" }}
     />
   );
 }

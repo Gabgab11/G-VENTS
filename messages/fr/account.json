@@ -70,10 +70,11 @@
   "payouts": {
     "metaTitle": "Être payé · G-ventZ",
     "title": "Être payé",
-    "intro": "Vendez des billets payants sur G-ventZ. Les invités paient avec Paystack et votre part est versée directement sur votre compte bancaire.",
+    "intro": "Vendez des billets payants sur G-ventZ. Les invités paient avec Paystack ou Flutterwave, et votre part est versée directement sur votre compte bancaire.",
     "ok": {
       "submitted": "Demande envoyée. Nous vous écrirons par e-mail une fois la décision prise.",
-      "payoutChanged": "Coordonnées de versement modifiées. Les ventes payantes sont suspendues jusqu'à ce que G-ventZ confirme le nouveau compte ; nous vous avons envoyé un e-mail."
+      "payoutChanged": "Coordonnées de versement modifiées. Les ventes payantes sont suspendues jusqu'à ce que G-ventZ confirme le nouveau compte ; nous vous avons envoyé un e-mail.",
+      "bankChosen": "Banque enregistrée. Votre compte de versement auprès de ce prestataire est en cours de configuration."
     },
     "loadFailed": "Nous n'avons pas pu charger vos coordonnées de versement. Veuillez actualiser la page.",
     "status": {
@@ -95,7 +96,7 @@
       "pending": "En cours de configuration",
       "replaced": "Remplacé",
       "line": "{bank} · se terminant par {last4}",
-      "pendingNote": "G-ventZ configure ce compte avec Paystack. Vous pourrez vendre des billets payants dès qu'il sera actif.",
+      "pendingNote": "G-ventZ configure ce compte avec le prestataire de paiement. Vous pourrez vendre des billets payants dès qu'il sera actif.",
       "change": "Modifier les coordonnées de versement"
     },
     "apply": {
@@ -105,7 +106,7 @@
     },
     "signedIn": "Connecté en tant que {email}. Des questions d'argent ? Consultez les <fees>frais</fees> et les <refunds>remboursements</refunds>.",
     "form": {
-      "help": "Nous utilisons ces informations pour vous payer via Paystack. Une personne de G-ventZ examine chaque demande, généralement sous deux jours ouvrés.",
+      "help": "Nous utilisons ces informations pour vous payer via nos prestataires de paiement, Paystack et Flutterwave. Une personne de G-ventZ examine chaque demande, généralement sous deux jours ouvrés.",
       "legalName": "Nom légal ou raison sociale",
       "phone": "Numéro de téléphone",
       "country": "Pays dans lequel vous êtes payé",
@@ -129,7 +130,7 @@
       "checking": "Vérification...",
       "check": "Vérifier le compte",
       "accountName": "Titulaire du compte : <b>{name}</b>",
-      "cantCheck": "Paystack ne peut pas vérifier le nom des titulaires de compte dans ce pays. Vérifiez attentivement la banque et le numéro : les versements sont envoyés exactement sur ce compte.",
+      "cantCheck": "Le nom des titulaires de compte ne peut pas être vérifié automatiquement dans ce pays. Vérifiez attentivement la banque et le numéro : les versements sont envoyés exactement sur ce compte.",
       "confirmNamed": "C'est le bon compte ({name})",
       "confirm": "Ces coordonnées bancaires sont correctes"
     },
@@ -142,7 +143,9 @@
       "checkFailed": "Nous n'avons pas pu vérifier ce compte. Veuillez réessayer.",
       "uploadFailed": "Le document n'a pas été téléversé. Veuillez réessayer.",
       "sendFailed": "Nous n'avons pas pu envoyer votre demande. Veuillez réessayer.",
-      "changeFailed": "Nous n'avons pas pu modifier vos coordonnées de versement. Veuillez réessayer."
+      "changeFailed": "Nous n'avons pas pu modifier vos coordonnées de versement. Veuillez réessayer.",
+      "chooseBank": "Choisissez votre banque.",
+      "chooseBankFailed": "Nous n'avons pas pu enregistrer votre banque. Veuillez réessayer."
     },
     "input": {
       "legalName": "Saisissez votre nom légal ou votre raison sociale.",
@@ -154,6 +157,25 @@
       "documentMissing": "Ajoutez votre pièce d'identité officielle ou le document d'immatriculation de votre entreprise.",
       "documentTooLarge": "Le document dépasse 10 Mo. Veuillez utiliser un fichier plus petit.",
       "documentType": "Utilisez un fichier JPG, PNG ou PDF pour le document."
+    },
+    "providers": {
+      "title": "Prestataires de paiement",
+      "active": "{provider} · prêt",
+      "pending": "{provider} · configuration en cours...",
+      "needsHost": "{provider} · choisissez votre banque",
+      "failed": "{provider} · configuration impossible",
+      "failedNote": "G-ventZ a été prévenu et va réessayer.",
+      "needsHostNote": "{provider} n'a pas pu identifier votre banque. Choisissez-la dans la liste de {provider} ; votre numéro de compte reste le même.",
+      "chooseBank": "Votre banque dans la liste de {provider}",
+      "save": "Enregistrer la banque",
+      "saving": "Enregistrement...",
+      "used": "utilisé pour les nouvelles ventes payantes"
+    },
+    "paused": {
+      "title": "Les billets payants sont suspendus",
+      "noProvider": "Aucun prestataire de paiement n'accepte de paiements en ce moment pour {country} : les invités ne peuvent donc pas acheter de billets payants. Les billets gratuits fonctionnent toujours. Vous n'avez rien à faire.",
+      "noSubaccount": "Votre compte de versement auprès de {provider} n'est pas encore prêt : les invités ne peuvent donc pas acheter de billets payants. Les billets gratuits fonctionnent toujours. Nous terminons sa configuration.",
+      "needsHost": "Votre compte de versement auprès de {provider} a besoin de votre banque : les invités ne peuvent donc pas acheter de billets payants. Choisissez votre banque sous Compte de versement pour reprendre les ventes."
     }
   },
   "page": {

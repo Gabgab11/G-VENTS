@@ -133,7 +133,7 @@
       },
       "failed": {
         "title": "Payment didn't go through",
-        "body": "Paystack couldn't take the payment. Nothing was charged."
+        "body": "{provider} couldn't take the payment. Nothing was charged."
       },
       "refunded": {
         "title": "Refunded",
@@ -155,9 +155,9 @@
     "offerTitle": "A place is yours",
     "offerBody": "Pay before {time} to get your tickets; after that the place goes to the next person.",
     "reference": "Payment reference",
-    "tryAgain": "Try again with Paystack",
-    "pay": "Pay with Paystack",
-    "payTotal": "Pay with Paystack · {total}",
+    "tryAgain": "Try again with {provider}",
+    "pay": "Pay with {provider}",
+    "payTotal": "Pay with {provider} · {total}",
     "startAgain": "Start again",
     "serviceFee": "Service fee",
     "includesVat": "(includes VAT {amount})",
@@ -170,11 +170,12 @@
     "refundLate": "paid after the hold",
     "refundsNote": "Refunds go back to the card or account you paid with. Banks usually take 5 to 10 working days.",
     "held": "Your tickets are held for <b>{time}</b>.",
-    "checking": "Checking your payment with Paystack...",
-    "noAnswer": "Still no answer from Paystack. <button>Check again</button>",
-    "opening": "Opening Paystack...",
+    "checking": "Waiting for {provider} to confirm your payment...",
+    "noAnswer": "Still no answer from {provider}. <button>Check again</button>",
+    "opening": "Opening {provider}...",
     "orderNotFound": "This order could not be found.",
-    "openFailed": "We couldn't open the payment page. Please try again."
+    "openFailed": "We couldn't open the payment page. Please try again.",
+    "slowNote": "Bank transfers can take a few minutes. This page keeps checking for up to 30 minutes."
   },
   "myTickets": {
     "meta": {

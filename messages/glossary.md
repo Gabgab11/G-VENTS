@@ -4,7 +4,7 @@ Used for machine translation and by reviewers. One agreed word per term and lang
 sheet flags any message that departs from it.
 
 ## Never translated
-- **G-ventZ** (and the wordmark "G-vent**Z**"), **Paystack**, **Google**, **WhatsApp**, **QR**.
+- **G-ventZ** (and the wordmark "G-vent**Z**"), **Paystack**, **Flutterwave**, **Apple Pay**, **Google Pay**, **Google**, **WhatsApp**, **QR**.
 - Placeholders in braces (`{name}`, `{count}`), tag names (`<b>`, `<link>`), and ICU keywords
   (`plural`, `select`, `one`, `other`, `=0`).
 

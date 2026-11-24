@@ -53,13 +53,13 @@ export default function NewEventForm({
   defaultTheme,
   detectedCountry,
   placesEnabled,
-  paid = { canSell: false, currency: null, reason: "payments_off" },
+  paid = { canSell: false, currency: null, country: null, reason: "payments_off" },
 }: {
   defaultTheme: string;
   detectedCountry: string | null;
   placesEnabled: boolean;
   /** Paid tickets (M5): allowed now, in the payout country's currency; otherwise why not. */
-  paid?: { canSell: boolean; currency: string | null; reason: string | null };
+  paid?: { canSell: boolean; currency: string | null; country?: string | null; reason: string | null };
 }) {
   const t = useTranslations("createEvent");
   const s = useTranslations("createEvent.stepper");
@@ -369,7 +369,7 @@ export default function NewEventForm({
                     <Field label={t("form.tickets.price", { symbol: currencySymbol(paidCurrency) })}>
                       <Input name="tier_price" inputMode="numeric" placeholder={t("form.tickets.pricePlaceholder")} value={tier.price} onChange={(e) => updateTier(tier.id, "price", e.target.value)} />
                     </Field>
-                    <FeeExample price={tier.price} currency={paidCurrency} feeChoice={feeChoice} />
+                    <FeeExample price={tier.price} currency={paidCurrency} country={paid.country ?? null} feeChoice={feeChoice} />
                   </>
                 )}
                 {isFree && <input type="hidden" name="tier_price" value="0" />}

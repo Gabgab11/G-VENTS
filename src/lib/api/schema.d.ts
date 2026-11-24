@@ -1393,9 +1393,29 @@ export interface paths {
         };
         /**
          * Can paid tickets be sold?
-         * @description paidTickets: at least one Paystack country is switched on by G-ventZ and configured (D64). `me` (signed-in callers only): whether you can create paid ticket types now, in which currency, or why not.
+         * @description paidTickets: at least one provider country (Paystack or Flutterwave) is switched on by G-ventZ and configured (D64). `me` (signed-in callers only): whether you can create paid ticket types now, in which currency, or why not. With `eventId` (a published event): `event` says which provider a checkout would use and whether its paid ticket types are paused (PS6: no provider for the country, or the host has no active subaccount with it).
          */
         get: operations["PaymentsController_availability_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/payments/charge-schedule": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * The provider's charge schedule for a country
+         * @description For the fee example (PS14): the schedule of the provider new checkouts in the country use now; when none does, the first that operates there (available false). Integer minor units.
+         */
+        get: operations["PaymentsController_chargeSchedule_v1"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1413,7 +1433,7 @@ export interface paths {
         };
         /**
          * Banks in a payout country
-         * @description Paystack's bank list for the country (cached).
+         * @description The bank list payout details are entered from (cached): Paystack's where it operates, else Flutterwave's. With `provider`, that provider's list (and `provider` in the answer).
          */
         get: operations["PaymentsController_banks_v1"];
         put?: never;
@@ -1522,6 +1542,86 @@ export interface paths {
          */
         put: operations["HostApplicationController_changePayout_v1"];
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/me/payout-account/subaccounts/{provider}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Choose my bank in a provider's list
+         * @description Two-step sign-in. When a provider couldn't match your bank (status needs_host) or kept failing (failed): pick it from GET /v1/payments/banks?country=..&provider=... The subaccount is created at once; the answer is your payout account with its subaccounts. Audited.
+         */
+        put: operations["HostApplicationController_chooseBank_v1"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/payments/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Payment providers status
+         * @description Per provider: switched on, active, keys present (Paystack per country), webhook secret present, the last valid webhook and the last successful charge.
+         */
+        get: operations["AdminPaymentsController_paymentsStatus_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/hosts/{id}/subaccounts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * A host's payout subaccounts
+         * @description The current payout account with one subaccount per provider: status, bank code, attempts and last error.
+         */
+        get: operations["AdminPaymentsController_hostSubaccounts_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/hosts/{id}/subaccounts/{provider}/retry": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Retry a payout subaccount
+         * @description PS13: tries the host's subaccount with that provider again now, from the start (bank mapping, name check, creation). Activates a pending payout account when it is the provider new checkouts use. Audited.
+         */
+        post: operations["AdminPaymentsController_retrySubaccount_v1"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1866,6 +1966,26 @@ export interface paths {
          * @description One URL per Paystack country account (NG, GH, KE, ZA). x-paystack-signature must be the HMAC-SHA512 of the raw body with that country's secret key. Stored, then processed once per event.
          */
         post: operations["PaystackWebhookController_receive_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/payments/webhooks/flutterwave": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Flutterwave webhook
+         * @description One URL for Flutterwave's account. The verif-hash header must equal the secret hash set in Flutterwave's dashboard (FLUTTERWAVE_WEBHOOK_HASH); otherwise 401 and nothing is stored. Stored once per event, then the transaction is verified again with Flutterwave by its id before tickets are issued.
+         */
+        post: operations["FlutterwaveWebhookController_receive_v1"];
         delete?: never;
         options?: never;
         head?: never;
@@ -3342,6 +3462,11 @@ export interface components {
             serviceFeeMinor: number;
             /** @description What the guest pays */
             totalMinor: number;
+            /**
+             * @description The provider whose secure page the guest pays on (PS14): the order's own provider once held; quotes from before Flutterwave are paystack
+             * @enum {string}
+             */
+            provider: "paystack" | "flutterwave";
         };
         OrderRefundDto: {
             /** Format: uuid */
@@ -3847,6 +3972,8 @@ export interface components {
         };
         PaymentsStateDto: {
             paystack: components["schemas"]["ProviderStateDto"];
+            /** @description configured: the secret key and the webhook hash are both set */
+            flutterwave: components["schemas"]["ProviderStateDto"];
             interswitch: components["schemas"]["ProviderStateDto"];
             stripe: components["schemas"]["ProviderStateDto"];
         };
@@ -3863,6 +3990,58 @@ export interface components {
             GH: components["schemas"]["CountrySwitchDto"];
             KE: components["schemas"]["CountrySwitchDto"];
             ZA: components["schemas"]["CountrySwitchDto"];
+        };
+        FlutterwaveCountrySwitchDto: {
+            /** @description Flutterwave switched on for this country */
+            enabled: boolean;
+            /** @description Flutterwave's keys and webhook hash are set on the server (one account for every country) */
+            configured: boolean;
+            /** @example UGX */
+            currency: string;
+        };
+        FlutterwaveCountriesDto: {
+            NG: components["schemas"]["FlutterwaveCountrySwitchDto"];
+            GH: components["schemas"]["FlutterwaveCountrySwitchDto"];
+            KE: components["schemas"]["FlutterwaveCountrySwitchDto"];
+            ZA: components["schemas"]["FlutterwaveCountrySwitchDto"];
+            UG: components["schemas"]["FlutterwaveCountrySwitchDto"];
+            TZ: components["schemas"]["FlutterwaveCountrySwitchDto"];
+            RW: components["schemas"]["FlutterwaveCountrySwitchDto"];
+            ZM: components["schemas"]["FlutterwaveCountrySwitchDto"];
+            CM: components["schemas"]["FlutterwaveCountrySwitchDto"];
+            CI: components["schemas"]["FlutterwaveCountrySwitchDto"];
+            SN: components["schemas"]["FlutterwaveCountrySwitchDto"];
+        };
+        StoredChargeScheduleDto: {
+            /** @description Percentage in basis points (150 = 1.5%) */
+            percentBps: number;
+            /** @description Fixed part, minor units of the country's currency */
+            fixedMinor: number;
+            /** @description The fixed part applies from this amount (minor units); 0 = always */
+            waiveFixedBelow: number;
+            /** @description Most it charges (minor units); null = no cap */
+            capMinor: number | null;
+            /** @description Saved by staff after checking it in test mode (PS15); seeds start unconfirmed (Flutterwave) */
+            confirmed: boolean;
+        };
+        ProviderCountryDto: {
+            /** @enum {string} */
+            provider: "paystack" | "flutterwave";
+            /** @example UG */
+            country: string;
+            /** @example UGX */
+            currency: string;
+            /**
+             * @description ISO 4217 minor-unit exponent: 1 major unit = 10^exponent minor units
+             * @example 0
+             */
+            exponent: number;
+            enabled: boolean;
+            /** @description The provider's keys for this country are set */
+            configured: boolean;
+            /** @description PS9: what is missing before the country can be switched on (its keys, its own G-ventZ fee, a VAT row, a confirmed charge schedule). Empty = ready. */
+            missing: ("keys" | "fee" | "vat" | "charges")[];
+            charges: components["schemas"]["StoredChargeScheduleDto"] | null;
         };
         StaffMemberDto: {
             email: string;
@@ -3896,6 +4075,17 @@ export interface components {
             /** @description Paystack per country (each its own Paystack account) */
             paystackCountries: components["schemas"]["PaystackCountriesDto"];
             /**
+             * @description The provider new checkouts use first (PS4); null = whichever qualifies
+             * @enum {string|null}
+             */
+            activeProvider: "paystack" | "flutterwave" | null;
+            /** @description Providers that may be made active now (PS2) */
+            activeCandidates: ("paystack" | "flutterwave")[];
+            /** @description Flutterwave per country (one account for all) */
+            flutterwaveCountries: components["schemas"]["FlutterwaveCountriesDto"];
+            /** @description Every (provider, country) pair: switch, PS9 requirements and charge schedule */
+            providerCountries: components["schemas"]["ProviderCountryDto"][];
+            /**
              * @description VAT on the G-ventZ fee per ISO 4217 currency; missing = 0%
              * @example {
              *       "NGN": {
@@ -3926,8 +4116,34 @@ export interface components {
             /** @description Open staff invitations, newest first */
             invites: components["schemas"]["StaffInviteDto"][];
         };
+        ChargeScheduleInputDto: {
+            /** @description Basis points */
+            percentBps: number;
+            /** @description Minor units */
+            fixedMinor: number;
+            /**
+             * @description Minor units; the fixed part applies from this amount
+             * @default 0
+             */
+            waiveFixedBelow: number;
+            /** @description Minor units; null = no cap */
+            capMinor?: number | null;
+        };
         ProviderSwitchDto: {
             enabled: boolean;
+        };
+        FlutterwaveCountryPatchDto: {
+            NG?: components["schemas"]["ProviderSwitchDto"];
+            GH?: components["schemas"]["ProviderSwitchDto"];
+            KE?: components["schemas"]["ProviderSwitchDto"];
+            ZA?: components["schemas"]["ProviderSwitchDto"];
+            UG?: components["schemas"]["ProviderSwitchDto"];
+            TZ?: components["schemas"]["ProviderSwitchDto"];
+            RW?: components["schemas"]["ProviderSwitchDto"];
+            ZM?: components["schemas"]["ProviderSwitchDto"];
+            CM?: components["schemas"]["ProviderSwitchDto"];
+            CI?: components["schemas"]["ProviderSwitchDto"];
+            SN?: components["schemas"]["ProviderSwitchDto"];
         };
         CountryPatchDto: {
             NG?: components["schemas"]["ProviderSwitchDto"];
@@ -3937,10 +4153,43 @@ export interface components {
         };
         PaymentsPatchDto: {
             paystack?: components["schemas"]["ProviderSwitchDto"];
+            flutterwave?: components["schemas"]["ProviderSwitchDto"];
             interswitch?: components["schemas"]["ProviderSwitchDto"];
             stripe?: components["schemas"]["ProviderSwitchDto"];
         };
         UpdateSettingsDto: {
+            /**
+             * @description The provider new checkouts use first (PS2, PS4). It must be on, configured and on in a country with a confirmed charge schedule (409 settings.active_provider_invalid). Needs `reason`. Orders already started finish on their own provider.
+             * @enum {string|null}
+             */
+            activeProvider?: "paystack" | "flutterwave" | null;
+            /** @description Why; required to change activeProvider (422 settings.reason_required); kept in the audit log */
+            reason?: string;
+            /** @description Flutterwave per country. Switching one on needs Flutterwave's keys (settings.provider_not_configured) and PS9 (409 settings.country_not_ready, details.missing). */
+            flutterwaveCountries?: components["schemas"]["FlutterwaveCountryPatchDto"];
+            /**
+             * @description Charge schedules (PS15) in minor units of the country's currency; only countries sent change; saving confirms one. 422 settings.charges_invalid.
+             * @example {
+             *       "flutterwave": {
+             *         "UG": {
+             *           "percentBps": 350,
+             *           "fixedMinor": 0,
+             *           "waiveFixedBelow": 0,
+             *           "capMinor": null
+             *         }
+             *       }
+             *     }
+             */
+            providerCharges?: {
+                /** @description paystack charge schedule per country (NG, GH, KE, ZA) */
+                paystack?: {
+                    [key: string]: components["schemas"]["ChargeScheduleInputDto"];
+                };
+                /** @description flutterwave charge schedule per country (NG, GH, KE, ZA, UG, TZ, RW, ZM, CM, CI, SN) */
+                flutterwave?: {
+                    [key: string]: components["schemas"]["ChargeScheduleInputDto"];
+                };
+            };
             /** @description Paystack per country. Switching on a country whose keys aren't set is refused (settings.provider_not_configured, details.country). */
             paystackCountries?: components["schemas"]["CountryPatchDto"];
             /**
@@ -3999,17 +4248,30 @@ export interface components {
         CallerPaidSalesDto: {
             canSellPaid: boolean;
             /** @enum {string|null} */
-            country: "NG" | "GH" | "KE" | "ZA" | null;
+            country: "NG" | "GH" | "KE" | "ZA" | "UG" | "TZ" | "RW" | "ZM" | "CM" | "CI" | "SN" | null;
             currency: string | null;
             /** @enum {string|null} */
             reason: "payments_off" | "not_applied" | "application_submitted" | "application_declined" | "approval_revoked" | "payout_account_pending" | "country_off" | "owes_money" | "suspended" | null;
         };
+        EventPaidSalesDto: {
+            /** Format: uuid */
+            eventId: string;
+            /**
+             * @description The provider a checkout would use now (PS4)
+             * @enum {string|null}
+             */
+            provider: "paystack" | "flutterwave" | null;
+            /** @description Paid ticket types show "Paid tickets are paused" and cannot be selected; free ones still work */
+            paidTicketsPaused: boolean;
+            /** @enum {string|null} */
+            reason: "no_provider" | "no_subaccount" | null;
+        };
         PaymentsAvailabilityDto: {
             /** @description Hosts can sell paid tickets: at least one provider (country) is switched on and configured */
             paidTickets: boolean;
-            providers: ("paystack" | "interswitch" | "stripe")[];
+            providers: ("paystack" | "flutterwave" | "interswitch" | "stripe")[];
             /**
-             * @description Paystack countries switched on and configured
+             * @description Payout countries where some provider is switched on and configured (Paystack's or Flutterwave's)
              * @example [
              *       "NG"
              *     ]
@@ -4017,6 +4279,35 @@ export interface components {
             countries: string[];
             /** @description Null for anonymous callers */
             me: components["schemas"]["CallerPaidSalesDto"] | null;
+            /** @description Only with ?eventId= (a published event, or one you may manage) */
+            event?: components["schemas"]["EventPaidSalesDto"];
+        };
+        ChargeScheduleValuesDto: {
+            /** @description Basis points */
+            percentBps: number;
+            /** @description Minor units */
+            fixedMinor: number;
+            /** @description Minor units; the fixed part applies from this amount */
+            waiveFixedBelow: number;
+            /** @description Minor units; null = no cap */
+            capMinor: number | null;
+        };
+        ChargeScheduleDto: {
+            /** @enum {string} */
+            country: "NG" | "GH" | "KE" | "ZA" | "UG" | "TZ" | "RW" | "ZM" | "CM" | "CI" | "SN";
+            /** @example NGN */
+            currency: string;
+            /**
+             * @description The provider PS4 picks now; when none qualifies, the first that operates there (estimate)
+             * @enum {string}
+             */
+            provider: "paystack" | "flutterwave";
+            /** @description A provider takes checkouts in the country now */
+            available: boolean;
+            /** @description Staff confirmed the schedule in test mode */
+            confirmed: boolean;
+            /** @description charge = min(cap, ceil(amount × percentBps / 10000) + fixed), the fixed part waived below waiveFixedBelow */
+            schedule: components["schemas"]["ChargeScheduleValuesDto"];
         };
         BankDto: {
             /** @example 058 */
@@ -4026,12 +4317,22 @@ export interface components {
         };
         BanksDto: {
             /** @enum {string} */
-            country: "NG" | "GH" | "KE" | "ZA";
+            country: "NG" | "GH" | "KE" | "ZA" | "UG" | "TZ" | "RW" | "ZM" | "CM" | "CI" | "SN";
+            /**
+             * @description Whose bank list this is (absent before chunk 4 clients: paystack where it operates)
+             * @enum {string}
+             */
+            provider?: "paystack" | "flutterwave";
             banks: components["schemas"]["BankDto"][];
         };
         ResolveAccountDto: {
             /** @enum {string} */
-            country: "NG" | "GH" | "KE" | "ZA";
+            country: "NG" | "GH" | "KE" | "ZA" | "UG" | "TZ" | "RW" | "ZM" | "CM" | "CI" | "SN";
+            /**
+             * @description Check with that provider (its bank codes). Default as for the bank list
+             * @enum {string}
+             */
+            provider?: "paystack" | "flutterwave";
             /** @example 058 */
             bankCode: string;
             /** @example 0123456789 */
@@ -4069,16 +4370,31 @@ export interface components {
             /** @description What the host receives for one ticket (before any debt recovery) */
             hostReceivesMinor: number;
         };
+        PayoutSubaccountDto: {
+            /** @enum {string} */
+            provider: "paystack" | "flutterwave";
+            /**
+             * @description pending: being set up (retried with backoff); active: ready; needs_host: choose your bank from this provider's list; failed: 3 attempts failed, G-ventZ can retry
+             * @enum {string}
+             */
+            status: "pending" | "active" | "failed" | "needs_host";
+            /** @description That provider's code for the bank */
+            providerBankCode: string | null;
+            attempts: number;
+            lastError: string | null;
+            /** Format: date-time */
+            activatedAt: string | null;
+        };
         PayoutAccountDto: {
             /** Format: uuid */
             id: string;
             /**
-             * @description pending: the Paystack subaccount is not created yet (staff confirm or retry)
+             * @description pending: the subaccount with the provider new checkouts use is not created yet (staff confirm or retry)
              * @enum {string}
              */
             status: "pending" | "active" | "replaced";
             /** @enum {string} */
-            country: "NG" | "GH" | "KE" | "ZA";
+            country: "NG" | "GH" | "KE" | "ZA" | "UG" | "TZ" | "RW" | "ZM" | "CM" | "CI" | "SN";
             /** @example NGN */
             currency: string;
             bankCode: string;
@@ -4090,12 +4406,25 @@ export interface components {
             createdAt: string;
             /** Format: date-time */
             activatedAt: string | null;
+            /** @description Per provider (GET /v1/me/host-application and the admin host subaccounts only) */
+            subaccounts?: components["schemas"]["PayoutSubaccountDto"][];
         };
         MoneyOwedDto: {
             /** @example NGN */
             currency: string;
             /** @description Integer minor units the host owes G-ventZ (refunds and lost disputes, less recoveries) */
             owedMinor: number;
+        };
+        PaidSalesStateDto: {
+            /**
+             * @description The provider new checkouts in your payout country use now (PS4); null = none
+             * @enum {string|null}
+             */
+            provider: "paystack" | "flutterwave" | null;
+            /** @description Paid tickets are paused (PS6): no provider for the country, or your subaccount with it is not active yet */
+            paused: boolean;
+            /** @enum {string|null} */
+            reason: "no_provider" | "no_subaccount" | null;
         };
         MyHostApplicationDto: {
             /** @enum {string} */
@@ -4125,14 +4454,19 @@ export interface components {
             canSellPaid: boolean;
             /** @enum {string|null} */
             reason: "payments_off" | "not_applied" | "application_submitted" | "application_declined" | "approval_revoked" | "payout_account_pending" | "country_off" | "owes_money" | "suspended" | null;
+            /** @description Once approved: which provider takes your paid sales, or why they are paused (PS6) */
+            paidSales: components["schemas"]["PaidSalesStateDto"] | null;
         };
         HostApplicationInputDto: {
             /** @example Ada Obi Events Ltd */
             legalName: string;
             /** @example +2348012345678 */
             phone: string;
-            /** @enum {string} */
-            payoutCountry: "NG" | "GH" | "KE" | "ZA";
+            /**
+             * @description Any country of an enabled provider (Paystack: NG, GH, KE, ZA; Flutterwave also UG, TZ, RW, ZM, CM, CI, SN)
+             * @enum {string}
+             */
+            payoutCountry: "NG" | "GH" | "KE" | "ZA" | "UG" | "TZ" | "RW" | "ZM" | "CM" | "CI" | "SN";
             /**
              * @description From GET /v1/payments/banks
              * @example 058
@@ -4167,6 +4501,52 @@ export interface components {
             bankName?: string;
             /** @example 0123456789 */
             accountNumber: string;
+        };
+        SubaccountBankDto: {
+            /**
+             * @description From GET /v1/payments/banks?country=..&provider=.. (that provider's list)
+             * @example 058
+             */
+            bankCode: string;
+        };
+        ProviderStatusDto: {
+            /** @enum {string} */
+            provider: "paystack" | "flutterwave";
+            enabled: boolean;
+            /** @description Paid checkouts start here first (PS4) */
+            active: boolean;
+            /** @description The secret key is set (Paystack: any country) */
+            keysPresent: boolean;
+            /**
+             * @description Paystack: keys per country account; Flutterwave: one account
+             * @example {
+             *       "NG": true
+             *     }
+             */
+            keysByCountry: {
+                [key: string]: boolean;
+            };
+            /** @description Paystack: signs with the secret key; Flutterwave: the webhook hash is set */
+            webhookSecretPresent: boolean;
+            /**
+             * Format: date-time
+             * @description The last webhook that passed its signature check
+             */
+            lastWebhookAt: string | null;
+            /**
+             * Format: date-time
+             * @description The last payment verified successful
+             */
+            lastSuccessfulChargeAt: string | null;
+        };
+        PaymentsStatusDto: {
+            providers: components["schemas"]["ProviderStatusDto"][];
+        };
+        AdminSubaccountsDto: {
+            /** Format: uuid */
+            hostId: string;
+            /** @description Current payout account with its subaccounts; null when none */
+            payoutAccount: components["schemas"]["PayoutAccountDto"] | null;
         };
         AdminPersonDto: {
             /** Format: uuid */
@@ -8017,7 +8397,10 @@ export interface operations {
     };
     PaymentsController_availability_v1: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description A published event: adds `event`, whether its paid ticket types are paused (PS6) */
+                eventId?: string;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -8034,10 +8417,33 @@ export interface operations {
             };
         };
     };
+    PaymentsController_chargeSchedule_v1: {
+        parameters: {
+            query: {
+                country: "NG" | "GH" | "KE" | "ZA" | "UG" | "TZ" | "RW" | "ZM" | "CM" | "CI" | "SN";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChargeScheduleDto"];
+                };
+            };
+        };
+    };
     PaymentsController_banks_v1: {
         parameters: {
             query: {
-                country: "NG" | "GH" | "KE" | "ZA";
+                country: "NG" | "GH" | "KE" | "ZA" | "UG" | "TZ" | "RW" | "ZM" | "CM" | "CI" | "SN";
+                /** @description That provider's list (the needs_host bank picker). Default: Paystack's where it operates, else Flutterwave's */
+                provider?: "paystack" | "flutterwave";
             };
             header?: never;
             path?: never;
@@ -8252,6 +8658,184 @@ export interface operations {
             };
             /** @description auth.mfa_required: confirm with your authenticator app (aal2). */
             403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    HostApplicationController_chooseBank_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                provider: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SubaccountBankDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PayoutAccountDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.mfa_required: confirm with your authenticator app (aal2). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description payout.subaccount_not_found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description payout.subaccount_not_waiting */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AdminPaymentsController_paymentsStatus_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaymentsStatusDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.mfa_required: staff must confirm with their authenticator app (aal2) */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description route.not_found for anyone who is not G-ventZ staff */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AdminPaymentsController_hostSubaccounts_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminSubaccountsDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.mfa_required: staff must confirm with their authenticator app (aal2) */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description route.not_found for anyone who is not G-ventZ staff */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AdminPaymentsController_retrySubaccount_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                provider: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PayoutAccountDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.mfa_required: staff must confirm with their authenticator app (aal2) */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description payout.subaccount_not_found (no payout account), route.not_found (unknown provider) */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -9002,6 +9586,32 @@ export interface operations {
             path: {
                 country: string;
             };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WebhookAckDto"];
+                };
+            };
+            /** @description webhook.signature_invalid */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    FlutterwaveWebhookController_receive_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
             cookie?: never;
         };
         requestBody?: never;

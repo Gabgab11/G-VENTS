@@ -230,7 +230,13 @@
     "openRegistration": "Abrir inscripción",
     "capacityHint": "Fije un límite, por ejemplo 200. Cuando se llene, los nuevos invitados pasan a la lista de espera. Déjelo en blanco para no tener límite.",
     "capacityPlaceholder": "p. ej. 200",
-    "saveCapacity": "Guardar aforo"
+    "saveCapacity": "Guardar aforo",
+    "paused": {
+      "title": "Las entradas de pago están en pausa",
+      "noProvider": "Ahora mismo ningún proveedor de pago acepta pagos en el país de este evento, así que los invitados no pueden comprar sus entradas de pago. Las entradas gratuitas siguen funcionando.",
+      "noSubaccount": "La cuenta de pagos del anfitrión con {provider} aún no está lista, así que los invitados no pueden comprar entradas de pago. Las entradas gratuitas siguen funcionando.",
+      "action": "Ir a Pagos"
+    }
   },
   "copyLink": {
     "copy": "Copiar enlace",

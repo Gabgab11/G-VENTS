@@ -70,10 +70,11 @@
   "payouts": {
     "metaTitle": "Auszahlungen · G-ventZ",
     "title": "Auszahlungen erhalten",
-    "intro": "Verkaufen Sie kostenpflichtige Tickets auf G-ventZ. Gäste zahlen mit Paystack und Ihr Anteil geht direkt auf Ihr Bankkonto.",
+    "intro": "Verkaufen Sie kostenpflichtige Tickets auf G-ventZ. Gäste bezahlen mit Paystack oder Flutterwave, und Ihr Anteil geht direkt auf Ihr Bankkonto.",
     "ok": {
       "submitted": "Antrag gesendet. Wir schreiben Ihnen eine E-Mail, sobald entschieden ist.",
-      "payoutChanged": "Auszahlungsdaten geändert. Kostenpflichtige Verkäufe pausieren, bis G-ventZ das neue Konto bestätigt; wir haben Ihnen eine E-Mail geschickt."
+      "payoutChanged": "Auszahlungsdaten geändert. Kostenpflichtige Verkäufe pausieren, bis G-ventZ das neue Konto bestätigt; wir haben Ihnen eine E-Mail geschickt.",
+      "bankChosen": "Bank gespeichert. Ihr Auszahlungskonto bei diesem Anbieter wird eingerichtet."
     },
     "loadFailed": "Wir konnten Ihre Auszahlungsdaten nicht laden. Bitte laden Sie die Seite neu.",
     "status": {
@@ -95,7 +96,7 @@
       "pending": "Wird eingerichtet",
       "replaced": "Ersetzt",
       "line": "{bank} · endet auf {last4}",
-      "pendingNote": "G-ventZ richtet dieses Konto bei Paystack ein. Sie können kostenpflichtige Tickets verkaufen, sobald es aktiv ist.",
+      "pendingNote": "G-ventZ richtet dieses Konto beim Zahlungsanbieter ein. Sie können kostenpflichtige Tickets verkaufen, sobald es aktiv ist.",
       "change": "Auszahlungsdaten ändern"
     },
     "apply": {
@@ -105,7 +106,7 @@
     },
     "signedIn": "Angemeldet als {email}. Fragen zum Geld? Siehe <fees>Gebühren</fees> und <refunds>Erstattungen</refunds>.",
     "form": {
-      "help": "Wir verwenden diese Angaben, um Sie über Paystack zu bezahlen. Eine Person bei G-ventZ prüft jeden Antrag, in der Regel innerhalb von zwei Werktagen.",
+      "help": "Wir nutzen diese Angaben, um Sie über unsere Zahlungsanbieter Paystack und Flutterwave auszuzahlen. Eine Person bei G-ventZ prüft jeden Antrag, meist innerhalb von zwei Werktagen.",
       "legalName": "Rechtlicher Name oder Firmenname",
       "phone": "Telefonnummer",
       "country": "Land, in dem Sie ausgezahlt werden",
@@ -129,7 +130,7 @@
       "checking": "Wird geprüft...",
       "check": "Konto prüfen",
       "accountName": "Kontoinhaber: <b>{name}</b>",
-      "cantCheck": "Paystack kann in diesem Land keine Kontoinhaber prüfen. Prüfen Sie Bank und Nummer sorgfältig: Auszahlungen gehen genau auf dieses Konto.",
+      "cantCheck": "In diesem Land können Kontoinhaber nicht automatisch geprüft werden. Prüfen Sie Bank und Nummer sorgfältig: Auszahlungen gehen genau auf dieses Konto.",
       "confirmNamed": "Das ist das richtige Konto ({name})",
       "confirm": "Diese Bankdaten sind richtig"
     },
@@ -142,7 +143,9 @@
       "checkFailed": "Wir konnten dieses Konto nicht prüfen. Bitte versuchen Sie es erneut.",
       "uploadFailed": "Das Dokument wurde nicht hochgeladen. Bitte versuchen Sie es erneut.",
       "sendFailed": "Wir konnten Ihren Antrag nicht senden. Bitte versuchen Sie es erneut.",
-      "changeFailed": "Wir konnten Ihre Auszahlungsdaten nicht ändern. Bitte versuchen Sie es erneut."
+      "changeFailed": "Wir konnten Ihre Auszahlungsdaten nicht ändern. Bitte versuchen Sie es erneut.",
+      "chooseBank": "Wählen Sie Ihre Bank.",
+      "chooseBankFailed": "Wir konnten Ihre Bank nicht speichern. Bitte versuchen Sie es erneut."
     },
     "input": {
       "legalName": "Geben Sie Ihren rechtlichen Namen oder Firmennamen ein.",
@@ -154,6 +157,25 @@
       "documentMissing": "Fügen Sie Ihren amtlichen Ausweis oder Ihren Handelsregisterauszug hinzu.",
       "documentTooLarge": "Das Dokument ist größer als 10 MB. Bitte verwenden Sie eine kleinere Datei.",
       "documentType": "Verwenden Sie für das Dokument eine JPG-, PNG- oder PDF-Datei."
+    },
+    "providers": {
+      "title": "Zahlungsanbieter",
+      "active": "{provider} · bereit",
+      "pending": "{provider} · wird eingerichtet...",
+      "needsHost": "{provider} · wählen Sie Ihre Bank",
+      "failed": "{provider} · konnte nicht eingerichtet werden",
+      "failedNote": "G-ventZ wurde informiert und versucht es erneut.",
+      "needsHostNote": "{provider} konnte Ihre Bank nicht zuordnen. Wählen Sie sie aus der Liste von {provider}; Ihre Kontonummer bleibt gleich.",
+      "chooseBank": "Ihre Bank in der Liste von {provider}",
+      "save": "Bank speichern",
+      "saving": "Wird gespeichert...",
+      "used": "wird für neue kostenpflichtige Verkäufe genutzt"
+    },
+    "paused": {
+      "title": "Kostenpflichtige Tickets sind pausiert",
+      "noProvider": "Derzeit nimmt kein Zahlungsanbieter Zahlungen für {country} an, daher können Gäste keine kostenpflichtigen Tickets kaufen. Kostenlose Tickets funktionieren weiterhin. Sie müssen nichts tun.",
+      "noSubaccount": "Ihr Auszahlungskonto bei {provider} ist noch nicht bereit, daher können Gäste keine kostenpflichtigen Tickets kaufen. Kostenlose Tickets funktionieren weiterhin. Wir schließen die Einrichtung ab.",
+      "needsHost": "Ihr Auszahlungskonto bei {provider} benötigt Ihre Bank, daher können Gäste keine kostenpflichtigen Tickets kaufen. Wählen Sie Ihre Bank unter Auszahlungskonto, um wieder zu verkaufen."
     }
   },
   "page": {

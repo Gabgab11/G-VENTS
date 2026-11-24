@@ -70,10 +70,11 @@
   "payouts": {
     "metaTitle": "收款 · G-ventZ",
     "title": "收款",
-    "intro": "在 G-ventZ 上出售付费门票。宾客通过 Paystack 付款，您的分成会直接转入您的银行账户。",
+    "intro": "在 G-ventZ 上出售付费门票。宾客通过 Paystack 或 Flutterwave 付款，您的收入直接转入您的银行账户。",
     "ok": {
       "submitted": "申请已发送。有结果后我们会通过电子邮件通知您。",
-      "payoutChanged": "收款信息已更改。在 G-ventZ 确认新账户之前，付费销售将暂停；我们已向您发送电子邮件。"
+      "payoutChanged": "收款信息已更改。在 G-ventZ 确认新账户之前，付费销售将暂停；我们已向您发送电子邮件。",
+      "bankChosen": "银行已保存。正在通过该服务商设置您的收款账户。"
     },
     "loadFailed": "无法加载您的收款信息，请刷新页面。",
     "status": {
@@ -95,7 +96,7 @@
       "pending": "正在设置",
       "replaced": "已替换",
       "line": "{bank} · 尾号 {last4}",
-      "pendingNote": "G-ventZ 正在通过 Paystack 设置此账户。账户启用后即可出售付费门票。",
+      "pendingNote": "G-ventZ 正在通过支付服务商设置此账户。账户启用后即可出售付费门票。",
       "change": "更改收款信息"
     },
     "apply": {
@@ -105,7 +106,7 @@
     },
     "signedIn": "当前登录账户：{email}。有费用方面的问题？请查看<fees>费用</fees>和<refunds>退款</refunds>。",
     "form": {
-      "help": "我们使用这些信息通过 Paystack 向您付款。G-ventZ 的工作人员会审核每份申请，通常在两个工作日内完成。",
+      "help": "我们使用这些信息，通过我们的支付服务商 Paystack 和 Flutterwave 向您付款。G-ventZ 的工作人员会审核每份申请，通常在两个工作日内完成。",
       "legalName": "法定名称或企业名称",
       "phone": "电话号码",
       "country": "收款国家/地区",
@@ -129,7 +130,7 @@
       "checking": "正在核验...",
       "check": "核验账户",
       "accountName": "账户名：<b>{name}</b>",
-      "cantCheck": "Paystack 无法核验该国家/地区的账户名。请仔细核对银行和账号：款项将准确转入此账户。",
+      "cantCheck": "该国家/地区无法自动核验账户名。请仔细核对银行和账号：款项将准确转入此账户。",
       "confirmNamed": "这是正确的账户（{name}）",
       "confirm": "这些银行信息正确无误"
     },
@@ -142,7 +143,9 @@
       "checkFailed": "无法核验此账户，请重试。",
       "uploadFailed": "文件未能上传，请重试。",
       "sendFailed": "无法发送您的申请，请重试。",
-      "changeFailed": "无法更改您的收款信息，请重试。"
+      "changeFailed": "无法更改您的收款信息，请重试。",
+      "chooseBank": "请选择您的银行。",
+      "chooseBankFailed": "无法保存您的银行。请重试。"
     },
     "input": {
       "legalName": "请输入您的法定名称或企业名称。",
@@ -154,6 +157,25 @@
       "documentMissing": "请添加您的政府签发身份证件或企业注册证明。",
       "documentTooLarge": "文件超过 10 MB，请使用较小的文件。",
       "documentType": "请使用 JPG、PNG 或 PDF 格式的文件。"
+    },
+    "providers": {
+      "title": "支付服务商",
+      "active": "{provider} · 已就绪",
+      "pending": "{provider} · 正在设置...",
+      "needsHost": "{provider} · 请选择您的银行",
+      "failed": "{provider} · 无法设置",
+      "failedNote": "G-ventZ 已收到通知，并将重试。",
+      "needsHostNote": "{provider} 无法匹配您的银行。请从 {provider} 的列表中选择；您的账号保持不变。",
+      "chooseBank": "您在 {provider} 列表中的银行",
+      "save": "保存银行",
+      "saving": "正在保存...",
+      "used": "用于新的付费销售"
+    },
+    "paused": {
+      "title": "付费门票已暂停",
+      "noProvider": "目前没有支付服务商在 {country} 收款，因此宾客无法购买付费门票。免费门票仍可正常使用。您无需进行任何操作。",
+      "noSubaccount": "您在 {provider} 的收款账户尚未就绪，因此宾客无法购买付费门票。免费门票仍可正常使用。我们会完成设置。",
+      "needsHost": "您在 {provider} 的收款账户需要您选择银行，因此宾客目前无法购买付费门票。请在“收款账户”中选择您的银行以恢复销售。"
     }
   },
   "page": {

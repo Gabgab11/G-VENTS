@@ -125,11 +125,21 @@
     "waitlistNote": "该门票已售罄。加入候补名单，有名额空出时我们会发邮件通知您；届时您有 24 小时付款。",
     "refundPolicy": "退款政策：",
     "joining": "正在加入...",
-    "opening": "正在打开 Paystack...",
+    "opening": "正在打开 {provider}...",
     "join": "加入候补名单",
-    "pay": "使用 Paystack 付款",
-    "payTotal": "使用 Paystack 付款 · {total}",
-    "payNote": "您将在 Paystack 的安全页面付款。您的门票将保留 10 分钟。"
+    "pay": "使用 {provider} 付款",
+    "payTotal": "使用 {provider} 付款 · {total}",
+    "payNote": "您将在 {provider} 的安全页面付款。您的门票将保留 10 分钟。",
+    "methodsLabel": "{provider} 支持的付款方式",
+    "methods": {
+      "card": "银行卡",
+      "bankTransfer": "银行转账",
+      "applePay": "Apple Pay",
+      "googlePay": "Google Pay",
+      "mobileMoney": "移动支付"
+    },
+    "paused": "付费门票已暂停",
+    "pausedNote": "目前无法购买此活动的付费门票。免费门票仍可正常使用。"
   },
   "verify": {
     "emailHint": "我们将通过电子邮件向您发送一个 6 位数验证码以确认该地址。您的门票将发送到此地址。",

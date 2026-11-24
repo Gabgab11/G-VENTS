@@ -70,8 +70,20 @@ export function formatRelative(iso: string | Date, now: Date, lang: Locale): str
   return rtf.format(seconds, "second");
 }
 
-/** The currency's number of decimals (NGN 2, JPY 0), from Intl; 2 when unknown. */
+/**
+ * ISO 4217 exponents the API uses (gventz-api payment-countries.ts): the payout currencies, plus
+ * the common ones a ticket price may use. Listed so every browser agrees with the API, whatever its
+ * Intl data says (UGX, RWF, XAF and XOF have no minor unit).
+ */
+const EXPONENTS: Readonly<Record<string, number>> = {
+  NGN: 2, GHS: 2, KES: 2, ZAR: 2, UGX: 0, TZS: 2, RWF: 0, ZMW: 2, XAF: 0, XOF: 0,
+  JPY: 0, KRW: 0, XPF: 0, BIF: 0, GNF: 0, KMF: 0, BHD: 3, KWD: 3, OMR: 3, JOD: 3, TND: 3, LYD: 3, IQD: 3,
+};
+
+/** The currency's number of decimals (NGN 2, UGX 0, JPY 0): the API's table, then Intl; 2 when unknown. */
 export function minorDigits(currency: string): number {
+  const code = currency.trim().toUpperCase();
+  if (Object.hasOwn(EXPONENTS, code)) return EXPONENTS[code]!;
   try {
     return new Intl.NumberFormat("en", { style: "currency", currency }).resolvedOptions().maximumFractionDigits ?? 2;
   } catch {
@@ -95,7 +107,8 @@ export function formatMoney(minor: number, currency: string, lang: Locale, compa
   const digits = minorDigits(currency);
   try {
     const whole = digits > 0 && minor % 10 ** digits === 0;
-    const fmt = new Intl.NumberFormat(intlLocale(lang, "money"), { style: "currency", currency, ...(compact && whole ? { minimumFractionDigits: 0, maximumFractionDigits: 0 } : {}) });
+    const shown = compact && whole ? 0 : digits;
+    const fmt = new Intl.NumberFormat(intlLocale(lang, "money"), { style: "currency", currency, minimumFractionDigits: shown, maximumFractionDigits: shown });
     // Intl formats a numeric string exactly (no float in between).
     return fmt.format(decimalString(minor, digits) as unknown as number);
   } catch {

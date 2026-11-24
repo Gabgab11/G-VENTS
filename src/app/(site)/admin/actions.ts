@@ -5,8 +5,7 @@ import { redirect } from "next/navigation";
 import { api } from "@/lib/api/server";
 import { ApiError, apiMessage } from "@/lib/api/problem";
 import { isUuid } from "@/lib/forms";
-import { percentToBps } from "@/lib/money";
-import { PAYOUT_COUNTRIES, isPayoutCountry } from "@/lib/payment-text";
+import { majorToMinor, percentToBps } from "@/lib/money";
 
 // Staff actions (FR-21). The API checks staff + two-step sign-in and audits each one; these read
 // the form, call it, and come back to the page with a short message in the URL.
@@ -83,12 +82,12 @@ export async function setProvider(formData: FormData) {
 export async function setFee(formData: FormData) {
   const currency = text(formData, "currency", 3).toUpperCase();
   const percent = Number(text(formData, "percent", 10) || "0");
-  const fixed = Number(text(formData, "fixed", 15) || "0");
   if (!/^[A-Z]{3}$/.test(currency)) back("/admin/settings", "err=Use%20a%203-letter%20currency%20code%20(e.g.%20NGN)");
   if (!Number.isFinite(percent) || percent < 0 || percent > 100) back("/admin/settings", "err=The%20percentage%20must%20be%20between%200%20and%20100");
-  if (!Number.isFinite(fixed) || fixed < 0) back("/admin/settings", "err=The%20fixed%20amount%20can't%20be%20negative");
+  // The fixed part in the currency's main unit, by its exponent (UGX, RWF, XAF and XOF have no decimals).
+  const fixedMinor = majorToMinor(text(formData, "fixed", 15) || "0", currency);
+  if (fixedMinor === null) back("/admin/settings", `err=${encodeURIComponent(`Enter the fixed amount in ${currency}, with no more decimals than ${currency} has`)}`);
   const percentBps = Math.round(percent * 100);
-  const fixedMinor = Math.round(fixed * 100);
   await run("/admin/settings", async () => (await api()).PATCH("/v1/admin/settings", { body: { fees: { [currency]: { percentBps, fixedMinor } } } }), `Fee for ${currency} saved`);
 }
 
@@ -188,15 +187,6 @@ export async function retryPayoutAccount(formData: FormData) {
   await run(path, async () => (await api()).POST("/v1/admin/host-applications/{id}/retry-payout-account", { params: { path: { id } } }), "Payout account request sent to Paystack");
 }
 
-/** PR2: Paystack on or off per country (refused by the API while that country's keys aren't set). */
-export async function setPaystackCountry(formData: FormData) {
-  const country = text(formData, "country", 2).toUpperCase();
-  if (!isPayoutCountry(country)) back("/admin/settings", "err=Unknown%20country");
-  const enabled = formData.get("enabled") === "true";
-  await run("/admin/settings", async () => (await api()).PATCH("/v1/admin/settings", { body: { paystackCountries: { [country]: { enabled } } } }),
-    `Paystack ${enabled ? "switched on" : "switched off"} for ${PAYOUT_COUNTRIES[country].name}`);
-}
-
 /** FE2: VAT on the G-ventZ fee, per currency. */
 export async function setVat(formData: FormData) {
   const currency = text(formData, "currency", 3).toUpperCase();
@@ -210,4 +200,15 @@ export async function removeVat(formData: FormData) {
   const currency = text(formData, "currency", 3).toUpperCase();
   if (!/^[A-Z]{3}$/.test(currency)) back("/admin/settings", "err=Unknown%20currency");
   await run("/admin/settings", async () => (await api()).PATCH("/v1/admin/settings", { body: { vat: { [currency]: null } } }), `${currency} VAT removed (0%)`);
+}
+
+/** PS13: try a host's payout subaccount with one provider again (failed or waiting for the host). */
+export async function retrySubaccount(formData: FormData) {
+  const id = text(formData, "host_id");
+  const provider = text(formData, "provider", 20);
+  if (!isUuid(id)) back("/admin/hosts", "err=Unknown%20host");
+  if (provider !== "paystack" && provider !== "flutterwave") back(`/admin/hosts/${id}`, "err=Unknown%20provider");
+  const name = provider === "paystack" ? "Paystack" : "Flutterwave";
+  await run(`/admin/hosts/${id}`, async () => (await api()).POST("/v1/admin/hosts/{id}/subaccounts/{provider}/retry", { params: { path: { id, provider } } }),
+    `${name} subaccount retried`);
 }

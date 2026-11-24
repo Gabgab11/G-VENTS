@@ -5,10 +5,13 @@ import { requireUser } from "@/lib/auth";
 import { getFormat } from "@/i18n/format-server";
 import { intlLocale } from "@/lib/format";
 import { getAvailability, getMyHostApplication } from "@/lib/payments";
-import { applicationStatusKey, isPayoutCountry, sellReasonKey } from "@/lib/payment-text";
+import { applicationStatusKey, isPayoutCountry, providerName, sellReasonKey } from "@/lib/payment-text";
+import type { components } from "@/lib/api/schema";
 import { HostApplicationForm, PayoutChangeForm } from "./HostApplicationForm";
 import { Badge, Banner, Card, CardHeader, PageHeader, type BadgeTone } from "@/design";
 import Settlements from "./Settlements";
+import SubaccountBankForm from "./SubaccountBankForm";
+import styles from "./payouts.module.css";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("account.payouts");
@@ -26,6 +29,17 @@ function statusTone(status: string): BadgeTone {
 const OK: Record<string, string> = {
   submitted: "ok.submitted",
   payout_changed: "ok.payoutChanged",
+  bank_chosen: "ok.bankChosen",
+};
+
+type Subaccount = components["schemas"]["PayoutSubaccountDto"];
+
+/** Message id and badge tone for a provider's subaccount (PS10–PS13). */
+const SUBACCOUNT: Record<Subaccount["status"], { key: string; tone: BadgeTone }> = {
+  active: { key: "providers.active", tone: "success" },
+  pending: { key: "providers.pending", tone: "warning" },
+  needs_host: { key: "providers.needsHost", tone: "warning" },
+  failed: { key: "providers.failed", tone: "danger" },
 };
 
 // Selling paid tickets (M5, FR-20): apply once with payout details and a document; staff approve;
@@ -44,6 +58,10 @@ export default async function PayoutsPage({ searchParams }: { searchParams: Prom
   const reason = app && !app.canSellPaid ? sellReasonKey(app.reason) : null;
   const statusKey = app ? applicationStatusKey(app.status) : null;
   const payout = app?.payoutAccount ?? null;
+  const subaccounts = payout?.subaccounts ?? [];
+  // PS6: paid sales are paused (no provider for the country, or no active subaccount with it).
+  const paused = app?.status === "approved" && app.paidSales?.paused ? app.paidSales : null;
+  const waitingOn = paused?.reason === "no_subaccount" ? subaccounts.find((sa) => sa.provider === paused.provider) : undefined;
 
   return (
     <>
@@ -51,6 +69,15 @@ export default async function PayoutsPage({ searchParams }: { searchParams: Prom
 
       {ok && <Banner tone="success" title={ok} />}
       {!app && <p className="error" role="alert">{t("loadFailed")}</p>}
+      {paused && (
+        <Banner tone="warning" title={t("paused.title")}>
+          {paused.reason === "no_provider"
+            ? t("paused.noProvider", { country: app?.payoutCountry ? format.country(app.payoutCountry) : "" })
+            : waitingOn?.status === "needs_host"
+              ? t("paused.needsHost", { provider: providerName(paused.provider) })
+              : t("paused.noSubaccount", { provider: providerName(paused.provider) })}
+        </Banner>
+      )}
 
       {app && app.status !== "none" && (
         <Card as="section" aria-labelledby="pay-status">
@@ -79,6 +106,23 @@ export default async function PayoutsPage({ searchParams }: { searchParams: Prom
           <CardHeader id="pay-account" title={t("account.title")} action={<Badge tone={payout.status === "active" ? "success" : "warning"}>{payout.status === "active" ? t("account.active") : payout.status === "pending" ? t("account.pending") : t("account.replaced")}</Badge>} />
           <p>{t("account.line", { bank: payout.bankName ?? payout.bankCode, last4: payout.accountNumberLast4 })}{payout.accountName ? ` · ${payout.accountName}` : ""}</p>
           {payout.status === "pending" && <p className="muted small">{t("account.pendingNote")}</p>}
+          {subaccounts.length > 0 && (
+            <div>
+              <h3 className={styles.providersTitle}>{t("providers.title")}</h3>
+              <ul className={styles.providers}>
+                {subaccounts.map((sa) => (
+                  <li key={sa.provider} className={styles.provider}>
+                    <span>
+                      <Badge tone={SUBACCOUNT[sa.status].tone}>{t(SUBACCOUNT[sa.status].key, { provider: providerName(sa.provider) })}</Badge>
+                      {app.paidSales?.provider === sa.provider && <span className={styles.muted}>{" · "}{t("providers.used")}</span>}
+                    </span>
+                    {sa.status === "failed" && <p className={styles.muted}>{t("providers.failedNote")}</p>}
+                    {sa.status === "needs_host" && payout.status !== "replaced" && <SubaccountBankForm provider={sa.provider} country={payout.country} />}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
           {app.status === "approved" && (
             <details className="pay-details">
               <summary>{t("account.change")}</summary>

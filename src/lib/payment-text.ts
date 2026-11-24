@@ -2,16 +2,56 @@ import type { components } from "@/lib/api/schema";
 
 // Words for Paystack payments (M5), shared by the host, guest and admin screens. Pure.
 
-export type PayoutCountry = "NG" | "GH" | "KE" | "ZA";
+export type PayoutCountry = NonNullable<components["schemas"]["CallerPaidSalesDto"]["country"]>;
 export type SellReason = NonNullable<components["schemas"]["CallerPaidSalesDto"]["reason"]>;
 export type FeeChoice = "host_absorbs" | "guest_pays";
+/** The payment providers with an adapter (Change 5 chunk 4, D96). */
+export type ProviderId = components["schemas"]["FeeQuoteDto"]["provider"];
 
-/** Paystack countries (business rules PR1): each its own Paystack account and currency. */
+/**
+ * Payout countries (business rules PR1, PS9): each with its currency. Paystack has the first four
+ * (each its own Paystack account); Flutterwave has all of them (one account). English names for the
+ * admin dashboard; other pages use countryLabel() in the reader's language.
+ */
 export const PAYOUT_COUNTRIES: Record<PayoutCountry, { name: string; currency: string }> = {
   NG: { name: "Nigeria", currency: "NGN" },
   GH: { name: "Ghana", currency: "GHS" },
   KE: { name: "Kenya", currency: "KES" },
   ZA: { name: "South Africa", currency: "ZAR" },
+  UG: { name: "Uganda", currency: "UGX" },
+  TZ: { name: "Tanzania", currency: "TZS" },
+  RW: { name: "Rwanda", currency: "RWF" },
+  ZM: { name: "Zambia", currency: "ZMW" },
+  CM: { name: "Cameroon", currency: "XAF" },
+  CI: { name: "Côte d'Ivoire", currency: "XOF" },
+  SN: { name: "Senegal", currency: "XOF" },
+};
+
+/** Paystack's countries (PR1): the countries of `paystackCountries` in the admin settings. */
+export const PAYSTACK_COUNTRIES = ["NG", "GH", "KE", "ZA"] as const satisfies readonly PayoutCountry[];
+
+/** The provider's name as people read it (a brand: never translated). */
+export const PROVIDER_NAMES: Record<ProviderId, string> = { paystack: "Paystack", flutterwave: "Flutterwave" };
+export const PROVIDER_IDS = Object.keys(PROVIDER_NAMES) as ProviderId[];
+
+export function isProviderId(value: unknown): value is ProviderId {
+  return typeof value === "string" && Object.hasOwn(PROVIDER_NAMES, value);
+}
+
+/** The provider's name, or a plain fallback for anything unknown (older quotes are Paystack's). */
+export function providerName(provider: string | null | undefined): string {
+  return isProviderId(provider) ? PROVIDER_NAMES[provider] : PROVIDER_NAMES.paystack;
+}
+
+export type PaymentMethod = "card" | "bankTransfer" | "applePay" | "googlePay" | "mobileMoney";
+
+/**
+ * How a guest can pay on the provider's page (PS20): card, bank transfer and Apple Pay on both;
+ * Google Pay and mobile money on Flutterwave only. Ids under event.paid.methods.
+ */
+export const PROVIDER_METHODS: Record<ProviderId, readonly PaymentMethod[]> = {
+  paystack: ["card", "bankTransfer", "applePay"],
+  flutterwave: ["card", "bankTransfer", "applePay", "googlePay", "mobileMoney"],
 };
 
 export function isPayoutCountry(value: unknown): value is PayoutCountry {
@@ -25,8 +65,8 @@ export const SELL_REASONS: Record<SellReason, { text: string; action?: string }>
   application_submitted: { text: "We're reviewing your application to sell paid tickets. We'll email you when it's decided.", action: "See your application" },
   application_declined: { text: "Your application to sell paid tickets wasn't approved. You can see why and apply again.", action: "See why" },
   approval_revoked: { text: "Your approval to sell paid tickets was withdrawn. Tickets already sold still work.", action: "See details" },
-  payout_account_pending: { text: "You're approved. We're setting up your payout account with Paystack; you can sell paid tickets once it's ready.", action: "See payout details" },
-  country_off: { text: "Paystack is paused for your payout country right now. Free tickets still work." },
+  payout_account_pending: { text: "You're approved. We're setting up your payout account with the payment provider; you can sell paid tickets once it's ready.", action: "See payout details" },
+  country_off: { text: "Paid tickets are paused for your payout country right now. Free tickets still work." },
   owes_money: { text: "You owe G-ventZ money from refunds or chargebacks, so you can't publish new paid events. Your existing events keep selling, which pays it back.", action: "See what you owe" },
   suspended: { text: "Your account is suspended, so you can't sell paid tickets." },
 };
@@ -36,7 +76,7 @@ export function sellReasonText(reason: string | null | undefined): { text: strin
 }
 
 export const FEE_CHOICES: Record<FeeChoice, { label: string; hint: string }> = {
-  host_absorbs: { label: "I absorb the fees", hint: "Guests pay the ticket price. G-ventZ's fee, VAT on it and Paystack's charge come out of what you receive." },
+  host_absorbs: { label: "I absorb the fees", hint: "Guests pay the ticket price. G-ventZ's fee, VAT on it and the payment provider's charge come out of what you receive." },
   guest_pays: { label: "Guests pay the fees", hint: "Fees are added on top of the price, so you receive the full ticket price." },
 };
 

@@ -101,9 +101,9 @@
     "applicationDeclinedAction": "查看原因",
     "approvalRevoked": "您出售付费门票的资格已被撤销。已售出的门票仍然有效。",
     "approvalRevokedAction": "查看详情",
-    "payoutAccountPending": "您已获批准。我们正在通过 Paystack 设置您的收款账户；账户就绪后即可出售付费门票。",
+    "payoutAccountPending": "您已获批准。我们正在通过支付服务商设置您的收款账户；账户就绪后即可出售付费门票。",
     "payoutAccountPendingAction": "查看收款详情",
-    "countryOff": "Paystack 目前在您的收款国家/地区暂停服务。免费门票仍可正常使用。",
+    "countryOff": "您的收款国家/地区目前暂停出售付费门票。免费门票仍可正常使用。",
     "owesMoney": "由于退款或拒付，您欠 G-ventZ 款项，因此无法发布新的付费活动。您现有的活动会继续售票，用于偿还欠款。",
     "owesMoneyAction": "查看欠款",
     "suspended": "您的账户已被暂停，因此无法出售付费门票。"
@@ -111,7 +111,7 @@
   "fees": {
     "hostAbsorbs": {
       "label": "由我承担费用",
-      "hint": "嘉宾支付票价。G-ventZ 的服务费、相应增值税和 Paystack 的手续费将从您的收入中扣除。"
+      "hint": "宾客支付门票价格。G-ventZ 手续费、相应增值税以及支付服务商的费用将从您的收入中扣除。"
     },
     "guestPays": {
       "label": "由嘉宾支付费用",

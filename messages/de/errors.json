@@ -172,13 +172,17 @@
   "payment": {
     "forbidden": "Sie haben keine Berechtigung dazu.",
     "own_application": "Ihren eigenen Antrag oder Ihr eigenes Auszahlungskonto muss ein anderes Teammitglied prüfen.",
-    "provider_unavailable": "Wir konnten den Zahlungsdienst nicht erreichen. Bitte versuchen Sie es erneut."
+    "provider_unavailable": "Wir konnten den Zahlungsdienst nicht erreichen. Bitte versuchen Sie es erneut.",
+    "paid_tickets_paused": "Kostenpflichtige Tickets für dieses Event sind derzeit pausiert. Kostenlose Tickets funktionieren weiterhin."
   },
   "payout": {
     "account_unresolved": "Die Bank konnte dieses Konto nicht finden. Prüfen Sie die Bank und die Kontonummer.",
-    "country_unavailable": "Paystack ist für dieses Land noch nicht verfügbar.",
+    "country_unavailable": "Kostenpflichtige Tickets sind für dieses Land noch nicht verfügbar.",
     "not_approved": "Sie können die Auszahlungsdaten ändern, sobald Sie für den Verkauf kostenpflichtiger Tickets freigegeben sind.",
-    "not_pending": "Es gibt kein Auszahlungskonto, das auf die Einrichtung wartet."
+    "not_pending": "Es gibt kein Auszahlungskonto, das auf die Einrichtung wartet.",
+    "bank_not_listed": "Wählen Sie Ihre Bank aus der Liste dieses Anbieters.",
+    "subaccount_not_waiting": "Dieser Anbieter wartet nicht darauf, dass Sie Ihre Bank wählen.",
+    "subaccount_not_found": "Es gibt noch kein Auszahlungskonto bei diesem Anbieter."
   },
   "places": {
     "bad_request": "Prüfen Sie die Suche und versuchen Sie es erneut.",
@@ -239,7 +243,12 @@
     "fee_currency_invalid": "Verwenden Sie einen dreistelligen Währungscode wie NGN oder USD.",
     "fee_invalid": "Geben Sie eine gültige Gebühr ein.",
     "provider_not_configured": "Dieser Zahlungsanbieter ist für diese Umgebung noch nicht eingerichtet.",
-    "vat_invalid": "Der Mehrwertsteuersatz wird in Basispunkten angegeben: eine ganze Zahl von 0 bis 10000 (100 %)."
+    "vat_invalid": "Der Mehrwertsteuersatz wird in Basispunkten angegeben: eine ganze Zahl von 0 bis 10000 (100 %).",
+    "reason_required": "Geben Sie für den Wechsel des aktiven Anbieters einen Grund mit 10 bis 500 Zeichen an.",
+    "active_provider_invalid": "Dieser Anbieter kann noch nicht der aktive Anbieter sein: Schalten Sie ihn ein, hinterlegen Sie seine Schlüssel und bestätigen Sie zuerst die Gebühr eines Landes.",
+    "active_provider_off": "Der aktive Anbieter kann nicht ausgeschaltet werden. Machen Sie zuerst einen anderen Anbieter aktiv.",
+    "country_not_ready": "Dieses Land kann noch nicht eingeschaltet werden: Es braucht Schlüssel, eine G-ventZ-Gebühr, einen MwSt.-Satz und eine bestätigte Gebühr.",
+    "charges_invalid": "Gebühren sind ganze Zahlen: der Prozentsatz in Basispunkten (0 bis 10000), Beträge in kleinsten Währungseinheiten, ab 0."
   },
   "staff": {
     "already_member": "Diese Person gehört bereits zum G-ventZ-Team.",

@@ -7,6 +7,7 @@ import { getFormat } from "@/i18n/format-server";
 import { api, data } from "@/lib/api/server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { loadEventPage, type EventPage } from "@/lib/event-page";
+import { getEventPaidSales } from "@/lib/payments";
 import { themeBackground } from "@/lib/themes";
 import SiteHeader from "@/components/SiteHeader";
 import { Banner, Button } from "@/design";
@@ -61,10 +62,14 @@ export default async function BookingPage({ params, searchParams }: PageProps) {
   const cta = eventCta({ ...event, signedIn });
   if (cta.kind === "manage") redirect(back);
 
-  const me = session ? await (await api()).GET("/v1/me").then(data).catch(() => null) : null;
+  const { free, paid } = orderableTypes(event);
+  const [me, paidSales] = await Promise.all([
+    session ? (await api()).GET("/v1/me").then(data).catch(() => null) : null,
+    // PS4–PS6: the provider a checkout uses now, and whether paid types are paused.
+    paid.length > 0 ? getEventPaidSales(event.id) : null,
+  ]);
   const date = eventDate(event, format.lang, format.range(event.startsAt, event.endsAt, event.timeZone), t);
   const place = eventPlace(event.location, t);
-  const { free, paid } = orderableTypes(event);
   const left = ticketsLeft(event);
   const held = event.viewerTickets ?? 0;
   const open = cta.kind === "get" || cta.kind === "waitlist";
@@ -150,6 +155,8 @@ export default async function BookingPage({ params, searchParams }: PageProps) {
                   initialCode={code}
                   refundPolicy={event.refundPolicy}
                   feeChoice={event.feeChoice}
+                  provider={paidSales?.provider ?? null}
+                  paused={paidSales?.paidTicketsPaused ?? false}
                   summary={summary}
                 />
               </section>

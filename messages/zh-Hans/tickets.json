@@ -133,7 +133,7 @@
       },
       "failed": {
         "title": "付款未成功",
-        "body": "Paystack 无法完成付款。未扣除任何费用。"
+        "body": "{provider} 无法完成付款。未产生任何扣款。"
       },
       "refunded": {
         "title": "已退款",
@@ -155,9 +155,9 @@
     "offerTitle": "名额已为您保留",
     "offerBody": "请在 {time} 之前付款以获取门票；之后名额将转给下一位。",
     "reference": "付款参考号",
-    "tryAgain": "使用 Paystack 重试",
-    "pay": "使用 Paystack 付款",
-    "payTotal": "使用 Paystack 付款 · {total}",
+    "tryAgain": "使用 {provider} 重试",
+    "pay": "使用 {provider} 付款",
+    "payTotal": "使用 {provider} 付款 · {total}",
     "startAgain": "重新开始",
     "serviceFee": "服务费",
     "includesVat": "（含增值税 {amount}）",
@@ -170,11 +170,12 @@
     "refundLate": "保留时间结束后付款",
     "refundsNote": "退款将退回您付款时使用的银行卡或账户。银行通常需要 5 到 10 个工作日。",
     "held": "您的门票将保留 <b>{time}</b>。",
-    "checking": "正在向 Paystack 核实您的付款...",
-    "noAnswer": "Paystack 仍未回复。<button>再次检查</button>",
-    "opening": "正在打开 Paystack...",
+    "checking": "正在等待 {provider} 确认您的付款...",
+    "noAnswer": "{provider} 仍未回复。<button>再次检查</button>",
+    "opening": "正在打开 {provider}...",
     "orderNotFound": "找不到此订单。",
-    "openFailed": "我们无法打开付款页面，请重试。"
+    "openFailed": "我们无法打开付款页面，请重试。",
+    "slowNote": "银行转账可能需要几分钟。此页面将持续检查最多 30 分钟。"
   },
   "myTickets": {
     "meta": {

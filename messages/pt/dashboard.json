@@ -230,7 +230,13 @@
     "openRegistration": "Abrir inscrições",
     "capacityHint": "Defina um limite, como 200. Quando lotar, novos convidados entram na lista de espera. Deixe em branco para ilimitado.",
     "capacityPlaceholder": "ex.: 200",
-    "saveCapacity": "Salvar capacidade"
+    "saveCapacity": "Salvar capacidade",
+    "paused": {
+      "title": "Os ingressos pagos estão pausados",
+      "noProvider": "No momento nenhum provedor de pagamento aceita pagamentos no país deste evento, então os convidados não podem comprar os ingressos pagos. Os ingressos gratuitos continuam funcionando.",
+      "noSubaccount": "A conta de repasse do organizador com o {provider} ainda não está pronta, então os convidados não podem comprar ingressos pagos. Os ingressos gratuitos continuam funcionando.",
+      "action": "Ir para Repasses"
+    }
   },
   "copyLink": {
     "copy": "Copiar link",

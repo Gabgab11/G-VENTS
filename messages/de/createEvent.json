@@ -198,10 +198,11 @@
     "wholeNumber": "Verwenden Sie eine ganze Zahl, z. B. 5000.",
     "working": "Gebühren werden berechnet...",
     "summary": "Gast zahlt <b>{guest}</b> · Sie erhalten <b>{host}</b>",
-    "breakdown": "(G-ventZ-Gebühr {fee} + Paystack ca. {charge})",
-    "breakdownVat": "(G-ventZ-Gebühr {fee} + MwSt. {vat} + Paystack ca. {charge})",
+    "breakdown": "(G-ventZ-Gebühr {fee} + {provider} ca. {charge})",
+    "breakdownVat": "(G-ventZ-Gebühr {fee} + MwSt. {vat} + {provider} ca. {charge})",
     "enterPrice": "Geben Sie einen Preis ein.",
-    "unavailable": "Das Gebührenbeispiel ist gerade nicht verfügbar."
+    "unavailable": "Das Gebührenbeispiel ist gerade nicht verfügbar.",
+    "providerFallback": "Zahlungsanbieter"
   },
   "validation": {
     "title": "Der Name des Events muss 3 bis 140 Zeichen lang sein.",

@@ -125,11 +125,21 @@
     "waitlistNote": "Esse ingresso está esgotado. Entre na lista de espera e avisaremos por e-mail se uma vaga abrir; você terá então 24 horas para pagar.",
     "refundPolicy": "Política de reembolso:",
     "joining": "Entrando...",
-    "opening": "Abrindo o Paystack...",
+    "opening": "Abrindo o {provider}...",
     "join": "Entrar na lista de espera",
-    "pay": "Pagar com Paystack",
-    "payTotal": "Pagar com Paystack · {total}",
-    "payNote": "Você vai pagar na página segura do Paystack. Seus ingressos ficam reservados por 10 minutos."
+    "pay": "Pagar com {provider}",
+    "payTotal": "Pagar com {provider} · {total}",
+    "payNote": "Você vai pagar na página segura do {provider}. Seus ingressos ficam reservados por 10 minutos.",
+    "methodsLabel": "Formas de pagamento no {provider}",
+    "methods": {
+      "card": "Cartão",
+      "bankTransfer": "Transferência bancária",
+      "applePay": "Apple Pay",
+      "googlePay": "Google Pay",
+      "mobileMoney": "Dinheiro móvel"
+    },
+    "paused": "Os ingressos pagos estão pausados",
+    "pausedNote": "No momento não é possível comprar ingressos pagos para este evento. Os ingressos gratuitos continuam funcionando."
   },
   "verify": {
     "emailHint": "Enviaremos um código de 6 dígitos por e-mail para confirmá-lo. Seus ingressos são enviados para este endereço.",

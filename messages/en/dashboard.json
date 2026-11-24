@@ -230,7 +230,13 @@
     "openRegistration": "Open registration",
     "capacityHint": "Set a limit, such as 200. When it's full, new guests join the waiting list. Leave blank for unlimited.",
     "capacityPlaceholder": "e.g. 200",
-    "saveCapacity": "Save capacity"
+    "saveCapacity": "Save capacity",
+    "paused": {
+      "title": "Paid tickets are paused",
+      "noProvider": "No payment provider takes payments in this event's country right now, so guests can't buy its paid tickets. Free tickets still work.",
+      "noSubaccount": "The host's payout account with {provider} isn't ready yet, so guests can't buy paid tickets. Free tickets still work.",
+      "action": "Go to Payouts"
+    }
   },
   "copyLink": {
     "copy": "Copy link",

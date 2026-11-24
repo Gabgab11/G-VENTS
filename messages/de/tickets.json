@@ -133,7 +133,7 @@
       },
       "failed": {
         "title": "Zahlung fehlgeschlagen",
-        "body": "Paystack konnte die Zahlung nicht durchführen. Es wurde nichts abgebucht."
+        "body": "{provider} konnte die Zahlung nicht durchführen. Es wurde nichts abgebucht."
       },
       "refunded": {
         "title": "Erstattet",
@@ -155,9 +155,9 @@
     "offerTitle": "Ein Platz ist für Sie frei",
     "offerBody": "Bezahlen Sie vor {time}, um Ihre Tickets zu erhalten; danach geht der Platz an die nächste Person.",
     "reference": "Zahlungsreferenz",
-    "tryAgain": "Erneut mit Paystack versuchen",
-    "pay": "Mit Paystack bezahlen",
-    "payTotal": "Mit Paystack bezahlen · {total}",
+    "tryAgain": "Erneut mit {provider} versuchen",
+    "pay": "Mit {provider} bezahlen",
+    "payTotal": "Mit {provider} bezahlen · {total}",
     "startAgain": "Neu beginnen",
     "serviceFee": "Servicegebühr",
     "includesVat": "(inkl. MwSt. {amount})",
@@ -170,11 +170,12 @@
     "refundLate": "nach Ablauf der Reservierung bezahlt",
     "refundsNote": "Erstattungen gehen an die Karte oder das Konto, mit dem Sie bezahlt haben. Banken brauchen dafür meist 5 bis 10 Werktage.",
     "held": "Ihre Tickets sind noch <b>{time}</b> reserviert.",
-    "checking": "Ihre Zahlung wird bei Paystack geprüft...",
-    "noAnswer": "Noch keine Antwort von Paystack. <button>Erneut prüfen</button>",
-    "opening": "Paystack wird geöffnet...",
+    "checking": "Warten auf die Bestätigung Ihrer Zahlung durch {provider}...",
+    "noAnswer": "Noch keine Antwort von {provider}. <button>Erneut prüfen</button>",
+    "opening": "{provider} wird geöffnet...",
     "orderNotFound": "Diese Bestellung wurde nicht gefunden.",
-    "openFailed": "Wir konnten die Zahlungsseite nicht öffnen. Bitte versuchen Sie es erneut."
+    "openFailed": "Wir konnten die Zahlungsseite nicht öffnen. Bitte versuchen Sie es erneut.",
+    "slowNote": "Banküberweisungen können einige Minuten dauern. Diese Seite prüft bis zu 30 Minuten lang weiter."
   },
   "myTickets": {
     "meta": {

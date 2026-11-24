@@ -230,7 +230,13 @@
     "openRegistration": "Anmeldung öffnen",
     "capacityHint": "Legen Sie ein Limit fest, etwa 200. Ist es erreicht, kommen neue Gäste auf die Warteliste. Leer lassen für unbegrenzt.",
     "capacityPlaceholder": "z. B. 200",
-    "saveCapacity": "Kapazität speichern"
+    "saveCapacity": "Kapazität speichern",
+    "paused": {
+      "title": "Kostenpflichtige Tickets sind pausiert",
+      "noProvider": "Derzeit nimmt kein Zahlungsanbieter Zahlungen im Land dieses Events an, daher können Gäste keine kostenpflichtigen Tickets kaufen. Kostenlose Tickets funktionieren weiterhin.",
+      "noSubaccount": "Das Auszahlungskonto des Veranstalters bei {provider} ist noch nicht bereit, daher können Gäste keine kostenpflichtigen Tickets kaufen. Kostenlose Tickets funktionieren weiterhin.",
+      "action": "Zu Auszahlungen"
+    }
   },
   "copyLink": {
     "copy": "Link kopieren",

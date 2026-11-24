@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { getFormat } from "@/i18n/format-server";
 import type { components } from "@/lib/api/schema";
-import { paymentIsFinal, refundStatusKey } from "@/lib/payment-text";
+import { paymentIsFinal, providerName, refundStatusKey } from "@/lib/payment-text";
 import { PayButton, PaymentWatcher } from "./PaymentWatcher";
 import { intlLocale } from "@/lib/format";
 import { Badge, Button, Card, type BadgeTone } from "@/design";
@@ -31,7 +31,8 @@ function refundTone(status: string): BadgeTone {
 const WHEN: Intl.DateTimeFormatOptions = { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "Africa/Lagos" };
 
 // The payment part of the order page (M5 PaymentStatus). Everything shown comes from the API's view
-// of the order; the page never trusts the query string Paystack adds to the return link (CK5).
+// of the order; the page never trusts the query string the provider adds to the return link (CK5).
+// The words name the order's provider (Paystack or Flutterwave).
 export default async function PaymentStatus({ orderId, payment, eventSlug }: { orderId: string; payment: Payment; eventSlug: string | null }) {
   const tr = await getTranslations("tickets.payment");
   const root = await getTranslations();
@@ -39,8 +40,10 @@ export default async function PaymentStatus({ orderId, payment, eventSlug }: { o
   const formatMinor = format.money;
   const locale = format.lang === "en" ? "en-GB" : intlLocale(format.lang, "date");
   const when = (iso: string) => new Date(iso).toLocaleString(locale, WHEN);
-  const t = { title: tr(`status.${TITLE[payment.status]}.title`), body: tr(`status.${TITLE[payment.status]}.body`) };
   const q = payment.quote;
+  // The order's own provider (PS7): set when the hold was made; quotes from before Flutterwave are Paystack's.
+  const provider = providerName(q?.provider);
+  const t = { title: tr(`status.${TITLE[payment.status]}.title`), body: tr(`status.${TITLE[payment.status]}.body`, { provider }) };
   const offer = payment.status === "waitlisted" && payment.offerExpiresAt && payment.canPay;
   return (
     <Card as="section" className={`pay-status pay-${payment.status}`} aria-labelledby="pay-status-title">
@@ -52,10 +55,11 @@ export default async function PaymentStatus({ orderId, payment, eventSlug }: { o
         {offer ? tr("offerBody", { time: when(payment.offerExpiresAt!) }) : t.body}
       </p>
 
-      {!paymentIsFinal(payment.status) && <PaymentWatcher holdExpiresAt={payment.holdExpiresAt} />}
+      {!paymentIsFinal(payment.status) && <PaymentWatcher holdExpiresAt={payment.holdExpiresAt} provider={provider} />}
 
       {payment.canPay && (
-        <PayButton orderId={orderId} label={payment.status === "failed" ? tr("tryAgain") : q ? tr("payTotal", { total: formatMinor(q.totalMinor, q.currency) }) : tr("pay")} />
+        <PayButton orderId={orderId} provider={provider}
+          label={payment.status === "failed" ? tr("tryAgain", { provider }) : q ? tr("payTotal", { provider, total: formatMinor(q.totalMinor, q.currency) }) : tr("pay", { provider })} />
       )}
       {payment.status === "expired" && eventSlug && <Button href={`/e/${eventSlug}`} variant="primary" className="pay-cta">{tr("startAgain")}</Button>}
 

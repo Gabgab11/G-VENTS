@@ -230,7 +230,13 @@
     "openRegistration": "开放报名",
     "capacityHint": "设置上限，例如 200。满员后，新来宾将进入候补名单。留空表示不限。",
     "capacityPlaceholder": "例如 200",
-    "saveCapacity": "保存容量"
+    "saveCapacity": "保存容量",
+    "paused": {
+      "title": "付费门票已暂停",
+      "noProvider": "目前没有支付服务商在此活动所在国家/地区收款，因此宾客无法购买其付费门票。免费门票仍可正常使用。",
+      "noSubaccount": "主办方在 {provider} 的收款账户尚未就绪，因此宾客无法购买付费门票。免费门票仍可正常使用。",
+      "action": "前往收款"
+    }
   },
   "copyLink": {
     "copy": "复制链接",

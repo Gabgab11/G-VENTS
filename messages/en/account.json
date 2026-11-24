@@ -70,10 +70,11 @@
   "payouts": {
     "metaTitle": "Get paid · G-ventZ",
     "title": "Get paid",
-    "intro": "Sell paid tickets on G-ventZ. Guests pay with Paystack and your share goes straight to your bank account.",
+    "intro": "Sell paid tickets on G-ventZ. Guests pay with Paystack or Flutterwave, and your share goes straight to your bank account.",
     "ok": {
       "submitted": "Application sent. We'll email you when it's decided.",
-      "payoutChanged": "Payout details changed. Paid sales pause until G-ventZ confirms the new account; we've emailed you."
+      "payoutChanged": "Payout details changed. Paid sales pause until G-ventZ confirms the new account; we've emailed you.",
+      "bankChosen": "Bank saved. Your payout account with this provider is being set up."
     },
     "loadFailed": "We couldn't load your payout details. Please refresh the page.",
     "status": {
@@ -95,7 +96,7 @@
       "pending": "Being set up",
       "replaced": "Replaced",
       "line": "{bank} · ending {last4}",
-      "pendingNote": "G-ventZ is setting this account up with Paystack. You can sell paid tickets once it's active.",
+      "pendingNote": "G-ventZ is setting this account up with the payment provider. You can sell paid tickets once it's active.",
       "change": "Change payout details"
     },
     "apply": {
@@ -105,7 +106,7 @@
     },
     "signedIn": "Signed in as {email}. Money questions? See <fees>fees</fees> and <refunds>refunds</refunds>.",
     "form": {
-      "help": "We use these details to pay you through Paystack. A person at G-ventZ checks each application, usually within two working days.",
+      "help": "We use these details to pay you through our payment providers, Paystack and Flutterwave. A person at G-ventZ checks each application, usually within two working days.",
       "legalName": "Legal or business name",
       "phone": "Phone number",
       "country": "Country you get paid in",
@@ -129,7 +130,7 @@
       "checking": "Checking...",
       "check": "Check account",
       "accountName": "Account name: <b>{name}</b>",
-      "cantCheck": "Paystack can't check account names in this country. Check the bank and number carefully: payouts go to exactly this account.",
+      "cantCheck": "Account names can't be checked automatically in this country. Check the bank and number carefully: payouts go to exactly this account.",
       "confirmNamed": "This is the right account ({name})",
       "confirm": "These bank details are right"
     },
@@ -142,7 +143,9 @@
       "checkFailed": "We couldn't check this account. Please try again.",
       "uploadFailed": "The document didn't upload. Please try again.",
       "sendFailed": "We couldn't send your application. Please try again.",
-      "changeFailed": "We couldn't change your payout details. Please try again."
+      "changeFailed": "We couldn't change your payout details. Please try again.",
+      "chooseBank": "Choose your bank.",
+      "chooseBankFailed": "We couldn't save your bank. Please try again."
     },
     "input": {
       "legalName": "Enter your legal or business name.",
@@ -154,6 +157,25 @@
       "documentMissing": "Add your government ID or business registration document.",
       "documentTooLarge": "The document is larger than 10 MB. Please use a smaller file.",
       "documentType": "Use a JPG, PNG or PDF file for the document."
+    },
+    "providers": {
+      "title": "Payment providers",
+      "active": "{provider} · ready",
+      "pending": "{provider} · setting up...",
+      "needsHost": "{provider} · choose your bank",
+      "failed": "{provider} · couldn't be set up",
+      "failedNote": "G-ventZ has been told and will try again.",
+      "needsHostNote": "{provider} couldn't match your bank. Choose it from {provider}'s list; your account number stays the same.",
+      "chooseBank": "Your bank in {provider}'s list",
+      "save": "Save bank",
+      "saving": "Saving...",
+      "used": "used for new paid sales"
+    },
+    "paused": {
+      "title": "Paid tickets are paused",
+      "noProvider": "No payment provider is taking payments in {country} right now, so guests can't buy paid tickets. Free tickets still work. There's nothing you need to do.",
+      "noSubaccount": "Your payout account with {provider} isn't ready yet, so guests can't buy paid tickets. Free tickets still work. We'll finish setting it up.",
+      "needsHost": "Your payout account with {provider} needs your bank, so guests can't buy paid tickets. Choose your bank under Payout account to start selling again."
     }
   },
   "page": {

@@ -198,10 +198,11 @@
     "wholeNumber": "请使用整数，例如 5000。",
     "working": "正在计算手续费...",
     "summary": "嘉宾支付 <b>{guest}</b> · 您收到 <b>{host}</b>",
-    "breakdown": "（G-ventZ 手续费 {fee} + Paystack 约 {charge}）",
-    "breakdownVat": "（G-ventZ 手续费 {fee} + 增值税 {vat} + Paystack 约 {charge}）",
+    "breakdown": "（G-ventZ 手续费 {fee} + {provider} 约 {charge}）",
+    "breakdownVat": "（G-ventZ 手续费 {fee} + 增值税 {vat} + {provider} 约 {charge}）",
     "enterPrice": "请输入价格。",
-    "unavailable": "暂时无法显示手续费示例。"
+    "unavailable": "暂时无法显示手续费示例。",
+    "providerFallback": "支付服务商"
   },
   "validation": {
     "title": "活动名称须为 3 到 140 个字符。",
