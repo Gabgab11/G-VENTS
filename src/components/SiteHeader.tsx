@@ -103,3 +103,29 @@ export default function SiteHeader({
     </>
   );
 }
+
+/**
+ * The header's tools on their own (search ⌘K, language, colour mode, account), for the host area's
+ * top bar, so both areas share one look and behaviour.
+ */
+export function HeaderTools() {
+  return (
+    <div className={styles.end}>
+      <SearchLauncher className={`${styles.pill} ${styles.search}`} labelClassName={styles.searchLabel} kbdClassName={styles.kbd} />
+      <span className={`${styles.wide} ${styles.lang}`}><LanguageSwitcher /></span>
+      <span className={`${styles.wide} ${styles.mode}`}><ColorModeToggle /></span>
+      <span className={styles.wide}>
+        <AccountLink
+          classes={{
+            pill: `${styles.pill} ${styles.account}`,
+            avatar: styles.avatar,
+            name: styles.who,
+            role: styles.role,
+            chevron: styles.chevron,
+            signIn: `${styles.pill} ${styles.signIn}`,
+          }}
+        />
+      </span>
+    </div>
+  );
+}

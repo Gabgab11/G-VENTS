@@ -35,7 +35,7 @@
 .logo b { color: var(--color-brand-z); }
 
 /* Desktop-only parts are hidden on phones. */
-.brand, .railCol { display: none; }
+.brand, .railCol, .tools { display: none; }
 
 /* Brand card */
 .brand {
@@ -53,17 +53,10 @@
 .brandLink { display: flex; align-items: center; gap: var(--space-3); border-radius: var(--radius-md); text-decoration: none; }
 .brandLink:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
 .brandTile {
-  display: grid;
-  place-items: center;
+  display: block;
   inline-size: 44px;
   block-size: 44px;
   border-radius: var(--radius-md);
-  background: var(--color-inverse);
-  color: var(--color-brand-z);
-  font-family: var(--font-display);
-  font-size: var(--text-heading-2);
-  line-height: 1;
-  font-weight: var(--weight-heavy);
 }
 
 /* Rail: a column of separate raised tiles */
@@ -288,6 +281,8 @@
     padding: var(--space-4);
   }
   .brand { grid-area: brand; display: flex; }
+  /* Same row as the brand card, at the far end. */
+  .tools { grid-area: brand; display: flex; justify-self: end; align-self: center; position: relative; z-index: var(--z-header); }
   .railCol { grid-area: rail; display: grid; }
   .topbar, .tabbar { display: none; }
   .main {
@@ -302,7 +297,7 @@
 }
 
 @media print {
-  .brand, .railCol, .topbar, .tabbar, .skip { display: none; }
+  .brand, .railCol, .tools, .topbar, .tabbar, .skip { display: none; }
   .shell { display: block; padding: 0; }
   .main { border: 0; box-shadow: none; }
 }

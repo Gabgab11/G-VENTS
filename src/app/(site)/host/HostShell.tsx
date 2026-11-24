@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { useRef, useState, type ReactNode } from "react";
 import { LogOut, MoreHorizontal, Ticket } from "lucide-react";
 import { signOut } from "@/app/(site)/auth/actions";
+import { HeaderTools } from "@/components/SiteHeader";
 import { Avatar, Badge } from "@/design";
 import { Sheet, SheetContent, SheetTrigger } from "@/design/client";
 import { ICON, NavIcon } from "./shell/icons";
@@ -50,11 +51,15 @@ export default function HostShell({ userId, name, isStaff, env, children }: {
 
       <div className={styles.brand}>
         <Link href="/" className={styles.brandLink} aria-label={t("homepage")}>
-          <span className={styles.brandTile} aria-hidden>Z</span>
+          {/* eslint-disable-next-line @next/next/no-img-element -- the app icon, a small static PNG */}
+          <img src="/icons/icon-192.png" alt="" width={44} height={44} className={styles.brandTile} />
           <span className={styles.logo}>{logo}</span>
         </Link>
         {envBadge}
       </div>
+
+      {/* The site header's tools (search ⌘K, language, colour mode, account), top right as on every page. */}
+      <div className={styles.tools}><HeaderTools /></div>
 
       <Rail userId={userId} name={name} isStaff={isStaff} counts={counts} pathname={pathname} onSignOut={leave} />
 
