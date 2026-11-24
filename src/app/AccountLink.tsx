@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { useRef } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
 import { ChevronDown, LayoutDashboard, LogOut, ShieldCheck, Ticket, UserRound } from "lucide-react";
 import { signOut } from "@/app/(site)/auth/actions";
 import { Avatar } from "@/design";
-import { Menu, MenuContent, MenuItem, MenuLabel, MenuSeparator, MenuTrigger } from "@/design/client";
 import { firstName, roleOf, useSession, type BrowserSession } from "@/lib/use-session";
+import styles from "./AccountLink.module.css";
 
 // The account corner of the header (FR-34, D92). Pages like the home page are cached and shared by
 // every visitor, so who is signed in is decided in the browser: the session cookie is httpOnly, so
@@ -33,36 +34,85 @@ function displayName(s: BrowserSession, fallback: string): string {
 export default function AccountLink({ classes = {} }: { classes?: Classes }) {
   const t = useTranslations("common.account");
   const session = useSession();
-  const signOutForm = useSignOutForm();
-
   if (!session.signedIn) return <Link href="/sign-in" className={classes.signIn}>{t("signIn")}</Link>;
+  return <AccountMenu session={session} classes={classes} />;
+}
+
+// A disclosure (button + list of links), not a Radix menu: the header is on every page, and the
+// dropdown-menu package would add ~17 KB to each (NFR-18). Escape, an outside click, leaving the
+// panel with Tab, or navigating closes it; arrow keys move between the items.
+function AccountMenu({ session, classes }: { session: BrowserSession; classes: Classes }) {
+  const t = useTranslations("common.account");
+  const signOutForm = useSignOutForm();
+  const [open, setOpen] = useState(false);
+  const root = useRef<HTMLDivElement>(null);
+  const button = useRef<HTMLButtonElement>(null);
+  const panelId = useId();
+  const pathname = usePathname();
+
+  useEffect(() => setOpen(false), [pathname]);
+  useEffect(() => {
+    if (!open) return;
+    const onPointer = (e: PointerEvent) => { if (!root.current?.contains(e.target as Node)) setOpen(false); };
+    document.addEventListener("pointerdown", onPointer);
+    return () => document.removeEventListener("pointerdown", onPointer);
+  }, [open]);
+
+  const items = () => Array.from(root.current?.querySelectorAll<HTMLElement>(`.${styles.item}`) ?? []);
+  const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Escape" && open) {
+      e.stopPropagation();
+      setOpen(false);
+      button.current?.focus();
+    } else if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      const list = items();
+      if (!list.length) return;
+      e.preventDefault();
+      if (!open) { setOpen(true); requestAnimationFrame(() => items()[0]?.focus()); return; }
+      const at = list.indexOf(document.activeElement as HTMLElement);
+      const next = e.key === "ArrowDown" ? (at + 1) % list.length : (at - 1 + list.length) % list.length;
+      list[at < 0 && e.key === "ArrowUp" ? list.length - 1 : next]?.focus();
+    }
+  };
+
   const name = displayName(session, t("account"));
   const role = t(`role.${roleOf(session)}`);
+  const close = () => setOpen(false);
   return (
-    <>
+    <div
+      ref={root}
+      className={styles.root}
+      onKeyDown={onKeyDown}
+      onBlur={(e) => { if (open && !e.currentTarget.contains(e.relatedTarget as Node | null)) setOpen(false); }}
+    >
       {signOutForm.element}
-      <Menu>
-        <MenuTrigger>
-          <button type="button" className={classes.pill} aria-label={t("menu", { name, role })}>
-            <Avatar name={name} src={session.avatarUrl} size={28} className={classes.avatar} aria-hidden />
-            <span className={classes.name} aria-hidden>
-              <span>{firstName(name)}</span>
-              <span className={classes.role}>{role}</span>
-            </span>
-            <ChevronDown size={16} strokeWidth={1.75} aria-hidden className={classes.chevron} />
-          </button>
-        </MenuTrigger>
-        <MenuContent>
-          <MenuLabel>{name}</MenuLabel>
-          <MenuItem asChild><Link href="/my-tickets"><Ticket aria-hidden />{t("myTickets")}</Link></MenuItem>
-          <MenuItem asChild><Link href="/account"><UserRound aria-hidden />{t("account")}</Link></MenuItem>
-          {session.isHost ? <MenuItem asChild><Link href="/host"><LayoutDashboard aria-hidden />{t("dashboard")}</Link></MenuItem> : null}
-          {session.isStaff ? <MenuItem asChild><Link href="/admin"><ShieldCheck aria-hidden />{t("admin")}</Link></MenuItem> : null}
-          <MenuSeparator />
-          <MenuItem onSelect={signOutForm.submit}><LogOut aria-hidden />{t("signOut")}</MenuItem>
-        </MenuContent>
-      </Menu>
-    </>
+      <button
+        ref={button}
+        type="button"
+        className={classes.pill}
+        aria-label={t("menu", { name, role })}
+        aria-expanded={open}
+        aria-controls={panelId}
+        data-state={open ? "open" : "closed"}
+        onClick={() => setOpen((o) => !o)}
+      >
+        <Avatar name={name} src={session.avatarUrl} size={28} className={classes.avatar} aria-hidden />
+        <span className={classes.name} aria-hidden>
+          <span>{firstName(name)}</span>
+          <span className={classes.role}>{role}</span>
+        </span>
+        <ChevronDown size={16} strokeWidth={1.75} aria-hidden className={classes.chevron} />
+      </button>
+      <div id={panelId} className={styles.panel} hidden={!open}>
+        <p className={styles.label}>{name}</p>
+        <Link href="/my-tickets" className={styles.item} onClick={close}><Ticket aria-hidden />{t("myTickets")}</Link>
+        <Link href="/account" className={styles.item} onClick={close}><UserRound aria-hidden />{t("account")}</Link>
+        {session.isHost ? <Link href="/host" className={styles.item} onClick={close}><LayoutDashboard aria-hidden />{t("dashboard")}</Link> : null}
+        {session.isStaff ? <Link href="/admin" className={styles.item} onClick={close}><ShieldCheck aria-hidden />{t("admin")}</Link> : null}
+        <hr className={styles.separator} />
+        <button type="button" className={styles.item} onClick={signOutForm.submit}><LogOut aria-hidden />{t("signOut")}</button>
+      </div>
+    </div>
   );
 }
 

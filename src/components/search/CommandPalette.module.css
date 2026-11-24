@@ -60,6 +60,7 @@
 [dir="rtl"] .meta[dir="ltr"] { text-align: end; }
 .verified { display: inline-grid; flex: none; color: var(--color-accent); }
 .price { flex: none; }
+.option[aria-selected="true"] .price { background: var(--color-surface); }
 .arrow { flex: none; color: var(--color-text-muted); }
 [dir="rtl"] .arrow { transform: scaleX(-1); }
 

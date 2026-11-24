@@ -47,7 +47,7 @@ export default function SiteHeader({
       <header className={styles.bar}>
         <div className={styles.row}>
           {back !== false && <span className={styles.back}><BackLink fallback={back} label="←" /></span>}
-          <Link href="/" className={`${styles.pill} ${styles.logo}`} aria-label={t("brand.home")}>G-vent<b>Z</b></Link>
+          <Link href="/" className={`${styles.pill} ${styles.logo}`} aria-label={t("brand.home")} dir="ltr">G-vent<b>Z</b></Link>
           <nav className={`${styles.pill} ${styles.nav}`} aria-label={t("nav.main")}>
             {NAV.map((n) => (
               <Link key={n.href} href={n.href} className={styles.link} aria-current={current === n.href ? "page" : undefined}>{t(`nav.${n.label}`)}</Link>
@@ -88,7 +88,7 @@ export default function SiteHeader({
                 {actions ? null : (
                   <div className={styles.sheetAccount}>
                     <AccountSheetSection
-                      classes={{ head: styles.sheetHead, name: styles.who, role: styles.role, list: styles.sheetNav, signIn: styles.sheetSignIn }}
+                      classes={{ head: styles.sheetHead, name: styles.sheetWho, role: styles.role, list: styles.sheetNav, signIn: styles.sheetSignIn }}
                       linkClassName={styles.sheetLink}
                       onNavigate={() => setSheetOpen(false)}
                     />

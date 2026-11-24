@@ -29,6 +29,10 @@ $$;
 comment on function public.search_fold(text) is
   'Lower case, accents removed: the matching rule of GET /v1/search. Immutable so it can be stored and indexed.';
 
+-- The Data API stays closed (20261113000100): only the API role calls it.
+revoke execute on function public.search_fold(text) from public;
+grant execute on function public.search_fold(text) to gventz_api;
+
 -- Events: title, venue name and city in one text. The index covers listed events only (published
 -- and public), which is all the search returns.
 alter table public.events

@@ -25,7 +25,16 @@ type Status = "idle" | "loading" | "done" | "error";
 // costs nothing until someone searches. Each typing pause sends one request to the website's
 // /api/search (never the API directly); a newer keystroke aborts the older request. The input is a
 // combobox over one listbox: arrow keys move, Enter opens, Escape closes and focus goes back.
-export default function CommandPalette({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
+export default function CommandPalette({
+  open,
+  onOpenChange,
+  returnFocus,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  /** The element to focus again on close (the dialog has no Radix trigger to return to). */
+  returnFocus?: () => HTMLElement | null;
+}) {
   const t = useTranslations("common.search");
   const root = useTranslations();
   const shared = useTranslations("shared");
@@ -175,7 +184,7 @@ export default function CommandPalette({ open, onOpenChange }: { open: boolean; 
                   </span>
                 ) : null}
               </span>
-              <span className={styles.meta} dir="ltr">@{o.host.handle}</span>
+              <span className={styles.meta} dir="ltr">{`@${o.host.handle}`}</span>
             </span>
           </Link>
         );
@@ -220,6 +229,10 @@ export default function CommandPalette({ open, onOpenChange }: { open: boolean; 
         className={styles.panel}
         // Straight into the search field (Radix would focus the close button first).
         onOpenAutoFocus={(e) => { e.preventDefault(); inputRef.current?.focus(); inputRef.current?.select(); }}
+        onCloseAutoFocus={(e) => {
+          const target = returnFocus?.();
+          if (target?.isConnected) { e.preventDefault(); target.focus(); }
+        }}
       >
         <div className={styles.field}>
           <span className={styles.fieldIcon} aria-hidden>

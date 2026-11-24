@@ -7,11 +7,14 @@
   height: calc(env(safe-area-inset-top, 0px) + var(--space-3) + var(--pill) + var(--space-5));
 }
 
-.bar {
+/* header.bar.bar: page rules for their children (.stage-content > * { position: relative }, .legal > * { max-width }) must not move it. */
+header.bar.bar {
   --pill: var(--control-height);
   position: fixed;
   inset-block-start: 0;
   inset-inline: 0;
+  max-width: none; /* .legal > * caps its children's width */
+  margin: 0;
   z-index: var(--z-header);
   padding-block-start: calc(env(safe-area-inset-top, 0px) + var(--space-3));
   padding-inline: max(var(--gutter), env(safe-area-inset-left, 0px)) max(var(--gutter), env(safe-area-inset-right, 0px));
@@ -139,6 +142,8 @@ button.pill { cursor: pointer; }
 .sheetLink:hover, .sheetLink[aria-current="page"] { background: var(--color-surface-raised); }
 .sheetLink:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 1px; }
 .sheetAccount { padding-block-start: var(--space-4); margin-block-start: var(--space-4); border-block-start: 1px solid var(--color-border); }
+.sheetWho { display: grid; min-width: 0; line-height: var(--leading-body-sm); }
+.sheetWho > span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .sheetHead { display: flex; align-items: center; gap: var(--space-3); padding: 0 var(--space-3) var(--space-3); font-weight: var(--weight-semibold); }
 .sheetSignIn {
   display: flex;
