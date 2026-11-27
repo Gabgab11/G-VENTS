@@ -53,6 +53,9 @@ export function placeOrderBody(formData: FormData): PlaceOrderBody | { error: Or
   if ("error" in people) return people;
 
   const buyerName = field(formData, "buyer_name", 120);
+  // Change 6: the registration link the guest is on (from ?r=<token>), passed through so the API caps
+  // and stamps the order against it; the unlock proof is added in the server action (it reads a cookie).
+  const registrationLinkToken = field(formData, "registration_link_token", 64);
   return {
     lines,
     ...(people.recipients.length > 0 ? { recipients: people.recipients } : {}),
@@ -60,6 +63,7 @@ export function placeOrderBody(formData: FormData): PlaceOrderBody | { error: Or
     ...(buyerGender ? { buyerGender } : {}),
     ...(Object.keys(answers).length > 0 ? { answers } : {}),
     ...(buyerName ? { buyerName } : {}),
+    ...(registrationLinkToken ? { registrationLinkToken } : {}),
   };
 }
 

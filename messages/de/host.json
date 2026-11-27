@@ -23,20 +23,49 @@
     "appearance": "Darstellung",
     "pin": "Angeheftet lassen",
     "unpin": "Lösen",
-    "groups": { "work": "Arbeit", "money": "Geld", "grow": "Wachstum", "account": "Konto", "elsewhere": "Weiteres" },
-    "count": { "drafts": "{count, plural, one {# Entwurf} other {# Entwürfe}}", "waiting": "{count} wartend", "upcoming": "{count} anstehend", "action": "Handlung erforderlich" },
-    "env": { "dev": "Dev", "staging": "Staging" }
+    "groups": {
+      "work": "Arbeit",
+      "money": "Geld",
+      "grow": "Wachstum",
+      "account": "Konto",
+      "elsewhere": "Weiteres"
+    },
+    "count": {
+      "drafts": "{count, plural, one {# Entwurf} other {# Entwürfe}}",
+      "waiting": "{count} wartend",
+      "upcoming": "{count} anstehend",
+      "action": "Handlung erforderlich"
+    },
+    "env": {
+      "dev": "Dev",
+      "staging": "Staging"
+    }
   },
   "home": {
-    "profileBanner": { "title": "Richten Sie Ihr Profil ein", "body": "Wählen Sie einen Benutzernamen und fügen Sie ein Bild hinzu, damit Gäste Sie finden und Ihnen folgen können.", "action": "Profil einrichten", "dismiss": "Ausblenden" },
+    "profileBanner": {
+      "title": "Richten Sie Ihr Profil ein",
+      "body": "Wählen Sie einen Benutzernamen und fügen Sie ein Bild hinzu, damit Gäste Sie finden und Ihnen folgen können.",
+      "action": "Profil einrichten",
+      "dismiss": "Ausblenden"
+    },
     "title": "Start",
     "welcome": "Willkommen bei G-ventZ",
     "welcomeNamed": "Willkommen, {name}",
     "welcomeLead": "Bringen wir Ihr erstes Event online. Das dauert nur wenige Minuten.",
     "create": "Event erstellen",
     "periodLabel": "Zeitraum",
-    "period": { "week": "7 Tage", "month": "30 Tage", "quarter": "90 Tage", "year": "12 Monate" },
-    "vs": { "week": "den vorherigen 7 Tagen", "month": "den vorherigen 30 Tagen", "quarter": "den vorherigen 90 Tagen", "year": "den vorherigen 12 Monaten" },
+    "period": {
+      "week": "7 Tage",
+      "month": "30 Tage",
+      "quarter": "90 Tage",
+      "year": "12 Monate"
+    },
+    "vs": {
+      "week": "den vorherigen 7 Tagen",
+      "month": "den vorherigen 30 Tagen",
+      "quarter": "den vorherigen 90 Tagen",
+      "year": "den vorherigen 12 Monaten"
+    },
     "delta": {
       "up": "{percent} % mehr als in {vs}",
       "down": "{percent} % weniger als in {vs}",
@@ -120,7 +149,12 @@
   "settings": {
     "title": "Einstellungen",
     "tabsLabel": "Bereiche der Einstellungen",
-    "tabs": { "profile": "Profil", "security": "Sicherheit", "appearance": "Darstellung", "language": "Sprache" },
+    "tabs": {
+      "profile": "Profil",
+      "security": "Sicherheit",
+      "appearance": "Darstellung",
+      "language": "Sprache"
+    },
     "appearance": {
       "title": "Dashboard-Stil",
       "hint": "Die Farben Ihres Veranstalterbereichs. Nur Sie sehen sie; Ihre Event-Seiten behalten ihren eigenen Stil."
@@ -147,8 +181,22 @@
     "none": "Noch keine Bestellungen",
     "noneHint": "Bestellungen erscheinen hier, sobald sich jemand anmeldet oder ein Ticket kauft.",
     "noneFiltered": "Keine Bestellungen entsprechen diesen Filtern",
-    "filter": { "event": "Event", "allEvents": "Alle Events", "status": "Status", "allStatuses": "Alle Status", "apply": "Anzeigen", "clear": "Zurücksetzen" },
-    "col": { "buyer": "Käufer", "event": "Event", "tickets": "Tickets", "amount": "Betrag", "status": "Status", "when": "Bestellt" },
+    "filter": {
+      "event": "Event",
+      "allEvents": "Alle Events",
+      "status": "Status",
+      "allStatuses": "Alle Status",
+      "apply": "Anzeigen",
+      "clear": "Zurücksetzen"
+    },
+    "col": {
+      "buyer": "Käufer",
+      "event": "Event",
+      "tickets": "Tickets",
+      "amount": "Betrag",
+      "status": "Status",
+      "when": "Bestellt"
+    },
     "status": {
       "completed": "Bestätigt",
       "pending_approval": "Wartet auf Freigabe",
@@ -174,7 +222,15 @@
     "failed": "Die Abrechnungen konnten nicht geladen werden. Bitte versuchen Sie es erneut.",
     "none": "Noch keine kostenpflichtigen Verkäufe",
     "noneHint": "Sobald Sie kostenpflichtige Tickets verkaufen, erscheinen hier die Verkäufe und Gebühren jedes Events.",
-    "col": { "event": "Event", "orders": "Bestellungen", "gross": "Von Gästen bezahlt", "paystack": "Paystack-Gebühr", "gventz": "G-ventZ-Gebühr", "refunds": "Erstattungen", "net": "Ihr Anteil" },
+    "col": {
+      "event": "Event",
+      "orders": "Bestellungen",
+      "gross": "Von Gästen bezahlt",
+      "paystack": "Paystack-Gebühr",
+      "gventz": "G-ventZ-Gebühr",
+      "refunds": "Erstattungen",
+      "net": "Ihr Anteil"
+    },
     "total": "Gesamt",
     "totalIn": "Gesamt, {currency}",
     "note": "Die G-ventZ-Gebühr enthält die Mehrwertsteuer. Paystack zahlt jeden Verkauf gemäß seinem Abrechnungsplan auf Ihr Bankkonto aus; G-ventZ verwahrt Ihr Geld nie."

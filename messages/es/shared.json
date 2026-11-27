@@ -1,5 +1,7 @@
 {
-  "hostProfile": { "verified": "Organizador verificado" },
+  "hostProfile": {
+    "verified": "Organizador verificado"
+  },
   "errorPage": {
     "title": "Algo salió mal",
     "body": "No pudimos cargar esta página. Vuelva a intentarlo en un momento.",
@@ -164,7 +166,10 @@
     "family": "Familia",
     "other": "Otros"
   },
-  "price": { "free": "Gratis", "from": "Desde {price}" },
+  "price": {
+    "free": "Gratis",
+    "from": "Desde {price}"
+  },
   "share": {
     "share": "Compartir",
     "title": "Compartir este evento",

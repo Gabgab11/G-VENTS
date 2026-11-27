@@ -23,20 +23,49 @@
     "appearance": "Apparence",
     "pin": "Épingler",
     "unpin": "Désépingler",
-    "groups": { "work": "Travail", "money": "Argent", "grow": "Croissance", "account": "Compte", "elsewhere": "Ailleurs" },
-    "count": { "drafts": "{count, plural, one {# brouillon} other {# brouillons}}", "waiting": "{count} en attente", "upcoming": "{count, plural, one {# à venir} other {# à venir}}", "action": "Action requise" },
-    "env": { "dev": "Dév", "staging": "Préproduction" }
+    "groups": {
+      "work": "Travail",
+      "money": "Argent",
+      "grow": "Croissance",
+      "account": "Compte",
+      "elsewhere": "Ailleurs"
+    },
+    "count": {
+      "drafts": "{count, plural, one {# brouillon} other {# brouillons}}",
+      "waiting": "{count} en attente",
+      "upcoming": "{count, plural, one {# à venir} other {# à venir}}",
+      "action": "Action requise"
+    },
+    "env": {
+      "dev": "Dév",
+      "staging": "Préproduction"
+    }
   },
   "home": {
-    "profileBanner": { "title": "Configurez votre profil", "body": "Choisissez un identifiant et ajoutez une image pour que les invités puissent vous trouver et vous suivre.", "action": "Configurer le profil", "dismiss": "Ignorer" },
+    "profileBanner": {
+      "title": "Configurez votre profil",
+      "body": "Choisissez un identifiant et ajoutez une image pour que les invités puissent vous trouver et vous suivre.",
+      "action": "Configurer le profil",
+      "dismiss": "Ignorer"
+    },
     "title": "Accueil",
     "welcome": "Bienvenue sur G-ventZ",
     "welcomeNamed": "Bienvenue, {name}",
     "welcomeLead": "Mettons votre premier événement en ligne. Cela ne prend que quelques minutes.",
     "create": "Créer un événement",
     "periodLabel": "Période",
-    "period": { "week": "7 jours", "month": "30 jours", "quarter": "90 jours", "year": "12 mois" },
-    "vs": { "week": "7 jours précédents", "month": "30 jours précédents", "quarter": "90 jours précédents", "year": "12 mois précédents" },
+    "period": {
+      "week": "7 jours",
+      "month": "30 jours",
+      "quarter": "90 jours",
+      "year": "12 mois"
+    },
+    "vs": {
+      "week": "7 jours précédents",
+      "month": "30 jours précédents",
+      "quarter": "90 jours précédents",
+      "year": "12 mois précédents"
+    },
     "delta": {
       "up": "En hausse de {percent} % par rapport aux {vs}",
       "down": "En baisse de {percent} % par rapport aux {vs}",
@@ -120,7 +149,12 @@
   "settings": {
     "title": "Paramètres",
     "tabsLabel": "Sections des paramètres",
-    "tabs": { "profile": "Profil", "security": "Sécurité", "appearance": "Apparence", "language": "Langue" },
+    "tabs": {
+      "profile": "Profil",
+      "security": "Sécurité",
+      "appearance": "Apparence",
+      "language": "Langue"
+    },
     "appearance": {
       "title": "Style du tableau de bord",
       "hint": "Les couleurs de votre espace organisateur. Vous seul les voyez ; les pages de vos événements conservent leur propre style."
@@ -147,8 +181,22 @@
     "none": "Aucune commande pour le moment",
     "noneHint": "Les commandes s'affichent ici dès que quelqu'un s'inscrit ou achète un billet.",
     "noneFiltered": "Aucune commande ne correspond à ces filtres",
-    "filter": { "event": "Événement", "allEvents": "Tous les événements", "status": "Statut", "allStatuses": "Tous les statuts", "apply": "Afficher", "clear": "Effacer" },
-    "col": { "buyer": "Acheteur", "event": "Événement", "tickets": "Billets", "amount": "Montant", "status": "Statut", "when": "Commandé le" },
+    "filter": {
+      "event": "Événement",
+      "allEvents": "Tous les événements",
+      "status": "Statut",
+      "allStatuses": "Tous les statuts",
+      "apply": "Afficher",
+      "clear": "Effacer"
+    },
+    "col": {
+      "buyer": "Acheteur",
+      "event": "Événement",
+      "tickets": "Billets",
+      "amount": "Montant",
+      "status": "Statut",
+      "when": "Commandé le"
+    },
     "status": {
       "completed": "Confirmée",
       "pending_approval": "En attente d'approbation",
@@ -174,7 +222,15 @@
     "failed": "Impossible de charger les règlements. Veuillez réessayer.",
     "none": "Aucune vente payante pour le moment",
     "noneHint": "Dès que vous vendrez des billets payants, les ventes et les frais de chaque événement s'afficheront ici.",
-    "col": { "event": "Événement", "orders": "Commandes", "gross": "Payé par les invités", "paystack": "Frais Paystack", "gventz": "Frais G-ventZ", "refunds": "Remboursements", "net": "Pour vous" },
+    "col": {
+      "event": "Événement",
+      "orders": "Commandes",
+      "gross": "Payé par les invités",
+      "paystack": "Frais Paystack",
+      "gventz": "Frais G-ventZ",
+      "refunds": "Remboursements",
+      "net": "Pour vous"
+    },
     "total": "Total",
     "totalIn": "Total, {currency}",
     "note": "Les frais G-ventZ incluent la TVA. Paystack verse chaque vente sur votre compte bancaire selon son calendrier de règlement ; G-ventZ ne détient jamais votre argent."
