@@ -2,7 +2,25 @@
 
 import { useEffect, useState } from "react";
 
-export type BrowserSession = { signedIn: boolean; isStaff: boolean; isHost: boolean; language?: string };
+export type BrowserSession = {
+  signedIn: boolean;
+  isStaff: boolean;
+  isHost: boolean;
+  language?: string;
+  /** The account's name (or the part of the email before "@" when no name is set), for the header's account pill. */
+  name?: string;
+  avatarUrl?: string | null;
+};
+
+/** The line under the name in the account pill: staff, then hosts, then everyone else. */
+export function roleOf(s: Pick<BrowserSession, "isStaff" | "isHost">): "staff" | "host" | "guest" {
+  return s.isStaff ? "staff" : s.isHost ? "host" : "guest";
+}
+
+/** The first word of a name ("Ada Lovelace" → "Ada"); the whole string when it is one word. */
+export function firstName(name: string | undefined): string {
+  return name?.trim().split(/\s+/)[0] ?? "";
+}
 
 const SIGNED_OUT: BrowserSession = { signedIn: false, isStaff: false, isHost: false };
 let pending: Promise<BrowserSession> | null = null;
@@ -23,6 +41,8 @@ export function loadSession(): Promise<BrowserSession> {
       signedIn: d.signedIn === true,
       isStaff: d.signedIn === true && d.isStaff === true,
       isHost: d.signedIn === true && d.isHost === true,
+      name: d.signedIn === true && typeof d.name === "string" ? d.name : undefined,
+      avatarUrl: d.signedIn === true && typeof d.avatarUrl === "string" ? d.avatarUrl : null,
     }))
     .catch(() => SIGNED_OUT);
   return pending;

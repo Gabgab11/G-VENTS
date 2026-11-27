@@ -66,6 +66,7 @@
     "fixErrors": "Verifique os campos destacados.",
     "signedOut": "Sua sessão terminou. Entre novamente.",
     "viewProfile": "Ver perfil",
-    "noHandle": "Escolha um nome de usuário para ter sua página pública."
+    "noHandle": "Escolha um nome de usuário para ter sua página pública.",
+    "accountNote": "Seu telefone, suas preferências de e-mail e seus métodos de login estão em <link>Sua conta</link>."
   }
 }

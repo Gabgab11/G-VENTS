@@ -101,9 +101,9 @@
     "applicationDeclinedAction": "Ver o motivo",
     "approvalRevoked": "Sua aprovação para vender ingressos pagos foi retirada. Os ingressos já vendidos continuam válidos.",
     "approvalRevokedAction": "Ver detalhes",
-    "payoutAccountPending": "Você foi aprovado. Estamos configurando sua conta de repasse com a Paystack; você poderá vender ingressos pagos assim que ela estiver pronta.",
+    "payoutAccountPending": "Você foi aprovado. Estamos configurando sua conta de repasse com o provedor de pagamento; você poderá vender ingressos pagos quando ela estiver pronta.",
     "payoutAccountPendingAction": "Ver detalhes do repasse",
-    "countryOff": "A Paystack está pausada no país da sua conta de repasse no momento. Os ingressos gratuitos continuam funcionando.",
+    "countryOff": "Os ingressos pagos estão pausados no país da sua conta de repasse no momento. Os ingressos gratuitos continuam funcionando.",
     "owesMoney": "Você deve dinheiro à G-ventZ por reembolsos ou estornos, por isso não pode publicar novos eventos pagos. Seus eventos atuais continuam vendendo, o que quita o valor.",
     "owesMoneyAction": "Ver quanto você deve",
     "suspended": "Sua conta está suspensa, por isso você não pode vender ingressos pagos."
@@ -111,7 +111,7 @@
   "fees": {
     "hostAbsorbs": {
       "label": "Eu assumo as taxas",
-      "hint": "Os convidados pagam o preço do ingresso. A taxa da G-ventZ, o imposto sobre ela e a tarifa da Paystack são descontados do que você recebe."
+      "hint": "Os convidados pagam o preço do ingresso. A taxa da G-ventZ, o IVA sobre ela e a tarifa do provedor de pagamento saem do que você recebe."
     },
     "guestPays": {
       "label": "Os convidados pagam as taxas",

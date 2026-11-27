@@ -20,7 +20,13 @@
     "account": "Compte",
     "platformAdmin": "Administration G-ventZ",
     "security": "Connexion en deux étapes et clés d’accès",
-    "payouts": "Versements"
+    "payouts": "Versements",
+    "menu": "Menu du compte : {name}, {role}",
+    "role": {
+      "guest": "Invité",
+      "host": "Organisateur",
+      "staff": "Équipe G-ventZ"
+    }
   },
   "language": {
     "label": "Langue",
@@ -32,5 +38,33 @@
   },
   "errors": {
     "generic": "Un problème est survenu. Veuillez réessayer."
+  },
+  "search": {
+    "open": "Rechercher des événements, des organisateurs et des lieux",
+    "label": "Rechercher",
+    "title": "Rechercher",
+    "inputLabel": "Rechercher sur G-ventZ",
+    "placeholder": "Événements, organisateurs, catégories ou villes",
+    "resultsLabel": "Résultats de la recherche",
+    "close": "Fermer la recherche",
+    "groups": {
+      "recent": "Recherches récentes",
+      "events": "Événements",
+      "hosts": "Organisateurs",
+      "categories": "Catégories",
+      "cities": "Villes",
+      "discover": "Découvrir"
+    },
+    "clearRecent": "Effacer les recherches récentes",
+    "hint": "Saisissez au moins deux lettres pour rechercher des événements, des organisateurs, des catégories et des villes.",
+    "loading": "Recherche en cours…",
+    "noResults": "Aucun résultat pour « {query} » pour le moment.",
+    "error": "La recherche n’est pas disponible pour le moment. Veuillez réessayer dans un instant.",
+    "count": "{count, plural, one {# résultat} other {# résultats}}",
+    "events": "{count, plural, one {# événement} other {# événements}}",
+    "all": "Rechercher « {query} » dans Découvrir",
+    "online": "En ligne",
+    "verified": "Vérifié",
+    "verifiedHost": "Organisateur vérifié"
   }
 }

@@ -15,7 +15,11 @@ const reported = new Set<string>();
 export default getRequestConfig(async ({ requestLocale }) => {
   const segment = await requestLocale;
   let locale = hasLocale(routing.locales, segment) ? segment : null;
-  if (!locale) {
+  if (!locale && segment) {
+    // A public address with an unknown language (/xx/help): its 404 page, in English. Reading
+    // headers() here would make a static page dynamic and turn the 404 into a 500.
+    locale = DEFAULT_LANGUAGE;
+  } else if (!locale) {
     // Not a public page: the middleware already chose (headers() keeps these pages dynamic, as they were).
     const chosen = (await headers()).get(LANGUAGE_HEADER);
     locale = isEnabled(chosen) ? chosen : DEFAULT_LANGUAGE;

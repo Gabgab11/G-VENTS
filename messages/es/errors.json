@@ -172,13 +172,17 @@
   "payment": {
     "forbidden": "No tiene permiso para hacer eso.",
     "own_application": "Otro miembro del equipo debe revisar su propia solicitud o cuenta de pagos.",
-    "provider_unavailable": "No pudimos conectar con el servicio de pago. Inténtelo de nuevo."
+    "provider_unavailable": "No pudimos conectar con el servicio de pago. Inténtelo de nuevo.",
+    "paid_tickets_paused": "Las entradas de pago de este evento están en pausa en este momento. Las entradas gratuitas siguen funcionando."
   },
   "payout": {
     "account_unresolved": "El banco no encontró esta cuenta. Revise el banco y el número de cuenta.",
-    "country_unavailable": "Paystack aún no está disponible en este país.",
+    "country_unavailable": "Las entradas de pago aún no están disponibles para este país.",
     "not_approved": "Podrá cambiar los datos de pago cuando se le apruebe para vender entradas de pago.",
-    "not_pending": "No hay ninguna cuenta de pagos pendiente de crear."
+    "not_pending": "No hay ninguna cuenta de pagos pendiente de crear.",
+    "bank_not_listed": "Elija su banco de la lista de este proveedor.",
+    "subaccount_not_waiting": "Este proveedor no está esperando a que elija su banco.",
+    "subaccount_not_found": "Todavía no hay una cuenta de pagos con este proveedor."
   },
   "places": {
     "bad_request": "Revise la búsqueda e inténtelo de nuevo.",
@@ -239,7 +243,12 @@
     "fee_currency_invalid": "Use un código de moneda de tres letras, como NGN o USD.",
     "fee_invalid": "Introduzca una comisión válida.",
     "provider_not_configured": "Este proveedor de pagos aún no está configurado para este entorno.",
-    "vat_invalid": "El tipo de IVA va en puntos básicos: un número entero de 0 a 10000 (100%)."
+    "vat_invalid": "El tipo de IVA va en puntos básicos: un número entero de 0 a 10000 (100%).",
+    "reason_required": "Indique un motivo de 10 a 500 caracteres para cambiar el proveedor activo.",
+    "active_provider_invalid": "Este proveedor aún no puede ser el proveedor activo: actívelo, configure sus claves y confirme primero el cargo de un país.",
+    "active_provider_off": "El proveedor activo no se puede desactivar. Active primero otro proveedor.",
+    "country_not_ready": "Este país aún no se puede activar: necesita claves, una comisión de G-ventZ, un tipo de IVA y un cargo confirmado.",
+    "charges_invalid": "Los cargos son números enteros: el porcentaje en puntos básicos (de 0 a 10000) y los importes en unidades menores, desde 0."
   },
   "staff": {
     "already_member": "Esta persona ya forma parte del equipo de G-ventZ.",

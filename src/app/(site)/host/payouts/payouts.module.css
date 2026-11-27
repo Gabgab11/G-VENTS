@@ -2,3 +2,7 @@
 .event { color: var(--color-text); font-weight: var(--weight-semibold); text-decoration: none; }
 .event:hover { text-decoration: underline; }
 .total th, .total td { font-weight: var(--weight-bold); border-block-start: 2px solid var(--color-border-strong); }
+.providersTitle { margin: var(--space-4) 0 var(--space-2); font-size: var(--text-label); line-height: var(--leading-label); font-weight: var(--weight-semibold); color: var(--color-text-muted); }
+.providers { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-3); }
+.provider { display: flex; flex-direction: column; gap: var(--space-2); }
+.provider .muted { margin: 0; }

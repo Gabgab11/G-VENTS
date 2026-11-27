@@ -86,8 +86,9 @@ export default function Globe({ stops, label }: { stops: GlobeStop[]; label: str
       const W = size * dpr, r = W * 0.42, cx = W / 2, cy = W / 2;
       // Where the pin is on its route.
       const leg = TRAVEL + DWELL, total = leg * stops.length;
-      const t = still ? 0 : (now - started) % total;
-      const i = Math.floor(t / leg), into = t - i * leg;
+      // A frame timestamp can be slightly earlier than the start time: never go below 0.
+      const t = still ? 0 : Math.max(0, now - started) % total;
+      const i = Math.min(stops.length - 1, Math.floor(t / leg)), into = t - i * leg;
       const from = stops[i], to = stops[(i + 1) % stops.length];
       const a = toVec(from.lon, from.lat), b = toVec(to.lon, to.lat);
       const travelling = into < TRAVEL && !still;

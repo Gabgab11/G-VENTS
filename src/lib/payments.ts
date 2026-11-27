@@ -28,3 +28,18 @@ export async function getMyHostApplication(): Promise<MyHostApplication | null> 
     return null;
   }
 }
+
+export type EventPaidSales = components["schemas"]["EventPaidSalesDto"];
+
+/**
+ * Which provider a checkout for this event would use now, and whether its paid ticket types are
+ * paused (PS4–PS6). Null when the API can't say (pages then show nothing extra).
+ */
+export async function getEventPaidSales(eventId: string): Promise<EventPaidSales | null> {
+  try {
+    return data(await (await api()).GET("/v1/payments/availability", { params: { query: { eventId } } })).event ?? null;
+  } catch (error) {
+    console.error(`[payments] event availability: ${(error as Error).message}`);
+    return null;
+  }
+}

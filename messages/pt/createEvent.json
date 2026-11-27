@@ -198,10 +198,11 @@
     "wholeNumber": "Use um número inteiro, como 5000.",
     "working": "Calculando as taxas...",
     "summary": "O convidado paga <b>{guest}</b> · você recebe <b>{host}</b>",
-    "breakdown": "(taxa G-ventZ {fee} + Paystack cerca de {charge})",
-    "breakdownVat": "(taxa G-ventZ {fee} + IVA {vat} + Paystack cerca de {charge})",
+    "breakdown": "(taxa G-ventZ {fee} + {provider} cerca de {charge})",
+    "breakdownVat": "(taxa G-ventZ {fee} + IVA {vat} + {provider} cerca de {charge})",
     "enterPrice": "Informe um preço.",
-    "unavailable": "O exemplo de taxas não está disponível agora."
+    "unavailable": "O exemplo de taxas não está disponível agora.",
+    "providerFallback": "provedor de pagamento"
   },
   "validation": {
     "title": "O nome do evento deve ter de 3 a 140 caracteres.",

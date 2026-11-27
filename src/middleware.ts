@@ -14,6 +14,15 @@ import { LANGUAGE_COOKIE, LANGUAGE_HEADER, resolveLanguage } from "@/i18n/resolv
 // Staff checking the new setup get through with a `gventz_bypass` cookie equal to MAINTENANCE_BYPASS.
 const MAINTENANCE_HTML = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>G-ventZ is updating</title></head><body style="margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#0f0f0f;color:#f4f4f4;font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;text-align:center;padding:24px"><div><h1 style="font-size:28px;margin:0 0 12px">We're updating G-ventZ</h1><p style="margin:0;color:#a8a8a8;font-size:16px;line-height:1.6">We'll be back in a few minutes. Your tickets are safe.</p></div></body></html>`;
 
+// Constant-time string compare for the maintenance-bypass cookie (edge runtime: no node:crypto),
+// so response timing can't reveal how many leading characters of MAINTENANCE_BYPASS a guess matched.
+function timingSafeStringEqual(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diff === 0;
+}
+
 // Plain http → https on this site's own hosts. Vercel did this at its edge; on Cloudflare it is a zone
 // setting (Always Use HTTPS) that the app can't see or test, so the app enforces it too. Only the
 // site's host and its www (from NEXT_PUBLIC_SITE_URL, never the request's Host header, so this can't
@@ -77,7 +86,8 @@ export async function middleware(request: NextRequest) {
 
   if (!info) {
     const bypass = process.env.MAINTENANCE_BYPASS;
-    const staff = !!bypass && bypass.length >= 16 && request.cookies.get("gventz_bypass")?.value === bypass;
+    const cookie = request.cookies.get("gventz_bypass")?.value;
+    const staff = !!bypass && bypass.length >= 16 && !!cookie && timingSafeStringEqual(cookie, bypass);
     if (process.env.MAINTENANCE_MODE === "1" && !staff) {
       return new NextResponse(MAINTENANCE_HTML, { status: 503, headers: { "content-type": "text/html; charset=utf-8", "retry-after": "600", "cache-control": "no-store" } });
     }

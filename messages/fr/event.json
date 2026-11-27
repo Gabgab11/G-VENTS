@@ -125,11 +125,21 @@
     "waitlistNote": "Ce billet est complet. Inscrivez-vous sur la liste d'attente et nous vous écrirons si une place se libère ; vous aurez alors 24 heures pour payer.",
     "refundPolicy": "Politique de remboursement :",
     "joining": "Inscription...",
-    "opening": "Ouverture de Paystack...",
+    "opening": "Ouverture de {provider}...",
     "join": "Rejoindre la liste d'attente",
-    "pay": "Payer avec Paystack",
-    "payTotal": "Payer avec Paystack · {total}",
-    "payNote": "Vous paierez sur la page sécurisée de Paystack. Vos billets sont réservés pendant 10 minutes."
+    "pay": "Payer avec {provider}",
+    "payTotal": "Payer avec {provider} · {total}",
+    "payNote": "Vous paierez sur la page sécurisée de {provider}. Vos billets sont réservés pendant 10 minutes.",
+    "methodsLabel": "Moyens de paiement sur {provider}",
+    "methods": {
+      "card": "Carte",
+      "bankTransfer": "Virement bancaire",
+      "applePay": "Apple Pay",
+      "googlePay": "Google Pay",
+      "mobileMoney": "Mobile money"
+    },
+    "paused": "Les billets payants sont suspendus",
+    "pausedNote": "Les billets payants de cet événement ne peuvent pas être achetés pour le moment. Les billets gratuits fonctionnent toujours."
   },
   "verify": {
     "emailHint": "Nous vous enverrons un code à 6 chiffres par e-mail pour la confirmer. Vos billets sont envoyés à cette adresse.",

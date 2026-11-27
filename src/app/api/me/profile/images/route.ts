@@ -37,6 +37,7 @@ export async function POST(request: Request) {
     const profile = data(await client.PATCH("/v1/me/profile", { body: kind === "avatar" ? { avatarPath: upload.path } : { coverPath: upload.path } }));
     console.info(`[profile] ${kind} saved (${picture.contentType}, ${picture.file.size} bytes)`);
     revalidatePath("/host/settings/profile");
+    revalidatePath("/account");
     return reply({ ok: true, url: kind === "avatar" ? profile.avatarUrl : profile.coverUrl }, 200);
   } catch (error) {
     if (error instanceof ApiError) {

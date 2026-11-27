@@ -198,10 +198,11 @@
     "wholeNumber": "Use a whole number, like 5000.",
     "working": "Working out the fees...",
     "summary": "Guest pays <b>{guest}</b> · you receive <b>{host}</b>",
-    "breakdown": "(G-ventZ fee {fee} + Paystack about {charge})",
-    "breakdownVat": "(G-ventZ fee {fee} + VAT {vat} + Paystack about {charge})",
+    "breakdown": "(G-ventZ fee {fee} + {provider} about {charge})",
+    "breakdownVat": "(G-ventZ fee {fee} + VAT {vat} + {provider} about {charge})",
     "enterPrice": "Enter a price.",
-    "unavailable": "The fee example isn't available right now."
+    "unavailable": "The fee example isn't available right now.",
+    "providerFallback": "payment provider"
   },
   "validation": {
     "title": "Event name must be 3 to 140 characters.",

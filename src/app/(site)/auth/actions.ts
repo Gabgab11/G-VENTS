@@ -2,9 +2,9 @@
 
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
-import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { env } from "@/lib/env";
 import { safeNextPath } from "@/lib/redirect";
 import { syncLanguageAfterSignIn } from "@/i18n/sync";
 import {
@@ -25,11 +25,15 @@ import {
 // connect-src is 'self'). Supabase sets the session cookie through the server client. Messages come
 // back already translated into the reader's language (shared.emailCode.*, auth.screen.*).
 
-export async function signOut() {
+/**
+ * Ends the session on this device only ("Sign out of all devices" on /account ends every session).
+ * No redirect here: a server-action redirect is a soft navigation that keeps the browser's cached
+ * session, so the header still looked signed in. The caller (useSignOut) reloads onto /sign-in.
+ */
+export async function signOut(): Promise<void> {
   const supabase = await createSupabaseServerClient();
-  await supabase.auth.signOut();
+  await supabase.auth.signOut({ scope: "local" });
   revalidatePath("/", "layout");
-  redirect("/");
 }
 
 /**
@@ -72,7 +76,10 @@ export async function verifyEmailCode(input: { email: unknown; code: unknown }):
 /** The Google consent URL. The PKCE verifier goes in a cookie; /auth/callback finishes sign-in. */
 export async function startGoogleSignIn(next: unknown): Promise<{ url: string } | { error: string }> {
   const incoming = await headers();
-  const origin = incoming.get("origin") ?? `${incoming.get("x-forwarded-proto") ?? "https"}://${incoming.get("host")}`;
+  // Prefer the Origin header — Next.js verifies it against Host for Server Actions, so it can't be
+  // spoofed here — and fall back to the configured site URL, never the request Host header (a client
+  // can set Host, which could steer the OAuth redirectTo). Security review 2026-11-26, Low 4.
+  const origin = incoming.get("origin") ?? env.siteUrl;
   const callback = new URL("/auth/callback", origin);
   callback.searchParams.set("next", safeNextPath(typeof next === "string" ? next : null));
   const supabase = await createSupabaseServerClient();

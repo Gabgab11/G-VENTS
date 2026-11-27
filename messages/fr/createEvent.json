@@ -198,10 +198,11 @@
     "wholeNumber": "Utilisez un nombre entier, comme 5000.",
     "working": "Calcul des frais...",
     "summary": "L’invité paie <b>{guest}</b> · vous recevez <b>{host}</b>",
-    "breakdown": "(frais G-ventZ {fee} + Paystack environ {charge})",
-    "breakdownVat": "(frais G-ventZ {fee} + TVA {vat} + Paystack environ {charge})",
+    "breakdown": "(frais G-ventZ {fee} + {provider} environ {charge})",
+    "breakdownVat": "(frais G-ventZ {fee} + TVA {vat} + {provider} environ {charge})",
     "enterPrice": "Saisissez un prix.",
-    "unavailable": "L’exemple de frais n’est pas disponible pour le moment."
+    "unavailable": "L’exemple de frais n’est pas disponible pour le moment.",
+    "providerFallback": "prestataire de paiement"
   },
   "validation": {
     "title": "Le nom de l’événement doit comporter de 3 à 140 caractères.",

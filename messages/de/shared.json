@@ -101,9 +101,9 @@
     "applicationDeclinedAction": "Grund ansehen",
     "approvalRevoked": "Ihre Genehmigung zum Verkauf kostenpflichtiger Tickets wurde widerrufen. Bereits verkaufte Tickets bleiben gültig.",
     "approvalRevokedAction": "Details ansehen",
-    "payoutAccountPending": "Sie sind genehmigt. Wir richten Ihr Auszahlungskonto bei Paystack ein; sobald es bereit ist, können Sie kostenpflichtige Tickets verkaufen.",
+    "payoutAccountPending": "Sie sind freigegeben. Wir richten Ihr Auszahlungskonto beim Zahlungsanbieter ein; Sie können kostenpflichtige Tickets verkaufen, sobald es bereit ist.",
     "payoutAccountPendingAction": "Auszahlungsdetails ansehen",
-    "countryOff": "Paystack ist für das Land Ihres Auszahlungskontos derzeit pausiert. Kostenlose Tickets funktionieren weiterhin.",
+    "countryOff": "Kostenpflichtige Tickets sind für das Land Ihres Auszahlungskontos derzeit pausiert. Kostenlose Tickets funktionieren weiterhin.",
     "owesMoney": "Sie schulden G-ventZ Geld aus Erstattungen oder Rückbuchungen und können daher keine neuen kostenpflichtigen Veranstaltungen veröffentlichen. Ihre bestehenden Veranstaltungen verkaufen weiter, womit der Betrag beglichen wird.",
     "owesMoneyAction": "Offenen Betrag ansehen",
     "suspended": "Ihr Konto ist gesperrt, daher können Sie keine kostenpflichtigen Tickets verkaufen."
@@ -111,7 +111,7 @@
   "fees": {
     "hostAbsorbs": {
       "label": "Ich übernehme die Gebühren",
-      "hint": "Gäste zahlen den Ticketpreis. Die Gebühr von G-ventZ, die Mehrwertsteuer darauf und die Paystack-Gebühr werden von Ihrem Erlös abgezogen."
+      "hint": "Gäste zahlen den Ticketpreis. Die G-ventZ-Gebühr, die MwSt. darauf und die Gebühr des Zahlungsanbieters werden von Ihrem Erlös abgezogen."
     },
     "guestPays": {
       "label": "Gäste zahlen die Gebühren",

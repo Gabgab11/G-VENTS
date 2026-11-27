@@ -6,7 +6,7 @@ import { api, data } from "@/lib/api/server";
 import { ApiError, problemMessage } from "@/lib/api/problem";
 import type { components } from "@/lib/api/schema";
 import { requireUser } from "@/lib/auth";
-import { isPayoutCountry } from "@/lib/payment-text";
+import { isPayoutCountry, isProviderId, type ProviderId } from "@/lib/payment-text";
 import { accountNumber, applicationBody, documentFrom, payoutChangeBody } from "./application-input";
 
 // Applying to sell paid tickets and changing payout details (M5, FR-20, business rules HA1–HA4).
@@ -29,11 +29,13 @@ async function failure(error: unknown, fallback: string): Promise<string> {
   return problemMessage(error, t, lang, fallback);
 }
 
-export async function loadBanks(country: string): Promise<{ banks: Bank[] } | { error: string }> {
+/** The country's bank list: Paystack's where it operates, else Flutterwave's; with `provider`, that provider's (PS12). */
+export async function loadBanks(country: string, provider?: ProviderId): Promise<{ banks: Bank[] } | { error: string }> {
   const t = await getTranslations("account.payouts.errors");
   if (!isPayoutCountry(country)) return { error: t("chooseCountry") };
+  if (provider !== undefined && !isProviderId(provider)) return { error: t("loadBanksFailed") };
   try {
-    const res = data(await (await api()).GET("/v1/payments/banks", { params: { query: { country } } }));
+    const res = data(await (await api()).GET("/v1/payments/banks", { params: { query: provider ? { country, provider } : { country } } }));
     return { banks: res.banks };
   } catch (error) {
     if (sessionEnded(error)) return { error: t("sessionEnded") };
@@ -101,4 +103,25 @@ export async function changePayout(_prev: FormState, formData: FormData): Promis
     return { error: await failure(error, t("payouts.errors.changeFailed")) };
   }
   redirect(`${PAGE}?ok=payout_changed`);
+}
+
+/**
+ * PS12: a provider couldn't match the host's bank (needs_host), so the host picks it from that
+ * provider's list. Needs two-step sign-in, like changing payout details.
+ */
+export async function chooseSubaccountBank(_prev: FormState, formData: FormData): Promise<FormState> {
+  await requireUser(PAGE);
+  const t = await getTranslations("account.payouts.errors");
+  const provider = String(formData.get("provider") ?? "");
+  const bankCode = String(formData.get("bank_code") ?? "").trim();
+  if (!isProviderId(provider)) return { error: t("chooseBankFailed") };
+  if (!/^[A-Za-z0-9-]{1,30}$/.test(bankCode)) return { error: t("chooseBank") };
+  try {
+    await (await api()).PUT("/v1/me/payout-account/subaccounts/{provider}", { params: { path: { provider } }, body: { bankCode } });
+  } catch (error) {
+    if (error instanceof ApiError && error.code === "auth.mfa_required") redirect(`/host/settings/security?next=${encodeURIComponent(PAGE)}`);
+    if (sessionEnded(error)) return { error: t("sessionEnded") };
+    return { error: await failure(error, t("chooseBankFailed")) };
+  }
+  redirect(`${PAGE}?ok=bank_chosen`);
 }

@@ -172,7 +172,8 @@ textarea.input { resize: vertical; }
 .panel.danger { border-color: color-mix(in srgb, var(--color-danger) 40%, transparent); }
 
 /* ---------- Phone layout (applies to every page) ---------- */
-html, body { overflow-x: hidden; }
+/* clip, not hidden: hidden makes body a scroll container, which breaks position: sticky below it. */
+html, body { overflow-x: clip; }
 img, video { max-width: 100%; height: auto; }
 input, select, textarea, button { max-width: 100%; min-width: 0; }
 .input[type="date"], .input[type="time"] { min-width: 0; -webkit-appearance: none; appearance: none; }

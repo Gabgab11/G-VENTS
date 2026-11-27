@@ -1,0 +1,94 @@
+/* The ⌘K command palette (FR-34): a wider dialog near the top, a search field, grouped rows. */
+.panel.panel {
+  align-self: start;
+  max-width: 640px;
+  margin-block-start: min(10vh, var(--space-16));
+  gap: var(--space-3);
+  padding: var(--space-5);
+}
+
+.field { position: relative; display: flex; align-items: center; }
+.fieldIcon { position: absolute; inset-inline-start: var(--space-3); display: grid; place-items: center; color: var(--color-text-muted); pointer-events: none; }
+.input {
+  width: 100%;
+  min-height: 48px;
+  padding-block: 0;
+  padding-inline: calc(var(--space-3) + 28px) var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-full);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--text-body);
+  -webkit-appearance: none;
+  appearance: none;
+}
+.input::placeholder { color: var(--color-text-muted); }
+.input:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.input::-webkit-search-cancel-button { display: none; }
+
+.list { display: grid; gap: var(--space-2); max-height: min(60vh, 480px); overflow-y: auto; overscroll-behavior: contain; }
+.list:empty { display: none; }
+.group { display: grid; gap: 2px; }
+.groupHead { display: flex; align-items: center; justify-content: space-between; padding: var(--space-2) var(--space-3) var(--space-1); }
+.groupLabel { color: var(--color-text-muted); font-size: var(--text-eyebrow); font-weight: var(--weight-bold); letter-spacing: 0.06em; text-transform: uppercase; }
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 48px;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  text-decoration: none;
+  cursor: pointer;
+}
+.option[aria-selected="true"] { background: var(--color-surface-raised); box-shadow: inset 2px 0 0 var(--color-accent); }
+[dir="rtl"] .option[aria-selected="true"] { box-shadow: inset -2px 0 0 var(--color-accent); }
+
+.icon { display: grid; place-items: center; flex: none; width: 36px; height: 36px; border-radius: var(--radius-full); background: var(--color-surface-raised); color: var(--color-text-muted); }
+.option[aria-selected="true"] .icon { background: var(--color-surface); }
+.thumb { flex: none; width: 48px; height: 36px; overflow: hidden; border-radius: var(--radius-sm); }
+.thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.avatar { flex: none; }
+
+.text { display: grid; flex: 1; min-width: 0; }
+.title { display: flex; align-items: center; gap: var(--space-1); min-width: 0; font-size: var(--text-body-sm); font-weight: var(--weight-semibold); line-height: var(--leading-body-sm); }
+.clip { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.meta { overflow: hidden; color: var(--color-text-muted); font-size: var(--text-caption); text-overflow: ellipsis; white-space: nowrap; }
+[dir="rtl"] .meta[dir="ltr"] { text-align: end; }
+.verified { display: inline-grid; flex: none; color: var(--color-accent); }
+.price { flex: none; }
+.option[aria-selected="true"] .price { background: var(--color-surface); }
+.arrow { flex: none; color: var(--color-text-muted); }
+[dir="rtl"] .arrow { transform: scaleX(-1); }
+
+.clear {
+  justify-self: start;
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  border-radius: var(--radius-full);
+  background: none;
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-semibold);
+  cursor: pointer;
+}
+.clear:hover { background: var(--color-surface-raised); color: var(--color-text); }
+.clear:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+
+.hint { margin: 0; padding: var(--space-2) var(--space-3); color: var(--color-text-muted); font-size: var(--text-body-sm); }
+.error { margin: 0; padding: var(--space-3); border-radius: var(--radius-md); background: var(--color-danger-soft); color: var(--color-text); border-inline-start: 3px solid var(--color-danger); font-size: var(--text-body-sm); }
+
+.spin { animation: spin 0.9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .spin { animation: none; } }
+
+.srOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+@media (max-width: 639px) {
+  .panel.panel { margin-block-start: 0; padding: var(--space-4); }
+  .list { max-height: 60dvh; }
+}

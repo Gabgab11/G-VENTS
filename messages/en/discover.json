@@ -48,5 +48,12 @@
     "charity": "charity",
     "family": "family",
     "other": "other"
+  },
+  "search": {
+    "title": "Results for “{query}”",
+    "empty": "Nothing matches “{query}” yet.",
+    "unavailable": "Search isn't available right now. Please try again in a moment.",
+    "clear": "Clear search",
+    "short": "Type at least two letters to search."
   }
 }
