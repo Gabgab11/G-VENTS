@@ -331,7 +331,9 @@
       "female": "Weiblich",
       "male": "Männlich",
       "unspecified": "Keine Angabe"
-    }
+    },
+    "linkLabel": "Filter by registration link",
+    "allLinks": "All links"
   },
   "registration": {
     "kinds": {

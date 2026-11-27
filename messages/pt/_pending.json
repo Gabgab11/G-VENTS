@@ -14,6 +14,8 @@
     "dashboard.accessCode.save",
     "dashboard.accessCode.savedToast",
     "dashboard.accessCode.title",
+    "dashboard.guests.allLinks",
+    "dashboard.guests.linkLabel",
     "dashboard.links.archive",
     "dashboard.links.archivedToast",
     "dashboard.links.capOf",
@@ -58,6 +60,15 @@
     "dashboard.links.rotate",
     "dashboard.links.rotatedToast",
     "dashboard.links.savedToast",
-    "dashboard.links.title"
+    "dashboard.links.title",
+    "event.access.code",
+    "event.access.errors.code",
+    "event.access.errors.failed",
+    "event.access.errors.tooMany",
+    "event.access.lead",
+    "event.access.leadNamed",
+    "event.access.submit",
+    "event.access.title",
+    "event.summary.accessNote"
   ]
 }

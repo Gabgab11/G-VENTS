@@ -331,7 +331,9 @@
       "female": "女",
       "male": "男",
       "unspecified": "不愿透露"
-    }
+    },
+    "linkLabel": "Filter by registration link",
+    "allLinks": "All links"
   },
   "registration": {
     "kinds": {

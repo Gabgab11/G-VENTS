@@ -216,7 +216,8 @@
     "readMore": "Ler mais",
     "aboutDirections": "Sobre e como chegar",
     "soldOutNote": "Todos os ingressos foram garantidos.",
-    "waitlistNote": "Os ingressos esgotaram. Entre na lista de espera e enviaremos um e-mail se uma vaga for liberada."
+    "waitlistNote": "Os ingressos esgotaram. Entre na lista de espera e enviaremos um e-mail se uma vaga for liberada.",
+    "accessNote": "You’ll enter an access code to register."
   },
   "booking": {
     "metaTitle": "Ingressos para {title}",
@@ -232,5 +233,17 @@
     "line": "{name} × {count}",
     "unavailable": "Não é possível reservar ingressos no momento",
     "groupLine": "{name} × {count} ({entries, plural, one {# entrada} other {# entradas}})"
+  },
+  "access": {
+    "title": "Enter your access code",
+    "lead": "Registration for this event needs a code. Enter the one you were given to continue.",
+    "leadNamed": "Registration through the {name} link needs a code. Enter the one you were given to continue.",
+    "code": "Access code",
+    "submit": "Continue",
+    "errors": {
+      "code": "That code isn’t right. Check it and try again.",
+      "tooMany": "Too many tries. Please wait a moment and try again.",
+      "failed": "We couldn’t check that code. Please try again."
+    }
   }
 }

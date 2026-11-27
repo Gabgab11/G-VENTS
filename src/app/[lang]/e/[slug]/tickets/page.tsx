@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound, redirect } from "next/navigation";
 import { ArrowLeft, CalendarDays, MapPin } from "lucide-react";
@@ -13,10 +14,12 @@ import SiteHeader from "@/components/SiteHeader";
 import { Banner, Button } from "@/design";
 import OrderForm from "../OrderForm";
 import PaidOrderForm from "../PaidOrderForm";
+import UnlockGate from "../UnlockGate";
 import { eventCta, orderableTypes, ticketsLeft } from "../event-cta";
 import AboutSection from "../AboutSection";
 import { eventDate, eventPath, eventPlace } from "../event-view";
 import { codeParam } from "./discount-code";
+import { tokenParam, unlockCookieName } from "./registration-token";
 import { isPhoneCountry, phoneCountryOptions } from "@/lib/phone";
 import b from "./Booking.module.css";
 
@@ -53,9 +56,15 @@ type PageProps = { params: Promise<{ lang: string; slug: string }>; searchParams
 export default async function BookingPage({ params, searchParams }: PageProps) {
   const [{ lang, slug }, query] = await Promise.all([params, searchParams]);
   setRequestLocale(lang);
+  const r = tokenParam(query.r);
   const [t, format, supabase] = await Promise.all([getTranslations("event"), getFormat(), createSupabaseServerClient()]);
-  const [{ data: { session } }, event] = await Promise.all([supabase.auth.getSession(), loadEventPage(slug)]);
+  const [{ data: { session } }, event] = await Promise.all([supabase.auth.getSession(), loadEventPage(slug, r)]);
   if (!event) notFound();
+
+  // Change 6 (FR-40): a code-gated link shows the unlock step until the guest has cleared it (cookie).
+  const unlocked =
+    event.accessRequired && event.registrationLinkToken ? !!(await cookies()).get(unlockCookieName(event.id, event.registrationLinkToken)) : false;
+  const gated = event.accessRequired && !unlocked;
 
   const back = eventPath(event.slug, format.lang);
   const signedIn = !!session;
@@ -122,7 +131,11 @@ export default async function BookingPage({ params, searchParams }: PageProps) {
           </Banner>
         )}
 
-        {open && (
+        {open && gated && event.registrationLinkToken && (
+          <UnlockGate eventId={event.id} linkToken={event.registrationLinkToken} linkName={event.registrationLinkName} />
+        )}
+
+        {open && !gated && (
           <div className={b.kinds}>
             {both && <p className={b.note}>{t("tickets.separateOrders")}</p>}
             {free.length > 0 && (
@@ -137,6 +150,7 @@ export default async function BookingPage({ params, searchParams }: PageProps) {
                   buyer={buyer}
                   phone={phone}
                   requireApproval={event.requireApproval}
+                  registrationLinkToken={event.registrationLinkToken}
                   summary={summary}
                 />
               </section>

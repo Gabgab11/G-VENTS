@@ -1,5 +1,6 @@
 "use server";
 
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { api, data } from "@/lib/api/server";
 import { getLocale, getTranslations } from "next-intl/server";
@@ -9,6 +10,22 @@ import { isUuid } from "@/lib/forms";
 import type { components } from "@/lib/api/schema";
 import { isCheckoutUrl, paidOrderBody, placeOrderBody, type OrderInputError } from "./order-input";
 import { cleanCode, isDiscountProblem } from "./tickets/discount-code";
+import { unlockCookieName } from "./tickets/registration-token";
+
+/**
+ * Change 6 (free path): stamp the order with the registration link it was placed on, and attach the
+ * unlock proof for a code-gated link. The link token is in a hidden form field; the short-lived unlock
+ * token lives in an httpOnly cookie set by the unlock action. The API re-verifies the unlock inside the
+ * order transaction (fail closed), so a missing or stale cookie just fails there. (Paid orders stay on
+ * the default link for now — PaidOrderDto carries neither field; that gating is a documented follow-up.)
+ */
+async function applyRegistrationLink(eventId: string, formData: FormData, body: { registrationLinkToken?: string; unlock?: string }): Promise<void> {
+  const token = formData.get("registration_link_token");
+  if (typeof token !== "string" || !token) return;
+  body.registrationLinkToken = token;
+  const unlock = (await cookies()).get(unlockCookieName(eventId, token))?.value;
+  if (unlock) body.unlock = unlock;
+}
 
 export type OrderState = { error?: string } | undefined;
 
@@ -31,6 +48,7 @@ export async function placeOrder(_prev: OrderState, formData: FormData): Promise
   if (!isUuid(eventId)) return { error: t("eventNotFound") };
   const body = placeOrderBody(formData);
   if ("error" in body) return { error: inputError(body.error) };
+  await applyRegistrationLink(eventId, formData, body);
 
   const send = async () => data(await (await api()).POST("/v1/events/{id}/orders", { params: { path: { id: eventId } }, body }));
   let orderId: string;

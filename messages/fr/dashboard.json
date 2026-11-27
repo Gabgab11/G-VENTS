@@ -331,7 +331,9 @@
       "female": "Femme",
       "male": "Homme",
       "unspecified": "Préfère ne pas le dire"
-    }
+    },
+    "linkLabel": "Filter by registration link",
+    "allLinks": "All links"
   },
   "registration": {
     "kinds": {

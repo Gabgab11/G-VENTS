@@ -24,6 +24,8 @@ type Props = {
   /** The phone's country picker (4b). */
   phone: PhoneSetup;
   requireApproval: boolean;
+  /** Change 6: the resolved registration link's token (from ?r=), sent with the order. */
+  registrationLinkToken?: string | null;
   /** The event at the top of the summary card (flyer, title, date, venue). */
   summary?: ReactNode;
 };
@@ -33,7 +35,7 @@ type Props = {
 // other guests, the event's questions), the summary card with "Confirm registration" on the right.
 // Both are in the one form, so the button in the summary card submits it. Signed-out buyers confirm
 // their email inline first (D88); the button stays disabled until they have.
-export default function OrderForm({ eventId, ticketTypes, questions, perBuyerLimit, held = 0, buyer, phone, requireApproval, summary }: Props) {
+export default function OrderForm({ eventId, ticketTypes, questions, perBuyerLimit, held = 0, buyer, phone, requireApproval, registrationLinkToken = null, summary }: Props) {
   const t = useTranslations("event.order");
   const tb = useTranslations("event.booking");
   const tp = useTranslations("event.paid");
@@ -49,6 +51,7 @@ export default function OrderForm({ eventId, ticketTypes, questions, perBuyerLim
   return (
     <form action={action} ref={ref} onInput={check} onChange={check} onSubmit={checkout.submitted} className={b.form}>
       <input type="hidden" name="event_id" value={eventId} />
+      {registrationLinkToken && <input type="hidden" name="registration_link_token" value={registrationLinkToken} />}
 
       <Card className={b.details}>
         <CardHeader title={tb("detailsTitle")} />

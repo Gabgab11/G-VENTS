@@ -216,7 +216,8 @@
     "readMore": "阅读全文",
     "aboutDirections": "活动介绍与路线",
     "soldOutNote": "所有门票均已售出。",
-    "waitlistNote": "门票已售罄。加入候补名单后，如有名额空出，我们会通过电子邮件通知您。"
+    "waitlistNote": "门票已售罄。加入候补名单后，如有名额空出，我们会通过电子邮件通知您。",
+    "accessNote": "You’ll enter an access code to register."
   },
   "booking": {
     "metaTitle": "{title}的门票",
@@ -232,5 +233,17 @@
     "line": "{name} × {count}",
     "unavailable": "目前无法预订门票",
     "groupLine": "{name} × {count}（{entries, plural, other {# 人入场}}）"
+  },
+  "access": {
+    "title": "Enter your access code",
+    "lead": "Registration for this event needs a code. Enter the one you were given to continue.",
+    "leadNamed": "Registration through the {name} link needs a code. Enter the one you were given to continue.",
+    "code": "Access code",
+    "submit": "Continue",
+    "errors": {
+      "code": "That code isn’t right. Check it and try again.",
+      "tooMany": "Too many tries. Please wait a moment and try again.",
+      "failed": "We couldn’t check that code. Please try again."
+    }
   }
 }

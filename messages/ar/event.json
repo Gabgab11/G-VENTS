@@ -216,7 +216,8 @@
     "readMore": "اقرأ المزيد",
     "aboutDirections": "نبذة والاتجاهات",
     "soldOutNote": "نفدت جميع التذاكر.",
-    "waitlistNote": "نفدت التذاكر. انضم إلى قائمة الانتظار وسنراسلك عبر البريد الإلكتروني إذا توفر مكان."
+    "waitlistNote": "نفدت التذاكر. انضم إلى قائمة الانتظار وسنراسلك عبر البريد الإلكتروني إذا توفر مكان.",
+    "accessNote": "You’ll enter an access code to register."
   },
   "booking": {
     "metaTitle": "تذاكر {title}",
@@ -232,5 +233,17 @@
     "line": "{name} × {count}",
     "unavailable": "لا يمكن حجز التذاكر حاليًا",
     "groupLine": "{name} × {count} ({entries, plural, zero {لا دخول} one {دخول واحد} two {دخولان} few {# دخولات} many {# دخولًا} other {# دخول}})"
+  },
+  "access": {
+    "title": "Enter your access code",
+    "lead": "Registration for this event needs a code. Enter the one you were given to continue.",
+    "leadNamed": "Registration through the {name} link needs a code. Enter the one you were given to continue.",
+    "code": "Access code",
+    "submit": "Continue",
+    "errors": {
+      "code": "That code isn’t right. Check it and try again.",
+      "tooMany": "Too many tries. Please wait a moment and try again.",
+      "failed": "We couldn’t check that code. Please try again."
+    }
   }
 }
