@@ -281,14 +281,14 @@ isOneToOne: false
                   ]
                 },"event_questions": {
                   Row: {
-                    "created_at": string,"event_id": string,"id": string,"kind": string,"label": string,"options": (string)[],"position": number,"required": boolean
+                    "created_at": string,"event_id": string,"id": string,"kind": string,"label": string,"options": (string)[],"position": number,"registration_link_id": string,"required": boolean
                   }
                   ComputedFields: never
                   Insert: {
-                    "created_at"?: string,"event_id": string,"id"?: string,"kind": string,"label": string,"options"?: (string)[],"position"?: number,"required"?: boolean
+                    "created_at"?: string,"event_id": string,"id"?: string,"kind": string,"label": string,"options"?: (string)[],"position"?: number,"registration_link_id": string,"required"?: boolean
                   }
                   Update: {
-                    "created_at"?: string,"event_id"?: string,"id"?: string,"kind"?: string,"label"?: string,"options"?: (string)[],"position"?: number,"required"?: boolean
+                    "created_at"?: string,"event_id"?: string,"id"?: string,"kind"?: string,"label"?: string,"options"?: (string)[],"position"?: number,"registration_link_id"?: string,"required"?: boolean
                   }
                   Relationships: [
                     {
@@ -297,18 +297,24 @@ isOneToOne: false
 isOneToOne: false
       referencedRelation: "events"
       referencedColumns: ["id"]
+    },{
+      foreignKeyName: "event_questions_registration_link_fk"
+      columns: ["registration_link_id"]
+isOneToOne: false
+      referencedRelation: "registration_links"
+      referencedColumns: ["id"]
     }
                   ]
                 },"events": {
                   Row: {
-                    "active_count": number,"address": string | null,"capacity": number | null,"category": string,"city": string | null,"country": string | null,"country_code": string | null,"cover_theme": string,"cover_url": string | null,"created_at": string,"description": string | null,"ends_at": string | null,"fee_choice": string,"id": string,"is_online": boolean,"lat": number | null,"lng": number | null,"maps_url": string | null,"notify_registration": boolean,"owner_id": string,"payment_country": string | null,"per_buyer_limit": number,"place_id": string | null,"refund_policy": string | null,"region": string | null,"registration_open": boolean,"require_approval": boolean,"search_text": string | null,"show_attendee_count": boolean,"slug": string,"starts_at": string,"status": string,"timezone": string,"title": string,"updated_at": string,"venue_name": string | null,"visibility": string
+                    "access_code": string | null,"active_count": number,"address": string | null,"capacity": number | null,"category": string,"city": string | null,"country": string | null,"country_code": string | null,"cover_theme": string,"cover_url": string | null,"created_at": string,"description": string | null,"ends_at": string | null,"fee_choice": string,"id": string,"is_online": boolean,"lat": number | null,"lng": number | null,"maps_url": string | null,"notify_registration": boolean,"owner_id": string,"payment_country": string | null,"per_buyer_limit": number,"place_id": string | null,"refund_policy": string | null,"region": string | null,"registration_open": boolean,"require_approval": boolean,"search_text": string | null,"show_attendee_count": boolean,"slug": string,"starts_at": string,"status": string,"timezone": string,"title": string,"updated_at": string,"venue_name": string | null,"visibility": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "active_count"?: number,"address"?: string | null,"capacity"?: number | null,"category": string,"city"?: string | null,"country"?: string | null,"country_code"?: string | null,"cover_theme"?: string,"cover_url"?: string | null,"created_at"?: string,"description"?: string | null,"ends_at"?: string | null,"fee_choice"?: string,"id"?: string,"is_online"?: boolean,"lat"?: number | null,"lng"?: number | null,"maps_url"?: string | null,"notify_registration"?: boolean,"owner_id": string,"payment_country"?: string | null,"per_buyer_limit"?: number,"place_id"?: string | null,"refund_policy"?: string | null,"region"?: string | null,"registration_open"?: boolean,"require_approval"?: boolean,"search_text"?: never,"show_attendee_count"?: boolean,"slug": string,"starts_at": string,"status"?: string,"timezone"?: string,"title": string,"updated_at"?: string,"venue_name"?: string | null,"visibility"?: string
+                    "access_code"?: string | null,"active_count"?: number,"address"?: string | null,"capacity"?: number | null,"category": string,"city"?: string | null,"country"?: string | null,"country_code"?: string | null,"cover_theme"?: string,"cover_url"?: string | null,"created_at"?: string,"description"?: string | null,"ends_at"?: string | null,"fee_choice"?: string,"id"?: string,"is_online"?: boolean,"lat"?: number | null,"lng"?: number | null,"maps_url"?: string | null,"notify_registration"?: boolean,"owner_id": string,"payment_country"?: string | null,"per_buyer_limit"?: number,"place_id"?: string | null,"refund_policy"?: string | null,"region"?: string | null,"registration_open"?: boolean,"require_approval"?: boolean,"search_text"?: never,"show_attendee_count"?: boolean,"slug": string,"starts_at": string,"status"?: string,"timezone"?: string,"title": string,"updated_at"?: string,"venue_name"?: string | null,"visibility"?: string
                   }
                   Update: {
-                    "active_count"?: number,"address"?: string | null,"capacity"?: number | null,"category"?: string,"city"?: string | null,"country"?: string | null,"country_code"?: string | null,"cover_theme"?: string,"cover_url"?: string | null,"created_at"?: string,"description"?: string | null,"ends_at"?: string | null,"fee_choice"?: string,"id"?: string,"is_online"?: boolean,"lat"?: number | null,"lng"?: number | null,"maps_url"?: string | null,"notify_registration"?: boolean,"owner_id"?: string,"payment_country"?: string | null,"per_buyer_limit"?: number,"place_id"?: string | null,"refund_policy"?: string | null,"region"?: string | null,"registration_open"?: boolean,"require_approval"?: boolean,"search_text"?: never,"show_attendee_count"?: boolean,"slug"?: string,"starts_at"?: string,"status"?: string,"timezone"?: string,"title"?: string,"updated_at"?: string,"venue_name"?: string | null,"visibility"?: string
+                    "access_code"?: string | null,"active_count"?: number,"address"?: string | null,"capacity"?: number | null,"category"?: string,"city"?: string | null,"country"?: string | null,"country_code"?: string | null,"cover_theme"?: string,"cover_url"?: string | null,"created_at"?: string,"description"?: string | null,"ends_at"?: string | null,"fee_choice"?: string,"id"?: string,"is_online"?: boolean,"lat"?: number | null,"lng"?: number | null,"maps_url"?: string | null,"notify_registration"?: boolean,"owner_id"?: string,"payment_country"?: string | null,"per_buyer_limit"?: number,"place_id"?: string | null,"refund_policy"?: string | null,"region"?: string | null,"registration_open"?: boolean,"require_approval"?: boolean,"search_text"?: never,"show_attendee_count"?: boolean,"slug"?: string,"starts_at"?: string,"status"?: string,"timezone"?: string,"title"?: string,"updated_at"?: string,"venue_name"?: string | null,"visibility"?: string
                   }
                   Relationships: [
                     {
@@ -387,14 +393,14 @@ isOneToOne: false
                   ]
                 },"orders": {
                   Row: {
-                    "amount_minor": number,"answers": NonNullable<Json>,"buyer_gender": string | null,"buyer_id": string | null,"buyer_phone": string | null,"country": string | null,"created_at": string,"currency": string,"decided_at": string | null,"decided_by": string | null,"decision_note": string | null,"event_id": string,"hold_expires_at": string | null,"id": string,"kind": string,"non_refundable_accepted_at": string | null,"provider": string | null,"quote": Json | null,"reference": string | null,"status": string,"ticket_count": number,"updated_at": string
+                    "amount_minor": number,"answers": NonNullable<Json>,"buyer_gender": string | null,"buyer_id": string | null,"buyer_phone": string | null,"country": string | null,"created_at": string,"currency": string,"decided_at": string | null,"decided_by": string | null,"decision_note": string | null,"event_id": string,"hold_expires_at": string | null,"id": string,"kind": string,"non_refundable_accepted_at": string | null,"provider": string | null,"quote": Json | null,"reference": string | null,"registration_link_id": string | null,"status": string,"ticket_count": number,"updated_at": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "amount_minor"?: number,"answers"?: NonNullable<Json>,"buyer_gender"?: string | null,"buyer_id"?: string | null,"buyer_phone"?: string | null,"country"?: string | null,"created_at"?: string,"currency": string,"decided_at"?: string | null,"decided_by"?: string | null,"decision_note"?: string | null,"event_id": string,"hold_expires_at"?: string | null,"id"?: string,"kind"?: string,"non_refundable_accepted_at"?: string | null,"provider"?: string | null,"quote"?: Json | null,"reference"?: string | null,"status": string,"ticket_count": number,"updated_at"?: string
+                    "amount_minor"?: number,"answers"?: NonNullable<Json>,"buyer_gender"?: string | null,"buyer_id"?: string | null,"buyer_phone"?: string | null,"country"?: string | null,"created_at"?: string,"currency": string,"decided_at"?: string | null,"decided_by"?: string | null,"decision_note"?: string | null,"event_id": string,"hold_expires_at"?: string | null,"id"?: string,"kind"?: string,"non_refundable_accepted_at"?: string | null,"provider"?: string | null,"quote"?: Json | null,"reference"?: string | null,"registration_link_id"?: string | null,"status": string,"ticket_count": number,"updated_at"?: string
                   }
                   Update: {
-                    "amount_minor"?: number,"answers"?: NonNullable<Json>,"buyer_gender"?: string | null,"buyer_id"?: string | null,"buyer_phone"?: string | null,"country"?: string | null,"created_at"?: string,"currency"?: string,"decided_at"?: string | null,"decided_by"?: string | null,"decision_note"?: string | null,"event_id"?: string,"hold_expires_at"?: string | null,"id"?: string,"kind"?: string,"non_refundable_accepted_at"?: string | null,"provider"?: string | null,"quote"?: Json | null,"reference"?: string | null,"status"?: string,"ticket_count"?: number,"updated_at"?: string
+                    "amount_minor"?: number,"answers"?: NonNullable<Json>,"buyer_gender"?: string | null,"buyer_id"?: string | null,"buyer_phone"?: string | null,"country"?: string | null,"created_at"?: string,"currency"?: string,"decided_at"?: string | null,"decided_by"?: string | null,"decision_note"?: string | null,"event_id"?: string,"hold_expires_at"?: string | null,"id"?: string,"kind"?: string,"non_refundable_accepted_at"?: string | null,"provider"?: string | null,"quote"?: Json | null,"reference"?: string | null,"registration_link_id"?: string | null,"status"?: string,"ticket_count"?: number,"updated_at"?: string
                   }
                   Relationships: [
                     {
@@ -414,6 +420,12 @@ isOneToOne: false
       columns: ["event_id"]
 isOneToOne: false
       referencedRelation: "events"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "orders_registration_link_fk"
+      columns: ["registration_link_id"]
+isOneToOne: false
+      referencedRelation: "registration_links"
       referencedColumns: ["id"]
     }
                   ]
@@ -651,16 +663,36 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
-                },"registrations": {
+                },"registration_links": {
                   Row: {
-                    "amount_minor": number,"answers": NonNullable<Json>,"attendee_email": string,"attendee_name": string,"checked_in_at": string | null,"checked_in_by": string | null,"created_at": string,"event_id": string,"guest_name": string | null,"id": string,"order_id": string | null,"payment_ref": string | null,"recipient_email": string | null,"status": string,"ticket_code": string,"ticket_number": number | null,"tier_id": string,"user_id": string | null
+                    "access_code": string | null,"active_count": number,"cap": number | null,"created_at": string,"event_id": string,"id": string,"is_active": boolean,"is_default": boolean,"name": string,"position": number,"token": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "amount_minor"?: number,"answers"?: NonNullable<Json>,"attendee_email": string,"attendee_name": string,"checked_in_at"?: string | null,"checked_in_by"?: string | null,"created_at"?: string,"event_id": string,"guest_name"?: string | null,"id"?: string,"order_id"?: string | null,"payment_ref"?: string | null,"recipient_email"?: string | null,"status"?: string,"ticket_code"?: string,"ticket_number"?: number | null,"tier_id": string,"user_id"?: string | null
+                    "access_code"?: string | null,"active_count"?: number,"cap"?: number | null,"created_at"?: string,"event_id": string,"id"?: string,"is_active"?: boolean,"is_default"?: boolean,"name": string,"position"?: number,"token"?: string
                   }
                   Update: {
-                    "amount_minor"?: number,"answers"?: NonNullable<Json>,"attendee_email"?: string,"attendee_name"?: string,"checked_in_at"?: string | null,"checked_in_by"?: string | null,"created_at"?: string,"event_id"?: string,"guest_name"?: string | null,"id"?: string,"order_id"?: string | null,"payment_ref"?: string | null,"recipient_email"?: string | null,"status"?: string,"ticket_code"?: string,"ticket_number"?: number | null,"tier_id"?: string,"user_id"?: string | null
+                    "access_code"?: string | null,"active_count"?: number,"cap"?: number | null,"created_at"?: string,"event_id"?: string,"id"?: string,"is_active"?: boolean,"is_default"?: boolean,"name"?: string,"position"?: number,"token"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "registration_links_event_id_fkey"
+      columns: ["event_id"]
+isOneToOne: false
+      referencedRelation: "events"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"registrations": {
+                  Row: {
+                    "amount_minor": number,"answers": NonNullable<Json>,"attendee_email": string,"attendee_name": string,"checked_in_at": string | null,"checked_in_by": string | null,"created_at": string,"event_id": string,"guest_name": string | null,"id": string,"order_id": string | null,"payment_ref": string | null,"recipient_email": string | null,"registration_link_id": string | null,"status": string,"ticket_code": string,"ticket_number": number | null,"tier_id": string,"user_id": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "amount_minor"?: number,"answers"?: NonNullable<Json>,"attendee_email": string,"attendee_name": string,"checked_in_at"?: string | null,"checked_in_by"?: string | null,"created_at"?: string,"event_id": string,"guest_name"?: string | null,"id"?: string,"order_id"?: string | null,"payment_ref"?: string | null,"recipient_email"?: string | null,"registration_link_id"?: string | null,"status"?: string,"ticket_code"?: string,"ticket_number"?: number | null,"tier_id": string,"user_id"?: string | null
+                  }
+                  Update: {
+                    "amount_minor"?: number,"answers"?: NonNullable<Json>,"attendee_email"?: string,"attendee_name"?: string,"checked_in_at"?: string | null,"checked_in_by"?: string | null,"created_at"?: string,"event_id"?: string,"guest_name"?: string | null,"id"?: string,"order_id"?: string | null,"payment_ref"?: string | null,"recipient_email"?: string | null,"registration_link_id"?: string | null,"status"?: string,"ticket_code"?: string,"ticket_number"?: number | null,"tier_id"?: string,"user_id"?: string | null
                   }
                   Relationships: [
                     {
@@ -680,6 +712,12 @@ isOneToOne: false
       columns: ["order_id"]
 isOneToOne: false
       referencedRelation: "orders"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "registrations_registration_link_fk"
+      columns: ["registration_link_id"]
+isOneToOne: false
+      referencedRelation: "registration_links"
       referencedColumns: ["id"]
     },{
       foreignKeyName: "registrations_tier_id_fkey"
@@ -711,14 +749,14 @@ isOneToOne: false
                   ]
                 },"ticket_tiers": {
                   Row: {
-                    "created_at": string,"currency": string,"description": string | null,"event_id": string,"group_size": number,"id": string,"is_active": boolean,"name": string,"price_minor": number,"quantity": number | null,"sales_end": string | null,"sales_start": string | null,"sold": number
+                    "created_at": string,"currency": string,"description": string | null,"event_id": string,"group_size": number,"id": string,"is_active": boolean,"name": string,"price_minor": number,"quantity": number | null,"registration_link_id": string,"sales_end": string | null,"sales_start": string | null,"sold": number
                   }
                   ComputedFields: never
                   Insert: {
-                    "created_at"?: string,"currency"?: string,"description"?: string | null,"event_id": string,"group_size"?: number,"id"?: string,"is_active"?: boolean,"name": string,"price_minor"?: number,"quantity"?: number | null,"sales_end"?: string | null,"sales_start"?: string | null,"sold"?: number
+                    "created_at"?: string,"currency"?: string,"description"?: string | null,"event_id": string,"group_size"?: number,"id"?: string,"is_active"?: boolean,"name": string,"price_minor"?: number,"quantity"?: number | null,"registration_link_id": string,"sales_end"?: string | null,"sales_start"?: string | null,"sold"?: number
                   }
                   Update: {
-                    "created_at"?: string,"currency"?: string,"description"?: string | null,"event_id"?: string,"group_size"?: number,"id"?: string,"is_active"?: boolean,"name"?: string,"price_minor"?: number,"quantity"?: number | null,"sales_end"?: string | null,"sales_start"?: string | null,"sold"?: number
+                    "created_at"?: string,"currency"?: string,"description"?: string | null,"event_id"?: string,"group_size"?: number,"id"?: string,"is_active"?: boolean,"name"?: string,"price_minor"?: number,"quantity"?: number | null,"registration_link_id"?: string,"sales_end"?: string | null,"sales_start"?: string | null,"sold"?: number
                   }
                   Relationships: [
                     {
@@ -726,6 +764,12 @@ isOneToOne: false
       columns: ["event_id"]
 isOneToOne: false
       referencedRelation: "events"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "ticket_tiers_registration_link_fk"
+      columns: ["registration_link_id"]
+isOneToOne: false
+      referencedRelation: "registration_links"
       referencedColumns: ["id"]
     }
                   ]
