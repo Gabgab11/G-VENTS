@@ -1,5 +1,7 @@
 {
-  "hostProfile": { "verified": "已认证主办方" },
+  "hostProfile": {
+    "verified": "已认证主办方"
+  },
   "errorPage": {
     "title": "出错了",
     "body": "无法加载此页面。请稍后重试。",
@@ -164,7 +166,10 @@
     "family": "家庭",
     "other": "其他"
   },
-  "price": { "free": "免费", "from": "{price} 起" },
+  "price": {
+    "free": "免费",
+    "from": "{price} 起"
+  },
   "share": {
     "share": "分享",
     "title": "分享此活动",

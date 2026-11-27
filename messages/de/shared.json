@@ -1,5 +1,7 @@
 {
-  "hostProfile": { "verified": "Verifizierter Veranstalter" },
+  "hostProfile": {
+    "verified": "Verifizierter Veranstalter"
+  },
   "errorPage": {
     "title": "Etwas ist schiefgelaufen",
     "body": "Diese Seite konnte nicht geladen werden. Bitte versuchen Sie es gleich noch einmal.",
@@ -164,7 +166,10 @@
     "family": "Familie",
     "other": "Sonstiges"
   },
-  "price": { "free": "Kostenlos", "from": "Ab {price}" },
+  "price": {
+    "free": "Kostenlos",
+    "from": "Ab {price}"
+  },
   "share": {
     "share": "Teilen",
     "title": "Diese Veranstaltung teilen",

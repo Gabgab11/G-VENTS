@@ -331,7 +331,9 @@
       "female": "أنثى",
       "male": "ذكر",
       "unspecified": "يفضّل عدم الإفصاح"
-    }
+    },
+    "linkLabel": "Filter by registration link",
+    "allLinks": "All links"
   },
   "registration": {
     "kinds": {
@@ -825,6 +827,77 @@
       "gone": "انتهت صلاحية هذه الدعوة أو سُحبت أو استُخدمت بالفعل. اطلب دعوة جديدة من المضيف.",
       "not_found": "رابط الدعوة هذا غير صالح. تأكد من فتح الرابط كاملًا من البريد الإلكتروني.",
       "failed": "تعذّر قبول الدعوة. يُرجى المحاولة مرة أخرى."
+    }
+  },
+  "links": {
+    "title": "Registration links",
+    "intro": "Share a different link for each audience — volunteers, guests, VIPs. Each link has its own cap and can require a code. Everyone still shows up on one guest list.",
+    "newLink": "New link",
+    "empty": "No extra links yet",
+    "emptyHint": "Your event already has a default link. Add a named link to track a group separately or cap how many can register.",
+    "defaultBadge": "Default",
+    "codeOn": "Code required",
+    "codeOff": "No code",
+    "capNone": "{count} registered",
+    "capOf": "{count} of {cap}",
+    "copyLink": "Copy link",
+    "copied": "Link copied",
+    "copiedHint": "Share the {name} link.",
+    "copyFailed": "Couldn’t copy. Here it is:",
+    "edit": "Edit",
+    "rotate": "Reset link",
+    "archive": "Archive",
+    "menuLabel": "Actions for {name}",
+    "rotatedToast": "New link for {name}. The old one no longer works.",
+    "archivedToast": "Archived {name}.",
+    "createdToast": "Added {name}.",
+    "savedToast": "Saved {name}.",
+    "cols": {
+      "name": "Link",
+      "registrations": "Registered",
+      "code": "Access",
+      "actions": "Actions"
+    },
+    "errors": {
+      "name": "Give the link a name (1 to 60 characters).",
+      "cap": "Enter a whole number of 0 or more, or leave it empty for no cap.",
+      "accessCode": "Use 4 to 32 letters or numbers, or leave it empty for no code.",
+      "tierId": "Choose one of this event’s ticket types."
+    },
+    "dialog": {
+      "newTitle": "New registration link",
+      "editTitle": "Edit {name}",
+      "create": "Add link",
+      "save": "Save",
+      "name": "Name",
+      "nameHint": "Only you and your team see this — e.g. Volunteers, VIP.",
+      "cap": "Cap",
+      "capHint": "Most registrations this link allows. Leave empty for no limit.",
+      "capPlaceholder": "No limit",
+      "code": "Access code",
+      "codeHint": "If set, guests enter this code to register through this link.",
+      "codeHintSet": "A code is set. Type a new one to change it, or leave empty to remove it.",
+      "codePlaceholderSet": "Unchanged",
+      "tier": "Ticket type",
+      "tierHint": "Optional — place one ticket type under this link so it is only offered here.",
+      "tierNone": "None"
+    }
+  },
+  "accessCode": {
+    "title": "Registration access code",
+    "intro": "Require a code before anyone can register for this event. The event still appears as normal; only registration is gated.",
+    "on": "Required",
+    "off": "Not set",
+    "code": "Access code",
+    "hint": "Enter 4 to 32 letters or numbers, then save. Share it only with the people you invite.",
+    "hintSet": "A code is set. Type a new one to change it, or leave empty and save to remove it.",
+    "placeholder": "e.g. PARTY26",
+    "placeholderSet": "Unchanged",
+    "save": "Save",
+    "savedToast": "Access code saved.",
+    "removedToast": "Access code removed.",
+    "errors": {
+      "accessCode": "Use 4 to 32 letters or numbers, or leave it empty to remove the code."
     }
   }
 }

@@ -23,20 +23,49 @@
     "appearance": "Aparência",
     "pin": "Fixar aberto",
     "unpin": "Desafixar",
-    "groups": { "work": "Trabalho", "money": "Dinheiro", "grow": "Crescer", "account": "Conta", "elsewhere": "Outros" },
-    "count": { "drafts": "{count, plural, one {# rascunho} other {# rascunhos}}", "waiting": "{count} aguardando", "upcoming": "{count, plural, one {# próximo} other {# próximos}}", "action": "Ação necessária" },
-    "env": { "dev": "Desenvolvimento", "staging": "Homologação" }
+    "groups": {
+      "work": "Trabalho",
+      "money": "Dinheiro",
+      "grow": "Crescer",
+      "account": "Conta",
+      "elsewhere": "Outros"
+    },
+    "count": {
+      "drafts": "{count, plural, one {# rascunho} other {# rascunhos}}",
+      "waiting": "{count} aguardando",
+      "upcoming": "{count, plural, one {# próximo} other {# próximos}}",
+      "action": "Ação necessária"
+    },
+    "env": {
+      "dev": "Desenvolvimento",
+      "staging": "Homologação"
+    }
   },
   "home": {
-    "profileBanner": { "title": "Configure seu perfil", "body": "Escolha um nome de usuário e adicione uma imagem para que os convidados possam encontrar e seguir você.", "action": "Configurar perfil", "dismiss": "Dispensar" },
+    "profileBanner": {
+      "title": "Configure seu perfil",
+      "body": "Escolha um nome de usuário e adicione uma imagem para que os convidados possam encontrar e seguir você.",
+      "action": "Configurar perfil",
+      "dismiss": "Dispensar"
+    },
     "title": "Início",
     "welcome": "Boas-vindas ao G-ventZ",
     "welcomeNamed": "Boas-vindas, {name}",
     "welcomeLead": "Vamos publicar seu primeiro evento. Leva só alguns minutos.",
     "create": "Criar evento",
     "periodLabel": "Período",
-    "period": { "week": "7 dias", "month": "30 dias", "quarter": "90 dias", "year": "12 meses" },
-    "vs": { "week": "7 dias anteriores", "month": "30 dias anteriores", "quarter": "90 dias anteriores", "year": "12 meses anteriores" },
+    "period": {
+      "week": "7 dias",
+      "month": "30 dias",
+      "quarter": "90 dias",
+      "year": "12 meses"
+    },
+    "vs": {
+      "week": "7 dias anteriores",
+      "month": "30 dias anteriores",
+      "quarter": "90 dias anteriores",
+      "year": "12 meses anteriores"
+    },
     "delta": {
       "up": "Alta de {percent}% em relação aos {vs}",
       "down": "Queda de {percent}% em relação aos {vs}",
@@ -120,7 +149,12 @@
   "settings": {
     "title": "Configurações",
     "tabsLabel": "Seções das configurações",
-    "tabs": { "profile": "Perfil", "security": "Segurança", "appearance": "Aparência", "language": "Idioma" },
+    "tabs": {
+      "profile": "Perfil",
+      "security": "Segurança",
+      "appearance": "Aparência",
+      "language": "Idioma"
+    },
     "appearance": {
       "title": "Estilo do painel",
       "hint": "As cores da sua área do organizador. Só você as vê; as páginas dos seus eventos mantêm o próprio estilo."
@@ -147,8 +181,22 @@
     "none": "Nenhum pedido ainda",
     "noneHint": "Os pedidos aparecem aqui assim que alguém se inscreve ou compra um ingresso.",
     "noneFiltered": "Nenhum pedido corresponde a estes filtros",
-    "filter": { "event": "Evento", "allEvents": "Todos os eventos", "status": "Status", "allStatuses": "Todos os status", "apply": "Mostrar", "clear": "Limpar" },
-    "col": { "buyer": "Comprador", "event": "Evento", "tickets": "Ingressos", "amount": "Valor", "status": "Status", "when": "Data do pedido" },
+    "filter": {
+      "event": "Evento",
+      "allEvents": "Todos os eventos",
+      "status": "Status",
+      "allStatuses": "Todos os status",
+      "apply": "Mostrar",
+      "clear": "Limpar"
+    },
+    "col": {
+      "buyer": "Comprador",
+      "event": "Evento",
+      "tickets": "Ingressos",
+      "amount": "Valor",
+      "status": "Status",
+      "when": "Data do pedido"
+    },
     "status": {
       "completed": "Confirmado",
       "pending_approval": "Aguardando aprovação",
@@ -174,7 +222,15 @@
     "failed": "Não foi possível carregar as liquidações. Tente novamente.",
     "none": "Nenhuma venda paga ainda",
     "noneHint": "Quando você vender ingressos pagos, as vendas e taxas de cada evento aparecerão aqui.",
-    "col": { "event": "Evento", "orders": "Pedidos", "gross": "Pago pelos convidados", "paystack": "Taxa do Paystack", "gventz": "Taxa do G-ventZ", "refunds": "Reembolsos", "net": "Para você" },
+    "col": {
+      "event": "Evento",
+      "orders": "Pedidos",
+      "gross": "Pago pelos convidados",
+      "paystack": "Taxa do Paystack",
+      "gventz": "Taxa do G-ventZ",
+      "refunds": "Reembolsos",
+      "net": "Para você"
+    },
     "total": "Total",
     "totalIn": "Total, {currency}",
     "note": "A taxa do G-ventZ inclui impostos (IVA). O Paystack deposita cada venda na sua conta bancária conforme o calendário de liquidação dele; o G-ventZ nunca retém o seu dinheiro."

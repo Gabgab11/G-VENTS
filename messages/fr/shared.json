@@ -1,5 +1,7 @@
 {
-  "hostProfile": { "verified": "Organisateur vérifié" },
+  "hostProfile": {
+    "verified": "Organisateur vérifié"
+  },
   "errorPage": {
     "title": "Une erreur s'est produite",
     "body": "Nous n'avons pas pu charger cette page. Veuillez réessayer dans un instant.",
@@ -164,7 +166,10 @@
     "family": "Famille",
     "other": "Autre"
   },
-  "price": { "free": "Gratuit", "from": "À partir de {price}" },
+  "price": {
+    "free": "Gratuit",
+    "from": "À partir de {price}"
+  },
   "share": {
     "share": "Partager",
     "title": "Partager cet événement",

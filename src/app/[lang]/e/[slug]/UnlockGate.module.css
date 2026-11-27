@@ -1,0 +1,13 @@
+/* Registration access-code gate (Change 6), on the booking page. */
+.gate { max-inline-size: 28rem; margin-inline: auto; }
+.lead {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-4);
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+}
+.lead svg { flex: none; margin-block-start: 2px; }
+.form { display: grid; gap: var(--space-4); }

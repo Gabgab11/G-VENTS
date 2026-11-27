@@ -460,6 +460,94 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/events/{id}/registration-links/{token}/unlock": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Unlock a code-gated registration link
+         * @description Submit the required access code(s); returns a short-lived unlock token to send with the registration. Rate-limited.
+         */
+        post: operations["RegistrationLinkController_unlock_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/events/{id}/registration-links": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List registration links
+         * @description The event’s links (default + segments). The access-code value is never returned.
+         */
+        get: operations["RegistrationLinkController_list_v1"];
+        put?: never;
+        /**
+         * Create a registration link
+         * @description A named segment link with its own cap, optional code and (optionally) one ticket type.
+         */
+        post: operations["RegistrationLinkController_create_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/events/{id}/registration-links/{linkId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Archive a registration link
+         * @description Hides a segment link; the default link cannot be archived.
+         */
+        delete: operations["RegistrationLinkController_archive_v1"];
+        options?: never;
+        head?: never;
+        /**
+         * Update a registration link
+         * @description Rename, change the cap or code, or rotate the share token.
+         */
+        patch: operations["RegistrationLinkController_update_v1"];
+        trace?: never;
+    };
+    "/v1/events/{id}/access-code": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Set or clear the event access code
+         * @description Gates registration for the whole event; null removes it. visibility stays listing-only.
+         */
+        put: operations["RegistrationLinkController_setAccessCode_v1"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/events/{id}/questions": {
         parameters: {
             query?: never;
@@ -2679,6 +2767,12 @@ export interface components {
             updatedAt: string;
             ticketTypes: components["schemas"]["TicketTypeViewDto"][];
             questions: components["schemas"]["QuestionViewDto"][];
+            /** @description Change 6: an access code must be entered to register for the shown registration link. */
+            accessRequired: boolean;
+            /** @description Change 6: the name of the registration link shown (via ?r=<token>); null for the main/default link. */
+            registrationLinkName: string | null;
+            /** @description Change 6: the resolved registration link’s share token; send it back when unlocking a code and when placing the order. Null only on the dashboard view. */
+            registrationLinkToken: string | null;
             /**
              * @description Who pays the fees on paid tickets
              * @enum {string}
@@ -2889,6 +2983,12 @@ export interface components {
             updatedAt: string;
             ticketTypes: components["schemas"]["TicketTypeViewDto"][];
             questions: components["schemas"]["QuestionViewDto"][];
+            /** @description Change 6: an access code must be entered to register for the shown registration link. */
+            accessRequired: boolean;
+            /** @description Change 6: the name of the registration link shown (via ?r=<token>); null for the main/default link. */
+            registrationLinkName: string | null;
+            /** @description Change 6: the resolved registration link’s share token; send it back when unlocking a code and when placing the order. Null only on the dashboard view. */
+            registrationLinkToken: string | null;
             /**
              * @description Who pays the fees on paid tickets
              * @enum {string}
@@ -3043,6 +3143,67 @@ export interface components {
              * @enum {string}
              */
             role: "owner" | "admin" | "editor" | "checkin" | "finance" | "viewer";
+        };
+        UnlockRegistrationDto: {
+            /** @description The event-level access code, if the event has one. */
+            eventCode?: string;
+            /** @description The link-level access code, if this link has one. */
+            linkCode?: string;
+        };
+        UnlockResultDto: {
+            /** @description Short-lived unlock token to send with the registration. */
+            unlock: string;
+        };
+        RegistrationLinkDto: {
+            id: string;
+            name: string;
+            /** @description Share token for /e/<slug>?r=<token>. */
+            token: string;
+            /** @description Ticket cap; null = unlimited. */
+            cap: number | null;
+            /** @description Whether an access code is required for this link. */
+            hasCode: boolean;
+            isDefault: boolean;
+            isActive: boolean;
+            position: number;
+            /** @description Confirmed + pending registrations under this link. */
+            activeCount: number;
+        };
+        RegistrationLinksDto: {
+            items: components["schemas"]["RegistrationLinkDto"][];
+        };
+        CreateRegistrationLinkDto: {
+            /** @example Volunteer */
+            name: string;
+            /**
+             * @description Ticket cap; omit or null for unlimited.
+             * @example 50
+             */
+            cap?: number | null;
+            /**
+             * @description 4-32 letters/numbers; omit for no code.
+             * @example VOL2026
+             */
+            accessCode?: string | null;
+            /** @description An existing ticket type to place under this link. */
+            tierId?: string;
+        };
+        UpdateRegistrationLinkDto: {
+            /** @example Volunteers */
+            name?: string;
+            /** @example 80 */
+            cap?: number | null;
+            /** @example VOL2027 */
+            accessCode?: string | null;
+            /** @description Issue a new share token (invalidates the old link). */
+            rotateToken?: boolean;
+        };
+        SetEventAccessCodeDto: {
+            /**
+             * @description 4-32 letters/numbers, or null to remove.
+             * @example PARTY26
+             */
+            accessCode: string | null;
         };
         QuestionDto: {
             /** Format: uuid */
@@ -3205,6 +3366,10 @@ export interface components {
              * @example Ada Obi
              */
             buyerName?: string;
+            /** @description Change 6: the registration link token (from /e/<slug>?r=<token>); omit for the default link. */
+            registrationLinkToken?: string;
+            /** @description Change 6: the unlock token returned after entering the access code (when the link/event requires one). */
+            unlock?: string;
         };
         OrderTicketResponse: {
             /** Format: uuid */
@@ -3292,6 +3457,8 @@ export interface components {
             /** Format: uuid */
             ticketTypeId: string;
             ticketType: string;
+            /** @description Change 6: the registration link this guest came through; null for the main link / legacy rows */
+            registrationLink: string | null;
             status: string;
             /** Format: date-time */
             registeredAt: string;
@@ -5800,7 +5967,9 @@ export interface operations {
     };
     EventsController_page_v1: {
         parameters: {
-            query?: never;
+            query?: {
+                r?: string;
+            };
             header?: never;
             path: {
                 slug: string;
@@ -6291,6 +6460,259 @@ export interface operations {
             };
             /** @description rate_limit.exceeded */
             429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    RegistrationLinkController_unlock_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                token: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UnlockRegistrationDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnlockResultDto"];
+                };
+            };
+            /** @description rate_limit.exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    RegistrationLinkController_list_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RegistrationLinksDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.forbidden: needs links.manage */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.not_found (also when you have no role on the event) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    RegistrationLinkController_create_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateRegistrationLinkDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RegistrationLinkDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.forbidden: needs links.manage */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.not_found (also when you have no role on the event) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    RegistrationLinkController_archive_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                linkId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.forbidden: needs links.manage */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.not_found (also when you have no role on the event) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    RegistrationLinkController_update_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                linkId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateRegistrationLinkDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RegistrationLinkDto"];
+                };
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.forbidden: needs links.manage */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.not_found (also when you have no role on the event) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    RegistrationLinkController_setAccessCode_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SetEventAccessCodeDto"];
+            };
+        };
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description auth.required, auth.invalid_token, auth.token_expired or auth.anonymous_not_allowed */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.forbidden: needs links.manage */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description event.not_found (also when you have no role on the event) */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -6928,6 +7350,8 @@ export interface operations {
             query?: {
                 status?: "confirmed" | "pending" | "waitlisted" | "declined" | "cancelled" | "refunded" | "checked_in" | "not_checked_in";
                 ticketTypeId?: string;
+                /** @description Change 6: only guests who registered through this registration link */
+                registrationLinkId?: string;
                 /** @description Name, email, "@company.com" or a ticket code prefix */
                 q?: string;
                 sort?: "registered" | "checked_in";
@@ -6978,6 +7402,8 @@ export interface operations {
             query?: {
                 status?: "confirmed" | "pending" | "waitlisted" | "declined" | "cancelled" | "refunded" | "checked_in" | "not_checked_in";
                 ticketTypeId?: string;
+                /** @description Change 6: only guests who registered through this registration link */
+                registrationLinkId?: string;
                 q?: string;
             };
             header?: never;

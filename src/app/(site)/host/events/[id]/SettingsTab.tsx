@@ -3,6 +3,7 @@ import { can, type EventDashboard } from "@/lib/auth";
 import { getTranslations } from "next-intl/server";
 import { Banner, Button, Card, CardHeader, Checkbox, Field, Input, Textarea } from "@/design";
 import { cancelEvent, setCapacity, setRegistrationOpen, updateEventPolicies } from "./actions";
+import AccessCodeCard from "./AccessCodeCard";
 import DeleteEventForm from "./DeleteEventForm";
 import QuickSettings from "./QuickSettings";
 import styles from "./workspace.module.css";
@@ -51,6 +52,8 @@ export default async function SettingsTab({ event: e }: { event: EventDashboard 
           </form>
         </Card>
       )}
+
+      {can(e, "links.manage") && <AccessCodeCard eventId={id} accessRequired={e.accessRequired} />}
 
       {edit && (
         <Card as="section">
