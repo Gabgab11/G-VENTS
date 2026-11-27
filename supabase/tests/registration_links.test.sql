@@ -2,7 +2,7 @@
 -- Run by `supabase test db`. Rolled back at the end.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(16);
+select plan(15);
 
 -- Structure, security and grants (same posture as discount_codes: API role only).
 select has_table('public', 'registration_links', 'registration links are stored');
