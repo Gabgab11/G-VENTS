@@ -429,7 +429,7 @@ export interface paths {
         };
         /**
          * An event's share card
-         * @description The 1200×630 link-preview image of a published public event, in the given language: flyer (JPEG or PNG) or cover style, date in the event time zone, title, place, price, host. Drafts, private, cancelled and unknown events are not found.
+         * @description The 1200×630 link-preview image of a published event (public or private — visibility is listing-only, so private events are still shared by link), in the given language: flyer (JPEG or PNG) or cover style, date in the event time zone, title, place, price, host. Draft, cancelled and unknown events are not found.
          */
         get: operations["ShareCardsController_event_v1"];
         put?: never;
