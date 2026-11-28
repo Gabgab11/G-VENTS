@@ -19,8 +19,17 @@ describe("handles (FR-32, D83)", () => {
     expect(normalizeHandle("@@ada")).toBe("@ada");
   });
 
-  it("is idempotent", () => {
-    fc.assert(fc.property(fc.string(), (s) => normalizeHandle(normalizeHandle(s)) === normalizeHandle(s)));
+  // Only one leading @ is removed, as the API does ("@@ada" → "@ada"; a handle can't contain "@",
+  // so handleProblem rejects it). Normalising is therefore idempotent for every result that does
+  // not still start with "@"; deploy run 46147882068 found "@@" → "@" → "" with the old property.
+  it("is idempotent once no leading @ is left", () => {
+    fc.assert(
+      fc.property(fc.string(), (s) => {
+        const once = normalizeHandle(s);
+        return once.startsWith("@") || normalizeHandle(once) === once;
+      }),
+    );
+    expect(normalizeHandle(normalizeHandle("@@ada"))).toBe("ada"); // the one documented exception
   });
 
   it("accepts 3 to 30 letters and digits with single inner hyphens", () => {
