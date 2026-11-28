@@ -1,5 +1,6 @@
 import { api, data } from "@/lib/api/server";
 import { can, type EventDashboard } from "@/lib/auth";
+import { isUuid } from "@/lib/forms";
 import type { components } from "@/lib/api/schema";
 import { approveOrder, checkInGuest, declineOrder, promoteFromWaitlist } from "./actions";
 import { refundStatusKey } from "@/lib/payment-text";
@@ -15,7 +16,7 @@ import styles from "./workspace.module.css";
 
 type GuestRow = components["schemas"]["GuestRowResponse"];
 
-export type GuestQuery = { q?: string; status?: string; type?: string; sort?: string; page?: string; refund?: string };
+export type GuestQuery = { q?: string; status?: string; type?: string; link?: string; sort?: string; page?: string; refund?: string };
 
 const STATUSES = ["confirmed", "pending", "waitlisted", "declined", "cancelled", "refunded", "checked_in", "not_checked_in"] as const;
 
@@ -38,19 +39,29 @@ export default async function GuestsTab({ event, query }: { event: EventDashboar
   const ticketTypeId = event.ticketTypes.find((t) => t.id === query.type)?.id;
   const q = (query.q ?? "").trim().slice(0, 120);
   const sort = query.sort === "checked_in" ? "checked_in" : "registered";
+  // Change 6 (FR-45): segment the guest list by registration link. The link options are listed only
+  // for the team members who manage links; the filter itself is just the link's id on the query.
+  const canLinks = can(event, "links.manage");
+  const linkFilter = isUuid(query.link) ? query.link : undefined;
 
-  const list = data(
-    await (await api()).GET("/v1/events/{id}/guests", {
-      params: { path: { id }, query: { page, pageSize: 50, sort, ...(status ? { status } : {}), ...(ticketTypeId ? { ticketTypeId } : {}), ...(q ? { q } : {}) } },
-    }),
-  );
+  const client = await api();
+  const [list, links] = await Promise.all([
+    client.GET("/v1/events/{id}/guests", {
+      params: { path: { id }, query: { page, pageSize: 50, sort, ...(status ? { status } : {}), ...(ticketTypeId ? { ticketTypeId } : {}), ...(linkFilter ? { registrationLinkId: linkFilter } : {}), ...(q ? { q } : {}) } },
+    }).then(data),
+    canLinks ? client.GET("/v1/events/{id}/registration-links", { params: { path: { id } } }).then((r) => data(r).items) : Promise.resolve([]),
+  ]);
+  const segmentLinks = links.filter((l) => l.isActive);
+  const linkId = segmentLinks.find((l) => l.id === linkFilter)?.id;
   const pages = Math.max(1, Math.ceil(list.total / list.pageSize));
   const href = (overrides: Partial<GuestQuery>) => {
     const params = new URLSearchParams({ tab: "guests" });
-    const merged = { q, status, type: ticketTypeId, sort: sort === "checked_in" ? "checked_in" : undefined, ...overrides };
+    const merged = { q, status, type: ticketTypeId, link: linkId, sort: sort === "checked_in" ? "checked_in" : undefined, ...overrides };
     for (const [k, v] of Object.entries(merged)) if (v) params.set(k, String(v));
     return `/host/events/${id}?${params}`;
   };
+  // The export carries the same link filter so a segmented view downloads just that segment.
+  const csvHref = linkId ? `/host/events/${id}/guests.csv?link=${linkId}` : `/host/events/${id}/guests.csv`;
 
   const approve = can(event, "orders.approve");
   const promote = can(event, "waitlist.promote");
@@ -66,7 +77,7 @@ export default async function GuestsTab({ event, query }: { event: EventDashboar
     return key ? root(key) : undefined;
   };
 
-  const filtered = Boolean(q || status || ticketTypeId);
+  const filtered = Boolean(q || status || ticketTypeId || linkId);
   // The buyer's phone and gender (4b) come only to roles that can see guests' contact details.
   const contact = can(event, "guests.export") || list.items.some((r) => r.buyerPhone || r.buyerGender);
   const genderLabel = (g: GuestRow["buyerGender"]) => (g ? t(`guests.gender.${g}`) : null);
@@ -85,7 +96,7 @@ export default async function GuestsTab({ event, query }: { event: EventDashboar
               <Button size="sm" type="submit">{t("guests.promote")}</Button>
             </form>
           )}
-          {can(event, "guests.export") && <Button size="sm" variant="secondary" href={`/host/events/${id}/guests.csv`}><Download size={16} strokeWidth={1.75} aria-hidden />{t("guests.export")}</Button>}
+          {can(event, "guests.export") && <Button size="sm" variant="secondary" href={csvHref}><Download size={16} strokeWidth={1.75} aria-hidden />{t("guests.export")}</Button>}
         </span>
       </div>
 
@@ -100,6 +111,12 @@ export default async function GuestsTab({ event, query }: { event: EventDashboar
           <Select name="type" defaultValue={ticketTypeId ?? ""} aria-label={t("guests.ticketTypeLabel")}>
             <option value="">{t("guests.allTickets")}</option>
             {event.ticketTypes.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}
+          </Select>
+        )}
+        {segmentLinks.some((l) => !l.isDefault) && (
+          <Select name="link" defaultValue={linkId ?? ""} aria-label={t("guests.linkLabel")}>
+            <option value="">{t("guests.allLinks")}</option>
+            {segmentLinks.map((l) => <option key={l.id} value={l.id}>{l.name}</option>)}
           </Select>
         )}
         <Select name="sort" defaultValue={sort} aria-label={t("guests.sortLabel")}>
@@ -166,7 +183,10 @@ export default async function GuestsTab({ event, query }: { event: EventDashboar
                   </span>
                 </Td>
                 <Td label={t("guests.colTicket")}>
-                  {r.ticketType}{r.number && r.total && r.total > 1 ? ` · ${t("guests.ticketNumber", { number: r.number, total: r.total })}` : ""}
+                  <span className={styles.guestCell}>
+                    <span>{r.ticketType}{r.number && r.total && r.total > 1 ? ` · ${t("guests.ticketNumber", { number: r.number, total: r.total })}` : ""}</span>
+                    {r.registrationLink && <span className={styles.muted}>{r.registrationLink}</span>}
+                  </span>
                 </Td>
                 {contact && (
                   <Td label={t("guests.colContact")}>

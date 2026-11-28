@@ -26,6 +26,7 @@ import { groupSizeOf, isSoldOut } from "@/lib/group-tickets";
 import Gallery from "./Gallery";
 import { bookingPath, eventDate, eventPath, eventPlace } from "./event-view";
 import { codeParam, withCode } from "./tickets/discount-code";
+import { tokenParam, withToken } from "./tickets/registration-token";
 import s from "./EventPage.module.css";
 
 // The public event page from gventz-api (U6a), as a summary (Change 4 chunk 3b): the pictures and host on
@@ -70,8 +71,10 @@ export default async function EventPage({ params, searchParams }: { params: Prom
   const root = await getTranslations();
   const format = await getFormat();
   const supabase = await createSupabaseServerClient();
+  // Change 6: `?r=<token>` scopes the page to a segment registration link (its tier + questions).
+  const r = tokenParam(query.r);
   // The session cookie is enough to choose what to show; the API verifies the token on each call.
-  const [{ data: { session } }, event] = await Promise.all([supabase.auth.getSession(), loadEventPage(slug)]);
+  const [{ data: { session } }, event] = await Promise.all([supabase.auth.getSession(), loadEventPage(slug, r)]);
   if (!event) notFound();
 
   const signedIn = !!session;
@@ -83,7 +86,7 @@ export default async function EventPage({ params, searchParams }: { params: Prom
   const path = eventPath(event.slug, format.lang);
   // Signed-out visitors go straight to booking and confirm their email there (D88); a `?code=` link
   // carries its discount code through (D91).
-  const booking = withCode(bookingPath(event.slug, format.lang), codeParam(query.code));
+  const booking = withToken(withCode(bookingPath(event.slug, format.lang), codeParam(query.code)), r);
   const manageHref = `/host/events/${event.id}`;
 
   const { free, paid } = orderableTypes(event);
@@ -161,6 +164,7 @@ export default async function EventPage({ params, searchParams }: { params: Prom
             <div className={s.tags}>
               <Badge plain>{isCategory(event.category) ? root(categoryLabelKey(event.category)) : event.category}</Badge>
               {event.visibility === "private" && <Badge plain>{t("page.privateEvent")}</Badge>}
+              {event.registrationLinkName && <Badge tone="info" plain>{event.registrationLinkName}</Badge>}
             </div>
           </Card>
 
@@ -251,6 +255,7 @@ export default async function EventPage({ params, searchParams }: { params: Prom
               <div className={s.action}>
                 {mainButton(cta, "lg")}
                 {cta.kind === "get" && cta.label === "getTickets" && price && <p className={s.priceLine}>{price}</p>}
+                {event.accessRequired && (cta.kind === "get" || cta.kind === "waitlist") && <p className={s.note}>{t("summary.accessNote")}</p>}
                 {cta.kind === "waitlist" && <p className={s.note}>{t("summary.waitlistNote")}</p>}
                 {isDisabled(cta) && <p className={s.note}>{t(DISABLED_NOTE[cta.kind])}</p>}
                 {team && <Button href={`${manageHref}?tab=guests`} variant="secondary" size="lg" fullWidth>{t("host.seeGuests")}</Button>}

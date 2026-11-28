@@ -1,7 +1,9 @@
+import { api, data } from "@/lib/api/server";
 import { can, type EventDashboard } from "@/lib/auth";
 import { getTranslations } from "next-intl/server";
 import { Badge, Button, Card, CardHeader, Checkbox, Field, Input, Link, Select, Textarea } from "@/design";
 import { addQuestion, deleteQuestion } from "./actions";
+import RegistrationLinks from "./RegistrationLinks";
 import styles from "./workspace.module.css";
 
 // Question kinds, in the order the form offers them (labels: dashboard.registration.kinds.*).
@@ -11,10 +13,24 @@ const KINDS = ["text", "options", "social", "company", "terms", "phone", "websit
 export default async function RegistrationTab({ event, url }: { event: EventDashboard; url: string }) {
   const id = event.id;
   const manage = can(event, "questions.manage");
+  const manageLinks = can(event, "links.manage");
   const t = await getTranslations("dashboard.registration");
   const kindLabel = (kind: string) => (KINDS.includes(kind) ? t(`kinds.${kind}`) : kind);
+  // Registration links (Change 6) are managed by the owner and co-hosts; the list is API-gated too.
+  const links = manageLinks
+    ? data(await (await api()).GET("/v1/events/{id}/registration-links", { params: { path: { id } } })).items
+    : [];
   return (
     <div className={styles.stack}>
+      {manageLinks && (
+        <RegistrationLinks
+          eventId={id}
+          eventUrl={url}
+          links={links}
+          ticketTypes={event.ticketTypes.map((tt) => ({ id: tt.id, name: tt.name }))}
+        />
+      )}
+
       <Card as="section">
         <CardHeader title={t("guestsFillIn")} />
         <ul className={styles.rows}>
